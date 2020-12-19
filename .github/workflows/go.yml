@@ -25,7 +25,9 @@ jobs:
       run: go install
 
     - name: Build
-      run: go build -v ./...
+      run:
+        go build -v -o rescue.exe main.go
+        go build -v -o spike1.exe spikes/spike1/main.go
 
     - name: Test
       run: go test -v ./...
