@@ -1,0 +1,4 @@
+Skriv ett program som spelar upp tre olika ljud när
+användaren trycker tangenterna A, S och D. Så länge
+A hålls nere, står det A på skärmen och samma för S
+och D.
