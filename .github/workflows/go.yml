@@ -30,6 +30,9 @@ jobs:
     - name: Build spike1.exe
       run: go build -v -o spike1.exe spikes/spike1/main.go
 
+    - name: Build spike2.exe
+      run: go build -v -o spike2.exe spikes/spike2/main.go
+
     - name: Test
       run: go test -v ./...
 
