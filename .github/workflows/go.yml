@@ -28,10 +28,10 @@ jobs:
       run: go build -v -o rescue.exe cmd/rescue/main.go
 
     - name: Build spike1.exe
-      run: go build -v -o spike1.exe spikes/spike1/main.go
+      run: go build -v -o spike1.exe examples/spike1/main.go
 
     - name: Build spike2.exe
-      run: go build -v -o spike2.exe spikes/spike2/main.go
+      run: go build -v -o spike2.exe examples/spike2/main.go
 
     - name: Test
       run: go test -v ./...
