@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
@@ -8,13 +9,12 @@ import (
 	"golang.org/x/image/colornames"
 	"golang.org/x/image/font/basicfont"
 	"io/ioutil"
-	"strconv"
 )
 
-//type Pos struct {
-//	X int `json:"x"`
-//	Y int `json:"y"`
-//}
+type Pos struct {
+	X float64 `json:"x"`
+	Y float64 `json:"y"`
+}
 
 func run() {
 	cfg := pixelgl.WindowConfig{
@@ -35,34 +35,51 @@ func run() {
 	for !win.Closed() {
 		win.Clear(colornames.Black)
 
+		pos := Pos{x, y}
+		pos = TryReadPosFrom("pos.json", pos)
 		// Start with reading the position every frame;
 		// Really resource intensive but it's a start!
-		x = float64(tryReadIntFrom("x.txt", int(x)))
-		y = float64(tryReadIntFrom("y.txt", int(y)))
+		//x = float64(tryReadIntFrom("x.txt", int(x)))
+		//y = float64(tryReadIntFrom("y.txt", int(y)))
 
-		drawHelloWorldAt(basicTxt, x, y, win)
+		drawHelloWorldAt(basicTxt, pos.X, pos.Y, win)
 
 		win.Update()
 	}
 }
 
-func tryReadIntFrom(fileName string, valueOnError int) int {
-	content, err := ioutil.ReadFile(fileName)
-	fmt.Printf("Maybe Read: %s\n", content)
-
+func TryReadPosFrom(filename string, defaultPos Pos) Pos {
+	byteArray, err := ioutil.ReadFile(filename)
 	if err != nil {
-		fmt.Printf("Was an error, defaulting\n")
-		return valueOnError
+		fmt.Println("ReadFile error, defaulting")
+		return defaultPos
 	}
-
-	i, err := strconv.Atoi(string(content))
+	var pos Pos
+	err = json.Unmarshal(byteArray, &pos)
 	if err != nil {
-		fmt.Printf("no parse, defaulting\n")
-		return valueOnError
+		fmt.Println("JSON parse error, defaulting. JSON was: " + string(byteArray))
+		return defaultPos
 	}
-	fmt.Printf("parsed: %d\n", i)
-	return i
+	return pos
 }
+
+//func tryReadIntFrom(fileName string, valueOnError int) int {
+//	content, err := ioutil.ReadFile(fileName)
+//	fmt.Printf("Maybe Read: %s\n", content)
+//
+//	if err != nil {
+//		fmt.Printf("Was an error, defaulting\n")
+//		return valueOnError
+//	}
+//
+//	i, err := strconv.Atoi(string(content))
+//	if err != nil {
+//		fmt.Printf("no parse, defaulting\n")
+//		return valueOnError
+//	}
+//	fmt.Printf("parsed: %d\n", i)
+//	return i
+//}
 
 func drawHelloWorldAt(basicTxt *text.Text, x float64, y float64, win *pixelgl.Window) {
 	basicTxt.Clear()
