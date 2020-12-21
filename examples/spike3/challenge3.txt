@@ -1,0 +1,3 @@
+Skriv ett program som ritar en fyrkantig låda som rör sig
+fram-och-tillbaka horisontellt över skärmen. När den nuddar
+endera sidan, vänder den riktning.
