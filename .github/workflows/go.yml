@@ -48,4 +48,5 @@ jobs:
           rescue.exe
           spike1.exe
           spike2.exe
+          spike3.exe
           assets/
