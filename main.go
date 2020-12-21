@@ -3,13 +3,12 @@ package main
 import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
-	"golang.org/x/image/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
 )
 
 func run() {
 
-	scene := internal.MenuScene{}
+	scene := internal.MakeMenuScene()
 
 	cfg := pixelgl.WindowConfig{
 		Title:  "Rescue on fractal bun (work title)",
@@ -20,22 +19,27 @@ func run() {
 		panic(err)
 	}
 
+	controllerMap := make(map[pixelgl.Button]internal.ControlKey)
+	controllerMap[pixelgl.KeyUp] = internal.Up
+	controllerMap[pixelgl.KeyDown] = internal.Down
+
 	for !win.Closed() {
-		win.Clear(colornames.Aliceblue)
-		// TODO: DRY - make a 'dictionary' from pixelgl key to ControllerKey
-		if win.JustPressed(pixelgl.KeyDown) {
-			scene.HandleKeyDown(internal.Down)
+
+		// Escape closes main window unconditionally
+		if win.JustPressed(pixelgl.KeyEscape) {
+			win.SetClosed(true)
 		}
-		if win.JustReleased(pixelgl.KeyDown) {
-			scene.HandleKeyUp(internal.Down)
+
+		for key, control := range controllerMap {
+			// Hmm. Just Pressed/Released APIs is 'key repeat' - problem?
+			if win.JustPressed(key) {
+				scene.HandleKeyDown(control)
+			}
+			if win.JustReleased(key) {
+				scene.HandleKeyUp(control)
+			}
 		}
-		if win.JustPressed(pixelgl.KeyUp) {
-			scene.HandleKeyDown(internal.Up)
-		}
-		if win.JustReleased(pixelgl.KeyUp) {
-			scene.HandleKeyUp(internal.Up)
-		}
-		//scene.Render()
+		scene.Render(win)
 		win.Update()
 	}
 }
