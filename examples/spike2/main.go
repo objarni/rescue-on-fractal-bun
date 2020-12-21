@@ -37,24 +37,29 @@ func run() {
 	failOnError(err)
 
 	cfg := pixelgl.WindowConfig{
-		Title:  "Push A, S and D to play drums!",
-		Bounds: pixel.R(0, 0, 400, 300),
+		Title:    "Push A, S and D to play drums!",
+		Bounds:   pixel.R(0, 0, 400, 300),
+		Position: pixel.Vec{500, 500},
 	}
 	win, err := pixelgl.NewWindow(cfg)
 	failOnError(err)
 
 	asd := Asd{false, false, false}
 
+	keyBufferMap := make(map[pixelgl.Button]*beep.Buffer)
+	keyBufferMap[pixelgl.KeyA] = abuffer
+	keyBufferMap[pixelgl.KeyS] = sbuffer
+	keyBufferMap[pixelgl.KeyD] = dbuffer
+
 	for !win.Closed() {
 		win.Clear(colornames.Blue)
-		if win.JustPressed(pixelgl.KeyA) {
-			speaker.Play(abuffer.Streamer(0, abuffer.Len()))
+		for key, buffer := range keyBufferMap {
+			if win.JustPressed(key) {
+				speaker.Play(buffer.Streamer(0, buffer.Len()))
+			}
 		}
-		if win.JustPressed(pixelgl.KeyS) {
-			speaker.Play(sbuffer.Streamer(0, sbuffer.Len()))
-		}
-		if win.JustPressed(pixelgl.KeyD) {
-			speaker.Play(dbuffer.Streamer(0, dbuffer.Len()))
+		if win.JustPressed(pixelgl.KeyEscape) {
+			win.SetClosed(true)
 		}
 		asd.A = win.Pressed(pixelgl.KeyA)
 		asd.S = win.Pressed(pixelgl.KeyS)
