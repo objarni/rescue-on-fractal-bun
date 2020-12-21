@@ -37,7 +37,7 @@ func run() {
 	err, format, dbuffer := loadWav("assets/MenuPointerMoved.wav")
 	failOnError(err)
 
-	err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10)) //done := make(chan bool)
+	err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/100)) //done := make(chan bool)
 	failOnError(err)
 
 	cfg := pixelgl.WindowConfig{
