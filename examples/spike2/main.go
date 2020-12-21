@@ -1,13 +1,17 @@
 package main
 
 import (
+	"fmt"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
 	"github.com/faiface/beep/wav"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
+	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
+	"golang.org/x/image/font/basicfont"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -46,6 +50,9 @@ func run() {
 
 	asd := Asd{false, false, false}
 
+	basicAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
+	textbox := text.New(pixel.V(100, 150), basicAtlas)
+
 	keyBufferMap := make(map[pixelgl.Button]*beep.Buffer)
 	keyBufferMap[pixelgl.KeyA] = abuffer
 	keyBufferMap[pixelgl.KeyS] = sbuffer
@@ -64,8 +71,31 @@ func run() {
 		asd.A = win.Pressed(pixelgl.KeyA)
 		asd.S = win.Pressed(pixelgl.KeyS)
 		asd.D = win.Pressed(pixelgl.KeyD)
+
+		display := formatASDString(asd)
+
+		textbox.Clear()
+		_, err = fmt.Fprintln(textbox, display)
+		failOnError(err)
+		textbox.Draw(win, pixel.IM.Scaled(textbox.Orig, 10))
+
 		win.Update()
 	}
+}
+
+func formatASDString(asd Asd) string {
+	displayAsd := []string{" ", " ", " "}
+	if asd.A {
+		displayAsd[0] = "A"
+	}
+	if asd.S {
+		displayAsd[1] = "S"
+	}
+	if asd.D {
+		displayAsd[2] = "D"
+	}
+	display := strings.Join(displayAsd[:], "")
+	return display
 }
 
 func failOnError(err error) {

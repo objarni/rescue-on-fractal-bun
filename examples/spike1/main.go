@@ -53,6 +53,7 @@ func TryReadPosFrom(filename string, defaultPos Pos) Pos {
 	}
 	return pos
 }
+
 func drawHelloWorldAt(basicTxt *text.Text, pos Pos, win *pixelgl.Window) {
 	basicTxt.Clear()
 	basicTxt.Orig = pixel.V(pos.X, pos.Y)
