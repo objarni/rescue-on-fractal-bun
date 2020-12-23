@@ -43,8 +43,7 @@ jobs:
       run: go test -v ./...
 
     - name: Deploy
-      shell: pwsh
       uses: actions/upload-artifact@v2
-        with:
-          name: RescueBundle
-          path: ["*.exe", "assets/"]
+      with:
+        name: RescueBundle
+        path: "*.exe assets/"
