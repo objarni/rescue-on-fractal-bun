@@ -51,7 +51,7 @@ func run() {
 			dir = 1
 		}
 
-		config, err = TryReadCfgFrom("examples/spike4/config.json", config)
+		config, err = TryReadCfgFrom("json/spike4.json", config)
 		panicOnError(err)
 
 		win.Clear(colornames.Blue)

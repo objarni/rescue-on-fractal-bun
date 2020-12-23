@@ -29,7 +29,7 @@ type Pos struct {
 
 func readPosition(position chan<- Pos) {
 	for {
-		pos, err := TryReadPosFrom("pos.json", Pos{0, 0})
+		pos, err := TryReadPosFrom("json/spike1.json", Pos{0, 0})
 		if err == nil {
 			position <- pos
 		}
@@ -39,7 +39,7 @@ func readPosition(position chan<- Pos) {
 
 func run() {
 	cfg := pixelgl.WindowConfig{
-		Title:  "Move hello world by changing pos.json",
+		Title:  "Move hello world by changing spike1.json",
 		Bounds: pixel.R(0, 0, 400, 300),
 	}
 	win, err := pixelgl.NewWindow(cfg)
