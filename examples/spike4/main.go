@@ -34,7 +34,7 @@ func run() {
 	var x float64 = 0
 	var imd = imdraw.New(nil)
 	var dir = 1.0
-	var config SpikeConfig
+	var config Config
 	var prevtime = time.Now()
 	for !win.Closed() {
 		var now = time.Now()
@@ -75,30 +75,22 @@ func run() {
 	}
 }
 
-type SpikeConfig struct {
-	Scale float64 `json:"scale"`
+type Config struct {
+	Scale float64
 }
 
-// calling code:
-// 	var config SpikeConfig
-//  config, err = TryReadCfgFrom("examples/spike4/config.json", config)
-
-func TryReadCfgFrom(filename string, defaultCfg SpikeConfig) (SpikeConfig, error) {
+func TryReadCfgFrom(filename string, defaultCfg Config) (Config, error) {
 	byteArray, err := ioutil.ReadFile(filename)
 	if err != nil {
 		fmt.Println("ReadFile error, defaulting")
 		return defaultCfg, err
 	}
-	var cfg SpikeConfig = defaultCfg
-	err = json.Unmarshal(byteArray, &defaultCfg)
-	fmt.Println(defaultCfg)
-	fmt.Println("JSON: " + string(byteArray))
+	var cfg Config = defaultCfg
+	err = json.Unmarshal(byteArray, &cfg)
 	if err != nil {
 		fmt.Println("JSON parse error, defaulting. JSON was: " + string(byteArray))
 		return defaultCfg, err
 	}
-	fmt.Println("config read alright")
-	fmt.Println(cfg.Scale)
 	return cfg, nil
 }
 
