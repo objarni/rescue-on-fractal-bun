@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
@@ -10,6 +11,7 @@ import (
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
 	"golang.org/x/image/font/basicfont"
+	"io/ioutil"
 	"os"
 	"strings"
 	"time"
@@ -29,6 +31,25 @@ type Asd struct {
 //<-done
 //
 
+type Config struct {
+	LatencyMS float64
+}
+
+func TryReadCfgFrom(filename string, defaultCfg Config) (Config, error) {
+	byteArray, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Println("ReadFile error, defaulting")
+		return defaultCfg, err
+	}
+	var cfg Config = defaultCfg
+	err = json.Unmarshal(byteArray, &cfg)
+	if err != nil {
+		fmt.Println("JSON parse error, defaulting. JSON was: " + string(byteArray))
+		return defaultCfg, err
+	}
+	return cfg, nil
+}
+
 func run() {
 	err, format, abuffer := loadWav("assets/Jump.wav")
 	failOnError(err)
@@ -37,7 +58,14 @@ func run() {
 	err, format, dbuffer := loadWav("assets/MenuPointerMoved.wav")
 	failOnError(err)
 
-	err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/100)) //done := make(chan bool)
+	config, err := TryReadCfgFrom("json/spike2.json", Config{LatencyMS: 100})
+	fmt.Println(config)
+	failOnError(err)
+
+	err = speaker.Init(
+		format.SampleRate,
+		format.SampleRate.N(time.Duration(config.LatencyMS)*time.Millisecond),
+	) //done := make(chan bool)
 	failOnError(err)
 
 	cfg := pixelgl.WindowConfig{
