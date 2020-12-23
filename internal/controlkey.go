@@ -7,8 +7,8 @@ const (
 	Right
 	Down
 	Left
-	Action
-	Jump
+	Action // Right Control
+	Jump   // Space
 )
 
 func (direction ControlKey) String() string {

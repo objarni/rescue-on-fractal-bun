@@ -25,12 +25,14 @@ func MakeMenuScene() MenuScene {
 	atlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	return MenuScene{
 		currentitem: Play,
-		textbox:     text.New(pixel.V(100, 500), atlas),
+		textbox:     text.New(pixel.V(0, 0), atlas),
 	}
 }
 
 func (menuScene MenuScene) HandleKeyDown(key ControlKey) Scene {
-	fmt.Println("menu key down: " + key.String())
+	if key == Action || key == Jump {
+		return MakeMapScene()
+	}
 	return menuScene
 }
 
@@ -43,6 +45,7 @@ func (menuScene MenuScene) Render(win *pixelgl.Window) {
 	win.Clear(colornames.Aliceblue)
 	tb := menuScene.textbox
 	tb.Clear()
+	tb.Orig = pixel.V(200, 200)
 	_, _ = fmt.Fprintln(tb, "Spela!")
 	_, _ = fmt.Fprintln(tb, "Avsluta")
 	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 2), colornames.Black)

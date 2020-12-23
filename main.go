@@ -8,7 +8,7 @@ import (
 
 func run() {
 
-	scene := internal.MakeMenuScene()
+	var scene internal.Scene = internal.MakeMenuScene()
 
 	cfg := pixelgl.WindowConfig{
 		Title:  "Rescue on fractal bun (work title)",
@@ -22,6 +22,10 @@ func run() {
 	controllerMap := make(map[pixelgl.Button]internal.ControlKey)
 	controllerMap[pixelgl.KeyUp] = internal.Up
 	controllerMap[pixelgl.KeyDown] = internal.Down
+	controllerMap[pixelgl.KeyLeft] = internal.Left
+	controllerMap[pixelgl.KeyRight] = internal.Right
+	controllerMap[pixelgl.KeySpace] = internal.Jump
+	controllerMap[pixelgl.KeyRightControl] = internal.Action
 
 	for !win.Closed() {
 
@@ -31,12 +35,12 @@ func run() {
 		}
 
 		for key, control := range controllerMap {
-			// Hmm. Just Pressed/Released APIs is 'key repeat' - problem?
+			// Hmm. Just Pressed/Released APIs is 'key repeat' at least on win - problem?
 			if win.JustPressed(key) {
-				scene.HandleKeyDown(control)
+				scene = scene.HandleKeyDown(control)
 			}
 			if win.JustReleased(key) {
-				scene.HandleKeyUp(control)
+				scene = scene.HandleKeyUp(control)
 			}
 		}
 		scene.Render(win)
