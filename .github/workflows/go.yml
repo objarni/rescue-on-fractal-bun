@@ -36,6 +36,9 @@ jobs:
     - name: Build spike3.exe
       run: go build -v -o spike3.exe examples/spike3/main.go
 
+    - name: Build spike4.exe
+      run: go build -v -o spike4.exe examples/spike4/main.go
+
     - name: Test
       run: go test -v ./...
 
@@ -49,4 +52,5 @@ jobs:
           spike1.exe
           spike2.exe
           spike3.exe
+          spike4.exe
           assets/
