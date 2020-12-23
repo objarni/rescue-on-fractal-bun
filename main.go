@@ -4,6 +4,7 @@ import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"objarni/rescue-on-fractal-bun/internal"
+	"time"
 )
 
 func run() {
@@ -45,6 +46,7 @@ func run() {
 		}
 		scene.Render(win)
 		win.Update()
+		time.Sleep(time.Millisecond * 5)
 	}
 }
 
