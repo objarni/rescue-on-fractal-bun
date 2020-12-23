@@ -46,4 +46,6 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: RescueBundle
-        path: "*.exe assets/"
+        path: |
+          *.exe
+          assets/
