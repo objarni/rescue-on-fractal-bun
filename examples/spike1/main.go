@@ -22,7 +22,7 @@ type Pos struct {
 // .. But to avoid blocking on read, run does read
 //  with a select which defaults to 'do nothing'.
 //  Then posReader basically sleeps x amount time,
-//  the tries to read pos.json and on success
+//  then tries to read pos.json and on success
 //  sends a Pos value over the channel 'positions'.
 //  The channel can be unbuffered since run
 //  reads next frame.
