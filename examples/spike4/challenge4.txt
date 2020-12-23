@@ -1,0 +1,2 @@
+Bygg en stad i regn med hjälp av en inladdad bakgrundsbild
+och vertikalt regn i form av små streck.
