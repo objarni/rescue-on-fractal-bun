@@ -1,6 +1,7 @@
 package main
 
 import (
+	"container/list"
 	"encoding/json"
 	"fmt"
 	"github.com/faiface/pixel"
@@ -10,14 +11,19 @@ import (
 	"image"
 	_ "image/jpeg"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"time"
 )
 
 const screenwidth = 800
 const screenheight = 600
-const speed = 200
-const boxwidth = 30
+
+type Drop struct {
+	X float64
+	Y float64
+	Z float64
+}
 
 func run() {
 	cfg := pixelgl.WindowConfig{
@@ -31,8 +37,12 @@ func run() {
 	backgroundSprite, err := loadSprite("assets/MapSketch.jpg")
 	panicOnError(err)
 
+	drops := list.New()
+	drops.PushBack(&Drop{40, 40, 40})
+
 	var x float64 = 0
 	var imd = imdraw.New(nil)
+	imd.Color = colornames.Darkslateblue
 	var dir = 1.0
 	var config Config
 	var prevtime = time.Now()
@@ -41,9 +51,9 @@ func run() {
 		var delta = now.Sub(prevtime).Seconds()
 		prevtime = now
 
-		x = x + delta*speed*dir
-		if x > screenwidth-boxwidth {
-			x = screenwidth - boxwidth
+		x = x + delta*config.DropSpeed*dir
+		if x > float64(screenwidth-config.DropLength) {
+			x = float64(screenwidth - config.DropLength)
 			dir = -1
 		}
 		if x < 0 {
@@ -60,10 +70,39 @@ func run() {
 			Moved(win.Bounds().Center()),
 		)
 
+		// Om det finns färre än max antal droppar,
+		// lägg till en ovanför skärmen enl. config
+		// fast med slump-x och slump-z
+		// när en droppe har z < 0 ta bort den
+		// varje frame flytta i y-led enligt dt
 		imd.Clear()
-		imd.Push(pixel.Vec{X: x, Y: 20})
-		imd.Push(pixel.Vec{X: x + 30, Y: 40})
-		imd.Rectangle(0)
+		for drop := drops.Front(); drop != nil; {
+			var d *Drop = drop.Value.(*Drop)
+			updateDrop(d, delta, config)
+
+			imd.Push(pixel.Vec{X: d.X, Y: d.Y})
+			imd.Push(pixel.Vec{X: d.X + 1, Y: d.Y + config.DropLength})
+			imd.Rectangle(0)
+
+			if d.Z < 0 {
+				remove := drop
+				drop = drop.Next()
+				drops.Remove(remove)
+			} else {
+				drop = drop.Next()
+			}
+
+		}
+
+		if drops.Len() < config.DropMaxCount {
+			drops.PushBack(&Drop{
+				float64(rand.Intn(screenwidth)),
+				float64(rand.Intn(screenheight)),
+				float64(rand.Intn(config.DropMaxLife)),
+			})
+		}
+		fmt.Println(drops.Len())
+
 		imd.Draw(win)
 
 		if win.JustPressed(pixelgl.KeyEscape) {
@@ -75,8 +114,17 @@ func run() {
 	}
 }
 
+func updateDrop(d *Drop, delta float64, config Config) {
+	d.Y -= delta * config.DropSpeed
+	d.Z -= delta * config.DropSpeed
+}
+
 type Config struct {
-	Scale float64
+	Scale        float64
+	DropLength   float64
+	DropSpeed    float64
+	DropMaxCount int
+	DropMaxLife  int
 }
 
 func TryReadCfgFrom(filename string, defaultCfg Config) (Config, error) {

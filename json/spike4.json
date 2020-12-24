@@ -1,3 +1,7 @@
 {
-  "Scale":0.37
+  "Scale":0.37,
+  "DropLength": 10,
+  "DropSpeed": 200,
+  "DropMaxCount": 5000,
+  "DropMaxLife": 450
 }
