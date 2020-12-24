@@ -50,7 +50,7 @@ func run() {
 	basicAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	basicTxt := text.New(pixel.V(100, 500), basicAtlas)
 
-	var pos Pos = Pos{200, 200}
+	var pos = Pos{200, 200}
 
 	positions := make(chan Pos)
 	go readPosition(positions)

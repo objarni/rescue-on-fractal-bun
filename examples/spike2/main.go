@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
-	"github.com/faiface/beep/wav"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
 	"golang.org/x/image/font/basicfont"
 	"io/ioutil"
-	"os"
+	"objarni/rescue-on-fractal-bun/internal"
 	"strings"
 	"time"
 )
@@ -22,14 +21,6 @@ type Asd struct {
 	S bool
 	D bool
 }
-
-//done := make(chan bool)
-//speaker.Play(beep.Seq(streamer, beep.Callback(func() {
-//	done <- true
-//})))
-//
-//<-done
-//
 
 type Config struct {
 	LatencyMS float64
@@ -51,22 +42,22 @@ func TryReadCfgFrom(filename string, defaultCfg Config) (Config, error) {
 }
 
 func run() {
-	err, format, abuffer := loadWav("assets/Jump.wav")
-	failOnError(err)
-	err, format, sbuffer := loadWav("assets/InventoryCursorMoved.wav")
-	failOnError(err)
-	err, format, dbuffer := loadWav("assets/MenuPointerMoved.wav")
-	failOnError(err)
+	err, format, abuffer := internal.LoadWav("assets/Jump.wav")
+	internal.PanicIfError(err)
+	err, format, sbuffer := internal.LoadWav("assets/InventoryCursorMoved.wav")
+	internal.PanicIfError(err)
+	err, format, dbuffer := internal.LoadWav("assets/MenuPointerMoved.wav")
+	internal.PanicIfError(err)
 
 	config, err := TryReadCfgFrom("json/spike2.json", Config{LatencyMS: 100})
 	fmt.Println(config)
-	failOnError(err)
+	internal.PanicIfError(err)
 
 	err = speaker.Init(
 		format.SampleRate,
 		format.SampleRate.N(time.Duration(config.LatencyMS)*time.Millisecond),
 	) //done := make(chan bool)
-	failOnError(err)
+	internal.PanicIfError(err)
 
 	cfg := pixelgl.WindowConfig{
 		Title:    "Push A, S and D to play drums!",
@@ -74,7 +65,7 @@ func run() {
 		Position: pixel.Vec{500, 500},
 	}
 	win, err := pixelgl.NewWindow(cfg)
-	failOnError(err)
+	internal.PanicIfError(err)
 
 	asd := Asd{false, false, false}
 
@@ -104,7 +95,7 @@ func run() {
 
 		textbox.Clear()
 		_, err = fmt.Fprintln(textbox, display)
-		failOnError(err)
+		internal.PanicIfError(err)
 		textbox.Draw(win, pixel.IM.Scaled(textbox.Orig, 10))
 
 		win.Update()
@@ -124,24 +115,6 @@ func formatASDString(asd Asd) string {
 	}
 	display := strings.Join(displayAsd[:], "")
 	return display
-}
-
-func failOnError(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
-func loadWav(wavFile string) (error, beep.Format, *beep.Buffer) {
-	file, err := os.Open(wavFile)
-	failOnError(err)
-	streamer, format, err := wav.Decode(file)
-	failOnError(err)
-	asound := beep.NewBuffer(format)
-	asound.Append(streamer)
-	err = streamer.Close()
-	failOnError(err)
-	return err, format, asound
 }
 
 func main() {
