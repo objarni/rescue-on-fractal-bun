@@ -88,7 +88,6 @@ func run() {
 				float64(rand.Intn(config.DropMaxLife)),
 			})
 		}
-		fmt.Println(drops.Len())
 
 		imd.Draw(win)
 
