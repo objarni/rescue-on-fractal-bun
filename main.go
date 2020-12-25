@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"objarni/rescue-on-fractal-bun/internal"
@@ -38,9 +39,11 @@ func run() {
 		for key, control := range controllerMap {
 			// Hmm. Just Pressed/Released APIs is 'key repeat' at least on win - problem?
 			if win.JustPressed(key) {
+				fmt.Println("key pressed: " + key.String())
 				scene = scene.HandleKeyDown(control)
 			}
 			if win.JustReleased(key) {
+				fmt.Println("key released: " + key.String())
 				scene = scene.HandleKeyUp(control)
 			}
 		}

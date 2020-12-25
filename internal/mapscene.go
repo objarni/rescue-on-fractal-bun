@@ -22,7 +22,7 @@ func MakeMapScene() MapScene {
 }
 
 func (scene MapScene) HandleKeyDown(key ControlKey) Scene {
-	if key == Action {
+	if key == Jump {
 		return MakeMenuScene()
 	}
 	return scene

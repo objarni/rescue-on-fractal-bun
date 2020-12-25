@@ -30,14 +30,13 @@ func MakeMenuScene() MenuScene {
 }
 
 func (menuScene MenuScene) HandleKeyDown(key ControlKey) Scene {
-	if key == Action || key == Jump {
+	if key == Jump {
 		return MakeMapScene()
 	}
 	return menuScene
 }
 
-func (menuScene MenuScene) HandleKeyUp(key ControlKey) Scene {
-	fmt.Println("menu key up: " + key.String())
+func (menuScene MenuScene) HandleKeyUp(_ ControlKey) Scene {
 	return menuScene
 }
 
