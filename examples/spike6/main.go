@@ -72,15 +72,15 @@ func run() {
 		ballState.Rot -= delta * ballState.Vel.X / 40
 		if ballState.Pos.X < ballradius {
 			ballState.Pos.X = ballradius + 1
-			ballState.Vel = ballState.Vel.ScaledXY(pixel.Vec{-1, 1})
+			ballState.Vel = ballState.Vel.ScaledXY(pixel.Vec{X: -1, Y: 1})
 		}
 		if ballState.Pos.X > screenwidth-ballradius {
 			ballState.Pos.X = screenwidth - ballradius - 1
-			ballState.Vel = ballState.Vel.ScaledXY(pixel.Vec{-1, 1})
+			ballState.Vel = ballState.Vel.ScaledXY(pixel.Vec{X: -1, Y: 1})
 		}
 		if ballState.Pos.Y < ballradius {
 			ballState.Pos.Y = ballradius + 1
-			ballState.Vel = ballState.Vel.ScaledXY(pixel.Vec{1, -1})
+			ballState.Vel = ballState.Vel.ScaledXY(pixel.Vec{X: 1, Y: -1})
 		}
 
 		if win.JustPressed(pixelgl.KeyEscape) {
