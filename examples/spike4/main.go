@@ -26,7 +26,7 @@ type Drop struct {
 
 func run() {
 	cfg := pixelgl.WindowConfig{
-		Title:    "Animated rectangle",
+		Title:    "Rainy city",
 		Bounds:   pixel.R(0, 0, screenwidth, screenheight),
 		Position: pixel.Vec{X: 300, Y: 300},
 	}
