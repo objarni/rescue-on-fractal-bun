@@ -11,6 +11,10 @@ jobs:
   build:
     name: Build
     runs-on: windows-latest
+    strategy:
+      matrix:
+        challenge: [1, 2, 3, 4, 6]
+
     steps:
 
     - name: Set up Go 1.x
@@ -27,20 +31,8 @@ jobs:
     - name: Build rescue.exe
       run: go build -v -o rescue.exe main.go
 
-    - name: Build spike1.exe
-      run: go build -v -o spike1.exe examples/spike1/main.go
-
-    - name: Build spike2.exe
-      run: go build -v -o spike2.exe examples/spike2/main.go
-
-    - name: Build spike3.exe
-      run: go build -v -o spike3.exe examples/spike3/main.go
-
-    - name: Build spike4.exe
-      run: go build -v -o spike4.exe examples/spike4/main.go
-
-    - name: Build spike6.exe
-      run: go build -v -o spike6.exe examples/spike6/main.go
+    - name: Build spike${{ challenge }}.exe
+      run: go build -v -o spike${{ challenge }}.exe examples/spike${{ challenge }}/main.go
 
     - name: Test
       run: go test -v ./...
