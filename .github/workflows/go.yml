@@ -39,6 +39,9 @@ jobs:
     - name: Build spike4.exe
       run: go build -v -o spike4.exe examples/spike4/main.go
 
+    - name: Build spike6.exe
+      run: go build -v -o spike6.exe examples/spike6/main.go
+
     - name: Test
       run: go test -v ./...
 

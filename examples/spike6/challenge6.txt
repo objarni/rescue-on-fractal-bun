@@ -1,0 +1,6 @@
+När programmet startar, står det 'TRYCK ENTER' mitt
+på skärmen. När detta sker, försvinner texten och en
+studsande boll syns istället. När bollen rör marken
+byter y-rörelsen riktning på enklaste sätt. Bollen
+ska ritas ut som en bild som roteras i samma riktning
+som bollen rör sig.
