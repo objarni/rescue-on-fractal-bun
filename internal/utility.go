@@ -28,6 +28,12 @@ func LoadSprite(path string) (*pixel.Sprite, error) {
 	return sprite, nil
 }
 
+func LoadSpriteForSure(path string) *pixel.Sprite {
+	sprite, err := LoadSprite(path)
+	PanicIfError(err)
+	return sprite
+}
+
 func PanicIfError(err error) {
 	if err != nil {
 		panic(err)

@@ -1,3 +1,5 @@
+github.com/approvals/go-approval-tests v0.0.0-20201115100639-fca812f6be31 h1:M0xQEE6lbHsPLfIKCUbeaHazc+Mj2HTytVeuTk4+W9k=
+github.com/approvals/go-approval-tests v0.0.0-20201115100639-fca812f6be31/go.mod h1:PJOqSY8IofNv3heAD6k8E7EfFS6okiSS9bSAasaAUME=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/faiface/beep v1.0.2 h1:UB5DiRNmA4erfUYnHbgU4UB6DlBOrsdEFRtcc8sCkdQ=

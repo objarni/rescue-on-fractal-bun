@@ -1,0 +1,8 @@
+I detta minispel styr man en gubbe som kan stå stilla,
+gå vänster och gå höger, samt sparka. En stillaliggande
+boll animeras om den sparkas (fotpunkt inom bollcirkel),
+men bollen bromsar in och stannar upp efterhand tiden går.
+Om bollen faller ned genom en korg - ritad i bakgrundsbild
+ - får spelaren poäng. Vid 5 poäng byts skärmen till
+ 'GAME OVER' tills dess man trycker någon knapp, och spelet
+ börjar om.
