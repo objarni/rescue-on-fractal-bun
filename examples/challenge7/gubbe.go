@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/faiface/pixel"
-)
+import "github.com/faiface/pixel"
 
 const speed = 50 // Pixels per second
 
