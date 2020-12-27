@@ -57,10 +57,10 @@ func run() {
 	}
 
 	var gubbe = Gubbe{
-		state:           Standing,
-		looking:         Right,
-		stateChangeTime: time.Time{},
-		position:        win.Bounds().Center(),
+		state:       Standing,
+		looking:     Right,
+		timeInState: 0,
+		position:    win.Bounds().Center(),
 	}
 
 	for !win.Closed() {

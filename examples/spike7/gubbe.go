@@ -2,25 +2,15 @@ package main
 
 import (
 	"github.com/faiface/pixel"
-	"time"
 )
 
-func updateGubbe(g *Gubbe, delta float64, controls Controls) {
-	g.state = Walking
-	if controls.left {
-		g.looking = Left
-	}
-	if controls.left && controls.right {
-		g.state = Standing
-		g.looking = Right
-	}
-}
+const speed = 50 // Pixels per second
 
 type Gubbe struct {
-	state           State
-	looking         Looking
-	stateChangeTime time.Time // For animation purposes
-	position        pixel.Vec
+	state       State
+	looking     Looking
+	timeInState float64
+	position    pixel.Vec
 }
 
 type Looking int
@@ -48,4 +38,27 @@ func (state State) String() string {
 
 type Controls struct {
 	left, right, kick bool
+}
+
+func updateGubbe(g *Gubbe, deltaSeconds float64, controls Controls) {
+	if g.state == Standing {
+		g.state = Walking
+		if controls.left {
+			g.looking = Left
+		}
+		if controls.left && controls.right {
+			g.state = Standing
+			g.looking = Right
+		}
+		if controls.kick {
+			g.state = Kicking
+		}
+	}
+	if g.state == Walking {
+		var dir float64 = 1
+		if g.looking == Left {
+			dir = -1
+		}
+		g.position = g.position.Add(pixel.Vec{deltaSeconds * dir * speed, 0})
+	}
 }

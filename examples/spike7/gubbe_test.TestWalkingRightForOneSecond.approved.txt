@@ -1,2 +1,3 @@
 State: Walking
 Looking: Right
+Position: Vec(50, 0)
