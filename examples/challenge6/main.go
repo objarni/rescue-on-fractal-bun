@@ -41,7 +41,7 @@ func run() {
 	var prevtime = time.Now()
 	var rot float64 = 0
 	var ballSprite, err2 = internal.LoadSprite("assets/Ball.png")
-	config, err = TryReadCfgFrom("json/spike6.json", config)
+	config, err = TryReadCfgFrom("json/challenge6.json", config)
 	internal.PanicIfError(err)
 	var ballState = Ball{
 		Pos: pixel.Vec{X: config.StartX, Y: config.StartY},
@@ -55,7 +55,7 @@ func run() {
 		var delta = now.Sub(prevtime).Seconds()
 		prevtime = now
 
-		config, err = TryReadCfgFrom("json/spike6.json", config)
+		config, err = TryReadCfgFrom("json/challenge6.json", config)
 		internal.PanicIfError(err)
 
 		rot += delta

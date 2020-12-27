@@ -48,7 +48,7 @@ func run() {
 		var delta = now.Sub(prevtime).Seconds()
 		prevtime = now
 
-		config, err = TryReadCfgFrom("json/spike4.json", config)
+		config, err = TryReadCfgFrom("json/challenge4.json", config)
 		internal.PanicIfError(err)
 
 		win.Clear(colornames.Blue)

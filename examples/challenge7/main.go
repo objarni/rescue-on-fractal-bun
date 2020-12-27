@@ -48,7 +48,7 @@ func run() {
 	//var gubbeWalkingRightSprite1 = internal.LoadSpriteForSure("assets/Walk-1.jpg")
 	//var gubbeWalkingRightSprite2 = internal.LoadSpriteForSure("assets/Walk-2.jpg")
 	//
-	config, err = TryReadCfgFrom("json/spike6.json", config)
+	config, err = TryReadCfgFrom("json/challenge6.json", config)
 	internal.PanicIfError(err)
 
 	var ballState = Ball{
@@ -68,7 +68,7 @@ func run() {
 		if win.JustPressed(pixelgl.KeyEscape) {
 			win.SetClosed(true)
 		}
-		config, err = TryReadCfgFrom("json/spike7.json", config)
+		config, err = TryReadCfgFrom("json/challenge7.json", config)
 		internal.PanicIfError(err)
 
 		// Compute time delta

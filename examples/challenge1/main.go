@@ -29,7 +29,7 @@ type Pos struct {
 
 func readPosition(position chan<- Pos) {
 	for {
-		pos, err := TryReadPosFrom("json/spike1.json", Pos{0, 0})
+		pos, err := TryReadPosFrom("json/challenge1.json", Pos{0, 0})
 		if err == nil {
 			position <- pos
 		}

@@ -49,7 +49,7 @@ func run() {
 	err, format, dbuffer := internal.LoadWav("assets/MenuPointerMoved.wav")
 	internal.PanicIfError(err)
 
-	config, err := TryReadCfgFrom("json/spike2.json", Config{LatencyMS: 100})
+	config, err := TryReadCfgFrom("json/challenge2.json", Config{LatencyMS: 100})
 	fmt.Println(config)
 	internal.PanicIfError(err)
 

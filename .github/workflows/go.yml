@@ -27,23 +27,23 @@ jobs:
     - name: Build rescue.exe
       run: go build -v -o rescue.exe main.go
 
-    - name: Build spike1.exe
-      run: go build -v -o spike1.exe examples/spike1/main.go
+    - name: Build challenge1.exe
+      run: go build -v -o challenge1.exe examples/challenge1/main.go
 
-    - name: Build spike2.exe
-      run: go build -v -o spike2.exe examples/spike2/main.go
+    - name: Build challenge2.exe
+      run: go build -v -o challenge2.exe examples/challenge2/main.go
 
-    - name: Build spike3.exe
-      run: go build -v -o spike3.exe examples/spike3/main.go
+    - name: Build challenge3.exe
+      run: go build -v -o challenge3.exe examples/challenge3/main.go
 
-    - name: Build spike4.exe
-      run: go build -v -o spike4.exe examples/spike4/main.go
+    - name: Build challenge4.exe
+      run: go build -v -o challenge4.exe examples/challenge4/main.go
 
-    - name: Build spike6.exe
-      run: go build -v -o spike6.exe examples/spike6/main.go
+    - name: Build challenge6.exe
+      run: go build -v -o challenge6.exe examples/challenge6/main.go
 
-    - name: Build spike7.exe
-      run: go build -v -o spike7.exe examples/spike7/*.go
+    - name: Build challenge7.exe
+      run: go build -v -o challenge7.exe examples/challenge7/*.go
 
     - name: Test
       run: go test -v ./...
