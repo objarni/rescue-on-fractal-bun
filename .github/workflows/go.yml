@@ -43,7 +43,7 @@ jobs:
       run: go build -v -o spike6.exe examples/spike6/main.go
 
     - name: Build spike7.exe
-      run: go build -v -o spike7.exe examples/spike7/main.go
+      run: go build -v -o spike7.exe examples/spike7/*.go
 
     - name: Test
       run: go test -v ./...
