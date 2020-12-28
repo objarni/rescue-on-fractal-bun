@@ -23,7 +23,7 @@ func run() {
 		panic(err)
 	}
 
-	err = speaker.Init(beep.SampleRate(22050), 100)
+	err = speaker.Init(beep.SampleRate(22050), 2000)
 
 	controllerMap := make(map[pixelgl.Button]internal.ControlKey)
 	controllerMap[pixelgl.KeyUp] = internal.Up
@@ -43,11 +43,11 @@ func run() {
 		for key, control := range controllerMap {
 			// Hmm. Just Pressed/Released APIs is 'key repeat' at least on win - problem?
 			if win.JustPressed(key) {
-				fmt.Println("key pressed: " + key.String())
+				fmt.Println("pressed: ", key)
 				scene = scene.HandleKeyDown(control)
 			}
 			if win.JustReleased(key) {
-				fmt.Println("key released: " + key.String())
+				fmt.Println("released: ", key)
 				scene = scene.HandleKeyUp(control)
 			}
 			if scene == nil {
