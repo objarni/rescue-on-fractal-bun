@@ -1,3 +1,0 @@
-State: Standing
-Looking: Right
-Position: Vec(0, 0)

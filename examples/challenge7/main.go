@@ -10,6 +10,7 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 	"io/ioutil"
+	"math"
 	"objarni/rescue-on-fractal-bun/internal"
 	"time"
 )
@@ -28,7 +29,7 @@ func run() {
 	cfg := pixelgl.WindowConfig{
 		Title:    "Kick the ball",
 		Bounds:   pixel.R(0, 0, screenwidth, screenheight),
-		Position: pixel.Vec{X: 300, Y: 300},
+		Position: pixel.Vec{X: screenwidth / 2, Y: screenheight / 2},
 	}
 	win, err := pixelgl.NewWindow(cfg)
 	internal.PanicIfError(err)
@@ -45,9 +46,14 @@ func run() {
 	var ballSprite = internal.LoadSpriteForSure("assets/Ball.png")
 
 	var gubbeStandingRightSprite = internal.LoadSpriteForSure("assets/Standing.jpg")
-	//var gubbeWalkingRightSprite1 = internal.LoadSpriteForSure("assets/Walk-1.jpg")
-	//var gubbeWalkingRightSprite2 = internal.LoadSpriteForSure("assets/Walk-2.jpg")
-	//
+	var gubbeWalkingRightSprite1 = internal.LoadSpriteForSure("assets/Walk-1.jpg")
+	var gubbeWalkingRightSprite2 = internal.LoadSpriteForSure("assets/Walk-2.jpg")
+	gubbeImage2Sprite := map[Image]*pixel.Sprite{
+		WalkRight1:    gubbeWalkingRightSprite1,
+		WalkRight2:    gubbeWalkingRightSprite2,
+		StandingRight: gubbeStandingRightSprite,
+	}
+
 	config, err = TryReadCfgFrom("json/challenge6.json", config)
 	internal.PanicIfError(err)
 
@@ -57,12 +63,13 @@ func run() {
 	}
 
 	var gubbe = Gubbe{
-		state:       Standing,
-		looking:     Right,
-		timeInState: 0,
-		position:    win.Bounds().Center(),
+		state:   Standing,
+		looking: Right,
+		pos:     win.Bounds().Center().Add(pixel.Vec{0, -screenheight / 4}),
+		vel:     pixel.ZV,
+		acc:     pixel.ZV,
 	}
-
+	var rest float64 = 0
 	for !win.Closed() {
 		// Janitor
 		if win.JustPressed(pixelgl.KeyEscape) {
@@ -71,25 +78,37 @@ func run() {
 		config, err = TryReadCfgFrom("json/challenge7.json", config)
 		internal.PanicIfError(err)
 
-		// Compute time delta
+		// Compute time deltaMs
 		var now = time.Now()
-		var delta = now.Sub(prevtime).Seconds()
+		var deltaMs = now.Sub(prevtime).Seconds() * 1000
 		prevtime = now
+		deltaMs += rest
 
 		// Update entities
-		updateBall(rot, delta, &ballState, config)
-		updateGubbe(&gubbe, delta, Controls{})
+		updateBall(rot, deltaMs/1000, &ballState, config)
+		// TODO: handle rest of this division 'somehow'
+		steps := int(math.Floor(deltaMs / 5))
+		rest = deltaMs - float64(steps*5)
+		fmt.Println(deltaMs, steps, rest)
+		for i := 0; i < steps; i++ {
+			controls := Controls{
+				left:  win.Pressed(pixelgl.KeyLeft),
+				right: win.Pressed(pixelgl.KeyRight),
+				kick:  win.Pressed(pixelgl.KeySpace),
+			}
+			stepGubbe(&gubbe, controls)
+		}
 
 		// Render
 		win.Clear(colornames.Lightskyblue)
-		drawBall(ballState, ballSprite, win)
-		if gubbe.looking == Right {
-			if gubbe.state == Standing {
-				mx := pixel.IM.Scaled(pixel.ZV, 0.1)
-				mx = mx.Moved(gubbe.position)
-				gubbeStandingRightSprite.Draw(win, mx)
-			}
+		mx := pixel.IM.Scaled(pixel.ZV, 0.1)
+		mx = mx.Moved(gubbe.pos)
+		if gubbe.looking == Left {
+			mx = mx.ScaledXY(gubbe.pos, pixel.Vec{-1, 1})
 		}
+		gubbeSprite := gubbeImage2Sprite[gubbe.image]
+		gubbeSprite.Draw(win, mx)
+		drawBall(ballState, ballSprite, win)
 
 		// Window/OS
 		win.Update()

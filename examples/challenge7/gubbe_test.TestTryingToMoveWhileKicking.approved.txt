@@ -1,3 +1,0 @@
-State: Kicking
-Looking: Right
-Position: Vec(0, 0)

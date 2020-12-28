@@ -1,15 +1,28 @@
 package main
 
-import "github.com/faiface/pixel"
+import (
+	"github.com/faiface/pixel"
+)
 
-const speed = 50 // Pixels per second
+const MAXVELOCITY = 2
 
 type Gubbe struct {
-	state       State
-	looking     Looking
-	timeInState float64
-	position    pixel.Vec
+	state        State
+	looking      Looking
+	image        Image
+	stepTillSwap int
+	pos          pixel.Vec
+	vel          pixel.Vec
+	acc          pixel.Vec
 }
+
+type State int
+
+const (
+	Standing State = iota
+	Kicking
+	Walking
+)
 
 type Looking int
 
@@ -22,13 +35,23 @@ func (looking Looking) String() string {
 	return [...]string{"Right", "Left"}[looking]
 }
 
-type State int
+type Image int
 
 const (
-	Standing State = iota
-	Kicking
-	Walking
+	WalkRight1 Image = iota
+	WalkRight2
+	StandingRight
+	KickRight
 )
+
+func (image Image) String() string {
+	return [...]string{
+		"WalkRight1",
+		"WalkRight2",
+		"StandingRight",
+		"KickRight",
+	}[image]
+}
 
 func (state State) String() string {
 	return [...]string{"Standing", "Kicking", "Walking"}[state]
@@ -38,25 +61,61 @@ type Controls struct {
 	left, right, kick bool
 }
 
-func updateGubbe(g *Gubbe, deltaSeconds float64, controls Controls) {
-	if g.state == Standing {
-		g.state = Walking
-		if controls.left {
-			g.looking = Left
-		}
-		if controls.left && controls.right {
-			g.state = Standing
+func stepGubbe(g *Gubbe, controls Controls) {
+
+	// CONTROL BEHAVIOR
+
+	switch g.state {
+	case Standing:
+		if controls.right {
+			g.state = Walking
 			g.looking = Right
+			g.image = WalkRight1
+			g.acc = pixel.Vec{X: 1, Y: 0}
+			g.stepTillSwap = 10
 		}
-		if controls.kick {
-			g.state = Kicking
+		if controls.left {
+			g.state = Walking
+			g.looking = Left
+			g.image = WalkRight1
+			g.acc = pixel.Vec{X: -1, Y: 0}
+			g.stepTillSwap = 10
 		}
+		g.vel = g.vel.Scaled(0.9)
+	case Walking:
+		// Switch image every step
+		g.stepTillSwap--
+		if g.stepTillSwap == 0 {
+			g.stepTillSwap = 10
+			if g.image == WalkRight1 {
+				g.image = WalkRight2
+			} else {
+				g.image = WalkRight1
+			}
+		}
+		if controls.right {
+			g.state = Walking
+			g.looking = Right
+			g.image = WalkRight1
+			g.acc = pixel.Vec{X: 1, Y: 0}
+		} else if controls.left {
+			g.state = Walking
+			g.looking = Left
+			g.image = WalkRight1
+			g.acc = pixel.Vec{X: -1, Y: 0}
+		} else {
+			g.state = Standing
+			g.image = StandingRight
+			g.acc = pixel.ZV
+		}
+	case Kicking:
 	}
-	if g.state == Walking {
-		var dir float64 = 1
-		if g.looking == Left {
-			dir = -1
-		}
-		g.position = g.position.Add(pixel.Vec{deltaSeconds * dir * speed, 0})
+
+	// Update position & velocity
+	g.vel = g.vel.Add(g.acc)
+	// Cap velocity to 5 pixels per step
+	if g.vel.Len() > MAXVELOCITY {
+		g.vel = g.vel.Unit().Scaled(MAXVELOCITY)
 	}
+	g.pos = g.pos.Add(g.vel)
 }
