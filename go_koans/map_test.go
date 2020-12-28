@@ -89,6 +89,9 @@ func TestKeyMayExistIdiom(t *testing.T) {
 		assert.Equal(t, val, "One")
 		assert.True(t, ok)
 	}
+	if _, ok := myMap[5]; ok {
+		assert.Fail(t, "This should not happen")
+	}
 }
 
 func TestLoopOverMap(t *testing.T) {
@@ -101,5 +104,3 @@ func TestLoopOverMap(t *testing.T) {
 		assert.NotNil(t, value)
 	}
 }
-
-// 		for key, control := range controllerMap {
