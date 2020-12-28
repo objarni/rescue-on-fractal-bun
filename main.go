@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/faiface/beep"
+	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"objarni/rescue-on-fractal-bun/internal"
@@ -20,6 +22,8 @@ func run() {
 	if err != nil {
 		panic(err)
 	}
+
+	err = speaker.Init(beep.SampleRate(22050), 100)
 
 	controllerMap := make(map[pixelgl.Button]internal.ControlKey)
 	controllerMap[pixelgl.KeyUp] = internal.Up
@@ -45,6 +49,10 @@ func run() {
 			if win.JustReleased(key) {
 				fmt.Println("key released: " + key.String())
 				scene = scene.HandleKeyUp(control)
+			}
+			if scene == nil {
+				win.SetClosed(true)
+				continue
 			}
 		}
 		scene.Render(win)
