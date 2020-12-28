@@ -25,7 +25,7 @@ jobs:
       run: go install
 
     - name: Build rescue.exe
-      run: go build -v -o rescue.exe main.go
+      run: go build -v -o rescue.exe rescue.go
 
     - name: Build challenge1.exe
       run: go build -v -o challenge1.exe examples/challenge1/main.go
