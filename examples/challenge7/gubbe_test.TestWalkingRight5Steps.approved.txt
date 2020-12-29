@@ -1,0 +1,91 @@
+Scenario:  Walking Right 5 Steps
+Step 00
+Pad: ..>
+State: Walking
+Looking: Right
+Image: WalkRight1
+Pos: Vec(1, 0)
+Vel: Vec(1, 0)
+Acc: Vec(1, 0)
+
+Step 01
+Pad: ..>
+State: Walking
+Looking: Right
+Image: WalkRight1
+Pos: Vec(3, 0)
+Vel: Vec(2, 0)
+Acc: Vec(1, 0)
+
+Step 02
+Pad: ..>
+State: Walking
+Looking: Right
+Image: WalkRight1
+Pos: Vec(5, 0)
+Vel: Vec(2, 0)
+Acc: Vec(1, 0)
+
+Step 03
+Pad: ..>
+State: Walking
+Looking: Right
+Image: WalkRight1
+Pos: Vec(7, 0)
+Vel: Vec(2, 0)
+Acc: Vec(1, 0)
+
+Step 04
+Pad: ..>
+State: Walking
+Looking: Right
+Image: WalkRight1
+Pos: Vec(9, 0)
+Vel: Vec(2, 0)
+Acc: Vec(1, 0)
+
+Step 05
+Pad: ..>
+State: Walking
+Looking: Right
+Image: WalkRight1
+Pos: Vec(11, 0)
+Vel: Vec(2, 0)
+Acc: Vec(1, 0)
+
+Step 06
+Pad: ..>
+State: Walking
+Looking: Right
+Image: WalkRight1
+Pos: Vec(13, 0)
+Vel: Vec(2, 0)
+Acc: Vec(1, 0)
+
+Step 07
+Pad: ..>
+State: Walking
+Looking: Right
+Image: WalkRight1
+Pos: Vec(15, 0)
+Vel: Vec(2, 0)
+Acc: Vec(1, 0)
+
+Step 08
+Pad: ..>
+State: Walking
+Looking: Right
+Image: WalkRight1
+Pos: Vec(17, 0)
+Vel: Vec(2, 0)
+Acc: Vec(1, 0)
+
+Step 09
+Pad: ..>
+State: Walking
+Looking: Right
+Image: WalkRight1
+Pos: Vec(19, 0)
+Vel: Vec(2, 0)
+Acc: Vec(1, 0)
+

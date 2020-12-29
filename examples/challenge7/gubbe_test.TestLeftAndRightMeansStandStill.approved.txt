@@ -1,0 +1,46 @@
+Scenario:  Left And Right Means Stand Still
+Step 00
+Pad: <.>
+State: Standing
+Looking: Right
+Image: StandingRight
+Pos: Vec(0, 0)
+Vel: Vec(0, 0)
+Acc: Vec(0, 0)
+
+Step 01
+Pad: <.>
+State: Standing
+Looking: Right
+Image: StandingRight
+Pos: Vec(0, 0)
+Vel: Vec(0, 0)
+Acc: Vec(0, 0)
+
+Step 02
+Pad: <.>
+State: Standing
+Looking: Right
+Image: StandingRight
+Pos: Vec(0, 0)
+Vel: Vec(0, 0)
+Acc: Vec(0, 0)
+
+Step 03
+Pad: <.>
+State: Standing
+Looking: Right
+Image: StandingRight
+Pos: Vec(0, 0)
+Vel: Vec(0, 0)
+Acc: Vec(0, 0)
+
+Step 04
+Pad: <.>
+State: Standing
+Looking: Right
+Image: StandingRight
+Pos: Vec(0, 0)
+Vel: Vec(0, 0)
+Acc: Vec(0, 0)
+
