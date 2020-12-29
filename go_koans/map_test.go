@@ -1,106 +1,123 @@
 package go_koans
 
 import (
-	"github.com/stretchr/testify/assert"
-	"testing"
+	"fmt"
 )
 
-func TestDeclaringAMap(t *testing.T) {
+func ExampleDeclaringAMap() {
 	var myMap map[int]string
-	assert.Nil(t, myMap)
+	fmt.Printf("myMap is %v", myMap)
+	// Output:
+	// myMap is map[]
 }
 
-func TestInitializeEmptyMap(t *testing.T) {
+func ExampleInitializeEmptyMap() {
 	myMap := make(map[int]string)
-	assert.NotNil(t, myMap)
+	fmt.Printf("myMap is %v", myMap)
+	// Output:
+	// myMap is map[]
 }
 
-func TestInitializeMapWithEntries(t *testing.T) {
+func ExampleInitializeMapWithEntries() {
 	myMap := map[int]string{
 		1: "One",
 		2: "Two",
 	}
-	assert.Equal(t, myMap[1], "One")
-	assert.Equal(t, myMap[2], "Two")
+	fmt.Printf("myMap is %v", myMap)
+	// Output:
+	// myMap is map[1:One 2:Two]
 }
 
-func TestOverwriteExistingEntry(t *testing.T) {
+func ExampleOverwriteExistingEntry() {
 	myMap := map[int]string{
 		1: "One",
 		2: "Two",
 	}
 	myMap[2] = "TWO"
-	assert.Equal(t, myMap[1], "One")
-	assert.Equal(t, myMap[2], "TWO")
+	fmt.Printf("myMap is %v", myMap)
+	// Output:
+	// myMap is map[1:One 2:TWO]
 }
 
-func TestAddEntry(t *testing.T) {
+func ExampleAddEntry() {
 	myMap := map[int]string{
 		1: "One",
 		2: "Two",
 	}
 	myMap[3] = "Three"
-	assert.Equal(t, myMap[1], "One")
-	assert.Equal(t, myMap[2], "Two")
-	assert.Equal(t, myMap[3], "Three")
+	fmt.Printf("myMap is %v", myMap)
+	// Output:
+	// myMap is map[1:One 2:Two 3:Three]
 }
 
-func TestNumberOfEntries(t *testing.T) {
+func ExampleNumberOfEntries() {
 	myMap := map[int]string{
 		1: "One",
 		2: "Two",
 	}
-	assert.Equal(t, 2, len(myMap))
+	fmt.Printf("myMap length is %v", len(myMap))
+	// Output:
+	// myMap length is 2
 }
 
-func TestDeleteAnEntry(t *testing.T) {
+func ExampleDeleteAnEntry() {
 	myMap := map[int]string{
 		1: "One",
 		2: "Two",
 	}
 	delete(myMap, 1)
-	assert.Equal(t, 1, len(myMap))
+	fmt.Printf("myMap is %v", myMap)
+	// Output:
+	// myMap is map[2:Two]
 }
 
-func TestCheckExistingKey(t *testing.T) {
+func ExampleLookupExistingKey() {
 	myMap := map[int]string{
 		1: "One",
 		2: "Two",
 	}
-	valueExists := myMap[1]
-	assert.Equal(t, valueExists, "One")
+	fmt.Printf("Value at map key 1 is %v", myMap[1])
+	// Output:
+	// Value at map key 1 is One
 }
 
-func TestNonExistingKeyMeansZeroValue(t *testing.T) {
+func ExampleNonExistentKey() {
 	myMap := map[int]string{
 		1: "One",
 		2: "Two",
 	}
-	valueNotExists := myMap[5]
-	assert.Equal(t, valueNotExists, "")
+	fmt.Println("When element does not exist it is an empty string:")
+	fmt.Println(myMap[5])
+	// Output:
+	// When element does not exist it is an empty string:
 }
 
-func TestKeyMayExistIdiom(t *testing.T) {
+func ExampleMayExistIdiom() {
 	myMap := map[int]string{
 		1: "One",
 		2: "Two",
 	}
 	if val, ok := myMap[1]; ok {
-		assert.Equal(t, val, "One")
-		assert.True(t, ok)
+		fmt.Println("Val is", val)
+		fmt.Println("ok is", ok)
 	}
 	if _, ok := myMap[5]; ok {
-		assert.Fail(t, "This should not happen")
+		fmt.Println("This block will not run")
 	}
+	// Output:
+	// Val is One
+	// ok is true
 }
 
-func TestLoopOverMap(t *testing.T) {
+func ExampleLoopOverMap() {
 	myMap := map[int]string{
 		1: "One",
 		2: "Two",
 	}
 	for key, value := range myMap {
-		assert.NotNil(t, key)
-		assert.NotNil(t, value)
+		fmt.Println(key, value)
 	}
+	// Output:
+	// 1 One
+	// 2 Two
 }
