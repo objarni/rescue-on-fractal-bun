@@ -67,14 +67,14 @@ func stepGubbe(g *Gubbe, controls Controls) {
 
 	switch g.state {
 	case Standing:
-		if controls.right {
+		if controls.right && !controls.left {
 			g.state = Walking
 			g.looking = Right
 			g.image = WalkRight1
 			g.acc = pixel.Vec{X: 1, Y: 0}
-			g.counter = 10
+			g.counter = 0
 		}
-		if controls.left {
+		if controls.left && !controls.right {
 			g.state = Walking
 			g.looking = Left
 			g.image = WalkRight1
@@ -91,7 +91,12 @@ func stepGubbe(g *Gubbe, controls Controls) {
 				g.image = WalkRight1
 			}
 		}
-		if controls.right && g.looking == Left {
+		// No directions, or ambigious orders = stand still
+		if controls.left == controls.right {
+			g.state = Standing
+			g.image = StandingRight
+			g.acc = pixel.ZV
+		} else if controls.right && g.looking == Left {
 			g.state = Walking
 			g.looking = Right
 			g.image = WalkRight1
@@ -101,10 +106,6 @@ func stepGubbe(g *Gubbe, controls Controls) {
 			g.looking = Left
 			g.image = WalkRight1
 			g.acc = pixel.Vec{X: -1, Y: 0}
-		} else if controls.left == controls.right {
-			g.state = Standing
-			g.image = StandingRight
-			g.acc = pixel.ZV
 		}
 	case Kicking:
 	}
