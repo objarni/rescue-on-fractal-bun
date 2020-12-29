@@ -10,82 +10,82 @@ Acc: Vec(-1, 0)
 
 Step 01
 Pad: <..
-State: Standing
+State: Walking
 Looking: Left
-Image: StandingRight
-Pos: Vec(-2, 0)
-Vel: Vec(-1, 0)
-Acc: Vec(0, 0)
+Image: WalkRight1
+Pos: Vec(-3, 0)
+Vel: Vec(-2, 0)
+Acc: Vec(-1, 0)
 
 Step 02
 Pad: <..
 State: Walking
 Looking: Left
 Image: WalkRight1
-Pos: Vec(-3.9, 0)
-Vel: Vec(-1.9, 0)
+Pos: Vec(-5, 0)
+Vel: Vec(-2, 0)
 Acc: Vec(-1, 0)
 
 Step 03
 Pad: <..
-State: Standing
+State: Walking
 Looking: Left
-Image: StandingRight
-Pos: Vec(-5.8, 0)
-Vel: Vec(-1.9, 0)
-Acc: Vec(0, 0)
+Image: WalkRight1
+Pos: Vec(-7, 0)
+Vel: Vec(-2, 0)
+Acc: Vec(-1, 0)
 
 Step 04
 Pad: <..
 State: Walking
 Looking: Left
 Image: WalkRight1
-Pos: Vec(-7.8, 0)
+Pos: Vec(-9, 0)
 Vel: Vec(-2, 0)
 Acc: Vec(-1, 0)
 
 Step 05
 Pad: <..
-State: Standing
+State: Walking
 Looking: Left
-Image: StandingRight
-Pos: Vec(-9.8, 0)
+Image: WalkRight1
+Pos: Vec(-11, 0)
 Vel: Vec(-2, 0)
-Acc: Vec(0, 0)
+Acc: Vec(-1, 0)
 
 Step 06
 Pad: <..
 State: Walking
 Looking: Left
 Image: WalkRight1
-Pos: Vec(-11.8, 0)
+Pos: Vec(-13, 0)
 Vel: Vec(-2, 0)
 Acc: Vec(-1, 0)
 
 Step 07
 Pad: <..
-State: Standing
+State: Walking
 Looking: Left
-Image: StandingRight
-Pos: Vec(-13.8, 0)
+Image: WalkRight1
+Pos: Vec(-15, 0)
 Vel: Vec(-2, 0)
-Acc: Vec(0, 0)
+Acc: Vec(-1, 0)
 
 Step 08
 Pad: <..
 State: Walking
 Looking: Left
 Image: WalkRight1
-Pos: Vec(-15.8, 0)
+Pos: Vec(-17, 0)
 Vel: Vec(-2, 0)
 Acc: Vec(-1, 0)
 
 Step 09
 Pad: <..
-State: Standing
+State: Walking
 Looking: Left
-Image: StandingRight
-Pos: Vec(-17.8, 0)
+Image: WalkRight1
+Pos: Vec(-19, 0)
 Vel: Vec(-2, 0)
-Acc: Vec(0, 0)
+Acc: Vec(-1, 0)
 
