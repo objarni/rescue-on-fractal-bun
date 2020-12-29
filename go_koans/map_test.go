@@ -117,7 +117,7 @@ func ExampleLoopOverMap() {
 	for key, value := range myMap {
 		fmt.Println(key, value)
 	}
-	// Output:
+	// Unordered output:
 	// 1 One
 	// 2 Two
 }
