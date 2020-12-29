@@ -84,7 +84,7 @@ func stepGubbe(g *Gubbe, controls Controls) {
 		g.vel = g.vel.Scaled(0.9)
 	case Walking:
 		g.counter++
-		if g.counter%10 == 0 {
+		if g.counter%30 == 0 {
 			if g.image == WalkRight1 {
 				g.image = WalkRight2
 			} else {

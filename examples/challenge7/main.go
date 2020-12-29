@@ -45,9 +45,9 @@ func run() {
 
 	var ballSprite = internal.LoadSpriteForSure("assets/Ball.png")
 
-	var gubbeStandingRightSprite = internal.LoadSpriteForSure("assets/Standing.jpg")
-	var gubbeWalkingRightSprite1 = internal.LoadSpriteForSure("assets/Walk-1.jpg")
-	var gubbeWalkingRightSprite2 = internal.LoadSpriteForSure("assets/Walk-2.jpg")
+	var gubbeStandingRightSprite = internal.LoadSpriteForSure("assets/TStanding.png")
+	var gubbeWalkingRightSprite1 = internal.LoadSpriteForSure("assets/TWalking-1.png")
+	var gubbeWalkingRightSprite2 = internal.LoadSpriteForSure("assets/TWalking-2.png")
 	gubbeImage2Sprite := map[Image]*pixel.Sprite{
 		WalkRight1:    gubbeWalkingRightSprite1,
 		WalkRight2:    gubbeWalkingRightSprite2,
@@ -89,7 +89,6 @@ func run() {
 		// TODO: handle rest of this division 'somehow'
 		steps := int(math.Floor(deltaMs / 5))
 		rest = deltaMs - float64(steps*5)
-		fmt.Println(deltaMs, steps, rest)
 		for i := 0; i < steps; i++ {
 			controls := Controls{
 				left:  win.Pressed(pixelgl.KeyLeft),
@@ -101,7 +100,7 @@ func run() {
 
 		// Render
 		win.Clear(colornames.Lightskyblue)
-		mx := pixel.IM.Scaled(pixel.ZV, 0.1)
+		mx := pixel.IM.Scaled(pixel.ZV, 1)
 		mx = mx.Moved(gubbe.pos)
 		if gubbe.looking == Left {
 			mx = mx.ScaledXY(gubbe.pos, pixel.Vec{-1, 1})
