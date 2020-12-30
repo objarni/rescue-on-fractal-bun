@@ -17,13 +17,6 @@ import (
 
 const screenwidth = 800
 const screenheight = 600
-const ballradius = 50
-
-type Ball struct {
-	Pos pixel.Vec
-	Vel pixel.Vec
-	Rot float64
-}
 
 func run() {
 	cfg := pixelgl.WindowConfig{
@@ -34,15 +27,10 @@ func run() {
 	win, err := pixelgl.NewWindow(cfg)
 	internal.PanicIfError(err)
 
-	internal.PanicIfError(err)
-
 	var imd = imdraw.New(nil)
 	win.SetSmooth(true)
 	var config Config
 	var prevtime = time.Now()
-	var rot float64 = 0
-
-	var ballSprite = internal.LoadSpriteForSure("assets/Ball.png")
 
 	var gubbeStandingRightSprite = internal.LoadSpriteForSure("assets/TStanding.png")
 	var gubbeWalkingRightSprite1 = internal.LoadSpriteForSure("assets/TWalking-1.png")
@@ -56,18 +44,9 @@ func run() {
 	config, err = TryReadCfgFrom("json/challenge7.json", config)
 	internal.PanicIfError(err)
 
-	var ballState = Ball{
-		Pos: pixel.Vec{X: config.StartX, Y: config.StartY},
-		Vel: pixel.Vec{X: config.SpeedX, Y: 0}, Rot: 0,
-	}
+	var ball = MakeBall(config)
+	var gubbe = MakeGubbe(win)
 
-	var gubbe = Gubbe{
-		state:   Standing,
-		looking: Right,
-		pos:     win.Bounds().Center().Add(pixel.Vec{0, -screenheight / 4}),
-		vel:     pixel.ZV,
-		acc:     pixel.ZV,
-	}
 	var rest float64 = 0
 	for !win.Closed() {
 		// Janitor
@@ -84,7 +63,6 @@ func run() {
 		deltaMs += rest
 
 		// Update entities
-		updateBall(rot, deltaMs/1000, &ballState, config)
 		steps := int(math.Floor(deltaMs / 5))
 		rest = deltaMs - float64(steps*5)
 		for i := 0; i < steps; i++ {
@@ -94,25 +72,14 @@ func run() {
 				kick:  win.Pressed(pixelgl.KeySpace),
 			}
 			stepGubbe(&gubbe, controls)
+			ball.Tick()
 		}
 
 		// Render
 		win.Clear(colornames.Lightskyblue)
-		imd.Clear()
-		imd.Push(pixel.Vec{0, 0})
-		imd.Color = colornames.Darkgreen
-		imd.Push(pixel.Vec{screenwidth, 75})
-		imd.Color = colornames.Lightgreen
-		imd.Rectangle(0)
-		imd.Draw(win)
-		mx := pixel.IM.Scaled(pixel.ZV, 1)
-		mx = mx.Moved(gubbe.pos)
-		if gubbe.looking == Left {
-			mx = mx.ScaledXY(gubbe.pos, pixel.Vec{-1, 1})
-		}
-		gubbeSprite := gubbeImage2Sprite[gubbe.image]
-		gubbeSprite.Draw(win, mx)
-		drawBall(ballState, ballSprite, win)
+		drawGround(imd, win)
+		drawGubbe(gubbe, gubbeImage2Sprite, win)
+		ball.Render(win)
 
 		// Window/OS
 		win.Update()
@@ -120,33 +87,24 @@ func run() {
 	}
 }
 
-func updateBall(rot float64, delta float64, ballState *Ball, config Config) float64 {
-	rot += delta
-	ballState.Pos = ballState.Pos.Add(
-		ballState.Vel.Scaled(delta))
-	ballState.Vel = ballState.Vel.Add(
-		pixel.Vec{X: 0, Y: -config.Gravity * delta})
-	ballState.Rot -= delta * ballState.Vel.X / 40
-	if ballState.Pos.X < ballradius {
-		ballState.Pos.X = ballradius + 1
-		ballState.Vel = ballState.Vel.ScaledXY(pixel.Vec{X: -1, Y: 1})
+func drawGubbe(gubbe Gubbe, gubbeImage2Sprite map[Image]*pixel.Sprite, win *pixelgl.Window) {
+	mx := pixel.IM.Scaled(pixel.ZV, 1)
+	mx = mx.Moved(gubbe.pos)
+	if gubbe.looking == Left {
+		mx = mx.ScaledXY(gubbe.pos, pixel.Vec{-1, 1})
 	}
-	if ballState.Pos.X > screenwidth-ballradius {
-		ballState.Pos.X = screenwidth - ballradius - 1
-		ballState.Vel = ballState.Vel.ScaledXY(pixel.Vec{X: -1, Y: 1})
-	}
-	if ballState.Pos.Y < ballradius*1.5 {
-		ballState.Pos.Y = ballradius*1.5 + 1
-		ballState.Vel = ballState.Vel.ScaledXY(pixel.Vec{X: 1, Y: -1})
-	}
-	return rot
+	gubbeSprite := gubbeImage2Sprite[gubbe.image]
+	gubbeSprite.Draw(win, mx)
 }
 
-func drawBall(ballState Ball, ballSprite *pixel.Sprite, win *pixelgl.Window) {
-	mx := pixel.IM
-	mx = mx.Moved(ballState.Pos)
-	mx = mx.Rotated(ballState.Pos, ballState.Rot)
-	ballSprite.Draw(win, mx)
+func drawGround(imd *imdraw.IMDraw, win *pixelgl.Window) {
+	imd.Clear()
+	imd.Push(pixel.Vec{0, 0})
+	imd.Color = colornames.Darkgreen
+	imd.Push(pixel.Vec{screenwidth, 75})
+	imd.Color = colornames.Lightgreen
+	imd.Rectangle(0)
+	imd.Draw(win)
 }
 
 type Config struct {

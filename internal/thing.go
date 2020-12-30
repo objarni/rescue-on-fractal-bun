@@ -5,7 +5,7 @@ import (
 )
 
 // How many milliseconds is a tick?
-const tickMs = 5
+const TickMs = 5
 
 type Thing interface {
 	HandleKeyDown(key ControlKey) Thing

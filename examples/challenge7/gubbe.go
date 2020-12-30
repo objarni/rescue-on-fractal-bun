@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/faiface/pixel"
+	"github.com/faiface/pixel/pixelgl"
 )
 
 const MAXVELOCITY = 2
@@ -120,4 +121,14 @@ func initWalking(g *Gubbe, looking Looking) {
 		g.acc.X = -g.acc.X
 	}
 	g.counter = 0
+}
+
+func MakeGubbe(win *pixelgl.Window) Gubbe {
+	return Gubbe{
+		state:   Standing,
+		looking: Right,
+		pos:     win.Bounds().Center().Add(pixel.Vec{0, -screenheight / 4}),
+		vel:     pixel.ZV,
+		acc:     pixel.ZV,
+	}
 }
