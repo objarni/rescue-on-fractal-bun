@@ -5,6 +5,8 @@ import (
 )
 
 const MAXVELOCITY = 2
+const ACCELERATION = 0.03
+const DECCELERATION = 0.95
 
 type Gubbe struct {
 	state   State
@@ -71,17 +73,17 @@ func stepGubbe(g *Gubbe, controls Controls) {
 			g.state = Walking
 			g.looking = Right
 			g.image = WalkRight1
-			g.acc = pixel.Vec{X: 1, Y: 0}
+			g.acc = pixel.Vec{X: ACCELERATION, Y: 0}
 			g.counter = 0
 		}
 		if controls.left && !controls.right {
 			g.state = Walking
 			g.looking = Left
 			g.image = WalkRight1
-			g.acc = pixel.Vec{X: -1, Y: 0}
+			g.acc = pixel.Vec{X: -ACCELERATION, Y: 0}
 			g.counter = 0
 		}
-		g.vel = g.vel.Scaled(0.9)
+		g.vel = g.vel.Scaled(DECCELERATION)
 	case Walking:
 		g.counter++
 		if g.counter%30 == 0 {
@@ -100,12 +102,12 @@ func stepGubbe(g *Gubbe, controls Controls) {
 			g.state = Walking
 			g.looking = Right
 			g.image = WalkRight1
-			g.acc = pixel.Vec{X: 1, Y: 0}
+			g.acc = pixel.Vec{X: ACCELERATION, Y: 0}
 		} else if controls.left && g.looking == Right {
 			g.state = Walking
 			g.looking = Left
 			g.image = WalkRight1
-			g.acc = pixel.Vec{X: -1, Y: 0}
+			g.acc = pixel.Vec{X: -ACCELERATION, Y: 0}
 		}
 	case Kicking:
 	}

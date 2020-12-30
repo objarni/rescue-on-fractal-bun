@@ -37,7 +37,6 @@ func run() {
 	internal.PanicIfError(err)
 
 	var imd = imdraw.New(nil)
-	imd.Color = colornames.Darkslateblue
 	win.SetSmooth(true)
 	var config Config
 	var prevtime = time.Now()
@@ -54,7 +53,7 @@ func run() {
 		StandingRight: gubbeStandingRightSprite,
 	}
 
-	config, err = TryReadCfgFrom("json/challenge6.json", config)
+	config, err = TryReadCfgFrom("json/challenge7.json", config)
 	internal.PanicIfError(err)
 
 	var ballState = Ball{
@@ -86,7 +85,6 @@ func run() {
 
 		// Update entities
 		updateBall(rot, deltaMs/1000, &ballState, config)
-		// TODO: handle rest of this division 'somehow'
 		steps := int(math.Floor(deltaMs / 5))
 		rest = deltaMs - float64(steps*5)
 		for i := 0; i < steps; i++ {
@@ -100,6 +98,13 @@ func run() {
 
 		// Render
 		win.Clear(colornames.Lightskyblue)
+		imd.Clear()
+		imd.Push(pixel.Vec{0, 0})
+		imd.Color = colornames.Darkgreen
+		imd.Push(pixel.Vec{screenwidth, 75})
+		imd.Color = colornames.Lightgreen
+		imd.Rectangle(0)
+		imd.Draw(win)
 		mx := pixel.IM.Scaled(pixel.ZV, 1)
 		mx = mx.Moved(gubbe.pos)
 		if gubbe.looking == Left {
@@ -130,8 +135,8 @@ func updateBall(rot float64, delta float64, ballState *Ball, config Config) floa
 		ballState.Pos.X = screenwidth - ballradius - 1
 		ballState.Vel = ballState.Vel.ScaledXY(pixel.Vec{X: -1, Y: 1})
 	}
-	if ballState.Pos.Y < ballradius {
-		ballState.Pos.Y = ballradius + 1
+	if ballState.Pos.Y < ballradius*1.5 {
+		ballState.Pos.Y = ballradius*1.5 + 1
 		ballState.Vel = ballState.Vel.ScaledXY(pixel.Vec{X: 1, Y: -1})
 	}
 	return rot
