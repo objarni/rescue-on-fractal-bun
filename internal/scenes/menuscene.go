@@ -1,4 +1,4 @@
-package internal
+package scenes
 
 import (
 	"fmt"
@@ -9,6 +9,7 @@ import (
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
 	"golang.org/x/image/font/basicfont"
+	"objarni/rescue-on-fractal-bun/internal"
 )
 
 type MenuItem int
@@ -26,8 +27,8 @@ type MenuScene struct {
 
 func MakeMenuScene() MenuScene {
 	atlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
-	err, _, switchSound := LoadWav("assets/MenuPointerMoved.wav")
-	PanicIfError(err)
+	err, _, switchSound := internal.LoadWav("assets/MenuPointerMoved.wav")
+	internal.PanicIfError(err)
 	return MenuScene{
 		currentitem:     Play,
 		itemSwitchSound: switchSound,
@@ -35,15 +36,15 @@ func MakeMenuScene() MenuScene {
 	}
 }
 
-func (menuScene MenuScene) HandleKeyDown(key ControlKey) Scene {
-	if key == Jump {
+func (menuScene MenuScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
+	if key == internal.Jump {
 		if menuScene.currentitem == Play {
 			return MakeMapScene()
 		} else {
 			return nil
 		}
 	}
-	if key == Down || key == Up {
+	if key == internal.Down || key == internal.Up {
 		streamer := menuScene.itemSwitchSound.Streamer(0, menuScene.itemSwitchSound.Len())
 		speaker.Play(streamer)
 		menuScene.currentitem = (menuScene.currentitem + 1) % 2
@@ -51,7 +52,7 @@ func (menuScene MenuScene) HandleKeyDown(key ControlKey) Scene {
 	return menuScene
 }
 
-func (menuScene MenuScene) HandleKeyUp(_ ControlKey) Scene {
+func (menuScene MenuScene) HandleKeyUp(_ internal.ControlKey) internal.Thing {
 	return menuScene
 }
 
@@ -72,4 +73,8 @@ func (menuScene MenuScene) Render(win *pixelgl.Window) {
 	}
 	_, _ = fmt.Fprintln(tb, quitItem)
 	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 2), colornames.Black)
+}
+
+func (menuScene MenuScene) Tick() bool {
+	return true
 }

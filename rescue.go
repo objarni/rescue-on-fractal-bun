@@ -7,12 +7,13 @@ import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"objarni/rescue-on-fractal-bun/internal"
+	"objarni/rescue-on-fractal-bun/internal/scenes"
 	"time"
 )
 
 func run() {
 
-	var scene internal.Scene = internal.MakeMenuScene()
+	var scene internal.Thing = scenes.MakeMenuScene()
 
 	cfg := pixelgl.WindowConfig{
 		Title:  "Rescue on fractal bun (work title)",

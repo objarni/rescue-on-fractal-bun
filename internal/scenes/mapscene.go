@@ -1,4 +1,4 @@
-package internal
+package scenes
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
 	"golang.org/x/image/font/basicfont"
+	"objarni/rescue-on-fractal-bun/internal"
 )
 
 type MapScene struct {
@@ -19,18 +20,18 @@ func MakeMapScene() MapScene {
 	atlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	return MapScene{
 		textbox:  text.New(pixel.V(0, 0), atlas),
-		mapImage: LoadSpriteForSure("assets/TMap.png"),
+		mapImage: internal.LoadSpriteForSure("assets/TMap.png"),
 	}
 }
 
-func (scene MapScene) HandleKeyDown(key ControlKey) Scene {
-	if key == Jump {
+func (scene MapScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
+	if key == internal.Jump {
 		return MakeMenuScene()
 	}
 	return scene
 }
 
-func (scene MapScene) HandleKeyUp(_ ControlKey) Scene {
+func (scene MapScene) HandleKeyUp(_ internal.ControlKey) internal.Thing {
 	return scene
 }
 
@@ -43,5 +44,6 @@ func (scene MapScene) Render(win *pixelgl.Window) {
 	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 2), colornames.Black)
 }
 
-// Vill ha: drawText(x, y, txt, color)
-// .. där x,y är angivet i procent, och betyder centerpunkt för texten
+func (scene MapScene) Tick() bool {
+	return true
+}

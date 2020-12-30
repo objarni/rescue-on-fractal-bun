@@ -94,18 +94,7 @@ Issues with current approach
   dissimilar from game scenes/states when actually they
   work from same 'things': key presses, time passing, and
   rendering
-- lots of duplication between states: basically identical
-  state initialization in standing, walking.
-- step is always 00
-
-
-Ideas
-The update 'logs' states with timestamps, and updates 100 times
- per second, so giving a deltaSecond of 0.25 logs the following
- timestamps: 0.0, 0.1. What to do about the 0.05 left over?
- For now: assume main loop handles it, so that the stepGubbe
- functionality actually gets an integer number of 'animationFrames'
- to calcularte.
+- step is always 00 in approval files
 */
 
 var pressRight = Controls{left: false, right: true, kick: false}
