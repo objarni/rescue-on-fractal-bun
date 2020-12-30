@@ -126,6 +126,7 @@ func initWalking(g *Gubbe, looking Looking) {
 func MakeGubbe(win *pixelgl.Window) Gubbe {
 	return Gubbe{
 		state:   Standing,
+		image:   StandingRight,
 		looking: Right,
 		pos:     win.Bounds().Center().Add(pixel.Vec{0, -screenheight / 4}),
 		vel:     pixel.ZV,

@@ -91,7 +91,10 @@ func drawGubbe(gubbe Gubbe, gubbeImage2Sprite map[Image]*pixel.Sprite, win *pixe
 	mx := pixel.IM.Scaled(pixel.ZV, 1)
 	mx = mx.Moved(gubbe.pos)
 	if gubbe.looking == Left {
-		mx = mx.ScaledXY(gubbe.pos, pixel.Vec{-1, 1})
+		mx = mx.ScaledXY(
+			gubbe.pos,
+			pixel.Vec{X: -1, Y: 1},
+		)
 	}
 	gubbeSprite := gubbeImage2Sprite[gubbe.image]
 	gubbeSprite.Draw(win, mx)
@@ -99,9 +102,9 @@ func drawGubbe(gubbe Gubbe, gubbeImage2Sprite map[Image]*pixel.Sprite, win *pixe
 
 func drawGround(imd *imdraw.IMDraw, win *pixelgl.Window) {
 	imd.Clear()
-	imd.Push(pixel.Vec{0, 0})
+	imd.Push(pixel.ZV)
 	imd.Color = colornames.Darkgreen
-	imd.Push(pixel.Vec{screenwidth, 75})
+	imd.Push(pixel.Vec{X: screenwidth, Y: 75})
 	imd.Color = colornames.Lightgreen
 	imd.Rectangle(0)
 	imd.Draw(win)
