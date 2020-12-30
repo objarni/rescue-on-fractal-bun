@@ -23,6 +23,7 @@ type MenuScene struct {
 	currentitem     MenuItem
 	textbox         *text.Text
 	itemSwitchSound *beep.Buffer
+	quit            bool
 }
 
 func MakeMenuScene() MenuScene {
@@ -33,6 +34,7 @@ func MakeMenuScene() MenuScene {
 		currentitem:     Play,
 		itemSwitchSound: switchSound,
 		textbox:         text.New(pixel.V(0, 0), atlas),
+		quit:            false,
 	}
 }
 
@@ -41,7 +43,7 @@ func (menuScene MenuScene) HandleKeyDown(key internal.ControlKey) internal.Thing
 		if menuScene.currentitem == Play {
 			return MakeMapScene()
 		} else {
-			return nil
+			menuScene.quit = true
 		}
 	}
 	if key == internal.Down || key == internal.Up {
@@ -76,5 +78,5 @@ func (menuScene MenuScene) Render(win *pixelgl.Window) {
 }
 
 func (menuScene MenuScene) Tick() bool {
-	return true
+	return !menuScene.quit
 }

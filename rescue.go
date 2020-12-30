@@ -51,7 +51,7 @@ func run() {
 				fmt.Println("released: ", key)
 				scene = scene.HandleKeyUp(control)
 			}
-			if scene == nil {
+			if !scene.Tick() {
 				win.SetClosed(true)
 				continue
 			}
