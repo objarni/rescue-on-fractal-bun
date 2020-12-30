@@ -65,23 +65,15 @@ type Controls struct {
 
 func stepGubbe(g *Gubbe, controls Controls) {
 
-	// CONTROL BEHAVIOR
+	// STATE DEPENDENT BEHAVIOR
 
 	switch g.state {
 	case Standing:
 		if controls.right && !controls.left {
-			g.state = Walking
-			g.looking = Right
-			g.image = WalkRight1
-			g.acc = pixel.Vec{X: ACCELERATION, Y: 0}
-			g.counter = 0
+			initWalking(g, Right)
 		}
 		if controls.left && !controls.right {
-			g.state = Walking
-			g.looking = Left
-			g.image = WalkRight1
-			g.acc = pixel.Vec{X: -ACCELERATION, Y: 0}
-			g.counter = 0
+			initWalking(g, Left)
 		}
 		g.vel = g.vel.Scaled(DECCELERATION)
 	case Walking:
@@ -93,30 +85,39 @@ func stepGubbe(g *Gubbe, controls Controls) {
 				g.image = WalkRight1
 			}
 		}
-		// No directions, or ambigious orders = stand still
+		// No directions, or ambigious orders = initStanding still
 		if controls.left == controls.right {
-			g.state = Standing
-			g.image = StandingRight
-			g.acc = pixel.ZV
+			initStanding(g)
 		} else if controls.right && g.looking == Left {
-			g.state = Walking
-			g.looking = Right
-			g.image = WalkRight1
-			g.acc = pixel.Vec{X: ACCELERATION, Y: 0}
+			initWalking(g, Right)
 		} else if controls.left && g.looking == Right {
-			g.state = Walking
-			g.looking = Left
-			g.image = WalkRight1
-			g.acc = pixel.Vec{X: -ACCELERATION, Y: 0}
+			initWalking(g, Left)
 		}
 	case Kicking:
 	}
 
-	// Update position & velocity
+	// STATE INDEPENDENT BEHAVIOR
 	g.vel = g.vel.Add(g.acc)
-	// Cap velocity to 5 pixels per step
 	if g.vel.Len() > MAXVELOCITY {
 		g.vel = g.vel.Unit().Scaled(MAXVELOCITY)
 	}
 	g.pos = g.pos.Add(g.vel)
+}
+
+func initStanding(g *Gubbe) {
+	g.state = Standing
+	g.image = StandingRight
+	g.acc = pixel.ZV
+	g.counter = 0
+}
+
+func initWalking(g *Gubbe, looking Looking) {
+	g.state = Walking
+	g.looking = looking
+	g.image = WalkRight1
+	g.acc = pixel.Vec{X: ACCELERATION, Y: 0}
+	if looking == Left {
+		g.acc.X = -g.acc.X
+	}
+	g.counter = 0
 }

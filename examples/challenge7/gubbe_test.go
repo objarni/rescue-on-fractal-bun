@@ -88,41 +88,16 @@ func checkPressed(pressed bool, symbol string) string {
 	}
 }
 
-//func TestWalkingLeftForOneSecond(t *testing.T) {
-//	gubbe := makeGubbe()
-//	for i := 0; i<10; i++ {
-//		stepGubbe(&gubbe, Controls{left: true, right: false, kick: false})
-//	}
-//	approvals.VerifyString(t, printGubbe(gubbe))
-//}
-//
-//func TestKicking(t *testing.T) {
-//	gubbe := makeGubbe()
-//	for i := 0; i<10; i++ {
-//		stepGubbe(&gubbe, Controls{left: false, right: false, kick: true})
-//	}
-//	approvals.VerifyString(t, printGubbe(gubbe))
-//}
-//
-//func TestTryingToMoveWhileKicking(t *testing.T) {
-//	gubbe := makeGubbe()
-//	stepGubbe(&gubbe, Controls{left: false, right: false, kick: true})
-//	for i := 0; i<3; i++ {
-//		stepGubbe(&gubbe, Controls{left: false, right: true, kick: false})
-//	}
-//	approvals.VerifyString(t, printGubbe(gubbe))
-//}
-
 /*
 Issues with current approach
-- does not capture 'time passing' e.g animation
-- only captures end frame, no frame inbetween
-- does not capture actual frame swaps, only gubbe state
-- test do not describe timings for pressed keys; only on/off
 - not really happy with the types for gubbe, they are too
   dissimilar from game scenes/states when actually they
   work from same 'things': key presses, time passing, and
-  rendering.
+  rendering
+- lots of duplication between states: basically identical
+  state initialization in standing, walking.
+- step is always 00
+
 
 Ideas
 The update 'logs' states with timestamps, and updates 100 times
