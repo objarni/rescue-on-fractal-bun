@@ -23,7 +23,7 @@ func run() {
 		panic(err)
 	}
 
-	err = speaker.Init(beep.SampleRate(22050), 2000)
+	err = speaker.Init(beep.SampleRate(22050), 1000)
 
 	controllerMap := make(map[pixelgl.Button]internal.ControlKey)
 	controllerMap[pixelgl.KeyUp] = internal.Up
