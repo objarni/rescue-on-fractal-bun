@@ -2,6 +2,8 @@ github.com/approvals/go-approval-tests v0.0.0-20201115100639-fca812f6be31 h1:M0x
 github.com/approvals/go-approval-tests v0.0.0-20201115100639-fca812f6be31/go.mod h1:PJOqSY8IofNv3heAD6k8E7EfFS6okiSS9bSAasaAUME=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/emilybache/ApprovalTools v0.0.0-20200811085010-67a306fc19c2 h1:B1qt/w3IhByWO5M68yT8IfYBkFsFiE+YaGyzDTq2w1s=
+github.com/emilybache/ApprovalTools v0.0.0-20200811085010-67a306fc19c2/go.mod h1:wNdUFpISZn8vNeIW7gTUzXson+xv7/AQn2sIVjl8aoc=
 github.com/faiface/beep v1.0.2 h1:UB5DiRNmA4erfUYnHbgU4UB6DlBOrsdEFRtcc8sCkdQ=
 github.com/faiface/beep v1.0.2/go.mod h1:1yLb5yRdHMsovYYWVqYLioXkVuziCSITW1oarTeduQM=
 github.com/faiface/glhf v0.0.0-20181018222622-82a6317ac380 h1:FvZ0mIGh6b3kOITxUnxS3tLZMh7yEoHo75v3/AgUqg0=

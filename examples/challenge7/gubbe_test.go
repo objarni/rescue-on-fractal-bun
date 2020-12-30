@@ -10,8 +10,12 @@ import (
 	"unicode"
 )
 
+var step int = 0
+
 func TestMain(m *testing.M) {
+	// This code is run before all tests
 	r := approvals.UseReporter(reporters.NewIntelliJReporter())
+	step = 0
 	code := m.Run()
 	err := r.Close()
 	if err != nil {
@@ -33,10 +37,11 @@ func makeGubbe() Gubbe {
 
 func simulateSteps(gubbe *Gubbe, steps int, controls Controls) string {
 	result := ""
-	for step := 0; step < steps; step++ {
+	for i := 0; i < steps; i++ {
 		stepGubbe(gubbe, controls)
 		result += fmt.Sprintf("Step %02d\n%s\n%s\n",
-			step, printControls(controls), printGubbe(*gubbe))
+			0, printControls(controls), printGubbe(*gubbe))
+		step += 1
 	}
 	return result
 }
@@ -57,10 +62,14 @@ func printGubbe(gubbe Gubbe) string {
 		gubbe.state.String(),
 		gubbe.looking.String(),
 		gubbe.image.String(),
-		gubbe.pos,
-		gubbe.vel,
-		gubbe.acc,
+		printVec(gubbe.pos),
+		printVec(gubbe.vel),
+		printVec(gubbe.acc),
 	)
+}
+
+func printVec(vec pixel.Vec) string {
+	return fmt.Sprintf("(%1.1f, %1.1f)", vec.X, vec.Y)
 }
 
 func printControls(controls Controls) string {
