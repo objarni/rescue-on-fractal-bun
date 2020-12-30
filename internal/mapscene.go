@@ -10,14 +10,16 @@ import (
 )
 
 type MapScene struct {
-	textbox *text.Text
+	textbox  *text.Text
+	mapImage *pixel.Sprite
 }
 
 func MakeMapScene() MapScene {
 	// @thought: atlas sent in to render, shared by all scenes?
 	atlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	return MapScene{
-		textbox: text.New(pixel.V(0, 0), atlas),
+		textbox:  text.New(pixel.V(0, 0), atlas),
+		mapImage: LoadSpriteForSure("assets/TMap.png"),
 	}
 }
 
@@ -34,6 +36,7 @@ func (scene MapScene) HandleKeyUp(_ ControlKey) Scene {
 
 func (scene MapScene) Render(win *pixelgl.Window) {
 	win.Clear(colornames.Antiquewhite)
+	scene.mapImage.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
 	tb := scene.textbox
 	tb.Clear()
 	_, _ = fmt.Fprintln(tb, "Map scene")

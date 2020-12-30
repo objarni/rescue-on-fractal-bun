@@ -1,14 +1,18 @@
 package internal
 
 import (
+	"fmt"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/wav"
 	"github.com/faiface/pixel"
 	"image"
+	_ "image/jpeg"
+	_ "image/png"
 	"os"
 )
 
 func LoadSprite(path string) (*pixel.Sprite, error) {
+	fmt.Println("Loading image: " + path)
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
