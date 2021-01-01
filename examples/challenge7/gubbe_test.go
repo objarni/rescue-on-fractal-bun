@@ -24,21 +24,10 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func makeGubbe() Gubbe {
-	return Gubbe{
-		state:   Standing,
-		looking: Right,
-		image:   StandingRight,
-		pos:     pixel.ZV,
-		vel:     pixel.ZV,
-		acc:     pixel.ZV,
-	}
-}
-
 func simulateSteps(gubbe *Gubbe, steps int, controls Controls) string {
 	result := ""
 	for i := 0; i < steps; i++ {
-		stepGubbe(gubbe, controls)
+		tickGubbe(gubbe, controls)
 		result += fmt.Sprintf("Step %02d\n%s\n%s\n",
 			0, printControls(controls), printGubbe(*gubbe))
 		step += 1
@@ -103,21 +92,21 @@ var pressNothing = Controls{left: false, right: false, kick: false}
 
 func TestWalkingRight5Steps(t *testing.T) {
 	result := toScenarioName(t.Name()) + "\n"
-	gubbe := makeGubbe()
+	gubbe := MakeGubbe(pixel.ZV)
 	result += simulateSteps(&gubbe, 10, pressRight)
 	approvals.VerifyString(t, result)
 }
 
 func TestWalkingLeft5Steps(t *testing.T) {
 	result := toScenarioName(t.Name()) + "\n"
-	gubbe := makeGubbe()
+	gubbe := MakeGubbe(pixel.ZV)
 	result += simulateSteps(&gubbe, 10, pressLeft)
 	approvals.VerifyString(t, result)
 }
 
 func TestWalkingLeftThenBackAgain(t *testing.T) {
 	result := toScenarioName(t.Name()) + "\n"
-	gubbe := makeGubbe()
+	gubbe := MakeGubbe(pixel.ZV)
 	result += simulateSteps(&gubbe, 5, pressLeft)
 	result += simulateSteps(&gubbe, 5, pressRight)
 	approvals.VerifyString(t, result)
@@ -125,7 +114,7 @@ func TestWalkingLeftThenBackAgain(t *testing.T) {
 
 func TestWalkingLeft5StepsThenStop(t *testing.T) {
 	result := toScenarioName(t.Name()) + "\n"
-	gubbe := makeGubbe()
+	gubbe := MakeGubbe(pixel.ZV)
 	result += simulateSteps(&gubbe, 5, pressLeft)
 	result += simulateSteps(&gubbe, 5, pressNothing)
 	approvals.VerifyString(t, result)
@@ -133,7 +122,7 @@ func TestWalkingLeft5StepsThenStop(t *testing.T) {
 
 func TestLeftAndRightMeansStandStill(t *testing.T) {
 	result := toScenarioName(t.Name()) + "\n"
-	gubbe := makeGubbe()
+	gubbe := MakeGubbe(pixel.ZV)
 	result += simulateSteps(&gubbe, 5, Controls{left: true, right: true, kick: false})
 	approvals.VerifyString(t, result)
 }

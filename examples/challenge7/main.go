@@ -45,7 +45,7 @@ func run() {
 	internal.PanicIfError(err)
 
 	var ball = MakeBall(config)
-	var gubbe = MakeGubbe(win)
+	var gubbe = MakeGubbe(win.Bounds().Center().Sub(pixel.Vec{X: 0, Y: 150}))
 
 	var rest float64 = 0
 	for !win.Closed() {
@@ -71,7 +71,7 @@ func run() {
 				right: win.Pressed(pixelgl.KeyRight),
 				kick:  win.Pressed(pixelgl.KeySpace),
 			}
-			stepGubbe(&gubbe, controls)
+			tickGubbe(&gubbe, controls)
 			ball.Tick()
 		}
 
