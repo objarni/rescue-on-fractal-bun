@@ -6,6 +6,6 @@
 A 2D platform adventure about rescuing your friends
 
 
-# A crayon sketch of the map of the world in Rescue
+## A crayon sketch of the map of the world in Rescue
 
 ![](assets/TMap.png)
