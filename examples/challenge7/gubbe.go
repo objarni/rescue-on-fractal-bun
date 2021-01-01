@@ -64,6 +64,7 @@ type Gubbe struct {
 	vel      pixel.Vec
 	acc      pixel.Vec
 	controls Controls
+	images   map[Image]*pixel.Sprite
 }
 
 func (gubbe *Gubbe) HandleKeyDown(key internal.ControlKey) internal.Thing {
@@ -87,7 +88,16 @@ func (gubbe *Gubbe) HandleKeyUp(key internal.ControlKey) internal.Thing {
 }
 
 func (gubbe *Gubbe) Render(win *pixelgl.Window) {
-
+	mx := pixel.IM.Scaled(pixel.ZV, 1)
+	mx = mx.Moved(gubbe.pos)
+	if gubbe.looking == Left {
+		mx = mx.ScaledXY(
+			gubbe.pos,
+			pixel.Vec{X: -1, Y: 1},
+		)
+	}
+	gubbeSprite := gubbe.images[gubbe.image]
+	gubbeSprite.Draw(win, mx)
 }
 
 func (gubbe *Gubbe) Tick() bool {
@@ -131,20 +141,6 @@ func (gubbe *Gubbe) Tick() bool {
 	return true
 }
 
-func tickGubbe(gubbe *Gubbe, controls Controls) {
-	if controls.left {
-		gubbe.HandleKeyDown(internal.Left)
-	} else {
-		gubbe.HandleKeyUp(internal.Left)
-	}
-	if controls.right {
-		gubbe.HandleKeyDown(internal.Right)
-	} else {
-		gubbe.HandleKeyUp(internal.Right)
-	}
-	gubbe.Tick()
-}
-
 func initStanding(g *Gubbe) {
 	g.state = Standing
 	g.image = StandingRight
@@ -163,7 +159,7 @@ func initWalking(g *Gubbe, looking Looking) {
 	g.counter = 0
 }
 
-func MakeGubbe(pos pixel.Vec) Gubbe {
+func MakeGubbe(pos pixel.Vec, images map[Image]*pixel.Sprite) Gubbe {
 	return Gubbe{
 		state:    Standing,
 		looking:  Right,
@@ -173,5 +169,6 @@ func MakeGubbe(pos pixel.Vec) Gubbe {
 		vel:      pixel.ZV,
 		acc:      pixel.ZV,
 		controls: Controls{false, false, false},
+		images:   images,
 	}
 }

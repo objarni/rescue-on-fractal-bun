@@ -32,6 +32,11 @@ func run() {
 	var config Config
 	var prevtime = time.Now()
 
+	config, err = TryReadCfgFrom("json/challenge7.json", config)
+	internal.PanicIfError(err)
+
+	var ball = MakeBall(config)
+
 	var gubbeStandingRightSprite = internal.LoadSpriteForSure("assets/TStanding.png")
 	var gubbeWalkingRightSprite1 = internal.LoadSpriteForSure("assets/TWalking-1.png")
 	var gubbeWalkingRightSprite2 = internal.LoadSpriteForSure("assets/TWalking-2.png")
@@ -40,12 +45,7 @@ func run() {
 		WalkRight2:    gubbeWalkingRightSprite2,
 		StandingRight: gubbeStandingRightSprite,
 	}
-
-	config, err = TryReadCfgFrom("json/challenge7.json", config)
-	internal.PanicIfError(err)
-
-	var ball = MakeBall(config)
-	var gubbe = MakeGubbe(win.Bounds().Center().Sub(pixel.Vec{X: 0, Y: 150}))
+	var gubbe = MakeGubbe(win.Bounds().Center().Sub(pixel.Vec{X: 0, Y: 150}), gubbeImage2Sprite)
 
 	var rest float64 = 0
 	for !win.Closed() {
@@ -66,38 +66,30 @@ func run() {
 		steps := int(math.Floor(deltaMs / 5))
 		rest = deltaMs - float64(steps*5)
 		for i := 0; i < steps; i++ {
-			controls := Controls{
-				left:  win.Pressed(pixelgl.KeyLeft),
-				right: win.Pressed(pixelgl.KeyRight),
-				kick:  win.Pressed(pixelgl.KeySpace),
+			if win.Pressed(pixelgl.KeyLeft) {
+				gubbe.HandleKeyDown(internal.Left)
+			} else {
+				gubbe.HandleKeyUp(internal.Left)
 			}
-			tickGubbe(&gubbe, controls)
+			if win.Pressed(pixelgl.KeyRight) {
+				gubbe.HandleKeyDown(internal.Right)
+			} else {
+				gubbe.HandleKeyUp(internal.Right)
+			}
+			gubbe.Tick()
 			ball.Tick()
 		}
 
 		// Render
 		win.Clear(colornames.Lightskyblue)
 		drawGround(imd, win)
-		drawGubbe(gubbe, gubbeImage2Sprite, win)
+		gubbe.Render(win)
 		ball.Render(win)
 
 		// Window/OS
 		win.Update()
 		time.Sleep(time.Millisecond * 5)
 	}
-}
-
-func drawGubbe(gubbe Gubbe, gubbeImage2Sprite map[Image]*pixel.Sprite, win *pixelgl.Window) {
-	mx := pixel.IM.Scaled(pixel.ZV, 1)
-	mx = mx.Moved(gubbe.pos)
-	if gubbe.looking == Left {
-		mx = mx.ScaledXY(
-			gubbe.pos,
-			pixel.Vec{X: -1, Y: 1},
-		)
-	}
-	gubbeSprite := gubbeImage2Sprite[gubbe.image]
-	gubbeSprite.Draw(win, mx)
 }
 
 func drawGround(imd *imdraw.IMDraw, win *pixelgl.Window) {
@@ -135,6 +127,3 @@ func TryReadCfgFrom(filename string, defaultCfg Config) (Config, error) {
 func main() {
 	pixelgl.Run(run)
 }
-
-// rita blårektangel
-// animera med tidsstämpel (millisekunder t.ex.)

@@ -5,6 +5,7 @@ import (
 	"github.com/approvals/go-approval-tests"
 	"github.com/approvals/go-approval-tests/reporters"
 	"github.com/faiface/pixel"
+	"objarni/rescue-on-fractal-bun/internal"
 	"os"
 	"testing"
 	"unicode"
@@ -27,7 +28,17 @@ func TestMain(m *testing.M) {
 func simulateSteps(gubbe *Gubbe, steps int, controls Controls) string {
 	result := ""
 	for i := 0; i < steps; i++ {
-		tickGubbe(gubbe, controls)
+		if controls.left {
+			gubbe.HandleKeyDown(internal.Left)
+		} else {
+			gubbe.HandleKeyUp(internal.Left)
+		}
+		if controls.right {
+			gubbe.HandleKeyDown(internal.Right)
+		} else {
+			gubbe.HandleKeyUp(internal.Right)
+		}
+		gubbe.Tick()
 		result += fmt.Sprintf("Step %02d\n%s\n%s\n",
 			0, printControls(controls), printGubbe(*gubbe))
 		step += 1
@@ -90,23 +101,27 @@ var pressRight = Controls{left: false, right: true, kick: false}
 var pressLeft = Controls{left: true, right: false, kick: false}
 var pressNothing = Controls{left: false, right: false, kick: false}
 
+func initGubbe() Gubbe {
+	return MakeGubbe(pixel.ZV, nil)
+}
+
 func TestWalkingRight5Steps(t *testing.T) {
 	result := toScenarioName(t.Name()) + "\n"
-	gubbe := MakeGubbe(pixel.ZV)
+	gubbe := initGubbe()
 	result += simulateSteps(&gubbe, 10, pressRight)
 	approvals.VerifyString(t, result)
 }
 
 func TestWalkingLeft5Steps(t *testing.T) {
 	result := toScenarioName(t.Name()) + "\n"
-	gubbe := MakeGubbe(pixel.ZV)
+	gubbe := initGubbe()
 	result += simulateSteps(&gubbe, 10, pressLeft)
 	approvals.VerifyString(t, result)
 }
 
 func TestWalkingLeftThenBackAgain(t *testing.T) {
 	result := toScenarioName(t.Name()) + "\n"
-	gubbe := MakeGubbe(pixel.ZV)
+	gubbe := initGubbe()
 	result += simulateSteps(&gubbe, 5, pressLeft)
 	result += simulateSteps(&gubbe, 5, pressRight)
 	approvals.VerifyString(t, result)
@@ -114,7 +129,7 @@ func TestWalkingLeftThenBackAgain(t *testing.T) {
 
 func TestWalkingLeft5StepsThenStop(t *testing.T) {
 	result := toScenarioName(t.Name()) + "\n"
-	gubbe := MakeGubbe(pixel.ZV)
+	gubbe := initGubbe()
 	result += simulateSteps(&gubbe, 5, pressLeft)
 	result += simulateSteps(&gubbe, 5, pressNothing)
 	approvals.VerifyString(t, result)
@@ -122,7 +137,7 @@ func TestWalkingLeft5StepsThenStop(t *testing.T) {
 
 func TestLeftAndRightMeansStandStill(t *testing.T) {
 	result := toScenarioName(t.Name()) + "\n"
-	gubbe := MakeGubbe(pixel.ZV)
+	gubbe := initGubbe()
 	result += simulateSteps(&gubbe, 5, Controls{left: true, right: true, kick: false})
 	approvals.VerifyString(t, result)
 }
