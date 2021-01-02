@@ -1,0 +1,44 @@
+package main
+
+import (
+	"github.com/faiface/pixel"
+	"github.com/faiface/pixel/imdraw"
+	"github.com/faiface/pixel/pixelgl"
+	"golang.org/x/image/colornames"
+	"objarni/rescue-on-fractal-bun/internal"
+)
+
+func (gameScene *GameScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
+	gameScene.gubbe.HandleKeyUp(key)
+	return gameScene
+}
+
+func (gameScene *GameScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
+	gameScene.gubbe.HandleKeyDown(key)
+	return gameScene
+}
+
+func (gameScene *GameScene) Tick() bool {
+	gameScene.gubbe.Tick()
+	gameScene.ball.Tick()
+	return true
+}
+
+func (gameScene *GameScene) Render(win *pixelgl.Window) {
+	win.Clear(colornames.Lightskyblue)
+	drawGround(win)
+	gameScene.gubbe.Render(win)
+	gameScene.ball.Render(win)
+}
+
+func drawGround(win *pixelgl.Window) {
+	var imd = imdraw.New(nil)
+	win.SetSmooth(true)
+	imd.Clear()
+	imd.Color = colornames.Darkgreen
+	imd.Push(pixel.ZV)
+	imd.Color = colornames.Lightgreen
+	imd.Push(pixel.Vec{X: screenwidth, Y: 75})
+	imd.Rectangle(0)
+	imd.Draw(win)
+}
