@@ -55,14 +55,21 @@ type Controls struct {
 	left, right, kick bool
 }
 
+type KickImpulse struct {
+	kickOrigin    pixel.Vec
+	kickDirection pixel.Vec
+}
+
 type Gubbe struct {
-	state    State
-	looking  Looking
-	image    Image
-	counter  int
-	pos      pixel.Vec
-	vel      pixel.Vec
-	acc      pixel.Vec
+	state   State
+	looking Looking
+	image   Image
+	counter int
+	pos     pixel.Vec
+	vel     pixel.Vec
+	acc     pixel.Vec
+	kick    *KickImpulse
+
 	controls Controls
 	images   map[Image]*pixel.Sprite
 }
@@ -139,12 +146,20 @@ func (gubbe *Gubbe) Tick() bool {
 			initWalking(gubbe, Left)
 		}
 	case Kicking:
-		gubbe.counter++
+		if gubbe.counter == 0 {
+			gubbe.kick = &KickImpulse{
+				kickOrigin:    pixel.Vec{},
+				kickDirection: pixel.Vec{},
+			}
+		} else {
+			gubbe.kick = nil
+		}
 		if gubbe.counter >= 25 {
 			if !gubbe.controls.kick {
 				initStanding(gubbe)
 			}
 		}
+		gubbe.counter++
 	}
 
 	// STATE INDEPENDENT BEHAVIOR

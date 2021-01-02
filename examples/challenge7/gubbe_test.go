@@ -62,13 +62,14 @@ func toScenarioName(testName string) string {
 }
 
 func printGubbe(gubbe Gubbe) string {
-	return fmt.Sprintf("State: %s\nLooking: %s\nImage: %s\nPos: %s\nVel: %s\nAcc: %s\n",
+	return fmt.Sprintf("State: %s\nLooking: %s\nImage: %s\nPos: %s\nVel: %s\nAcc: %s\nKick: %v\n",
 		gubbe.state.String(),
 		gubbe.looking.String(),
 		gubbe.image.String(),
 		printVec(gubbe.pos),
 		printVec(gubbe.vel),
 		printVec(gubbe.acc),
+		gubbe.kick,
 	)
 }
 

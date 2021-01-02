@@ -7,6 +7,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 01
 Pad: .K.
@@ -16,6 +17,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: &{{0 0} {0 0}}
 
 Step 02
 Pad: .K.
@@ -25,6 +27,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 03
 Pad: .K.
@@ -34,6 +37,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 04
 Pad: .K.
@@ -43,6 +47,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 05
 Pad: .K.
@@ -52,6 +57,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 06
 Pad: .K.
@@ -61,6 +67,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 07
 Pad: .K.
@@ -70,6 +77,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 08
 Pad: .K.
@@ -79,6 +87,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 09
 Pad: .K.
@@ -88,6 +97,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 10
 Pad: .K.
@@ -97,6 +107,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 11
 Pad: .K.
@@ -106,6 +117,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 12
 Pad: .K.
@@ -115,6 +127,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 13
 Pad: .K.
@@ -124,6 +137,7 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 14
 Pad: .K.
@@ -133,4 +147,5 @@ Image: KickRight
 Pos: (0.0, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 

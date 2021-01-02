@@ -7,6 +7,7 @@ Image: WalkRight1
 Pos: (-0.0, 0.0)
 Vel: (-0.0, 0.0)
 Acc: (-0.0, 0.0)
+Kick: <nil>
 
 Step 01
 Pad: <..
@@ -16,6 +17,7 @@ Image: WalkRight1
 Pos: (-0.1, 0.0)
 Vel: (-0.1, 0.0)
 Acc: (-0.0, 0.0)
+Kick: <nil>
 
 Step 02
 Pad: <..
@@ -25,6 +27,7 @@ Image: WalkRight1
 Pos: (-0.2, 0.0)
 Vel: (-0.1, 0.0)
 Acc: (-0.0, 0.0)
+Kick: <nil>
 
 Step 03
 Pad: <..
@@ -34,6 +37,7 @@ Image: WalkRight1
 Pos: (-0.3, 0.0)
 Vel: (-0.1, 0.0)
 Acc: (-0.0, 0.0)
+Kick: <nil>
 
 Step 04
 Pad: <..
@@ -43,6 +47,7 @@ Image: WalkRight1
 Pos: (-0.4, 0.0)
 Vel: (-0.1, 0.0)
 Acc: (-0.0, 0.0)
+Kick: <nil>
 
 Step 05
 Pad: ..>
@@ -52,6 +57,7 @@ Image: WalkRight1
 Pos: (-0.6, 0.0)
 Vel: (-0.1, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 06
 Pad: ..>
@@ -61,6 +67,7 @@ Image: WalkRight1
 Pos: (-0.7, 0.0)
 Vel: (-0.1, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 07
 Pad: ..>
@@ -70,6 +77,7 @@ Image: WalkRight1
 Pos: (-0.7, 0.0)
 Vel: (-0.1, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 08
 Pad: ..>
@@ -79,6 +87,7 @@ Image: WalkRight1
 Pos: (-0.8, 0.0)
 Vel: (-0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
 Step 09
 Pad: ..>
@@ -88,4 +97,5 @@ Image: WalkRight1
 Pos: (-0.8, 0.0)
 Vel: (0.0, 0.0)
 Acc: (0.0, 0.0)
+Kick: <nil>
 
