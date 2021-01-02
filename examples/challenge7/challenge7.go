@@ -18,9 +18,49 @@ import (
 const screenwidth = 800
 const screenheight = 600
 
+type StartScene struct {
+}
+
 type GameScene struct {
 	ball  internal.Thing
 	gubbe internal.Thing
+}
+
+func (startScene *StartScene) HandleKeyUp(_ internal.ControlKey) internal.Thing {
+	return startScene
+}
+
+func (startScene *StartScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
+	if key == internal.Jump {
+		var config Config
+		config, err := TryReadCfgFrom("json/challenge7.json", config)
+		internal.PanicIfError(err)
+
+		var gubbeStandingRightSprite = internal.LoadSpriteForSure("assets/TStanding.png")
+		var gubbeWalkingRightSprite1 = internal.LoadSpriteForSure("assets/TWalking-1.png")
+		var gubbeWalkingRightSprite2 = internal.LoadSpriteForSure("assets/TWalking-2.png")
+		gubbeImage2Sprite := map[Image]*pixel.Sprite{
+			WalkRight1:    gubbeWalkingRightSprite1,
+			WalkRight2:    gubbeWalkingRightSprite2,
+			StandingRight: gubbeStandingRightSprite,
+		}
+		var gubbe = MakeGubbe(pixel.Vec{X: 100, Y: 150}, gubbeImage2Sprite)
+		var scene internal.Thing = &GameScene{
+			ball:  MakeBall(config),
+			gubbe: &gubbe,
+		}
+
+		return scene
+	}
+	return startScene
+}
+
+func (startScene *StartScene) Tick() bool {
+	return true
+}
+
+func (startScene *StartScene) Render(win *pixelgl.Window) {
+	win.Clear(colornames.Green)
 }
 
 func (gameScene *GameScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
@@ -55,24 +95,7 @@ func run() {
 	win, err := pixelgl.NewWindow(cfg)
 	internal.PanicIfError(err)
 
-	var config Config
-	config, err = TryReadCfgFrom("json/challenge7.json", config)
-	internal.PanicIfError(err)
-
-	var gubbeStandingRightSprite = internal.LoadSpriteForSure("assets/TStanding.png")
-	var gubbeWalkingRightSprite1 = internal.LoadSpriteForSure("assets/TWalking-1.png")
-	var gubbeWalkingRightSprite2 = internal.LoadSpriteForSure("assets/TWalking-2.png")
-	gubbeImage2Sprite := map[Image]*pixel.Sprite{
-		WalkRight1:    gubbeWalkingRightSprite1,
-		WalkRight2:    gubbeWalkingRightSprite2,
-		StandingRight: gubbeStandingRightSprite,
-	}
-	var gubbe = MakeGubbe(win.Bounds().Center().Sub(pixel.Vec{X: 0, Y: 150}), gubbeImage2Sprite)
-	var scene internal.Thing = &GameScene{
-		ball:  MakeBall(config),
-		gubbe: &gubbe,
-	}
-
+	var scene internal.Thing = &StartScene{}
 	var prevtime = time.Now()
 
 	var rest float64 = 0
@@ -81,7 +104,7 @@ func run() {
 		if win.JustPressed(pixelgl.KeyEscape) {
 			win.SetClosed(true)
 		}
-		config, err = TryReadCfgFrom("json/challenge7.json", config)
+		//config, err = TryReadCfgFrom("json/challenge7.json", config)
 		internal.PanicIfError(err)
 
 		// Compute time deltaMs
@@ -102,6 +125,12 @@ func run() {
 		}
 		if win.JustReleased(pixelgl.KeyRight) {
 			scene.HandleKeyUp(internal.Right)
+		}
+		if win.JustPressed(pixelgl.KeySpace) {
+			scene = scene.HandleKeyDown(internal.Jump)
+		}
+		if win.JustReleased(pixelgl.KeySpace) {
+			scene.HandleKeyUp(internal.Jump)
 		}
 
 		// Update entities
