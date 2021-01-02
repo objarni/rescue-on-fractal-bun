@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"github.com/faiface/beep"
+	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"math"
@@ -10,11 +13,12 @@ import (
 const radius = 50
 
 type Ball struct {
-	Pos        pixel.Vec
-	Vel        pixel.Vec
-	Rot        float64
-	ballSprite *pixel.Sprite
-	config     Config
+	Pos         pixel.Vec
+	Vel         pixel.Vec
+	Rot         float64
+	ballSprite  *pixel.Sprite
+	bounceSound *beep.Buffer
+	config      Config
 }
 
 func (ball *Ball) HandleKeyDown(_ internal.ControlKey) internal.Thing { return ball }
@@ -44,9 +48,36 @@ func (ball *Ball) Tick() bool {
 		ball.Vel = ball.Vel.ScaledXY(pixel.Vec{X: -1, Y: 1})
 	}
 	if ball.Pos.Y < radius*1.5 {
+		buffer := ball.bounceSound
 		ball.Pos.Y = radius*1.5 + 1
-		if math.Abs(ball.Vel.Y) < 120 {
+		if math.Abs(ball.Vel.Y) < 250 {
 			ball.Vel.Y = 0
+		} else {
+			streamer := buffer.Streamer(0, buffer.Len())
+			//ctrl := &beep.Ctrl{Streamer: beep.Loop(0, streamer), Paused: false}
+			//volume := &effects.Volume{
+			//	Streamer: ctrl,
+			//	Base:     2,
+			//	Volume:   0,
+			//	Silent:   false,
+			//}
+			fmt.Println(ball.Vel.Y)
+			//volume.Volume = 00.01 * ball.Vel.Y - 10
+			speaker.Play(streamer)
+			/*
+						m1000 + n = 0
+						m0 + n = -10
+						-------
+						n = -10
+						m1000 - 10 = 0
+						m = 10 / 1000 = 0.01
+
+						f(x) = 0.01x - 10
+			-1000 --> 0
+			-666 --> -3.33
+			-333 --> -6.66
+			-0 --> -10
+			*/
 		}
 		ball.Vel = ball.Vel.ScaledXY(pixel.Vec{X: 1, Y: -0.7})
 	}
@@ -56,9 +87,10 @@ func (ball *Ball) Tick() bool {
 
 func MakeBall(config Config) internal.Thing {
 	return &Ball{
-		Pos:        pixel.Vec{X: config.StartX, Y: config.StartY},
-		Vel:        pixel.Vec{X: config.SpeedX, Y: 0},
-		Rot:        0,
-		ballSprite: internal.LoadSpriteForSure("assets/Ball.png"),
+		Pos:         pixel.Vec{X: config.StartX, Y: config.StartY},
+		Vel:         pixel.Vec{X: config.SpeedX, Y: 0},
+		Rot:         0,
+		ballSprite:  internal.LoadSpriteForSure("assets/Ball.png"),
+		bounceSound: internal.LoadWavForSure("assets/PickupCoin.wav"),
 	}
 }

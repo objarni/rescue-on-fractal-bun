@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/faiface/beep"
+	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
@@ -93,6 +95,11 @@ func run() {
 		Position: pixel.Vec{X: screenwidth / 2, Y: screenheight / 2},
 	}
 	win, err := pixelgl.NewWindow(cfg)
+	internal.PanicIfError(err)
+	err = speaker.Init(
+		beep.SampleRate(22050),
+		2000,
+	) //done := make(chan bool)
 	internal.PanicIfError(err)
 
 	var scene internal.Thing = &StartScene{}

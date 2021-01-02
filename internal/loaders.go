@@ -55,3 +55,9 @@ func LoadWav(wavFile string) (error, beep.Format, *beep.Buffer) {
 	PanicIfError(err)
 	return err, format, buffer
 }
+
+func LoadWavForSure(wavFile string) *beep.Buffer {
+	err, _, buffer := LoadWav(wavFile)
+	PanicIfError(err)
+	return buffer
+}
