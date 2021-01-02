@@ -140,7 +140,7 @@ func (gubbe *Gubbe) Tick() bool {
 		}
 	case Kicking:
 		gubbe.counter++
-		if gubbe.counter >= 10 {
+		if gubbe.counter >= 25 {
 			if !gubbe.controls.kick {
 				initStanding(gubbe)
 			}

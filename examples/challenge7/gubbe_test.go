@@ -163,7 +163,7 @@ func TestQuickKick(t *testing.T) {
 	globalStepVariable = 0
 	result := toScenarioName(t.Name()) + "\n"
 	gubbe := initGubbe()
-	result += simulateSteps(&gubbe, 5, Controls{left: false, right: false, kick: true})
+	result += simulateSteps(&gubbe, 20, Controls{left: false, right: false, kick: true})
 	result += simulateSteps(&gubbe, 10, Controls{left: false, right: false, kick: false})
 	approvals.VerifyString(t, result)
 }
