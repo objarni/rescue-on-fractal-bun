@@ -99,6 +99,11 @@ func run() {
 	var prevtime = time.Now()
 
 	var rest float64 = 0
+	keyTranslation := map[pixelgl.Button]internal.ControlKey{
+		pixelgl.KeyLeft:  internal.Left,
+		pixelgl.KeyRight: internal.Right,
+		pixelgl.KeySpace: internal.Jump,
+	}
 	for !win.Closed() {
 		// Janitor
 		if win.JustPressed(pixelgl.KeyEscape) {
@@ -114,23 +119,13 @@ func run() {
 		deltaMs += rest
 
 		// Keyboard input
-		if win.JustPressed(pixelgl.KeyLeft) {
-			scene.HandleKeyDown(internal.Left)
-		}
-		if win.JustReleased(pixelgl.KeyLeft) {
-			scene.HandleKeyUp(internal.Left)
-		}
-		if win.JustPressed(pixelgl.KeyRight) {
-			scene.HandleKeyDown(internal.Right)
-		}
-		if win.JustReleased(pixelgl.KeyRight) {
-			scene.HandleKeyUp(internal.Right)
-		}
-		if win.JustPressed(pixelgl.KeySpace) {
-			scene = scene.HandleKeyDown(internal.Jump)
-		}
-		if win.JustReleased(pixelgl.KeySpace) {
-			scene.HandleKeyUp(internal.Jump)
+		for key, value := range keyTranslation {
+			if win.JustPressed(key) {
+				scene = scene.HandleKeyDown(value)
+			}
+			if win.JustReleased(key) {
+				scene = scene.HandleKeyUp(value)
+			}
 		}
 
 		// Update entities
