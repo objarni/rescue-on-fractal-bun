@@ -159,7 +159,7 @@ func TestLongKick(t *testing.T) {
 	approvals.VerifyString(t, result)
 }
 
-func TestQuickKick(t *testing.T) {
+func TestShortKick(t *testing.T) {
 	globalStepVariable = 0
 	result := toScenarioName(t.Name()) + "\n"
 	gubbe := initGubbe()
