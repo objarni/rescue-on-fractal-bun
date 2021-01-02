@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"objarni/rescue-on-fractal-bun/internal"
@@ -68,11 +69,15 @@ type Gubbe struct {
 }
 
 func (gubbe *Gubbe) HandleKeyDown(key internal.ControlKey) internal.Thing {
+	// TODO: Clean up this duplicated code everywhere
 	if key == internal.Left {
 		gubbe.controls.left = true
 	}
 	if key == internal.Right {
 		gubbe.controls.right = true
+	}
+	if key == internal.Action {
+		gubbe.controls.kick = true
 	}
 	return gubbe
 }
@@ -100,6 +105,8 @@ func (gubbe *Gubbe) Render(win *pixelgl.Window) {
 	gubbeSprite.Draw(win, mx)
 }
 
+var globalFoo = 0
+
 func (gubbe *Gubbe) Tick() bool {
 	// STATE DEPENDENT BEHAVIOR
 	switch gubbe.state {
@@ -109,6 +116,9 @@ func (gubbe *Gubbe) Tick() bool {
 		}
 		if gubbe.controls.left && !gubbe.controls.right {
 			initWalking(gubbe, Left)
+		}
+		if gubbe.controls.kick {
+			initKicking(gubbe)
 		}
 		gubbe.vel = gubbe.vel.Scaled(DECCELERATION)
 	case Walking:
@@ -129,6 +139,13 @@ func (gubbe *Gubbe) Tick() bool {
 			initWalking(gubbe, Left)
 		}
 	case Kicking:
+		globalFoo += 1
+		fmt.Println("kicking", globalFoo)
+		gubbe.counter++
+		fmt.Println(gubbe.counter)
+		if gubbe.counter == 10 {
+			initStanding(gubbe)
+		}
 	}
 
 	// STATE INDEPENDENT BEHAVIOR
@@ -156,6 +173,12 @@ func initWalking(g *Gubbe, looking Looking) {
 	if looking == Left {
 		g.acc.X = -g.acc.X
 	}
+	g.counter = 0
+}
+
+func initKicking(g *Gubbe) {
+	g.state = Kicking
+	g.image = KickRight
 	g.counter = 0
 }
 

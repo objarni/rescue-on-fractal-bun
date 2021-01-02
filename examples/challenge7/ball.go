@@ -54,7 +54,8 @@ func (ball *Ball) Tick() bool {
 			ball.Vel.Y = 0
 		} else {
 			streamer := buffer.Streamer(0, buffer.Len())
-			//ctrl := &beep.Ctrl{Streamer: beep.Loop(0, streamer), Paused: false}
+			ctrl := &beep.Ctrl{Streamer: beep.Loop(0, streamer), Paused: false}
+			_ = ctrl
 			//volume := &effects.Volume{
 			//	Streamer: ctrl,
 			//	Base:     2,
@@ -65,18 +66,17 @@ func (ball *Ball) Tick() bool {
 			//volume.Volume = 00.01 * ball.Vel.Y - 10
 			speaker.Play(streamer)
 			/*
-						m1000 + n = 0
-						m0 + n = -10
-						-------
-						n = -10
-						m1000 - 10 = 0
-						m = 10 / 1000 = 0.01
+							m1000 + n = 0
+							m0 + n = -10
+							-------
+							n = -10
+							m1000 - 10 = 0
+							m = 10 / 1000 = 0.01
 
-						f(x) = 0.01x - 10
-			-1000 --> 0
-			-666 --> -3.33
-			-333 --> -6.66
-			-0 --> -10
+							f(x) = 0.01x - 10
+				f(-1000) =  0
+				f(0) = -10
+				f(x) = kx + m
 			*/
 		}
 		ball.Vel = ball.Vel.ScaledXY(pixel.Vec{X: 1, Y: -0.7})

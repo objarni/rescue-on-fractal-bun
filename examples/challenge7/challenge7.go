@@ -41,10 +41,12 @@ func (startScene *StartScene) HandleKeyDown(key internal.ControlKey) internal.Th
 		var gubbeStandingRightSprite = internal.LoadSpriteForSure("assets/TStanding.png")
 		var gubbeWalkingRightSprite1 = internal.LoadSpriteForSure("assets/TWalking-1.png")
 		var gubbeWalkingRightSprite2 = internal.LoadSpriteForSure("assets/TWalking-2.png")
+		var gubbeKickingRightSprite = internal.LoadSpriteForSure("assets/TWalking-1.png")
 		gubbeImage2Sprite := map[Image]*pixel.Sprite{
 			WalkRight1:    gubbeWalkingRightSprite1,
 			WalkRight2:    gubbeWalkingRightSprite2,
 			StandingRight: gubbeStandingRightSprite,
+			KickRight:     gubbeKickingRightSprite,
 		}
 		var gubbe = MakeGubbe(pixel.Vec{X: 100, Y: 150}, gubbeImage2Sprite)
 		var scene internal.Thing = &GameScene{
@@ -107,9 +109,10 @@ func run() {
 
 	var rest float64 = 0
 	keyTranslation := map[pixelgl.Button]internal.ControlKey{
-		pixelgl.KeyLeft:  internal.Left,
-		pixelgl.KeyRight: internal.Right,
-		pixelgl.KeySpace: internal.Jump,
+		pixelgl.KeyLeft:         internal.Left,
+		pixelgl.KeyRight:        internal.Right,
+		pixelgl.KeySpace:        internal.Jump,
+		pixelgl.KeyRightControl: internal.Action,
 	}
 	for !win.Closed() {
 		// Janitor

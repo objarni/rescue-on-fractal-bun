@@ -11,12 +11,11 @@ import (
 	"unicode"
 )
 
-var step int = 0
+var globalStepVariable int = 0
 
 func TestMain(m *testing.M) {
 	// This code is run before all tests
 	r := approvals.UseReporter(reporters.NewIntelliJReporter())
-	step = 0
 	code := m.Run()
 	err := r.Close()
 	if err != nil {
@@ -25,9 +24,9 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func simulateSteps(gubbe *Gubbe, steps int, controls Controls) string {
+func simulateSteps(gubbe *Gubbe, simulationSteps int, controls Controls) string {
 	result := ""
-	for i := 0; i < steps; i++ {
+	for i := 0; i < simulationSteps; i++ {
 		if controls.left {
 			gubbe.HandleKeyDown(internal.Left)
 		} else {
@@ -38,10 +37,15 @@ func simulateSteps(gubbe *Gubbe, steps int, controls Controls) string {
 		} else {
 			gubbe.HandleKeyUp(internal.Right)
 		}
+		if controls.kick {
+			gubbe.HandleKeyDown(internal.Action)
+		} else {
+			gubbe.HandleKeyUp(internal.Action)
+		}
 		gubbe.Tick()
 		result += fmt.Sprintf("Step %02d\n%s\n%s\n",
-			0, printControls(controls), printGubbe(*gubbe))
-		step += 1
+			globalStepVariable, printControls(controls), printGubbe(*gubbe))
+		globalStepVariable += 1
 	}
 	return result
 }
@@ -75,7 +79,7 @@ func printVec(vec pixel.Vec) string {
 func printControls(controls Controls) string {
 	pad := ""
 	pad += checkPressed(controls.left, "<")
-	pad += checkPressed(controls.kick, "^")
+	pad += checkPressed(controls.kick, "K")
 	pad += checkPressed(controls.right, ">")
 	return "Pad: " + pad
 }
@@ -94,7 +98,7 @@ Issues with current approach
   dissimilar from game scenes/states when actually they
   work from same 'things': key presses, time passing, and
   rendering
-- step is always 00 in approval files
+- globalStepVariable is always 00 in approval files
 */
 
 var pressRight = Controls{left: false, right: true, kick: false}
@@ -106,6 +110,7 @@ func initGubbe() Gubbe {
 }
 
 func TestWalkingRight5Steps(t *testing.T) {
+	globalStepVariable = 0
 	result := toScenarioName(t.Name()) + "\n"
 	gubbe := initGubbe()
 	result += simulateSteps(&gubbe, 10, pressRight)
@@ -113,6 +118,7 @@ func TestWalkingRight5Steps(t *testing.T) {
 }
 
 func TestWalkingLeft5Steps(t *testing.T) {
+	globalStepVariable = 0
 	result := toScenarioName(t.Name()) + "\n"
 	gubbe := initGubbe()
 	result += simulateSteps(&gubbe, 10, pressLeft)
@@ -120,6 +126,7 @@ func TestWalkingLeft5Steps(t *testing.T) {
 }
 
 func TestWalkingLeftThenBackAgain(t *testing.T) {
+	globalStepVariable = 0
 	result := toScenarioName(t.Name()) + "\n"
 	gubbe := initGubbe()
 	result += simulateSteps(&gubbe, 5, pressLeft)
@@ -128,6 +135,7 @@ func TestWalkingLeftThenBackAgain(t *testing.T) {
 }
 
 func TestWalkingLeft5StepsThenStop(t *testing.T) {
+	globalStepVariable = 0
 	result := toScenarioName(t.Name()) + "\n"
 	gubbe := initGubbe()
 	result += simulateSteps(&gubbe, 5, pressLeft)
@@ -136,8 +144,17 @@ func TestWalkingLeft5StepsThenStop(t *testing.T) {
 }
 
 func TestLeftAndRightMeansStandStill(t *testing.T) {
+	globalStepVariable = 0
 	result := toScenarioName(t.Name()) + "\n"
 	gubbe := initGubbe()
 	result += simulateSteps(&gubbe, 5, Controls{left: true, right: true, kick: false})
+	approvals.VerifyString(t, result)
+}
+
+func TestKicking(t *testing.T) {
+	globalStepVariable = 0
+	result := toScenarioName(t.Name()) + "\n"
+	gubbe := initGubbe()
+	result += simulateSteps(&gubbe, 15, Controls{left: false, right: false, kick: true})
 	approvals.VerifyString(t, result)
 }
