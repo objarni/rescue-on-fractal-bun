@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
+	"math"
 	"objarni/rescue-on-fractal-bun/internal"
 )
 
@@ -16,9 +17,9 @@ type Ball struct {
 	config     Config
 }
 
-func (ball *Ball) HandleKeyDown(key internal.ControlKey) internal.Thing { return ball }
+func (ball *Ball) HandleKeyDown(_ internal.ControlKey) internal.Thing { return ball }
 
-func (ball *Ball) HandleKeyUp(key internal.ControlKey) internal.Thing { return ball }
+func (ball *Ball) HandleKeyUp(_ internal.ControlKey) internal.Thing { return ball }
 
 func (ball *Ball) Render(win *pixelgl.Window) {
 	mx := pixel.IM
@@ -44,14 +45,17 @@ func (ball *Ball) Tick() bool {
 	}
 	if ball.Pos.Y < radius*1.5 {
 		ball.Pos.Y = radius*1.5 + 1
-		ball.Vel = ball.Vel.ScaledXY(pixel.Vec{X: 1, Y: -1})
+		if math.Abs(ball.Vel.Y) < 120 {
+			ball.Vel.Y = 0
+		}
+		ball.Vel = ball.Vel.ScaledXY(pixel.Vec{X: 1, Y: -0.7})
 	}
 
 	return true
 }
 
-func MakeBall(config Config) Ball {
-	return Ball{
+func MakeBall(config Config) internal.Thing {
+	return &Ball{
 		Pos:        pixel.Vec{X: config.StartX, Y: config.StartY},
 		Vel:        pixel.Vec{X: config.SpeedX, Y: 0},
 		Rot:        0,

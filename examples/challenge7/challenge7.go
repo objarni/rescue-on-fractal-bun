@@ -18,6 +18,34 @@ import (
 const screenwidth = 800
 const screenheight = 600
 
+type GameScene struct {
+	ball  internal.Thing
+	gubbe internal.Thing
+}
+
+func (gameScene *GameScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
+	gameScene.gubbe.HandleKeyUp(key)
+	return gameScene
+}
+
+func (gameScene *GameScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
+	gameScene.gubbe.HandleKeyDown(key)
+	return gameScene
+}
+
+func (gameScene *GameScene) Tick() bool {
+	gameScene.gubbe.Tick()
+	gameScene.ball.Tick()
+	return true
+}
+
+func (gameScene *GameScene) Render(win *pixelgl.Window) {
+	win.Clear(colornames.Lightskyblue)
+	drawGround(win)
+	gameScene.gubbe.Render(win)
+	gameScene.ball.Render(win)
+}
+
 func run() {
 	cfg := pixelgl.WindowConfig{
 		Title:    "Kick the ball",
@@ -27,15 +55,9 @@ func run() {
 	win, err := pixelgl.NewWindow(cfg)
 	internal.PanicIfError(err)
 
-	var imd = imdraw.New(nil)
-	win.SetSmooth(true)
 	var config Config
-	var prevtime = time.Now()
-
 	config, err = TryReadCfgFrom("json/challenge7.json", config)
 	internal.PanicIfError(err)
-
-	var ball = MakeBall(config)
 
 	var gubbeStandingRightSprite = internal.LoadSpriteForSure("assets/TStanding.png")
 	var gubbeWalkingRightSprite1 = internal.LoadSpriteForSure("assets/TWalking-1.png")
@@ -46,6 +68,12 @@ func run() {
 		StandingRight: gubbeStandingRightSprite,
 	}
 	var gubbe = MakeGubbe(win.Bounds().Center().Sub(pixel.Vec{X: 0, Y: 150}), gubbeImage2Sprite)
+	var scene internal.Thing = &GameScene{
+		ball:  MakeBall(config),
+		gubbe: &gubbe,
+	}
+
+	var prevtime = time.Now()
 
 	var rest float64 = 0
 	for !win.Closed() {
@@ -62,29 +90,29 @@ func run() {
 		prevtime = now
 		deltaMs += rest
 
+		// Keyboard input
+		if win.JustPressed(pixelgl.KeyLeft) {
+			scene.HandleKeyDown(internal.Left)
+		}
+		if win.JustReleased(pixelgl.KeyLeft) {
+			scene.HandleKeyUp(internal.Left)
+		}
+		if win.JustPressed(pixelgl.KeyRight) {
+			scene.HandleKeyDown(internal.Right)
+		}
+		if win.JustReleased(pixelgl.KeyRight) {
+			scene.HandleKeyUp(internal.Right)
+		}
+
 		// Update entities
 		steps := int(math.Floor(deltaMs / 5))
 		rest = deltaMs - float64(steps*5)
 		for i := 0; i < steps; i++ {
-			if win.Pressed(pixelgl.KeyLeft) {
-				gubbe.HandleKeyDown(internal.Left)
-			} else {
-				gubbe.HandleKeyUp(internal.Left)
-			}
-			if win.Pressed(pixelgl.KeyRight) {
-				gubbe.HandleKeyDown(internal.Right)
-			} else {
-				gubbe.HandleKeyUp(internal.Right)
-			}
-			gubbe.Tick()
-			ball.Tick()
+			scene.Tick()
 		}
 
 		// Render
-		win.Clear(colornames.Lightskyblue)
-		drawGround(imd, win)
-		gubbe.Render(win)
-		ball.Render(win)
+		scene.Render(win)
 
 		// Window/OS
 		win.Update()
@@ -92,12 +120,14 @@ func run() {
 	}
 }
 
-func drawGround(imd *imdraw.IMDraw, win *pixelgl.Window) {
+func drawGround(win *pixelgl.Window) {
+	var imd = imdraw.New(nil)
+	win.SetSmooth(true)
 	imd.Clear()
-	imd.Push(pixel.ZV)
 	imd.Color = colornames.Darkgreen
-	imd.Push(pixel.Vec{X: screenwidth, Y: 75})
+	imd.Push(pixel.ZV)
 	imd.Color = colornames.Lightgreen
+	imd.Push(pixel.Vec{X: screenwidth, Y: 75})
 	imd.Rectangle(0)
 	imd.Draw(win)
 }
