@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
@@ -62,7 +61,6 @@ func (ball *Ball) Tick() bool {
 			//	Volume:   0,
 			//	Silent:   false,
 			//}
-			fmt.Println(ball.Vel.Y)
 			//volume.Volume = 00.01 * ball.Vel.Y - 10
 			speaker.Play(streamer)
 			/*

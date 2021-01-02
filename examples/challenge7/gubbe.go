@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"objarni/rescue-on-fractal-bun/internal"
@@ -89,6 +88,9 @@ func (gubbe *Gubbe) HandleKeyUp(key internal.ControlKey) internal.Thing {
 	if key == internal.Right {
 		gubbe.controls.right = false
 	}
+	if key == internal.Action {
+		gubbe.controls.kick = false
+	}
 	return gubbe
 }
 
@@ -104,8 +106,6 @@ func (gubbe *Gubbe) Render(win *pixelgl.Window) {
 	gubbeSprite := gubbe.images[gubbe.image]
 	gubbeSprite.Draw(win, mx)
 }
-
-var globalFoo = 0
 
 func (gubbe *Gubbe) Tick() bool {
 	// STATE DEPENDENT BEHAVIOR
@@ -139,12 +139,11 @@ func (gubbe *Gubbe) Tick() bool {
 			initWalking(gubbe, Left)
 		}
 	case Kicking:
-		globalFoo += 1
-		fmt.Println("kicking", globalFoo)
 		gubbe.counter++
-		fmt.Println(gubbe.counter)
-		if gubbe.counter == 10 {
-			initStanding(gubbe)
+		if gubbe.counter >= 10 {
+			if !gubbe.controls.kick {
+				initStanding(gubbe)
+			}
 		}
 	}
 

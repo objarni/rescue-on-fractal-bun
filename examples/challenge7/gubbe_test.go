@@ -151,10 +151,19 @@ func TestLeftAndRightMeansStandStill(t *testing.T) {
 	approvals.VerifyString(t, result)
 }
 
-func TestKicking(t *testing.T) {
+func TestLongKick(t *testing.T) {
 	globalStepVariable = 0
 	result := toScenarioName(t.Name()) + "\n"
 	gubbe := initGubbe()
 	result += simulateSteps(&gubbe, 15, Controls{left: false, right: false, kick: true})
+	approvals.VerifyString(t, result)
+}
+
+func TestQuickKick(t *testing.T) {
+	globalStepVariable = 0
+	result := toScenarioName(t.Name()) + "\n"
+	gubbe := initGubbe()
+	result += simulateSteps(&gubbe, 5, Controls{left: false, right: false, kick: true})
+	result += simulateSteps(&gubbe, 10, Controls{left: false, right: false, kick: false})
 	approvals.VerifyString(t, result)
 }
