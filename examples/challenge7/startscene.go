@@ -50,7 +50,7 @@ func (startScene *StartScene) Render(win *pixelgl.Window) {
 	basicAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	basicTxt := text.New(pixel.V(0, 0), basicAtlas)
 	basicTxt.Clear()
-	_, _ = fmt.Fprintln(basicTxt, "PRESS SPACE TO PLAY")
+	_, _ = fmt.Fprint(basicTxt, "PRESS SPACE TO PLAY")
 	tbh := basicTxt.Bounds().Size().Scaled(0.5 * 5)
 	fmt.Print(tbh)
 	pos := win.Bounds().Center().Add(pixel.Vec{X: -tbh.X, Y: tbh.Y})

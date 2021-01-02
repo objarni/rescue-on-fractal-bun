@@ -27,7 +27,7 @@ func run() {
 	win, err := pixelgl.NewWindow(cfg)
 	internal.PanicIfError(err)
 	err = speaker.Init(
-		beep.SampleRate(22050),
+		beep.SampleRate(44100),
 		2000,
 	) //done := make(chan bool)
 	internal.PanicIfError(err)

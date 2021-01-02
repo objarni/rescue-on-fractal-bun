@@ -45,6 +45,7 @@ func PanicIfError(err error) {
 }
 
 func LoadWav(wavFile string) (error, beep.Format, *beep.Buffer) {
+	fmt.Println("Loading sound: " + wavFile)
 	file, err := os.Open(wavFile)
 	PanicIfError(err)
 	streamer, format, err := wav.Decode(file)

@@ -89,6 +89,6 @@ func MakeBall(config Config) Ball {
 		Vel:         pixel.Vec{X: config.SpeedX, Y: 0},
 		Rot:         0,
 		ballSprite:  internal.LoadSpriteForSure("assets/Ball.png"),
-		bounceSound: internal.LoadWavForSure("assets/PickupCoin.wav"),
+		bounceSound: internal.LoadWavForSure("assets/Bounce.wav"),
 	}
 }
