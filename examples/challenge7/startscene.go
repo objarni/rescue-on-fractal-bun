@@ -46,10 +46,5 @@ func (startScene *StartScene) Render(win *pixelgl.Window) {
 	win.Clear(colornames.Green)
 }
 
-type GameScene struct {
-	ball  internal.Thing
-	gubbe Gubbe
-}
-
 type StartScene struct {
 }

@@ -20,9 +20,18 @@ func (gameScene *GameScene) HandleKeyDown(key internal.ControlKey) internal.Thin
 
 func (gameScene *GameScene) Tick() bool {
 	gameScene.gubbe.Tick()
+	//kickImpulse := gameScene.gubbe.KickImpulse != nil
+	//if kickImpulse && kickImpulse.Origin.Inside(gameScene.ball.Disc){
+	//	gameScene.ball = kickBall(gameScene.ball, kickImpulse)
+	//}
 	gameScene.ball.Tick()
 	return true
 }
+
+//func kickBall(ball Ball, impulse KickImpulse) Ball {
+//	ball.Vel = ball.Vel.Add(impulse.Vector)
+//
+//}
 
 func (gameScene *GameScene) Render(win *pixelgl.Window) {
 	win.Clear(colornames.Lightskyblue)
@@ -41,4 +50,9 @@ func drawGround(win *pixelgl.Window) {
 	imd.Push(pixel.Vec{X: screenwidth, Y: 75})
 	imd.Rectangle(0)
 	imd.Draw(win)
+}
+
+type GameScene struct {
+	ball  Ball
+	gubbe Gubbe
 }

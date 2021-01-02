@@ -83,8 +83,8 @@ func (ball *Ball) Tick() bool {
 	return true
 }
 
-func MakeBall(config Config) internal.Thing {
-	return &Ball{
+func MakeBall(config Config) Ball {
+	return Ball{
 		Pos:         pixel.Vec{X: config.StartX, Y: config.StartY},
 		Vel:         pixel.Vec{X: config.SpeedX, Y: 0},
 		Rot:         0,
