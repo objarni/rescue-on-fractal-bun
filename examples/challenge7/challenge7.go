@@ -32,7 +32,7 @@ func run() {
 	) //done := make(chan bool)
 	internal.PanicIfError(err)
 
-	var scene internal.Thing = &StartScene{}
+	var scene internal.Thing = MakeStartScene()
 	var prevtime = time.Now()
 
 	var rest float64 = 0

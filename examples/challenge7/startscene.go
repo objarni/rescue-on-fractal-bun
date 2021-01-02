@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
+	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
+	"golang.org/x/image/font/basicfont"
 	"objarni/rescue-on-fractal-bun/internal"
 )
 
@@ -44,6 +47,29 @@ func (startScene *StartScene) Tick() bool {
 
 func (startScene *StartScene) Render(win *pixelgl.Window) {
 	win.Clear(colornames.Green)
+	basicAtlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
+	basicTxt := text.New(pixel.V(0, 0), basicAtlas)
+	basicTxt.Clear()
+	_, _ = fmt.Fprintln(basicTxt, "PRESS SPACE TO PLAY")
+	tbh := basicTxt.Bounds().Size().Scaled(0.5 * 5)
+	fmt.Print(tbh)
+	pos := win.Bounds().Center().Add(pixel.Vec{X: -tbh.X, Y: tbh.Y})
+	basicTxt.Draw(win, pixel.IM.Moved(pos).Scaled(pos, 5))
+}
+
+/*
+y
+^
+|
+|
+|
++---------> x
+TEXTBOX
+
+
+*/
+func MakeStartScene() *StartScene {
+	return &StartScene{}
 }
 
 type StartScene struct {
