@@ -1,15 +1,12 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	_ "image/jpeg"
 	_ "image/png"
-	"io/ioutil"
 	"math"
 	"objarni/rescue-on-fractal-bun/internal"
 	"time"
@@ -80,28 +77,6 @@ func run() {
 		win.Update()
 		time.Sleep(time.Millisecond * 5)
 	}
-}
-
-type Config struct {
-	Gravity float64
-	SpeedX  float64
-	StartX  float64
-	StartY  float64
-}
-
-func TryReadCfgFrom(filename string, defaultCfg Config) (Config, error) {
-	byteArray, err := ioutil.ReadFile(filename)
-	if err != nil {
-		fmt.Println("ReadFile error, defaulting")
-		return defaultCfg, err
-	}
-	var cfg = defaultCfg
-	err = json.Unmarshal(byteArray, &cfg)
-	if err != nil {
-		fmt.Println("JSON parse error, defaulting. JSON was: " + string(byteArray))
-		return defaultCfg, err
-	}
-	return cfg, nil
 }
 
 func main() {

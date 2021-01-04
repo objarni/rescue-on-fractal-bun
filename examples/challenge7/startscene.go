@@ -30,7 +30,7 @@ func (startScene *StartScene) HandleKeyDown(key internal.ControlKey) internal.Th
 			StandingRight: gubbeStandingRightSprite,
 			KickRight:     gubbeKickingRightSprite,
 		}
-		var gubbe = MakeGubbe(pixel.Vec{X: 100, Y: 150}, gubbeImage2Sprite)
+		var gubbe = MakeGubbe(pixel.Vec{X: 100, Y: 150}, gubbeImage2Sprite, &config)
 		var scene internal.Thing = &GameScene{
 			ball:  MakeBall(config),
 			gubbe: gubbe,
@@ -52,7 +52,6 @@ func (startScene *StartScene) Render(win *pixelgl.Window) {
 	basicTxt.Clear()
 	_, _ = fmt.Fprint(basicTxt, "PRESS SPACE TO PLAY")
 	tbh := basicTxt.Bounds().Size().Scaled(0.5 * 5)
-	fmt.Print(tbh)
 	pos := win.Bounds().Center().Add(pixel.Vec{X: -tbh.X, Y: tbh.Y})
 	basicTxt.Draw(win, pixel.IM.Moved(pos).Scaled(pos, 5))
 }

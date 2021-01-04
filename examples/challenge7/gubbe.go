@@ -69,6 +69,7 @@ type Gubbe struct {
 	vel     pixel.Vec
 	acc     pixel.Vec
 	kick    *KickImpulse
+	cfg     *Config
 
 	controls Controls
 	images   map[Image]*pixel.Sprite
@@ -196,7 +197,11 @@ func initKicking(g *Gubbe) {
 	g.counter = 0
 }
 
-func MakeGubbe(pos pixel.Vec, images map[Image]*pixel.Sprite) Gubbe {
+func MakeGubbe(
+	pos pixel.Vec,
+	images map[Image]*pixel.Sprite,
+	cfg *Config,
+) Gubbe {
 	return Gubbe{
 		state:    Standing,
 		looking:  Right,
@@ -207,5 +212,6 @@ func MakeGubbe(pos pixel.Vec, images map[Image]*pixel.Sprite) Gubbe {
 		acc:      pixel.ZV,
 		controls: Controls{false, false, false},
 		images:   images,
+		cfg:      cfg,
 	}
 }
