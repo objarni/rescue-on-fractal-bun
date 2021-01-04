@@ -83,10 +83,10 @@ func (ball *Ball) Tick() bool {
 	return true
 }
 
-func MakeBall(config Config) Ball {
+func MakeBall(cfg *Config) Ball {
 	return Ball{
-		Pos:         pixel.Vec{X: config.StartX, Y: config.StartY},
-		Vel:         pixel.Vec{X: config.SpeedX, Y: 0},
+		Pos:         pixel.Vec{X: cfg.StartX, Y: cfg.StartY},
+		Vel:         pixel.Vec{X: cfg.SpeedX, Y: 0},
 		Rot:         0,
 		ballSprite:  internal.LoadSpriteForSure("assets/Ball.png"),
 		bounceSound: internal.LoadWavForSure("assets/Bounce.wav"),

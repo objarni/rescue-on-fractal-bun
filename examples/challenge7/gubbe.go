@@ -6,8 +6,6 @@ import (
 	"objarni/rescue-on-fractal-bun/internal"
 )
 
-const MAXVELOCITY = 2
-const ACCELERATION = 0.03
 const DECCELERATION = 0.95
 
 type State int
@@ -131,7 +129,7 @@ func (gubbe *Gubbe) Tick() bool {
 		gubbe.vel = gubbe.vel.Scaled(DECCELERATION)
 	case Walking:
 		gubbe.counter++
-		if gubbe.counter%30 == 0 {
+		if gubbe.counter%gubbe.cfg.GubbeWalkAnimTickSwitch == 0 {
 			if gubbe.image == WalkRight1 {
 				gubbe.image = WalkRight2
 			} else {
@@ -155,7 +153,7 @@ func (gubbe *Gubbe) Tick() bool {
 		} else {
 			gubbe.kick = nil
 		}
-		if gubbe.counter >= 25 {
+		if gubbe.counter >= gubbe.cfg.GubbeKickTicks {
 			if !gubbe.controls.kick {
 				initStanding(gubbe)
 			}
@@ -165,8 +163,8 @@ func (gubbe *Gubbe) Tick() bool {
 
 	// STATE INDEPENDENT BEHAVIOR
 	gubbe.vel = gubbe.vel.Add(gubbe.acc)
-	if gubbe.vel.Len() > MAXVELOCITY {
-		gubbe.vel = gubbe.vel.Unit().Scaled(MAXVELOCITY)
+	if gubbe.vel.Len() > gubbe.cfg.GubbeMaxVelocity {
+		gubbe.vel = gubbe.vel.Unit().Scaled(gubbe.cfg.GubbeMaxVelocity)
 	}
 	gubbe.pos = gubbe.pos.Add(gubbe.vel)
 
@@ -184,7 +182,7 @@ func initWalking(g *Gubbe, looking Looking) {
 	g.state = Walking
 	g.looking = looking
 	g.image = WalkRight1
-	g.acc = pixel.Vec{X: ACCELERATION, Y: 0}
+	g.acc = pixel.Vec{X: g.cfg.GubbeAcceleration, Y: 0}
 	if looking == Left {
 		g.acc.X = -g.acc.X
 	}

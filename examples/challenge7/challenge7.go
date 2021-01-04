@@ -16,20 +16,18 @@ const screenwidth = 800
 const screenheight = 600
 
 func run() {
-	cfg := pixelgl.WindowConfig{
+	win, err := pixelgl.NewWindow(pixelgl.WindowConfig{
 		Title:    "Kick the ball",
 		Bounds:   pixel.R(0, 0, screenwidth, screenheight),
 		Position: pixel.Vec{X: screenwidth / 2, Y: screenheight / 2},
-	}
-	win, err := pixelgl.NewWindow(cfg)
+	})
 	internal.PanicIfError(err)
 	err = speaker.Init(
 		beep.SampleRate(44100),
 		2000,
-	) //done := make(chan bool)
+	)
 	internal.PanicIfError(err)
 
-	var scene internal.Thing = MakeStartScene()
 	var prevtime = time.Now()
 
 	var rest float64 = 0
@@ -39,13 +37,19 @@ func run() {
 		pixelgl.KeySpace:        internal.Jump,
 		pixelgl.KeyRightControl: internal.Action,
 	}
+	cfg := TryReadCfgFrom("json/challenge7.json", Config{})
+
+	var scene internal.Thing = MakeStartScene(&cfg)
+
 	for !win.Closed() {
 		// Janitor
 		if win.JustPressed(pixelgl.KeyEscape) {
 			win.SetClosed(true)
 		}
-		//config, err = TryReadCfgFrom("json/challenge7.json", config)
-		internal.PanicIfError(err)
+		if win.JustPressed(pixelgl.KeyNumLock) {
+			//fmt.Println("Re-read cfg at", time.Now().Format(time.Stamp))
+			cfg = TryReadCfgFrom("json/challenge7.json", cfg)
+		}
 
 		// Compute time deltaMs
 		var now = time.Now()

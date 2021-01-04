@@ -16,9 +16,6 @@ func (startScene *StartScene) HandleKeyUp(_ internal.ControlKey) internal.Thing 
 
 func (startScene *StartScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Jump {
-		var config Config
-		config, err := TryReadCfgFrom("json/challenge7.json", config)
-		internal.PanicIfError(err)
 
 		var gubbeStandingRightSprite = internal.LoadSpriteForSure("assets/TStanding.png")
 		var gubbeWalkingRightSprite1 = internal.LoadSpriteForSure("assets/TWalking-1.png")
@@ -30,9 +27,9 @@ func (startScene *StartScene) HandleKeyDown(key internal.ControlKey) internal.Th
 			StandingRight: gubbeStandingRightSprite,
 			KickRight:     gubbeKickingRightSprite,
 		}
-		var gubbe = MakeGubbe(pixel.Vec{X: 100, Y: 150}, gubbeImage2Sprite, &config)
+		var gubbe = MakeGubbe(pixel.Vec{X: 100, Y: 150}, gubbeImage2Sprite, startScene.cfg)
 		var scene internal.Thing = &GameScene{
-			ball:  MakeBall(config),
+			ball:  MakeBall(startScene.cfg),
 			gubbe: gubbe,
 		}
 
@@ -67,9 +64,10 @@ TEXTBOX
 
 
 */
-func MakeStartScene() *StartScene {
-	return &StartScene{}
+func MakeStartScene(cfg *Config) *StartScene {
+	return &StartScene{cfg: cfg}
 }
 
 type StartScene struct {
+	cfg *Config
 }

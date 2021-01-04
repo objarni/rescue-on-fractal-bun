@@ -2,5 +2,9 @@
   "Gravity": 149.0,
   "SpeedX": 150.0,
   "StartX": 200.0,
-  "StartY": 200.0
+  "StartY": 200.0,
+  "GubbeMaxVelocity": 2.5,
+  "GubbeKickTicks": 25,
+  "GubbeWalkAnimTickSwitch": 30,
+  "GubbeAcceleration": 0.05
 }
