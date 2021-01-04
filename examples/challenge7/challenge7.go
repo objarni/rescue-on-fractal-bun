@@ -47,7 +47,6 @@ func run() {
 			win.SetClosed(true)
 		}
 		if win.JustPressed(pixelgl.KeyNumLock) {
-			//fmt.Println("Re-read cfg at", time.Now().Format(time.Stamp))
 			cfg = TryReadCfgFrom("json/challenge7.json", cfg)
 		}
 

@@ -107,7 +107,17 @@ var pressLeft = Controls{left: true, right: false, kick: false}
 var pressNothing = Controls{left: false, right: false, kick: false}
 
 func initGubbe() Gubbe {
-	return MakeGubbe(pixel.ZV, nil)
+	cfg := Config{
+		Gravity:                 149.0,
+		SpeedX:                  150.0,
+		StartX:                  200.0,
+		StartY:                  200.0,
+		GubbeMaxVelocity:        2.5,
+		GubbeKickTicks:          25,
+		GubbeWalkAnimTickSwitch: 30,
+		GubbeAcceleration:       0.05,
+	}
+	return MakeGubbe(pixel.ZV, nil, &cfg)
 }
 
 func TestWalkingRight5Steps(t *testing.T) {

@@ -4,9 +4,9 @@ Pad: <..
 State: Walking
 Looking: Left
 Image: WalkRight1
-Pos: (-0.0, 0.0)
-Vel: (-0.0, 0.0)
-Acc: (-0.0, 0.0)
+Pos: (-0.1, 0.0)
+Vel: (-0.1, 0.0)
+Acc: (-0.1, 0.0)
 Kick: <nil>
 
 Step 01
@@ -14,9 +14,9 @@ Pad: <..
 State: Walking
 Looking: Left
 Image: WalkRight1
-Pos: (-0.1, 0.0)
+Pos: (-0.2, 0.0)
 Vel: (-0.1, 0.0)
-Acc: (-0.0, 0.0)
+Acc: (-0.1, 0.0)
 Kick: <nil>
 
 Step 02
@@ -24,9 +24,9 @@ Pad: <..
 State: Walking
 Looking: Left
 Image: WalkRight1
-Pos: (-0.2, 0.0)
-Vel: (-0.1, 0.0)
-Acc: (-0.0, 0.0)
+Pos: (-0.3, 0.0)
+Vel: (-0.2, 0.0)
+Acc: (-0.1, 0.0)
 Kick: <nil>
 
 Step 03
@@ -34,9 +34,9 @@ Pad: <..
 State: Walking
 Looking: Left
 Image: WalkRight1
-Pos: (-0.3, 0.0)
-Vel: (-0.1, 0.0)
-Acc: (-0.0, 0.0)
+Pos: (-0.5, 0.0)
+Vel: (-0.2, 0.0)
+Acc: (-0.1, 0.0)
 Kick: <nil>
 
 Step 04
@@ -44,9 +44,9 @@ Pad: <..
 State: Walking
 Looking: Left
 Image: WalkRight1
-Pos: (-0.4, 0.0)
-Vel: (-0.1, 0.0)
-Acc: (-0.0, 0.0)
+Pos: (-0.8, 0.0)
+Vel: (-0.2, 0.0)
+Acc: (-0.1, 0.0)
 Kick: <nil>
 
 Step 05
@@ -54,8 +54,8 @@ Pad: ...
 State: Standing
 Looking: Left
 Image: StandingRight
-Pos: (-0.6, 0.0)
-Vel: (-0.1, 0.0)
+Pos: (-1.0, 0.0)
+Vel: (-0.2, 0.0)
 Acc: (0.0, 0.0)
 Kick: <nil>
 
@@ -64,8 +64,8 @@ Pad: ...
 State: Standing
 Looking: Left
 Image: StandingRight
-Pos: (-0.7, 0.0)
-Vel: (-0.1, 0.0)
+Pos: (-1.2, 0.0)
+Vel: (-0.2, 0.0)
 Acc: (0.0, 0.0)
 Kick: <nil>
 
@@ -74,8 +74,8 @@ Pad: ...
 State: Standing
 Looking: Left
 Image: StandingRight
-Pos: (-0.9, 0.0)
-Vel: (-0.1, 0.0)
+Pos: (-1.5, 0.0)
+Vel: (-0.2, 0.0)
 Acc: (0.0, 0.0)
 Kick: <nil>
 
@@ -84,8 +84,8 @@ Pad: ...
 State: Standing
 Looking: Left
 Image: StandingRight
-Pos: (-1.0, 0.0)
-Vel: (-0.1, 0.0)
+Pos: (-1.7, 0.0)
+Vel: (-0.2, 0.0)
 Acc: (0.0, 0.0)
 Kick: <nil>
 
@@ -94,8 +94,8 @@ Pad: ...
 State: Standing
 Looking: Left
 Image: StandingRight
-Pos: (-1.1, 0.0)
-Vel: (-0.1, 0.0)
+Pos: (-1.9, 0.0)
+Vel: (-0.2, 0.0)
 Acc: (0.0, 0.0)
 Kick: <nil>
 
