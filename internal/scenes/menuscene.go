@@ -26,11 +26,11 @@ type MenuScene struct {
 	quit            bool
 }
 
-func MakeMenuScene() MenuScene {
+func MakeMenuScene() *MenuScene {
 	atlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	err, _, switchSound := internal.LoadWav("assets/MenuPointerMoved.wav")
 	internal.PanicIfError(err)
-	return MenuScene{
+	return &MenuScene{
 		currentitem:     Play,
 		itemSwitchSound: switchSound,
 		textbox:         text.New(pixel.V(0, 0), atlas),
@@ -38,7 +38,7 @@ func MakeMenuScene() MenuScene {
 	}
 }
 
-func (menuScene MenuScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
+func (menuScene *MenuScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Jump {
 		if menuScene.currentitem == Play {
 			return MakeMapScene()
@@ -54,11 +54,11 @@ func (menuScene MenuScene) HandleKeyDown(key internal.ControlKey) internal.Thing
 	return menuScene
 }
 
-func (menuScene MenuScene) HandleKeyUp(_ internal.ControlKey) internal.Thing {
+func (menuScene *MenuScene) HandleKeyUp(_ internal.ControlKey) internal.Thing {
 	return menuScene
 }
 
-func (menuScene MenuScene) Render(win *pixelgl.Window) {
+func (menuScene *MenuScene) Render(win *pixelgl.Window) {
 	win.Clear(colornames.Aliceblue)
 	tb := menuScene.textbox
 	tb.Clear()
@@ -77,6 +77,6 @@ func (menuScene MenuScene) Render(win *pixelgl.Window) {
 	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 2), colornames.Black)
 }
 
-func (menuScene MenuScene) Tick() bool {
+func (menuScene *MenuScene) Tick() bool {
 	return !menuScene.quit
 }
