@@ -26,13 +26,21 @@ func run() {
 
 	err = speaker.Init(beep.SampleRate(22050), 1000)
 
-	controllerMap := make(map[pixelgl.Button]internal.ControlKey)
-	controllerMap[pixelgl.KeyUp] = internal.Up
-	controllerMap[pixelgl.KeyDown] = internal.Down
-	controllerMap[pixelgl.KeyLeft] = internal.Left
-	controllerMap[pixelgl.KeyRight] = internal.Right
-	controllerMap[pixelgl.KeySpace] = internal.Jump
-	controllerMap[pixelgl.KeyRightControl] = internal.Action
+	keyMap := make(map[pixelgl.Button]internal.ControlKey)
+	keyMap[pixelgl.KeyUp] = internal.Up
+	keyMap[pixelgl.KeyDown] = internal.Down
+	keyMap[pixelgl.KeyLeft] = internal.Left
+	keyMap[pixelgl.KeyRight] = internal.Right
+	keyMap[pixelgl.KeySpace] = internal.Jump
+	keyMap[pixelgl.KeyRightControl] = internal.Action
+
+	padMap := make(map[pixelgl.GamepadButton]internal.ControlKey)
+	padMap[pixelgl.ButtonDpadUp] = internal.Up
+	padMap[pixelgl.ButtonDpadDown] = internal.Down
+	padMap[pixelgl.ButtonDpadLeft] = internal.Left
+	padMap[pixelgl.ButtonDpadRight] = internal.Right
+	padMap[pixelgl.ButtonA] = internal.Jump
+	padMap[pixelgl.ButtonB] = internal.Action
 
 	for !win.Closed() {
 
@@ -41,51 +49,8 @@ func run() {
 			win.SetClosed(true)
 		}
 
-		if win.JoystickJustPressed(pixelgl.Joystick1, pixelgl.ButtonDpadLeft) {
-			scene = scene.HandleKeyDown(internal.Left)
-		}
-		if win.JoystickJustReleased(pixelgl.Joystick1, pixelgl.ButtonDpadLeft) {
-			scene = scene.HandleKeyUp(internal.Left)
-		}
-		if win.JoystickJustPressed(pixelgl.Joystick1, pixelgl.ButtonDpadRight) {
-			scene = scene.HandleKeyDown(internal.Right)
-		}
-		if win.JoystickJustReleased(pixelgl.Joystick1, pixelgl.ButtonDpadRight) {
-			scene = scene.HandleKeyUp(internal.Right)
-		}
-		if win.JoystickJustPressed(pixelgl.Joystick1, pixelgl.ButtonDpadUp) {
-			scene = scene.HandleKeyDown(internal.Up)
-		}
-		if win.JoystickJustReleased(pixelgl.Joystick1, pixelgl.ButtonDpadUp) {
-			scene = scene.HandleKeyUp(internal.Up)
-		}
-		if win.JoystickJustPressed(pixelgl.Joystick1, pixelgl.ButtonDpadDown) {
-			scene = scene.HandleKeyDown(internal.Down)
-		}
-		if win.JoystickJustReleased(pixelgl.Joystick1, pixelgl.ButtonDpadDown) {
-			fmt.Println(pixelgl.ButtonDpadDown)
-			scene = scene.HandleKeyUp(internal.Down)
-		}
-		if win.JoystickJustPressed(pixelgl.Joystick1, pixelgl.ButtonA) {
-			scene = scene.HandleKeyDown(internal.Jump)
-		}
-		if win.JoystickJustReleased(pixelgl.Joystick1, pixelgl.ButtonA) {
-			fmt.Println(pixelgl.ButtonDpadDown)
-			scene = scene.HandleKeyUp(internal.Jump)
-		}
-		if win.JoystickJustPressed(pixelgl.Joystick1, pixelgl.ButtonB) {
-			scene = scene.HandleKeyDown(internal.Action)
-		}
-		if win.JoystickJustReleased(pixelgl.Joystick1, pixelgl.ButtonB) {
-			fmt.Println(pixelgl.ButtonDpadDown)
-			scene = scene.HandleKeyUp(internal.Action)
-		}
-
-		//if win.JoystickPresent(pixelgl.Joystick1) {
-		//	fmt.Println("js1:", win.JoystickName(pixelgl.Joystick1))
-		//}
-
-		for key, control := range controllerMap {
+		// Keyboard control
+		for key, control := range keyMap {
 			// Hmm. Just Pressed/Released APIs is 'key repeat' at least on win - problem?
 			if win.JustPressed(key) {
 				fmt.Println("pressed: ", key)
@@ -95,11 +60,25 @@ func run() {
 				fmt.Println("released: ", key)
 				scene = scene.HandleKeyUp(control)
 			}
-			if !scene.Tick() {
-				win.SetClosed(true)
-				continue
+		}
+
+		// Gamepad control
+		for pad, control := range padMap {
+			// @remember: do we want to check all joysticks not just 1?
+			if win.JoystickJustPressed(pixelgl.Joystick1, pad) {
+				fmt.Println("pressed: ", pad)
+				scene = scene.HandleKeyDown(control)
+			}
+			if win.JoystickJustReleased(pixelgl.Joystick1, pad) {
+				fmt.Println("released: ", pad)
+				scene = scene.HandleKeyUp(control)
 			}
 		}
+		if !scene.Tick() {
+			win.SetClosed(true)
+			continue
+		}
+
 		scene.Render(win)
 		win.Update()
 		time.Sleep(time.Millisecond * 5)

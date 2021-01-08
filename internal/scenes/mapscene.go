@@ -103,7 +103,7 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 }
 
 func (scene *MapScene) Tick() bool {
-	scene.heroPos = scene.heroPos.Add(scene.heroVel.Scaled(0.1))
+	scene.heroPos = scene.heroPos.Add(scene.heroVel.Scaled(1))
 	return true
 }
 
