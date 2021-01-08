@@ -104,6 +104,18 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 
 func (scene *MapScene) Tick() bool {
 	scene.heroPos = scene.heroPos.Add(scene.heroVel.Scaled(1))
+	if scene.heroPos.X < 0 {
+		scene.heroPos.X = 0
+	}
+	if scene.heroPos.X > 799 {
+		scene.heroPos.X = 799
+	}
+	if scene.heroPos.Y < 0 {
+		scene.heroPos.Y = 0
+	}
+	if scene.heroPos.Y > 599 {
+		scene.heroPos.Y = 599
+	}
 	return true
 }
 
