@@ -8,15 +8,18 @@ import (
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
 	"golang.org/x/image/font/basicfont"
+	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
 )
 
 type MapScene struct {
-	textbox     *text.Text
-	mapImage    *pixel.Sprite
-	levelCoords []pixel.Vec
-	heroPos     pixel.Vec
-	heroVel     pixel.Vec
+	textbox        *text.Text
+	mapImage       *pixel.Sprite
+	levelCoords    []pixel.Vec
+	heroPos        pixel.Vec
+	heroVel        pixel.Vec
+	highlight      int
+	highlightBlink int
 }
 
 func MakeMapScene() *MapScene {
@@ -32,6 +35,7 @@ func MakeMapScene() *MapScene {
 		levelCoords: levelCoords,
 		heroPos:     pixel.Vec{50, 50},
 		heroVel:     pixel.ZV,
+		highlight:   0,
 	}
 }
 
@@ -78,10 +82,11 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 
 	// Level locations
 	var imd = imdraw.New(nil)
-	imd.Color = colornames.Darkslateblue
 	for _, vec := range scene.levelCoords {
-		imd.Push(v(0, 600).Add(vec.ScaledXY(v(1, -1))))
-		imd.Circle(12, 3)
+		drawCircle(imd, colornames.Darkslateblue, vec)
+	}
+	if scene.highlight != -1 && scene.highlightBlink/10%2 == 0 {
+		drawCircle(imd, colornames.Green, scene.levelCoords[scene.highlight])
 	}
 
 	// Hero position
@@ -102,6 +107,12 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 2), colornames.Black)
 }
 
+func drawCircle(imd *imdraw.IMDraw, color color.RGBA, vec pixel.Vec) {
+	imd.Color = color
+	imd.Push(v(0, 600).Add(vec.ScaledXY(v(1, -1))))
+	imd.Circle(12, 3)
+}
+
 func (scene *MapScene) Tick() bool {
 	scene.heroPos = scene.heroPos.Add(scene.heroVel.Scaled(1))
 	if scene.heroPos.X < 0 {
@@ -116,6 +127,7 @@ func (scene *MapScene) Tick() bool {
 	if scene.heroPos.Y > 599 {
 		scene.heroPos.Y = 599
 	}
+	scene.highlightBlink += 1
 	return true
 }
 
