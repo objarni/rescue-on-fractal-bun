@@ -13,13 +13,14 @@ import (
 
 func run() {
 
-	var scene internal.Thing = scenes.MakeMenuScene()
+	cfg := scenes.TryReadCfgFrom("json/rescue.json", scenes.Config{})
 
-	cfg := pixelgl.WindowConfig{
+	var scene internal.Thing = scenes.MakeMenuScene(&cfg)
+
+	win, err := pixelgl.NewWindow(pixelgl.WindowConfig{
 		Title:  "Rescue on fractal bun (work title)",
 		Bounds: pixel.R(0, 0, 800, 600),
-	}
-	win, err := pixelgl.NewWindow(cfg)
+	})
 	if err != nil {
 		panic(err)
 	}
@@ -48,6 +49,9 @@ func run() {
 		if win.JustPressed(pixelgl.KeyEscape) {
 			win.SetClosed(true)
 		}
+
+		// Tweak system
+		cfg = scenes.TryReadCfgFrom("json/rescue.json", cfg)
 
 		// Keyboard control
 		for key, control := range keyMap {

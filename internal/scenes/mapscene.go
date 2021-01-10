@@ -12,24 +12,51 @@ import (
 	"objarni/rescue-on-fractal-bun/internal"
 )
 
+type LocationState int
+
+/*
+På kartan kan man besöka "locations".
+Man befinner sig alltid på precis en location, current.
+När man går in på en location, hamnar man på en "kartpunkt"
+i en bana. Man kan alltid exita tillbaka till kartan
+via en kartpunkt. Om man på en bana hittar en ny kartpunkt,
+d.v.s en kartpunkt som inte besökts förut, dyker den upp
+på kartan (kanske ett ljud spelas upp en text visas för
+att demonstrera att en ny kartpunkt hittats).
+Kraftindikatorn är en liten tjej som börjar glad, men
+blir surare och surare. Till slut, när det blir jättearg
+min, flyttas man tillbaka till senaste kartpunkten på
+banan.
+
+*/
+const (
+	Invisible LocationState = iota // Not visible
+	Locked                         // Visible but not reachable
+	Unvisited                      // Visible Unlocked
+	Visited                        // Previously visited
+	Current                        // Players current position
+)
+
 type MapScene struct {
-	textbox        *text.Text
-	mapImage       *pixel.Sprite
-	levelCoords    []pixel.Vec
-	heroPos        pixel.Vec
-	heroVel        pixel.Vec
-	highlight      int
-	highlightBlink int
+	cfg             *Config
+	textbox         *text.Text
+	mapImage        *pixel.Sprite
+	levelCoords     []pixel.Vec
+	heroPos         pixel.Vec
+	heroVel         pixel.Vec
+	highlight       int
+	hightlightTimer int
 }
 
-func MakeMapScene() *MapScene {
-	// @thought: atlas sent in to render, shared by all scenes?
+func MakeMapScene(cfg *Config) *MapScene {
+	// @remember: atlas sent in to render, shared by all scenes?
 	atlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	levelCoords := []pixel.Vec{
 		{X: 246, Y: 486},
 		{X: 355, Y: 368},
 	}
 	return &MapScene{
+		cfg:         cfg,
 		textbox:     text.New(pixel.V(0, 0), atlas),
 		mapImage:    internal.LoadSpriteForSure("assets/TMap.png"),
 		levelCoords: levelCoords,
@@ -41,7 +68,7 @@ func MakeMapScene() *MapScene {
 
 func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Jump {
-		return MakeMenuScene()
+		return MakeMenuScene(scene.cfg)
 	}
 	if key == internal.Left {
 		scene.heroVel.X -= 1
@@ -85,7 +112,8 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 	for _, vec := range scene.levelCoords {
 		drawCircle(imd, colornames.Darkslateblue, vec)
 	}
-	if scene.highlight != -1 && scene.highlightBlink/10%2 == 0 {
+	blink := scene.cfg.MapSceneBlinkSpeed
+	if scene.highlight != -1 && scene.hightlightTimer/blink%2 == 0 {
 		drawCircle(imd, colornames.Green, scene.levelCoords[scene.highlight])
 	}
 
@@ -127,7 +155,7 @@ func (scene *MapScene) Tick() bool {
 	if scene.heroPos.Y > 599 {
 		scene.heroPos.Y = 599
 	}
-	scene.highlightBlink += 1
+	scene.hightlightTimer += 1
 	return true
 }
 

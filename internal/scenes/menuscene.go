@@ -20,13 +20,14 @@ const (
 )
 
 type MenuScene struct {
+	cfg             *Config
 	currentitem     MenuItem
 	textbox         *text.Text
 	itemSwitchSound *beep.Buffer
 	quit            bool
 }
 
-func MakeMenuScene() *MenuScene {
+func MakeMenuScene(config *Config) *MenuScene {
 	atlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	err, _, switchSound := internal.LoadWav("assets/MenuPointerMoved.wav")
 	internal.PanicIfError(err)
@@ -35,13 +36,14 @@ func MakeMenuScene() *MenuScene {
 		itemSwitchSound: switchSound,
 		textbox:         text.New(pixel.V(0, 0), atlas),
 		quit:            false,
+		cfg:             config,
 	}
 }
 
 func (menuScene *MenuScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Jump {
 		if menuScene.currentitem == Play {
-			return MakeMapScene()
+			return MakeMapScene(menuScene.cfg)
 		} else {
 			menuScene.quit = true
 		}
