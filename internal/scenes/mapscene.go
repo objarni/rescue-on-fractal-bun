@@ -10,13 +10,14 @@ import (
 	"golang.org/x/image/font/basicfont"
 	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
+	"unicode"
 )
-
-type LocationState int
 
 /*
 På kartan kan man besöka "locations".
-Man befinner sig alltid på precis en location, current.
+Man befinner sig alltid på precis en location (current).
+Current visas tydligt visuellt i kartscenen, kanske
+står dess namn någonstans också?
 När man går in på en location, hamnar man på en "kartpunkt"
 i en bana. Man kan alltid exita tillbaka till kartan
 via en kartpunkt. Om man på en bana hittar en ny kartpunkt,
@@ -26,22 +27,28 @@ att demonstrera att en ny kartpunkt hittats).
 Kraftindikatorn är en liten tjej som börjar glad, men
 blir surare och surare. Till slut, när det blir jättearg
 min, flyttas man tillbaka till senaste kartpunkten på
-banan.
+banan, alltså den kartpunkt som är associerad med current
+location.
+
+En location har alltså följande egenskaper:
+  - position på kartan, x,y
+  - om den är "discovered" eller ej; en bool.
+    (hidden eller visible kan man se det som)
+Förutom detta sparas en pekare till current location
+"någonstans".
 
 */
-const (
-	Invisible LocationState = iota // Not visible
-	Locked                         // Visible but not reachable
-	Unvisited                      // Visible Unlocked
-	Visited                        // Previously visited
-	Current                        // Players current position
-)
+
+type Location struct {
+	position   pixel.Vec
+	discovered bool
+}
 
 type MapScene struct {
 	cfg             *Config
 	textbox         *text.Text
 	mapImage        *pixel.Sprite
-	levelCoords     []pixel.Vec
+	locations       []Location
 	heroPos         pixel.Vec
 	heroVel         pixel.Vec
 	highlight       int
@@ -50,19 +57,29 @@ type MapScene struct {
 
 func MakeMapScene(cfg *Config) *MapScene {
 	// @remember: atlas sent in to render, shared by all scenes?
-	atlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
-	levelCoords := []pixel.Vec{
-		{X: 246, Y: 486},
-		{X: 355, Y: 368},
+	atlas := text.NewAtlas(basicfont.Face7x13, text.RangeTable(unicode.Latin))
+	locs := []Location{
+		{
+			position:   pixel.Vec{X: 246, Y: 486},
+			discovered: true,
+		},
+		{
+			position:   pixel.Vec{X: 355, Y: 368},
+			discovered: true,
+		},
+		{
+			position:   pixel.Vec{X: 500, Y: 500},
+			discovered: false,
+		},
 	}
 	return &MapScene{
-		cfg:         cfg,
-		textbox:     text.New(pixel.V(0, 0), atlas),
-		mapImage:    internal.LoadSpriteForSure("assets/TMap.png"),
-		levelCoords: levelCoords,
-		heroPos:     pixel.Vec{50, 50},
-		heroVel:     pixel.ZV,
-		highlight:   0,
+		cfg:       cfg,
+		textbox:   text.New(pixel.V(0, 30), atlas),
+		mapImage:  internal.LoadSpriteForSure("assets/TMap.png"),
+		heroPos:   pixel.Vec{50, 50},
+		heroVel:   pixel.ZV,
+		highlight: 0,
+		locations: locs,
 	}
 }
 
@@ -109,12 +126,16 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 
 	// Level locations
 	var imd = imdraw.New(nil)
-	for _, vec := range scene.levelCoords {
+	for _, loc := range scene.locations {
+		vec := loc.position
 		drawCircle(imd, colornames.Darkslateblue, vec)
 	}
 	blink := scene.cfg.MapSceneBlinkSpeed
 	if scene.highlight != -1 && scene.hightlightTimer/blink%2 == 0 {
-		drawCircle(imd, colornames.Green, scene.levelCoords[scene.highlight])
+		drawCircle(
+			imd, colornames.Green,
+			scene.locations[scene.highlight].position,
+		)
 	}
 
 	// Hero position
@@ -131,7 +152,8 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 	// Text
 	tb := scene.textbox
 	tb.Clear()
-	_, _ = fmt.Fprintln(tb, "Map scene")
+	_, _ = fmt.Fprintf(tb, "Här är du: %s\n", "Hembyn")
+	_, _ = fmt.Fprintf(tb, "Gå till? %s", "Korsningen")
 	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 2), colornames.Black)
 }
 
