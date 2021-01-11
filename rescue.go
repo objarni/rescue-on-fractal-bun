@@ -8,12 +8,17 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/scenes"
+	"os"
 	"time"
 )
 
 func run() {
 
-	cfg := scenes.TryReadCfgFrom("json/rescue.json", scenes.Config{})
+	configFile := "json/rescue.json"
+	cfg := scenes.TryReadCfgFrom(configFile, scenes.Config{})
+	info, err := os.Stat(configFile)
+	internal.PanicIfError(err)
+	cfgTime := info.ModTime()
 
 	var scene internal.Thing = scenes.MakeMenuScene(&cfg)
 
@@ -51,7 +56,12 @@ func run() {
 		}
 
 		// Tweak system
-		cfg = scenes.TryReadCfgFrom("json/rescue.json", cfg)
+		info, err := os.Stat(configFile)
+		internal.PanicIfError(err)
+		if cfgTime != info.ModTime() {
+			cfgTime = info.ModTime()
+			cfg = scenes.TryReadCfgFrom(configFile, cfg)
+		}
 
 		// Keyboard control
 		for key, control := range keyMap {
