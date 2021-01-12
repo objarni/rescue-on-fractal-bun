@@ -148,13 +148,24 @@ func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 }
 
 func (scene *MapScene) Render(win *pixelgl.Window) {
-	win.Clear(colornames.Antiquewhite)
-
-	// Background
 	scene.mapImage.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
+	imd := imdraw.New(nil)
+	drawLocations(imd, scene)
+	drawCrosshair(win, imd, scene)
+	drawLocationTexts(scene, win)
+}
 
-	// Level locations
-	var imd = imdraw.New(nil)
+func drawLocationTexts(scene *MapScene, win *pixelgl.Window) {
+	tb := text.New(pixel.V(
+		float64(scene.cfg.MapSceneLocationTextX),
+		float64(scene.cfg.MapSceneLocationTextY)),
+		scene.atlas)
+	_, _ = fmt.Fprintf(tb, "Här är du: %s\n", "Hembyn")
+	_, _ = fmt.Fprintf(tb, "Gå till? %s", "Korsningen")
+	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 1), colornames.Black)
+}
+
+func drawLocations(imd *imdraw.IMDraw, scene *MapScene) *imdraw.IMDraw {
 	for _, loc := range scene.locations {
 		vec := loc.position
 		drawCircle(imd, colornames.Darkslateblue, vec,
@@ -168,18 +179,7 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 			scene.cfg.MapSceneCurrentLocCircleRadius,
 		)
 	}
-
-	// Hero position
-	drawCrosshair(win, imd, scene)
-
-	// Text
-	tb := text.New(pixel.V(
-		float64(scene.cfg.MapSceneLocationTextX),
-		float64(scene.cfg.MapSceneLocationTextY)),
-		scene.atlas)
-	_, _ = fmt.Fprintf(tb, "Här är du: %s\n", "Hembyn")
-	_, _ = fmt.Fprintf(tb, "Gå till? %s", "Korsningen")
-	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 1), colornames.Black)
+	return imd
 }
 
 func drawCrosshair(win *pixelgl.Window, imd *imdraw.IMDraw, scene *MapScene) {
