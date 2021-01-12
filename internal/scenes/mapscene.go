@@ -170,6 +170,19 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 	}
 
 	// Hero position
+	drawCrosshair(win, imd, scene)
+
+	// Text
+	tb := text.New(pixel.V(
+		float64(scene.cfg.MapSceneLocationTextX),
+		float64(scene.cfg.MapSceneLocationTextY)),
+		scene.atlas)
+	_, _ = fmt.Fprintf(tb, "Här är du: %s\n", "Hembyn")
+	_, _ = fmt.Fprintf(tb, "Gå till? %s", "Korsningen")
+	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 1), colornames.Black)
+}
+
+func drawCrosshair(win *pixelgl.Window, imd *imdraw.IMDraw, scene *MapScene) {
 	imd.Color = pixel.RGBA{1, 0, 0, 0.15}
 	h := scene.heroPos
 	imd.Push(v(h.X, 0))
@@ -179,16 +192,6 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 	imd.Push(v(800, h.Y))
 	imd.Rectangle(2)
 	imd.Draw(win)
-
-	// Text
-	tb := text.New(pixel.V(
-		float64(scene.cfg.MapSceneLocationTextX),
-		float64(scene.cfg.MapSceneLocationTextY)),
-		scene.atlas)
-	tb.Clear()
-	_, _ = fmt.Fprintf(tb, "Här är du: %s\n", "Hembyn")
-	_, _ = fmt.Fprintf(tb, "Gå till? %s", "Korsningen")
-	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 1), colornames.Black)
 }
 
 func drawCircle(

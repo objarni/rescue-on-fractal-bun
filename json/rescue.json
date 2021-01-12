@@ -2,7 +2,7 @@
   "MapSceneBlinkSpeed": 60,
   "MapSceneCrosshairSpeed": 3,
   "MapSceneLocationTextX": 6,
-  "MapSceneLocationTextY": 50,
-  "MapSceneCurrentLocCircleRadius": 12,
-  "MapSceneLocCircleRadius": 10
+  "MapSceneLocationTextY": 48,
+  "MapSceneCurrentLocCircleRadius": 15,
+  "MapSceneLocCircleRadius": 11
 }
