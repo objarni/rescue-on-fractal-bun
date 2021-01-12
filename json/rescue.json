@@ -3,6 +3,8 @@
   "MapSceneCrosshairSpeed": 3,
   "MapSceneLocationTextX": 6,
   "MapSceneLocationTextY": 48,
+  "MapSceneLocCircleRadius": 5,
   "MapSceneCurrentLocCircleRadius": 15,
-  "MapSceneLocCircleRadius": 11
+  "MapSceneTargetLocCircleRadius": 11,
+  "MapSceneTargetLocMaxDistance": 30
 }

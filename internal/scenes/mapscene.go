@@ -48,14 +48,14 @@ type Location struct {
 }
 
 type MapScene struct {
-	cfg             *Config
-	mapImage        *pixel.Sprite
-	atlas           *text.Atlas
-	locations       []Location
-	heroPos         pixel.Vec
-	heroVel         pixel.Vec
-	highlight       int
-	hightlightTimer int
+	cfg            *Config
+	mapImage       *pixel.Sprite
+	atlas          *text.Atlas
+	locations      []Location
+	playerPos      pixel.Vec
+	playerVel      pixel.Vec
+	playerLocIx    int
+	highlightTimer int
 }
 
 func loadTTF(path string, size float64) (font.Face, error) {
@@ -89,26 +89,26 @@ func MakeMapScene(cfg *Config) *MapScene {
 	atlas := text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII)
 	locs := []Location{
 		{
-			position:   pixel.Vec{X: 246, Y: 486},
+			position:   pixel.Vec{X: 246, Y: 109},
 			discovered: true,
 		},
 		{
-			position:   pixel.Vec{X: 355, Y: 368},
+			position:   pixel.Vec{X: 355, Y: 235},
 			discovered: true,
 		},
 		{
-			position:   pixel.Vec{X: 500, Y: 500},
+			position:   pixel.Vec{X: 299, Y: 375},
 			discovered: false,
 		},
 	}
 	return &MapScene{
-		cfg:       cfg,
-		atlas:     atlas,
-		mapImage:  internal.LoadSpriteForSure("assets/TMap.png"),
-		heroPos:   pixel.Vec{50, 50},
-		heroVel:   pixel.ZV,
-		highlight: 0,
-		locations: locs,
+		cfg:         cfg,
+		atlas:       atlas,
+		mapImage:    internal.LoadSpriteForSure("assets/TMap.png"),
+		playerPos:   locs[0].position,
+		playerVel:   pixel.ZV,
+		playerLocIx: 0,
+		locations:   locs,
 	}
 }
 
@@ -117,32 +117,32 @@ func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 		return MakeMenuScene(scene.cfg)
 	}
 	if key == internal.Left {
-		scene.heroVel.X -= 1
+		scene.playerVel.X -= 1
 	}
 	if key == internal.Right {
-		scene.heroVel.X += 1
+		scene.playerVel.X += 1
 	}
 	if key == internal.Down {
-		scene.heroVel.Y -= 1
+		scene.playerVel.Y -= 1
 	}
 	if key == internal.Up {
-		scene.heroVel.Y += 1
+		scene.playerVel.Y += 1
 	}
 	return scene
 }
 
 func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 	if key == internal.Left {
-		scene.heroVel.X += 1
+		scene.playerVel.X += 1
 	}
 	if key == internal.Right {
-		scene.heroVel.X -= 1
+		scene.playerVel.X -= 1
 	}
 	if key == internal.Down {
-		scene.heroVel.Y += 1
+		scene.playerVel.Y += 1
 	}
 	if key == internal.Up {
-		scene.heroVel.Y -= 1
+		scene.playerVel.Y -= 1
 	}
 	return scene
 }
@@ -172,19 +172,28 @@ func drawLocations(imd *imdraw.IMDraw, scene *MapScene) *imdraw.IMDraw {
 			scene.cfg.MapSceneLocCircleRadius)
 	}
 	blink := scene.cfg.MapSceneBlinkSpeed
-	if scene.highlight != -1 && scene.hightlightTimer/blink%2 == 0 {
+	if scene.highlightTimer/blink%2 == 0 {
 		drawCircle(
 			imd, colornames.Green,
-			scene.locations[scene.highlight].position,
+			scene.locations[scene.playerLocIx].position,
 			scene.cfg.MapSceneCurrentLocCircleRadius,
 		)
 	}
+	ix := FindClosestLocation(scene.playerPos, scene.locations)
+	if distance(scene.playerPos, scene.locations[ix].position) < float64(scene.cfg.MapSceneTargetLocMaxDistance) {
+		drawCircle(
+			imd, colornames.Red,
+			scene.locations[ix].position,
+			scene.cfg.MapSceneTargetLocCircleRadius,
+		)
+	}
+
 	return imd
 }
 
 func drawCrosshair(win *pixelgl.Window, imd *imdraw.IMDraw, scene *MapScene) {
 	imd.Color = pixel.RGBA{1, 0, 0, 0.15}
-	h := scene.heroPos
+	h := scene.playerPos
 	imd.Push(v(h.X, 0))
 	imd.Push(v(h.X, 600))
 	imd.Rectangle(2)
@@ -201,28 +210,45 @@ func drawCircle(
 	radius int,
 ) {
 	imd.Color = color
-	imd.Push(v(0, 600).Add(vec.ScaledXY(v(1, -1))))
+	imd.Push(vec)
 	imd.Circle(float64(radius), 3)
 }
 
 func (scene *MapScene) Tick() bool {
-	scene.heroPos = scene.heroPos.Add(scene.heroVel.Scaled(scene.cfg.MapSceneCrosshairSpeed))
-	if scene.heroPos.X < 0 {
-		scene.heroPos.X = 0
+	scene.playerPos = scene.playerPos.Add(scene.playerVel.Scaled(scene.cfg.MapSceneCrosshairSpeed))
+	if scene.playerPos.X < 0 {
+		scene.playerPos.X = 0
 	}
-	if scene.heroPos.X > 799 {
-		scene.heroPos.X = 799
+	if scene.playerPos.X > 799 {
+		scene.playerPos.X = 799
 	}
-	if scene.heroPos.Y < 0 {
-		scene.heroPos.Y = 0
+	if scene.playerPos.Y < 0 {
+		scene.playerPos.Y = 0
 	}
-	if scene.heroPos.Y > 599 {
-		scene.heroPos.Y = 599
+	if scene.playerPos.Y > 599 {
+		scene.playerPos.Y = 599
 	}
-	scene.hightlightTimer += 1
+	scene.highlightTimer += 1
 	return true
 }
 
 func v(x float64, y float64) pixel.Vec {
 	return pixel.Vec{X: x, Y: y}
+}
+
+func FindClosestLocation(vec pixel.Vec, locs []Location) int {
+	closest := -1
+	closestDist := -1.0
+	for ix, val := range locs {
+		d := distance(vec, val.position)
+		if closest == -1 || d < closestDist {
+			closest = ix
+			closestDist = d
+		}
+	}
+	return closest
+}
+
+func distance(a pixel.Vec, b pixel.Vec) float64 {
+	return a.Sub(b).Len()
 }
