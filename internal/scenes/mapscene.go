@@ -52,8 +52,8 @@ type MapScene struct {
 	mapImage       *pixel.Sprite
 	atlas          *text.Atlas
 	locations      []Location
-	playerPos      pixel.Vec
-	playerVel      pixel.Vec
+	hairCrossPos   pixel.Vec
+	hairCrossVel   pixel.Vec
 	playerLocIx    int
 	highlightTimer int
 }
@@ -102,13 +102,13 @@ func MakeMapScene(cfg *Config) *MapScene {
 		},
 	}
 	return &MapScene{
-		cfg:         cfg,
-		atlas:       atlas,
-		mapImage:    internal.LoadSpriteForSure("assets/TMap.png"),
-		playerPos:   locs[0].position,
-		playerVel:   pixel.ZV,
-		playerLocIx: 0,
-		locations:   locs,
+		cfg:          cfg,
+		atlas:        atlas,
+		mapImage:     internal.LoadSpriteForSure("assets/TMap.png"),
+		hairCrossPos: locs[0].position,
+		hairCrossVel: pixel.ZV,
+		playerLocIx:  0,
+		locations:    locs,
 	}
 }
 
@@ -117,32 +117,32 @@ func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 		return MakeMenuScene(scene.cfg)
 	}
 	if key == internal.Left {
-		scene.playerVel.X -= 1
+		scene.hairCrossVel.X -= 1
 	}
 	if key == internal.Right {
-		scene.playerVel.X += 1
+		scene.hairCrossVel.X += 1
 	}
 	if key == internal.Down {
-		scene.playerVel.Y -= 1
+		scene.hairCrossVel.Y -= 1
 	}
 	if key == internal.Up {
-		scene.playerVel.Y += 1
+		scene.hairCrossVel.Y += 1
 	}
 	return scene
 }
 
 func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 	if key == internal.Left {
-		scene.playerVel.X += 1
+		scene.hairCrossVel.X += 1
 	}
 	if key == internal.Right {
-		scene.playerVel.X -= 1
+		scene.hairCrossVel.X -= 1
 	}
 	if key == internal.Down {
-		scene.playerVel.Y += 1
+		scene.hairCrossVel.Y += 1
 	}
 	if key == internal.Up {
-		scene.playerVel.Y -= 1
+		scene.hairCrossVel.Y -= 1
 	}
 	return scene
 }
@@ -156,12 +156,20 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 }
 
 func drawLocationTexts(scene *MapScene, win *pixelgl.Window) {
+	ix := FindClosestLocation(scene.hairCrossPos, scene.locations)
 	tb := text.New(pixel.V(
 		float64(scene.cfg.MapSceneLocationTextX),
 		float64(scene.cfg.MapSceneLocationTextY)),
 		scene.atlas)
 	_, _ = fmt.Fprintf(tb, "Här är du: %s\n", "Hembyn")
-	_, _ = fmt.Fprintf(tb, "Gå till? %s", "Korsningen")
+	locationName := "Korsningen"
+	if ix == 0 {
+		locationName = "Hembyn"
+	}
+	if ix == 2 {
+		locationName = "Skogen"
+	}
+	_, _ = fmt.Fprintf(tb, "Gå till? %s", locationName)
 	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 1), colornames.Black)
 }
 
@@ -179,8 +187,8 @@ func drawLocations(imd *imdraw.IMDraw, scene *MapScene) *imdraw.IMDraw {
 			scene.cfg.MapSceneCurrentLocCircleRadius,
 		)
 	}
-	ix := FindClosestLocation(scene.playerPos, scene.locations)
-	if distance(scene.playerPos, scene.locations[ix].position) < float64(scene.cfg.MapSceneTargetLocMaxDistance) {
+	ix := FindClosestLocation(scene.hairCrossPos, scene.locations)
+	if distance(scene.hairCrossPos, scene.locations[ix].position) < float64(scene.cfg.MapSceneTargetLocMaxDistance) {
 		drawCircle(
 			imd, colornames.Red,
 			scene.locations[ix].position,
@@ -193,7 +201,7 @@ func drawLocations(imd *imdraw.IMDraw, scene *MapScene) *imdraw.IMDraw {
 
 func drawCrosshair(win *pixelgl.Window, imd *imdraw.IMDraw, scene *MapScene) {
 	imd.Color = pixel.RGBA{1, 0, 0, 0.15}
-	h := scene.playerPos
+	h := scene.hairCrossPos
 	imd.Push(v(h.X, 0))
 	imd.Push(v(h.X, 600))
 	imd.Rectangle(2)
@@ -215,18 +223,18 @@ func drawCircle(
 }
 
 func (scene *MapScene) Tick() bool {
-	scene.playerPos = scene.playerPos.Add(scene.playerVel.Scaled(scene.cfg.MapSceneCrosshairSpeed))
-	if scene.playerPos.X < 0 {
-		scene.playerPos.X = 0
+	scene.hairCrossPos = scene.hairCrossPos.Add(scene.hairCrossVel.Scaled(scene.cfg.MapSceneCrosshairSpeed))
+	if scene.hairCrossPos.X < 0 {
+		scene.hairCrossPos.X = 0
 	}
-	if scene.playerPos.X > 799 {
-		scene.playerPos.X = 799
+	if scene.hairCrossPos.X > 799 {
+		scene.hairCrossPos.X = 799
 	}
-	if scene.playerPos.Y < 0 {
-		scene.playerPos.Y = 0
+	if scene.hairCrossPos.Y < 0 {
+		scene.hairCrossPos.Y = 0
 	}
-	if scene.playerPos.Y > 599 {
-		scene.playerPos.Y = 599
+	if scene.hairCrossPos.Y > 599 {
+		scene.hairCrossPos.Y = 599
 	}
 	scene.highlightTimer += 1
 	return true
