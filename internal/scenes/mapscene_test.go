@@ -11,8 +11,9 @@ func ExampleFindClosestLocation_SinglePoint() {
 		[]Location{
 			LocAt(50, 50),
 		},
+		1000,
 	)
-	fmt.Println("Index of closest location:", ix)
+	fmt.Println("Index of closest location: %v", ix)
 	// Output:
 	// Index of closest location: 0
 }
@@ -31,6 +32,7 @@ func ExampleFindClosestLocation_TwoPoints() {
 			LocAt(100, 100),
 			LocAt(50, 50),
 		},
+		1000,
 	)
 	fmt.Println("Index of closest location:", ix)
 	// Output:
@@ -44,8 +46,22 @@ func ExampleFindClosestLocation_TwoPoints_first_is_closest() {
 			LocAt(100, 100),
 			LocAt(50, 50),
 		},
+		1000,
 	)
 	fmt.Println("Index of closest location:", ix)
 	// Output:
 	// Index of closest location: 0
+}
+
+func ExampleFindClosestLocation_TooFarAwayMeansNotClose() {
+	ix := FindClosestLocation(
+		pixel.Vec{99, 99},
+		[]Location{
+			LocAt(1000, 1000),
+		},
+		30,
+	)
+	fmt.Println("Index of closest location:", ix)
+	// Output:
+	// Index of closest location: -1
 }

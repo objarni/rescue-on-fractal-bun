@@ -156,15 +156,18 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 }
 
 func drawLocationTexts(scene *MapScene, win *pixelgl.Window) {
-	ix := FindClosestLocation(scene.hairCrossPos, scene.locations)
+	ix := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.cfg.MapSceneTargetLocMaxDistance)
 	tb := text.New(pixel.V(
 		float64(scene.cfg.MapSceneLocationTextX),
 		float64(scene.cfg.MapSceneLocationTextY)),
 		scene.atlas)
 	_, _ = fmt.Fprintf(tb, "Här är du: %s\n", "Hembyn")
-	locationName := "Korsningen"
+	locationName := "-"
 	if ix == 0 {
 		locationName = "Hembyn"
+	}
+	if ix == 1 {
+		locationName = "Korsningen"
 	}
 	if ix == 2 {
 		locationName = "Skogen"
@@ -187,8 +190,8 @@ func drawLocations(imd *imdraw.IMDraw, scene *MapScene) *imdraw.IMDraw {
 			scene.cfg.MapSceneCurrentLocCircleRadius,
 		)
 	}
-	ix := FindClosestLocation(scene.hairCrossPos, scene.locations)
-	if distance(scene.hairCrossPos, scene.locations[ix].position) < float64(scene.cfg.MapSceneTargetLocMaxDistance) {
+	ix := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.cfg.MapSceneTargetLocMaxDistance)
+	if ix > -1 {
 		drawCircle(
 			imd, colornames.Red,
 			scene.locations[ix].position,
@@ -244,7 +247,7 @@ func v(x float64, y float64) pixel.Vec {
 	return pixel.Vec{X: x, Y: y}
 }
 
-func FindClosestLocation(vec pixel.Vec, locs []Location) int {
+func FindClosestLocation(vec pixel.Vec, locs []Location, maxDist int) int {
 	closest := -1
 	closestDist := -1.0
 	for ix, val := range locs {
@@ -253,6 +256,9 @@ func FindClosestLocation(vec pixel.Vec, locs []Location) int {
 			closest = ix
 			closestDist = d
 		}
+	}
+	if closestDist > float64(maxDist) {
+		return -1
 	}
 	return closest
 }
