@@ -114,7 +114,7 @@ func MakeMapScene(cfg *Config) *MapScene {
 
 func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Jump {
-		return MakeMenuScene(scene.cfg)
+		return MakeLevelScene(scene.cfg)
 	}
 	if key == internal.Left {
 		scene.hairCrossVel.X -= 1
