@@ -13,7 +13,7 @@ func ExampleFindClosestLocation_SinglePoint() {
 		},
 		1000,
 	)
-	fmt.Println("Index of closest location: %v", ix)
+	fmt.Printf("Index of closest location: %v", ix)
 	// Output:
 	// Index of closest location: 0
 }
@@ -34,7 +34,7 @@ func ExampleFindClosestLocation_TwoPoints() {
 		},
 		1000,
 	)
-	fmt.Println("Index of closest location:", ix)
+	fmt.Printf("Index of closest location: %v", ix)
 	// Output:
 	// Index of closest location: 1
 }
@@ -48,7 +48,7 @@ func ExampleFindClosestLocation_TwoPoints_first_is_closest() {
 		},
 		1000,
 	)
-	fmt.Println("Index of closest location:", ix)
+	fmt.Printf("Index of closest location: %v", ix)
 	// Output:
 	// Index of closest location: 0
 }
