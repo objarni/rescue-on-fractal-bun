@@ -9,20 +9,27 @@ import (
 )
 
 type LevelScene struct {
-	cfg      *Config
-	position pixel.Vec
-	level    Level
+	cfg       *Config
+	playerPos pixel.Vec
+	level     Level
 }
 
 type Level struct {
 	width, height int32
 	clearColor    color.RGBA
+	mapPoints     []MapPoint
+}
+
+type MapPoint struct {
+	pos        pixel.Vec
+	discovered bool
+	mapTarget  string
 }
 
 func MakeLevelScene(cfg *Config) *LevelScene {
 	return &LevelScene{
-		cfg:      cfg,
-		position: pixel.Vec{3500, 600},
+		cfg:       cfg,
+		playerPos: pixel.Vec{3500, 600},
 		level: Level{
 			width:      5000,
 			height:     768,
