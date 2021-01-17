@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
+	"github.com/faiface/beep/wav"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
@@ -12,6 +13,7 @@ import (
 	"golang.org/x/image/font/basicfont"
 	"io/ioutil"
 	"objarni/rescue-on-fractal-bun/internal"
+	"os"
 	"strings"
 	"time"
 )
@@ -42,6 +44,13 @@ func TryReadCfgFrom(filename string, defaultCfg Config) (Config, error) {
 }
 
 func run() {
+	wavFile := "assets/sketches/MenuSceneIter1.wav"
+	fmt.Println("Loading music: " + wavFile)
+	file, err := os.Open(wavFile)
+	internal.PanicIfError(err)
+	musicFileStream, format, err := wav.Decode(file)
+	internal.PanicIfError(err)
+
 	err, format, abuffer := internal.LoadWav("assets/Jump.wav")
 	internal.PanicIfError(err)
 	err, format, sbuffer := internal.LoadWav("assets/InventoryCursorMoved.wav")
@@ -58,6 +67,9 @@ func run() {
 		format.SampleRate.N(time.Duration(config.LatencyMS)*time.Millisecond),
 	) //done := make(chan bool)
 	internal.PanicIfError(err)
+
+	ctrl := &beep.Ctrl{Streamer: beep.Loop(-1, musicFileStream), Paused: false}
+	speaker.Play(ctrl)
 
 	cfg := pixelgl.WindowConfig{
 		Title:    "Push A, S and D to play drums!",
@@ -82,6 +94,9 @@ func run() {
 		for key, buffer := range keyBufferMap {
 			if win.JustPressed(key) {
 				speaker.Play(buffer.Streamer(0, buffer.Len()))
+				speaker.Lock()
+				ctrl.Paused = !ctrl.Paused
+				speaker.Unlock()
 			}
 		}
 		if win.JustPressed(pixelgl.KeyEscape) {
