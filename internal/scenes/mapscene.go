@@ -156,13 +156,8 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 }
 
 func drawLocationTexts(scene *MapScene, win *pixelgl.Window) {
-	ix := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.cfg.MapSceneTargetLocMaxDistance)
-	tb := text.New(pixel.V(
-		float64(scene.cfg.MapSceneLocationTextX),
-		float64(scene.cfg.MapSceneLocationTextY)),
-		scene.atlas)
-	_, _ = fmt.Fprintf(tb, "Här är du: %s\n", "Hembyn")
 	locationName := "-"
+	ix := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.cfg.MapSceneTargetLocMaxDistance)
 	if ix == 0 {
 		locationName = "Hembyn"
 	}
@@ -172,6 +167,11 @@ func drawLocationTexts(scene *MapScene, win *pixelgl.Window) {
 	if ix == 2 {
 		locationName = "Skogen"
 	}
+	tb := text.New(pixel.V(
+		float64(scene.cfg.MapSceneLocationTextX),
+		float64(scene.cfg.MapSceneLocationTextY)),
+		scene.atlas)
+	_, _ = fmt.Fprintf(tb, "Här är du: %s\n", "Hembyn")
 	_, _ = fmt.Fprintf(tb, "Gå till? %s", locationName)
 	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 1), colornames.Black)
 }
