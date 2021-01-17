@@ -20,3 +20,4 @@ rescue-on-fractal-bun
 main
 rescue
 *.received.txt
+wishlist.txt
