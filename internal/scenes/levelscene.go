@@ -1,7 +1,6 @@
 package scenes
 
 import (
-	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
@@ -11,9 +10,10 @@ import (
 )
 
 type LevelScene struct {
-	cfg       *Config
-	playerPos pixel.Vec
-	level     Level
+	cfg                       *Config
+	playerPos                 pixel.Vec
+	leftPressed, rightPressed bool
+	level                     Level
 }
 
 type Level struct {
@@ -31,9 +31,9 @@ type MapPoint struct {
 func MakeLevelScene(cfg *Config) *LevelScene {
 	return &LevelScene{
 		cfg:       cfg,
-		playerPos: pixel.Vec{3000, 60},
+		playerPos: pixel.Vec{X: 3000, Y: 60},
 		level: Level{
-			width:      5000,
+			width:      3500,
 			height:     768,
 			clearColor: colornames.Blue900,
 		},
@@ -42,12 +42,10 @@ func MakeLevelScene(cfg *Config) *LevelScene {
 
 func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Left {
-		scene.playerPos = scene.playerPos.Add(v(-50, 0))
-		fmt.Println("moving to ", scene.playerPos)
+		scene.leftPressed = true
 	}
 	if key == internal.Right {
-		scene.playerPos = scene.playerPos.Add(v(50, 0))
-		fmt.Println("moving to ", scene.playerPos)
+		scene.rightPressed = true
 	}
 	if key == internal.Action {
 		return MakeMapScene(scene.cfg, "Korsningen")
@@ -55,7 +53,13 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	return scene
 }
 
-func (scene *LevelScene) HandleKeyUp(_ internal.ControlKey) internal.Thing {
+func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
+	if key == internal.Left {
+		scene.leftPressed = false
+	}
+	if key == internal.Right {
+		scene.rightPressed = false
+	}
 	return scene
 }
 
@@ -91,5 +95,12 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 }
 
 func (scene *LevelScene) Tick() bool {
+	if scene.leftPressed && !scene.rightPressed {
+		scene.playerPos = scene.playerPos.Add(v(-5, 0))
+	}
+	if !scene.leftPressed && scene.rightPressed {
+		scene.playerPos = scene.playerPos.Add(v(5, 0))
+	}
+
 	return true
 }
