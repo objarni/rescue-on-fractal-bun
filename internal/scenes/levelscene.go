@@ -64,34 +64,42 @@ func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 }
 
 func (scene *LevelScene) Render(win *pixelgl.Window) {
-	// Clear screen
 	win.Clear(colornames.Black)
+	imd := scene.cameraTransform()
+	scene.drawBackdrop(imd)
+	scene.drawPlayer(win, imd)
+}
 
-	// Camera transform
+func (scene *LevelScene) cameraTransform() *imdraw.IMDraw {
 	imd := imdraw.New(nil)
-	pw := internal.PlayerWidth
-	ph := internal.PlayerHeight
 	halfScreen := v(internal.ScreenWidth/2, internal.ScreenHeight/2)
-	playerHead := v(0, ph)
+	playerHead := v(0, internal.PlayerHeight)
 	cam := scene.playerPos.Sub(halfScreen).Add(playerHead)
 	imd.SetMatrix(pixel.IM.Moved(cam.Scaled(-1)))
+	return imd
+}
 
-	// Level backdrop
+func (scene *LevelScene) drawPlayer(win *pixelgl.Window, imd *imdraw.IMDraw) {
+	playerWidthHalf := internal.PlayerWidth / 2
+	playerBottomLeft := scene.playerPos.Sub(v(playerWidthHalf, 0))
+	playerTopRight := scene.playerPos.Add(v(playerWidthHalf, internal.PlayerHeight))
+
+	imd.Color = colornames.Brown200
+	imd.Push(playerBottomLeft)
+	imd.Push(playerTopRight)
+	imd.Rectangle(0)
+	imd.Color = colornames.Brown100
+	imd.Push(playerBottomLeft)
+	imd.Push(playerTopRight)
+	imd.Rectangle(2)
+	imd.Draw(win)
+}
+
+func (scene *LevelScene) drawBackdrop(imd *imdraw.IMDraw) {
 	imd.Color = scene.level.clearColor
 	imd.Push(v(0, 0))
 	imd.Push(v(scene.level.width, scene.level.height))
 	imd.Rectangle(0)
-
-	// Player
-	imd.Color = colornames.Brown200
-	px := scene.playerPos.X
-	py := scene.playerPos.Y
-	plBL := v(px-pw/2, py)
-	plTR := v(px+pw/2, py+ph)
-	imd.Push(plBL)
-	imd.Push(plTR)
-	imd.Rectangle(0)
-	imd.Draw(win)
 }
 
 func (scene *LevelScene) Tick() bool {
