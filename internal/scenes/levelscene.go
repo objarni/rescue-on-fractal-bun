@@ -1,7 +1,9 @@
 package scenes
 
 import (
+	"fmt"
 	"github.com/faiface/pixel"
+	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
 	"golang.org/x/exp/shiny/materialdesign/colornames"
 	"image/color"
@@ -15,7 +17,7 @@ type LevelScene struct {
 }
 
 type Level struct {
-	width, height int32
+	width, height float64
 	clearColor    color.RGBA
 	mapPoints     []MapPoint
 }
@@ -29,7 +31,7 @@ type MapPoint struct {
 func MakeLevelScene(cfg *Config) *LevelScene {
 	return &LevelScene{
 		cfg:       cfg,
-		playerPos: pixel.Vec{3500, 600},
+		playerPos: pixel.Vec{3000, 60},
 		level: Level{
 			width:      5000,
 			height:     768,
@@ -41,9 +43,11 @@ func MakeLevelScene(cfg *Config) *LevelScene {
 func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Left {
 		scene.playerPos = scene.playerPos.Add(v(-50, 0))
+		fmt.Println("moving to ", scene.playerPos)
 	}
 	if key == internal.Right {
-		scene.playerPos = scene.playerPos.Add(v(-50, 0))
+		scene.playerPos = scene.playerPos.Add(v(50, 0))
+		fmt.Println("moving to ", scene.playerPos)
 	}
 	if key == internal.Action {
 		return MakeMapScene(scene.cfg, "Korsningen")
@@ -56,15 +60,34 @@ func (scene *LevelScene) HandleKeyUp(_ internal.ControlKey) internal.Thing {
 }
 
 func (scene *LevelScene) Render(win *pixelgl.Window) {
-	win.Clear(scene.level.clearColor)
-	//imd := imdraw.IMDraw{}
-	//imd.Color = colornames.Brown200
-	////imd.Push(v(scene.playerPos.X-5, scene.playerPos.Y-5))
-	////imd.Push(v(scene.playerPos.X+5, scene.playerPos.Y+5))
-	//imd.Push(v(0, 0))
-	//imd.Push(v(100, 200))
-	//imd.Rectangle(2)
-	//imd.Draw(win)
+	// Clear screen
+	win.Clear(colornames.Black)
+
+	// Camera transform
+	imd := imdraw.New(nil)
+	pw := internal.PlayerWidth
+	ph := internal.PlayerHeight
+	halfScreen := v(internal.ScreenWidth/2, internal.ScreenHeight/2)
+	playerHead := v(0, ph)
+	cam := scene.playerPos.Sub(halfScreen).Add(playerHead)
+	imd.SetMatrix(pixel.IM.Moved(cam.Scaled(-1)))
+
+	// Level backdrop
+	imd.Color = scene.level.clearColor
+	imd.Push(v(0, 0))
+	imd.Push(v(scene.level.width, scene.level.height))
+	imd.Rectangle(0)
+
+	// Player
+	imd.Color = colornames.Brown200
+	px := scene.playerPos.X
+	py := scene.playerPos.Y
+	plBL := v(px-pw/2, py)
+	plTR := v(px+pw/2, py+ph)
+	imd.Push(plBL)
+	imd.Push(plTR)
+	imd.Rectangle(0)
+	imd.Draw(win)
 }
 
 func (scene *LevelScene) Tick() bool {
