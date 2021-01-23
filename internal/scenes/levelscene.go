@@ -14,6 +14,7 @@ type LevelScene struct {
 	playerPos                 pixel.Vec
 	leftPressed, rightPressed bool
 	level                     Level
+	ghost                     *pixel.Sprite // TODO: move sprites to res.structure
 }
 
 type Level struct {
@@ -42,6 +43,7 @@ func MakeLevelScene(cfg *Config) *LevelScene {
 			mapTarget:  "Korsningen",
 		},
 	}
+	ghost := internal.LoadSpriteForSure("assets/TGhost.png")
 	return &LevelScene{
 		cfg:       cfg,
 		playerPos: pixel.Vec{X: 3000, Y: 60},
@@ -51,6 +53,7 @@ func MakeLevelScene(cfg *Config) *LevelScene {
 			clearColor: colornames.Blue900,
 			mapPoints:  mapPoints,
 		},
+		ghost: ghost,
 	}
 }
 
@@ -84,6 +87,10 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	scene.drawMapPoints(win, imd)
 	scene.drawPlayer(win, imd)
 	imd.Draw(win)
+	camMx := scene.cameraMatrix()
+	for i := 0; i < int(scene.level.width); i += 500 {
+		scene.ghost.Draw(win, pixel.IM.Moved(v(float64(i), 200)).Chained(camMx))
+	}
 }
 
 func (scene *LevelScene) cameraTransform() *imdraw.IMDraw {
@@ -91,14 +98,20 @@ func (scene *LevelScene) cameraTransform() *imdraw.IMDraw {
 	imd := imdraw.New(nil)
 	//	duration := time.Since(start)
 	//	fmt.Println(duration)
-	halfScreen := v(internal.ScreenWidth/2, internal.ScreenHeight/2)
-	playerHead := v(0, internal.PlayerHeight)
-	cam := scene.playerPos.Sub(halfScreen).Add(playerHead)
-	imd.SetMatrix(pixel.IM.Moved(cam.Scaled(-1)))
+	cameraMatrix := scene.cameraMatrix()
+	imd.SetMatrix(cameraMatrix)
 	return imd
 }
 
-func (scene *LevelScene) drawPlayer(win *pixelgl.Window, imd *imdraw.IMDraw) {
+func (scene *LevelScene) cameraMatrix() pixel.Matrix {
+	halfScreen := v(internal.ScreenWidth/2, internal.ScreenHeight/2)
+	playerHead := v(0, internal.PlayerHeight)
+	cam := scene.playerPos.Sub(halfScreen).Add(playerHead)
+	cameraMatrix := pixel.IM.Moved(cam.Scaled(-1))
+	return cameraMatrix
+}
+
+func (scene *LevelScene) drawPlayer(_ *pixelgl.Window, imd *imdraw.IMDraw) {
 	playerWidthHalf := internal.PlayerWidth / 2
 	playerBottomLeft := scene.playerPos.Sub(v(playerWidthHalf, 0))
 	playerTopRight := scene.playerPos.Add(v(playerWidthHalf, internal.PlayerHeight))
@@ -130,7 +143,7 @@ func (scene *LevelScene) Tick() bool {
 	return true
 }
 
-func (scene *LevelScene) drawMapPoints(win *pixelgl.Window, imd *imdraw.IMDraw) {
+func (scene *LevelScene) drawMapPoints(_ *pixelgl.Window, imd *imdraw.IMDraw) {
 	for _, mapPoint := range scene.level.mapPoints {
 		if mapPoint.discovered {
 			imd.Color = colornames.Green800
