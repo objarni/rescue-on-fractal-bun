@@ -22,6 +22,7 @@ type Level struct {
 	mapPoints     []MapPoint
 }
 
+// TODO: discovered should probably be stored somewhere else
 type MapPoint struct {
 	pos        pixel.Vec
 	discovered bool
@@ -29,6 +30,18 @@ type MapPoint struct {
 }
 
 func MakeLevelScene(cfg *Config) *LevelScene {
+	mapPoints := []MapPoint{
+		{
+			pos:        pixel.Vec{3400, 60},
+			discovered: true,
+			mapTarget:  "Hembyn",
+		},
+		{
+			pos:        pixel.Vec{300, 60},
+			discovered: false,
+			mapTarget:  "Korsningen",
+		},
+	}
 	return &LevelScene{
 		cfg:       cfg,
 		playerPos: pixel.Vec{X: 3000, Y: 60},
@@ -36,6 +49,7 @@ func MakeLevelScene(cfg *Config) *LevelScene {
 			width:      3500,
 			height:     768,
 			clearColor: colornames.Blue900,
+			mapPoints:  mapPoints,
 		},
 	}
 }
@@ -67,11 +81,16 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	win.Clear(colornames.Black)
 	imd := scene.cameraTransform()
 	scene.drawBackdrop(imd)
+	scene.drawMapPoints(win, imd)
 	scene.drawPlayer(win, imd)
+	imd.Draw(win)
 }
 
 func (scene *LevelScene) cameraTransform() *imdraw.IMDraw {
+	//	start := time.Now()
 	imd := imdraw.New(nil)
+	//	duration := time.Since(start)
+	//	fmt.Println(duration)
 	halfScreen := v(internal.ScreenWidth/2, internal.ScreenHeight/2)
 	playerHead := v(0, internal.PlayerHeight)
 	cam := scene.playerPos.Sub(halfScreen).Add(playerHead)
@@ -92,7 +111,6 @@ func (scene *LevelScene) drawPlayer(win *pixelgl.Window, imd *imdraw.IMDraw) {
 	imd.Push(playerBottomLeft)
 	imd.Push(playerTopRight)
 	imd.Rectangle(2)
-	imd.Draw(win)
 }
 
 func (scene *LevelScene) drawBackdrop(imd *imdraw.IMDraw) {
@@ -109,6 +127,26 @@ func (scene *LevelScene) Tick() bool {
 	if !scene.leftPressed && scene.rightPressed {
 		scene.playerPos = scene.playerPos.Add(v(5, 0))
 	}
-
 	return true
 }
+
+func (scene *LevelScene) drawMapPoints(win *pixelgl.Window, imd *imdraw.IMDraw) {
+	for _, mapPoint := range scene.level.mapPoints {
+		if mapPoint.discovered {
+			imd.Color = colornames.Green800
+		} else {
+			imd.Color = colornames.Orange500
+		}
+		imd.Push(mapPoint.pos)
+		imd.Push(mapPoint.pos.Add(v(10, 10)))
+		imd.Rectangle(0)
+	}
+}
+
+/*
+type MapPoint struct {
+	pos        pixel.Vec
+	discovered bool
+	mapTarget  string
+}
+*/
