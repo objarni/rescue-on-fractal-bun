@@ -39,15 +39,32 @@ func MakeLevelScene(cfg *Config) *LevelScene {
 }
 
 func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
-	return MakeMapScene(scene.cfg, "Korsningen")
+	if key == internal.Left {
+		scene.playerPos = scene.playerPos.Add(v(-50, 0))
+	}
+	if key == internal.Right {
+		scene.playerPos = scene.playerPos.Add(v(-50, 0))
+	}
+	if key == internal.Action {
+		return MakeMapScene(scene.cfg, "Korsningen")
+	}
+	return scene
 }
 
-func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
+func (scene *LevelScene) HandleKeyUp(_ internal.ControlKey) internal.Thing {
 	return scene
 }
 
 func (scene *LevelScene) Render(win *pixelgl.Window) {
 	win.Clear(scene.level.clearColor)
+	//imd := imdraw.IMDraw{}
+	//imd.Color = colornames.Brown200
+	////imd.Push(v(scene.playerPos.X-5, scene.playerPos.Y-5))
+	////imd.Push(v(scene.playerPos.X+5, scene.playerPos.Y+5))
+	//imd.Push(v(0, 0))
+	//imd.Push(v(100, 200))
+	//imd.Rectangle(2)
+	//imd.Draw(win)
 }
 
 func (scene *LevelScene) Tick() bool {

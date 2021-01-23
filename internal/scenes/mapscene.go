@@ -63,19 +63,20 @@ func loadTTF(path string, size float64) (font.Face, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
 
 	bytes, err := ioutil.ReadAll(file)
 	if err != nil {
 		return nil, err
 	}
 
-	font, err := truetype.Parse(bytes)
+	fontData, err := truetype.Parse(bytes)
 	if err != nil {
 		return nil, err
 	}
 
-	return truetype.NewFace(font, &truetype.Options{
+	internal.PanicIfError(file.Close())
+
+	return truetype.NewFace(fontData, &truetype.Options{
 		Size:              size,
 		GlyphCacheEntries: 1,
 	}), nil
@@ -154,12 +155,12 @@ func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 func (scene *MapScene) Render(win *pixelgl.Window) {
 	scene.mapImage.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
 	imd := imdraw.New(nil)
-	drawLocations(imd, scene)
-	drawCrosshair(win, imd, scene)
-	drawLocationTexts(scene, win)
+	drawLocations(scene, imd)
+	drawCrosshair(win, scene, imd)
+	drawLocationTexts(win, scene)
 }
 
-func drawLocationTexts(scene *MapScene, win *pixelgl.Window) {
+func drawLocationTexts(win *pixelgl.Window, scene *MapScene) {
 	locationIx := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.cfg.MapSceneTargetLocMaxDistance)
 	locationName := locationNameFromIx(locationIx)
 	tb := text.New(pixel.V(
@@ -197,7 +198,7 @@ func locationIxFromName(locationName string) int {
 	panic(fmt.Sprintf("Unknown location name: %v", locationName))
 }
 
-func drawLocations(imd *imdraw.IMDraw, scene *MapScene) *imdraw.IMDraw {
+func drawLocations(scene *MapScene, imd *imdraw.IMDraw) *imdraw.IMDraw {
 	for _, loc := range scene.locations {
 		vec := loc.position
 		drawCircle(imd, colornames.Darkslateblue, vec,
@@ -223,7 +224,7 @@ func drawLocations(imd *imdraw.IMDraw, scene *MapScene) *imdraw.IMDraw {
 	return imd
 }
 
-func drawCrosshair(win *pixelgl.Window, imd *imdraw.IMDraw, scene *MapScene) {
+func drawCrosshair(win *pixelgl.Window, scene *MapScene, imd *imdraw.IMDraw) {
 	imd.Color = pixel.RGBA{1, 0, 0, 0.15}
 	h := scene.hairCrossPos
 	imd.Push(v(h.X, 0))
