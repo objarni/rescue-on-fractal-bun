@@ -43,7 +43,7 @@ func MakeMenuScene(config *Config) *MenuScene {
 func (menuScene *MenuScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Jump {
 		if menuScene.currentitem == Play {
-			return MakeMapScene(menuScene.cfg)
+			return MakeMapScene(menuScene.cfg, "Hembyn")
 		} else {
 			menuScene.quit = true
 		}

@@ -81,7 +81,7 @@ func loadTTF(path string, size float64) (font.Face, error) {
 	}), nil
 }
 
-func MakeMapScene(cfg *Config) *MapScene {
+func MakeMapScene(cfg *Config, locationName string) *MapScene {
 	// @remember: atlas sent in to render, shared by all scenes?
 	face, err := loadTTF("assets/Font.ttf", 32)
 	internal.PanicIfError(err)
@@ -101,19 +101,23 @@ func MakeMapScene(cfg *Config) *MapScene {
 			discovered: false,
 		},
 	}
+	locationIx := locationIxFromName(locationName)
 	return &MapScene{
 		cfg:          cfg,
 		atlas:        atlas,
 		mapImage:     internal.LoadSpriteForSure("assets/TMap.png"),
-		hairCrossPos: locs[0].position,
+		hairCrossPos: locs[locationIx].position,
 		hairCrossVel: pixel.ZV,
-		playerLocIx:  0,
+		playerLocIx:  locationIx,
 		locations:    locs,
 	}
 }
 
 func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Jump {
+		// TODO: load level scene of target location, with location
+		// as starting point (map point)
+		// (if there is a location close enough to crosshair, that is)
 		return MakeLevelScene(scene.cfg)
 	}
 	if key == internal.Left {
@@ -156,17 +160,8 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 }
 
 func drawLocationTexts(scene *MapScene, win *pixelgl.Window) {
-	locationName := "-"
-	ix := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.cfg.MapSceneTargetLocMaxDistance)
-	if ix == 0 {
-		locationName = "Hembyn"
-	}
-	if ix == 1 {
-		locationName = "Korsningen"
-	}
-	if ix == 2 {
-		locationName = "Skogen"
-	}
+	locationIx := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.cfg.MapSceneTargetLocMaxDistance)
+	locationName := locationNameFromIx(locationIx)
 	tb := text.New(pixel.V(
 		float64(scene.cfg.MapSceneLocationTextX),
 		float64(scene.cfg.MapSceneLocationTextY)),
@@ -174,6 +169,32 @@ func drawLocationTexts(scene *MapScene, win *pixelgl.Window) {
 	_, _ = fmt.Fprintf(tb, "Här är du: %s\n", "Hembyn")
 	_, _ = fmt.Fprintf(tb, "Gå till? %s", locationName)
 	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 1), colornames.Black)
+}
+
+func locationNameFromIx(locationIx int) string {
+	if locationIx == 0 {
+		return "Hembyn"
+	}
+	if locationIx == 1 {
+		return "Korsningen"
+	}
+	if locationIx == 2 {
+		return "Skogen"
+	}
+	return "-"
+}
+
+func locationIxFromName(locationName string) int {
+	if locationName == "Hembyn" {
+		return 0
+	}
+	if locationName == "Korsningen" {
+		return 1
+	}
+	if locationName == "Skogen" {
+		return 2
+	}
+	panic(fmt.Sprintf("Unknown location name: %v", locationName))
 }
 
 func drawLocations(imd *imdraw.IMDraw, scene *MapScene) *imdraw.IMDraw {

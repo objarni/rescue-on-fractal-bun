@@ -39,7 +39,7 @@ func MakeLevelScene(cfg *Config) *LevelScene {
 }
 
 func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
-	return MakeMenuScene(scene.cfg)
+	return MakeMapScene(scene.cfg, "Korsningen")
 }
 
 func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
