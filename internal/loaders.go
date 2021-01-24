@@ -89,3 +89,9 @@ func LoadTTF(path string, size float64) (font.Face, error) {
 		GlyphCacheEntries: 1,
 	}), nil
 }
+
+func LoadTTFForSure(path string, size float64) font.Face {
+	face, err := LoadTTF(path, size)
+	PanicIfError(err)
+	return face
+}

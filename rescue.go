@@ -22,8 +22,7 @@ func run() {
 
 	// Load resources
 	res := scenes.Resources{}
-	face, err := internal.LoadTTF("assets/Font.ttf", 32)
-	internal.PanicIfError(err)
+	face := internal.LoadTTFForSure("assets/Font.ttf", 32)
 	res.Atlas = text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII)
 
 	// Initial scene
