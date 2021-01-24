@@ -1,4 +1,4 @@
-package internal
+package scenes
 
 import "github.com/faiface/pixel/text"
 

@@ -5,9 +5,12 @@ import (
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/wav"
 	"github.com/faiface/pixel"
+	"github.com/golang/freetype/truetype"
+	"golang.org/x/image/font"
 	"image"
 	_ "image/jpeg"
 	_ "image/png"
+	"io/ioutil"
 	"os"
 )
 
@@ -61,4 +64,28 @@ func LoadWavForSure(wavFile string) *beep.Buffer {
 	err, _, buffer := LoadWav(wavFile)
 	PanicIfError(err)
 	return buffer
+}
+
+func LoadTTF(path string, size float64) (font.Face, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+
+	bytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
+
+	fontData, err := truetype.Parse(bytes)
+	if err != nil {
+		return nil, err
+	}
+
+	PanicIfError(file.Close())
+
+	return truetype.NewFace(fontData, &truetype.Options{
+		Size:              size,
+		GlyphCacheEntries: 1,
+	}), nil
 }

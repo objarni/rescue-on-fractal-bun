@@ -6,14 +6,9 @@ import (
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
-	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/colornames"
-	"golang.org/x/image/font"
 	"image/color"
-	"io/ioutil"
 	"objarni/rescue-on-fractal-bun/internal"
-	"os"
-	"unicode"
 )
 
 /*
@@ -59,38 +54,7 @@ type MapScene struct {
 	highlightTimer int
 }
 
-func loadTTF(path string, size float64) (font.Face, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-
-	bytes, err := ioutil.ReadAll(file)
-	if err != nil {
-		return nil, err
-	}
-
-	fontData, err := truetype.Parse(bytes)
-	if err != nil {
-		return nil, err
-	}
-
-	internal.PanicIfError(file.Close())
-
-	return truetype.NewFace(fontData, &truetype.Options{
-		Size:              size,
-		GlyphCacheEntries: 1,
-	}), nil
-}
-
-type Resources struct {
-	atlas *text.Atlas
-}
-
 func MakeMapScene(cfg *Config, res *Resources, locationName string) *MapScene {
-	face, err := loadTTF("assets/Font.ttf", 32)
-	internal.PanicIfError(err)
-	res.atlas = text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII)
 	locations := []Location{
 		{
 			position:   pixel.Vec{X: 246, Y: 109},
@@ -109,7 +73,7 @@ func MakeMapScene(cfg *Config, res *Resources, locationName string) *MapScene {
 	return &MapScene{
 		cfg:          cfg,
 		res:          res,
-		atlas:        res.atlas,
+		atlas:        res.Atlas,
 		mapImage:     internal.LoadSpriteForSure("assets/TMap.png"),
 		hairCrossPos: locations[locationIx].position,
 		hairCrossVel: pixel.ZV,

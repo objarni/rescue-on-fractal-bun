@@ -5,20 +5,28 @@ import (
 	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
+	"github.com/faiface/pixel/text"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/scenes"
 	"os"
 	"time"
+	"unicode"
 )
 
 func run() {
-
 	configFile := "json/rescue.json"
 	cfg := scenes.TryReadCfgFrom(configFile, scenes.Config{})
 	info, err := os.Stat(configFile)
 	internal.PanicIfError(err)
 	cfgTime := info.ModTime()
+
+	// Load resources
 	res := scenes.Resources{}
+	face, err := internal.LoadTTF("assets/Font.ttf", 32)
+	internal.PanicIfError(err)
+	res.Atlas = text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII)
+
+	// Initial scene
 	var scene internal.Thing = scenes.MakeMenuScene(&cfg, &res)
 
 	win, err := pixelgl.NewWindow(pixelgl.WindowConfig{
