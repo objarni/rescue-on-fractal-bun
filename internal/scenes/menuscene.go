@@ -8,7 +8,6 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
-	"golang.org/x/image/font/basicfont"
 	"objarni/rescue-on-fractal-bun/internal"
 )
 
@@ -29,14 +28,13 @@ type MenuScene struct {
 }
 
 func MakeMenuScene(config *Config, res *Resources) *MenuScene {
-	atlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	err, _, switchSound := internal.LoadWav("assets/MenuPointerMoved.wav")
 	internal.PanicIfError(err)
 	return &MenuScene{
 		cfg:             config,
 		res:             res,
 		currentItem:     Play,
-		textbox:         text.New(pixel.V(0, 0), atlas),
+		textbox:         text.New(pixel.V(0, 0), res.Atlas),
 		itemSwitchSound: switchSound,
 		quit:            false,
 	}

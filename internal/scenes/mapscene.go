@@ -46,7 +46,6 @@ type MapScene struct {
 	cfg            *Config
 	res            *Resources
 	mapImage       *pixel.Sprite
-	atlas          *text.Atlas
 	locations      []Location
 	hairCrossPos   pixel.Vec
 	hairCrossVel   pixel.Vec
@@ -73,7 +72,6 @@ func MakeMapScene(cfg *Config, res *Resources, locationName string) *MapScene {
 	return &MapScene{
 		cfg:          cfg,
 		res:          res,
-		atlas:        res.Atlas,
 		mapImage:     internal.LoadSpriteForSure("assets/TMap.png"),
 		hairCrossPos: locations[locationIx].position,
 		hairCrossVel: pixel.ZV,
@@ -134,10 +132,10 @@ func drawLocationTexts(win *pixelgl.Window, scene *MapScene) {
 	tb := text.New(pixel.V(
 		float64(scene.cfg.MapSceneLocationTextX),
 		float64(scene.cfg.MapSceneLocationTextY)),
-		scene.atlas)
+		scene.res.Atlas)
 	_, _ = fmt.Fprintf(tb, "Här är du: %s\n", "Hembyn")
 	_, _ = fmt.Fprintf(tb, "Gå till? %s", locationName)
-	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 1), colornames.Black)
+	tb.DrawColorMask(win, pixel.IM, colornames.Black)
 }
 
 func locationNameFromIx(locationIx int) string {
