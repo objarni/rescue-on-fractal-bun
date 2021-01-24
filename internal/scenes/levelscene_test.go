@@ -12,7 +12,7 @@ type LevelSimulation struct {
 	playerStartMapPoint string
 }
 
-func (sim *LevelSimulation) HandleKeyDown(key internal.ControlKey) {
+func (sim *LevelSimulation) HandleKeyDown(_ internal.ControlKey) {
 
 }
 
@@ -20,7 +20,7 @@ func (sim *LevelSimulation) Tick() {
 
 }
 
-func ExampleWalkingRight100Ticks() {
+func ExampleLevelSimulation() {
 	levelSim := LevelSimulation{
 		level: Level{
 			width:      3000,

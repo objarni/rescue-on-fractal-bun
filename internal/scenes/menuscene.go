@@ -21,29 +21,31 @@ const (
 
 type MenuScene struct {
 	cfg             *Config
-	currentitem     MenuItem
+	res             *Resources
+	currentItem     MenuItem
 	textbox         *text.Text
 	itemSwitchSound *beep.Buffer
 	quit            bool
 }
 
-func MakeMenuScene(config *Config) *MenuScene {
+func MakeMenuScene(config *Config, res *Resources) *MenuScene {
 	atlas := text.NewAtlas(basicfont.Face7x13, text.ASCII)
 	err, _, switchSound := internal.LoadWav("assets/MenuPointerMoved.wav")
 	internal.PanicIfError(err)
 	return &MenuScene{
-		currentitem:     Play,
-		itemSwitchSound: switchSound,
-		textbox:         text.New(pixel.V(0, 0), atlas),
-		quit:            false,
 		cfg:             config,
+		res:             res,
+		currentItem:     Play,
+		textbox:         text.New(pixel.V(0, 0), atlas),
+		itemSwitchSound: switchSound,
+		quit:            false,
 	}
 }
 
 func (menuScene *MenuScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Jump {
-		if menuScene.currentitem == Play {
-			return MakeMapScene(menuScene.cfg, "Hembyn")
+		if menuScene.currentItem == Play {
+			return MakeMapScene(menuScene.cfg, menuScene.res, "Hembyn")
 		} else {
 			menuScene.quit = true
 		}
@@ -51,7 +53,7 @@ func (menuScene *MenuScene) HandleKeyDown(key internal.ControlKey) internal.Thin
 	if key == internal.Down || key == internal.Up {
 		streamer := menuScene.itemSwitchSound.Streamer(0, menuScene.itemSwitchSound.Len())
 		speaker.Play(streamer)
-		menuScene.currentitem = (menuScene.currentitem + 1) % 2
+		menuScene.currentItem = (menuScene.currentItem + 1) % 2
 	}
 	return menuScene
 }
@@ -66,13 +68,13 @@ func (menuScene *MenuScene) Render(win *pixelgl.Window) {
 	tb.Clear()
 	tb.Orig = pixel.V(300, 300)
 	playItem := "  Spela!"
-	if menuScene.currentitem == Play {
+	if menuScene.currentItem == Play {
 		playItem = "* Spela!"
 	}
 	_, _ = fmt.Fprintln(tb, playItem)
 
 	quitItem := "  Avsluta"
-	if menuScene.currentitem == Quit {
+	if menuScene.currentItem == Quit {
 		quitItem = "* Avsluta"
 	}
 	_, _ = fmt.Fprintln(tb, quitItem)

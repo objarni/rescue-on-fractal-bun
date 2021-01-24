@@ -22,7 +22,7 @@ Man befinner sig alltid på precis en location (current).
 Current visas tydligt visuellt i kartscenen, kanske
 står dess namn någonstans också?
 När man går in på en location, hamnar man på en "kartpunkt"
-i en bana. Man kan alltid exita tillbaka till kartan
+i en bana. Man kan alltid gå tillbaka till kartan
 via en kartpunkt. Om man på en bana hittar en ny kartpunkt,
 d.v.s en kartpunkt som inte besökts förut, dyker den upp
 på kartan (kanske ett ljud spelas upp en text visas för
@@ -49,6 +49,7 @@ type Location struct {
 
 type MapScene struct {
 	cfg            *Config
+	res            *Resources
 	mapImage       *pixel.Sprite
 	atlas          *text.Atlas
 	locations      []Location
@@ -82,13 +83,15 @@ func loadTTF(path string, size float64) (font.Face, error) {
 	}), nil
 }
 
-func MakeMapScene(cfg *Config, locationName string) *MapScene {
-	// @remember: atlas sent in to render, shared by all scenes?
+type Resources struct {
+	atlas *text.Atlas
+}
+
+func MakeMapScene(cfg *Config, res *Resources, locationName string) *MapScene {
 	face, err := loadTTF("assets/Font.ttf", 32)
 	internal.PanicIfError(err)
-	//face := basicfont.Face7x13
-	atlas := text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII)
-	locs := []Location{
+	res.atlas = text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII)
+	locations := []Location{
 		{
 			position:   pixel.Vec{X: 246, Y: 109},
 			discovered: true,
@@ -105,12 +108,13 @@ func MakeMapScene(cfg *Config, locationName string) *MapScene {
 	locationIx := locationIxFromName(locationName)
 	return &MapScene{
 		cfg:          cfg,
-		atlas:        atlas,
+		res:          res,
+		atlas:        res.atlas,
 		mapImage:     internal.LoadSpriteForSure("assets/TMap.png"),
-		hairCrossPos: locs[locationIx].position,
+		hairCrossPos: locations[locationIx].position,
 		hairCrossVel: pixel.ZV,
 		playerLocIx:  locationIx,
-		locations:    locs,
+		locations:    locations,
 	}
 }
 
@@ -118,8 +122,8 @@ func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Jump {
 		// TODO: load level scene of target location, with location
 		// as starting point (map point)
-		// (if there is a location close enough to crosshair, that is)
-		return MakeLevelScene(scene.cfg)
+		// (if there is a location close enough to crossHair, that is)
+		return MakeLevelScene(scene.cfg, scene.res)
 	}
 	if key == internal.Left {
 		scene.hairCrossVel.X -= 1
@@ -156,7 +160,7 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 	scene.mapImage.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
 	imd := imdraw.New(nil)
 	drawLocations(scene, imd)
-	drawCrosshair(win, scene, imd)
+	drawCrossHair(win, scene, imd)
 	drawLocationTexts(win, scene)
 }
 
@@ -224,8 +228,8 @@ func drawLocations(scene *MapScene, imd *imdraw.IMDraw) *imdraw.IMDraw {
 	return imd
 }
 
-func drawCrosshair(win *pixelgl.Window, scene *MapScene, imd *imdraw.IMDraw) {
-	imd.Color = pixel.RGBA{1, 0, 0, 0.15}
+func drawCrossHair(win *pixelgl.Window, scene *MapScene, imd *imdraw.IMDraw) {
+	imd.Color = pixel.RGBA{R: 1, A: 0.15}
 	h := scene.hairCrossPos
 	imd.Push(v(h.X, 0))
 	imd.Push(v(h.X, 600))
@@ -269,10 +273,10 @@ func v(x float64, y float64) pixel.Vec {
 	return pixel.Vec{X: x, Y: y}
 }
 
-func FindClosestLocation(vec pixel.Vec, locs []Location, maxDist int) int {
+func FindClosestLocation(vec pixel.Vec, locations []Location, maxDist int) int {
 	closest := -1
 	closestDist := -1.0
-	for ix, val := range locs {
+	for ix, val := range locations {
 		d := distance(vec, val.position)
 		if closest == -1 || d < closestDist {
 			closest = ix

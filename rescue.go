@@ -18,8 +18,8 @@ func run() {
 	info, err := os.Stat(configFile)
 	internal.PanicIfError(err)
 	cfgTime := info.ModTime()
-
-	var scene internal.Thing = scenes.MakeMenuScene(&cfg)
+	res := scenes.Resources{}
+	var scene internal.Thing = scenes.MakeMenuScene(&cfg, &res)
 
 	win, err := pixelgl.NewWindow(pixelgl.WindowConfig{
 		Title:  "Rescue on fractal bun (work title)",

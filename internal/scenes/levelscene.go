@@ -11,6 +11,7 @@ import (
 
 type LevelScene struct {
 	cfg                       *Config
+	res                       *Resources
 	playerPos                 pixel.Vec
 	leftPressed, rightPressed bool
 	level                     Level
@@ -30,15 +31,16 @@ type MapPoint struct {
 	mapTarget  string
 }
 
-func MakeLevelScene(cfg *Config) *LevelScene {
+// TODO: cfg and res goes together. "Shared" struct?
+func MakeLevelScene(cfg *Config, res *Resources) *LevelScene {
 	mapPoints := []MapPoint{
 		{
-			pos:        pixel.Vec{3400, 60},
+			pos:        pixel.Vec{X: 3400, Y: 60},
 			discovered: true,
 			mapTarget:  "Hembyn",
 		},
 		{
-			pos:        pixel.Vec{300, 60},
+			pos:        pixel.Vec{X: 300, Y: 60},
 			discovered: false,
 			mapTarget:  "Korsningen",
 		},
@@ -46,6 +48,7 @@ func MakeLevelScene(cfg *Config) *LevelScene {
 	ghost := internal.LoadSpriteForSure("assets/TGhost.png")
 	return &LevelScene{
 		cfg:       cfg,
+		res:       res,
 		playerPos: pixel.Vec{X: 3000, Y: 60},
 		level: Level{
 			width:      3500,
@@ -65,7 +68,7 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 		scene.rightPressed = true
 	}
 	if key == internal.Action {
-		return MakeMapScene(scene.cfg, "Korsningen")
+		return MakeMapScene(scene.cfg, scene.res, "Korsningen")
 	}
 	return scene
 }
