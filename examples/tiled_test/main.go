@@ -21,7 +21,7 @@ func run() {
 	}
 
 	// Load and initialise the map.
-	m, err := tilepix.ReadFile("assets/levels/GhostForest.tmx")
+	m, err := tilepix.ReadFile("examples/tiled_test/Level.tmx")
 	if err != nil {
 		panic(err)
 	}
