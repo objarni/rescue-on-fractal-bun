@@ -26,10 +26,10 @@ func ExampleAppend() {
 	}
 	newSlice := append(ia, 4)
 	fmt.Println(newSlice)
-	fmt.Println("len: ", len(newSlice))
-	fmt.Println("cap: ", cap(newSlice))
+	fmt.Println("len:", len(newSlice))
+	fmt.Println("cap:", cap(newSlice))
 	// Output:
-	// 1 2 3 4
+	// [1 2 3 4]
 	// len: 4
 	// cap: 6
 }
