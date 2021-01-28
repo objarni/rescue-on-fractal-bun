@@ -28,14 +28,14 @@ func ExampleLevelSimulation() {
 			clearColor: colornames.White,
 			mapPoints: []MapPoint{
 				{
-					pos:        v(2700, 900),
-					discovered: true,
-					mapTarget:  "Hembyn",
+					Pos:        v(2700, 900),
+					Discovered: true,
+					Location:   "Hembyn",
 				},
 				{
-					pos:        v(100, 900),
-					discovered: false,
-					mapTarget:  "Korsningen",
+					Pos:        v(100, 900),
+					Discovered: false,
+					Location:   "Korsningen",
 				},
 			},
 		},
@@ -54,8 +54,8 @@ func ExampleLevelSimulation() {
 	// Background color is 255,255,255.
 	// Player starts at 2700,900.
 	// There are MapPoints here:
-	//   2700,900 (discovered)
-	//   100,900 (not discovered)
+	//   2700,900 (Discovered)
+	//   100,900 (not Discovered)
 	// Simulation started.
 	// Key Right Down
 	// Tick x100
@@ -68,8 +68,8 @@ func printLevelSimulation(sim *LevelSimulation) {
 Background color is %v.
 Player starts at 2700,900.
 There are MapPoints here:
-  2700,900 (discovered)
-  100,900 (not discovered)
+  2700,900 (Discovered)
+  100,900 (not Discovered)
 Simulation started.
 Key Right Down
 Tick x100

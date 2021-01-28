@@ -30,7 +30,7 @@ location.
 
 En location har alltså följande egenskaper:
   - position på kartan, x,y
-  - om den är "discovered" eller ej; en bool.
+  - om den är "Discovered" eller ej; en bool.
     (hidden eller visible kan man se det som)
 Förutom detta sparas en pekare till current location
 "någonstans".

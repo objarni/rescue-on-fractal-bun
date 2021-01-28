@@ -24,25 +24,25 @@ type Level struct {
 	mapPoints     []MapPoint
 }
 
-// TODO: discovered should probably be stored somewhere else
+// TODO: Discovered should probably be stored somewhere else
 type MapPoint struct {
-	pos        pixel.Vec
-	discovered bool
-	mapTarget  string
+	Pos        pixel.Vec
+	Discovered bool
+	Location   string
 }
 
 // TODO: cfg and res goes together. "Shared" struct?
 func MakeLevelScene(cfg *Config, res *Resources) *LevelScene {
 	mapPoints := []MapPoint{
 		{
-			pos:        pixel.Vec{X: 3400, Y: 60},
-			discovered: true,
-			mapTarget:  "Hembyn",
+			Pos:        pixel.Vec{X: 3400, Y: 60},
+			Discovered: true,
+			Location:   "Hembyn",
 		},
 		{
-			pos:        pixel.Vec{X: 300, Y: 60},
-			discovered: false,
-			mapTarget:  "Korsningen",
+			Pos:        pixel.Vec{X: 300, Y: 60},
+			Discovered: false,
+			Location:   "Korsningen",
 		},
 	}
 	ghost := internal.LoadSpriteForSure("assets/TGhost.png")
@@ -148,21 +148,21 @@ func (scene *LevelScene) Tick() bool {
 
 func (scene *LevelScene) drawMapPoints(_ *pixelgl.Window, imd *imdraw.IMDraw) {
 	for _, mapPoint := range scene.level.mapPoints {
-		if mapPoint.discovered {
+		if mapPoint.Discovered {
 			imd.Color = colornames.Green800
 		} else {
 			imd.Color = colornames.Orange500
 		}
-		imd.Push(mapPoint.pos)
-		imd.Push(mapPoint.pos.Add(v(10, 10)))
+		imd.Push(mapPoint.Pos)
+		imd.Push(mapPoint.Pos.Add(v(10, 10)))
 		imd.Rectangle(0)
 	}
 }
 
 /*
 type MapPoint struct {
-	pos        pixel.Vec
-	discovered bool
-	mapTarget  string
+	Pos        pixel.Vec
+	Discovered bool
+	Location  string
 }
 */
