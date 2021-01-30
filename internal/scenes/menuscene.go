@@ -28,14 +28,12 @@ type MenuScene struct {
 }
 
 func MakeMenuScene(config *Config, res *Resources) *MenuScene {
-	err, _, switchSound := internal.LoadWav("assets/MenuPointerMoved.wav")
-	internal.PanicIfError(err)
 	return &MenuScene{
 		cfg:             config,
 		res:             res,
 		currentItem:     Play,
 		textbox:         text.New(pixel.V(0, 0), res.Atlas),
-		itemSwitchSound: switchSound,
+		itemSwitchSound: res.Blip,
 		quit:            false,
 	}
 }

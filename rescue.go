@@ -21,10 +21,7 @@ func run() {
 	cfgTime := info.ModTime()
 
 	// Load resources
-	res := scenes.Resources{}
-	face := internal.LoadTTFForSure("assets/Font.ttf", 32)
-	res.Atlas = text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII)
-	res.Ghost = internal.LoadSpriteForSure("assets/TGhost.png")
+	res := loadResources()
 
 	// Initial scene
 	var scene internal.Thing = scenes.MakeMenuScene(&cfg, &res)
@@ -104,6 +101,15 @@ func run() {
 		win.Update()
 		time.Sleep(time.Millisecond * 5)
 	}
+}
+
+func loadResources() scenes.Resources {
+	res := scenes.Resources{}
+	face := internal.LoadTTFForSure("assets/Font.ttf", 32)
+	res.Atlas = text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII)
+	res.Ghost = internal.LoadSpriteForSure("assets/TGhost.png")
+	res.Blip = internal.LoadWavForSure("assets/Bounce.wav")
+	return res
 }
 
 func main() {
