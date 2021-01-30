@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"github.com/bcvery1/tilepix"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/wav"
 	"github.com/faiface/pixel"
@@ -94,4 +95,25 @@ func LoadTTFForSure(path string, size float64) font.Face {
 	face, err := LoadTTF(path, size)
 	PanicIfError(err)
 	return face
+}
+
+func LoadLevel(path string) Level {
+	level, err := tilepix.ReadFile(path)
+	PanicIfError(err)
+	points := []MapPoint{}
+	for _, object := range level.ObjectGroups[0].Objects {
+		x := object.X
+		y := object.Y
+		var mp = MapPoint{
+			Pos:        pixel.Vec{x, y},
+			Discovered: false,
+			Location:   object.Name,
+		}
+		points = append(points, mp)
+	}
+	return Level{
+		Width:     level.Width,
+		Height:    level.Height,
+		MapPoints: points,
+	}
 }

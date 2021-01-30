@@ -5,7 +5,6 @@ import (
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
 	"golang.org/x/exp/shiny/materialdesign/colornames"
-	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
 )
 
@@ -14,26 +13,12 @@ type LevelScene struct {
 	res                       *Resources
 	playerPos                 pixel.Vec
 	leftPressed, rightPressed bool
-	level                     Level
+	level                     internal.Level
 	ghost                     *pixel.Sprite // TODO: move sprites to res.structure
 }
 
-type Level struct {
-	width, height float64
-	clearColor    color.RGBA
-	mapPoints     []MapPoint
-}
-
-// TODO: Discovered should probably be stored somewhere else
-type MapPoint struct {
-	Pos        pixel.Vec
-	Discovered bool
-	Location   string
-}
-
-// TODO: cfg and res goes together. "Shared" struct?
 func MakeLevelScene(cfg *Config, res *Resources) *LevelScene {
-	mapPoints := []MapPoint{
+	mapPoints := []internal.MapPoint{
 		{
 			Pos:        pixel.Vec{X: 3400, Y: 60},
 			Discovered: true,
@@ -50,11 +35,11 @@ func MakeLevelScene(cfg *Config, res *Resources) *LevelScene {
 		cfg:       cfg,
 		res:       res,
 		playerPos: pixel.Vec{X: 3000, Y: 60},
-		level: Level{
-			width:      3500,
-			height:     768,
-			clearColor: colornames.Blue900,
-			mapPoints:  mapPoints,
+		level: internal.Level{
+			Width:      3500,
+			Height:     768,
+			ClearColor: colornames.Blue900,
+			MapPoints:  mapPoints,
 		},
 		ghost: ghost,
 	}
@@ -91,7 +76,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	scene.drawPlayer(win, imd)
 	imd.Draw(win)
 	camMx := scene.cameraMatrix()
-	for i := 0; i < int(scene.level.width); i += 500 {
+	for i := 0; i < int(scene.level.Width); i += 500 {
 		scene.ghost.Draw(win, pixel.IM.Moved(v(float64(i), 200)).Chained(camMx))
 	}
 }
@@ -130,9 +115,9 @@ func (scene *LevelScene) drawPlayer(_ *pixelgl.Window, imd *imdraw.IMDraw) {
 }
 
 func (scene *LevelScene) drawBackdrop(imd *imdraw.IMDraw) {
-	imd.Color = scene.level.clearColor
+	imd.Color = scene.level.ClearColor
 	imd.Push(v(0, 0))
-	imd.Push(v(scene.level.width, scene.level.height))
+	imd.Push(v(float64(scene.level.Width), float64(scene.level.Height)))
 	imd.Rectangle(0)
 }
 
@@ -147,7 +132,7 @@ func (scene *LevelScene) Tick() bool {
 }
 
 func (scene *LevelScene) drawMapPoints(_ *pixelgl.Window, imd *imdraw.IMDraw) {
-	for _, mapPoint := range scene.level.mapPoints {
+	for _, mapPoint := range scene.level.MapPoints {
 		if mapPoint.Discovered {
 			imd.Color = colornames.Green800
 		} else {

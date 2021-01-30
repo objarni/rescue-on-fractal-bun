@@ -8,7 +8,7 @@ import (
 )
 
 type LevelSimulation struct {
-	level               Level
+	level               internal.Level
 	playerStartMapPoint string
 }
 
@@ -22,11 +22,11 @@ func (sim *LevelSimulation) Tick() {
 
 func ExampleLevelSimulation() {
 	levelSim := LevelSimulation{
-		level: Level{
-			width:      3000,
-			height:     1000,
-			clearColor: colornames.White,
-			mapPoints: []MapPoint{
+		level: internal.Level{
+			Width:      3000,
+			Height:     1000,
+			ClearColor: colornames.White,
+			MapPoints: []internal.MapPoint{
 				{
 					Pos:        v(2700, 900),
 					Discovered: true,
@@ -75,8 +75,8 @@ Key Right Down
 Tick x100
 Simulation stopped. State:
 Player is at 3000, 900.
-`, sim.level.width, sim.level.height,
-		projectColor(sim.level.clearColor))
+`, sim.level.Width, sim.level.Height,
+		projectColor(sim.level.ClearColor))
 }
 
 func projectColor(color color.RGBA) string {
