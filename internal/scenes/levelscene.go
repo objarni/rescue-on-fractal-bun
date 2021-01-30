@@ -14,7 +14,6 @@ type LevelScene struct {
 	playerPos                 pixel.Vec
 	leftPressed, rightPressed bool
 	level                     internal.Level
-	ghost                     *pixel.Sprite // TODO: move sprites to res.structure
 }
 
 func MakeLevelScene(cfg *Config, res *Resources) *LevelScene {
@@ -30,7 +29,6 @@ func MakeLevelScene(cfg *Config, res *Resources) *LevelScene {
 			Location:   "Korsningen",
 		},
 	}
-	ghost := internal.LoadSpriteForSure("assets/TGhost.png")
 	return &LevelScene{
 		cfg:       cfg,
 		res:       res,
@@ -41,7 +39,6 @@ func MakeLevelScene(cfg *Config, res *Resources) *LevelScene {
 			ClearColor: colornames.Blue900,
 			MapPoints:  mapPoints,
 		},
-		ghost: ghost,
 	}
 }
 
@@ -76,8 +73,8 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	scene.drawPlayer(win, imd)
 	imd.Draw(win)
 	camMx := scene.cameraMatrix()
-	for i := 0; i < int(scene.level.Width); i += 500 {
-		scene.ghost.Draw(win, pixel.IM.Moved(v(float64(i), 200)).Chained(camMx))
+	for i := 0; i < scene.level.Width; i += 500 {
+		scene.res.Ghost.Draw(win, pixel.IM.Moved(v(float64(i), 200)).Chained(camMx))
 	}
 }
 

@@ -24,6 +24,7 @@ func run() {
 	res := scenes.Resources{}
 	face := internal.LoadTTFForSure("assets/Font.ttf", 32)
 	res.Atlas = text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII)
+	res.Ghost = internal.LoadSpriteForSure("assets/TGhost.png")
 
 	// Initial scene
 	var scene internal.Thing = scenes.MakeMenuScene(&cfg, &res)
