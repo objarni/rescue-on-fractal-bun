@@ -108,6 +108,7 @@ func loadResources() scenes.Resources {
 	face := internal.LoadTTFForSure("assets/Font.ttf", 32)
 	res.Atlas = text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII)
 	res.Ghost = internal.LoadSpriteForSure("assets/TGhost.png")
+	res.MapPoint = internal.LoadSpriteForSure("assets/TMapPoint.png")
 	res.Blip = internal.LoadWavForSure("assets/Bounce.wav")
 	return res
 }

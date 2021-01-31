@@ -117,8 +117,9 @@ func (scene *LevelScene) Tick() bool {
 	return true
 }
 
-func (scene *LevelScene) drawMapPoints(_ *pixelgl.Window, imd *imdraw.IMDraw) {
+func (scene *LevelScene) drawMapPoints(win *pixelgl.Window, imd *imdraw.IMDraw) {
 	for _, mapPoint := range scene.level.MapPoints {
+		scene.res.MapPoint.Draw(win, pixel.IM.Moved(mapPoint.Pos))
 		if mapPoint.Discovered {
 			imd.Color = colornames.Green800
 		} else {
