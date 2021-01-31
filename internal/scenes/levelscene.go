@@ -85,19 +85,21 @@ func (scene *LevelScene) cameraMatrix() pixel.Matrix {
 	return cameraMatrix
 }
 
-func (scene *LevelScene) drawPlayer(_ *pixelgl.Window, imd *imdraw.IMDraw) {
-	playerWidthHalf := internal.PlayerWidth / 2
-	playerBottomLeft := scene.playerPos.Sub(v(playerWidthHalf, 0))
-	playerTopRight := scene.playerPos.Add(v(playerWidthHalf, internal.PlayerHeight))
-
-	imd.Color = colornames.Brown200
-	imd.Push(playerBottomLeft)
-	imd.Push(playerTopRight)
-	imd.Rectangle(0)
-	imd.Color = colornames.Brown100
-	imd.Push(playerBottomLeft)
-	imd.Push(playerTopRight)
-	imd.Rectangle(2)
+func (scene *LevelScene) drawPlayer(win *pixelgl.Window, imd *imdraw.IMDraw) {
+	//playerWidthHalf := internal.PlayerWidth / 2
+	//playerBottomLeft := scene.playerPos.Sub(v(playerWidthHalf, 0))
+	//playerTopRight := scene.playerPos.Add(v(playerWidthHalf, internal.PlayerHeight))
+	//
+	//imd.Color = colornames.Brown200
+	//imd.Push(playerBottomLeft)
+	//imd.Push(playerTopRight)
+	//imd.Rectangle(0)
+	//imd.Color = colornames.Brown100
+	//imd.Push(playerBottomLeft)
+	//imd.Push(playerTopRight)
+	//imd.Rectangle(2)
+	//
+	scene.res.PlayerStanding.Draw(win, pixel.IM.Moved(scene.playerPos))
 }
 
 func (scene *LevelScene) drawBackdrop(imd *imdraw.IMDraw) {
