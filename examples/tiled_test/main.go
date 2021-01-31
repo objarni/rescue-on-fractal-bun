@@ -4,6 +4,7 @@ import (
 	"github.com/bcvery1/tilepix"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
+	"golang.org/x/image/colornames"
 	"image/color"
 	_ "image/png"
 )
@@ -11,7 +12,7 @@ import (
 func run() {
 	cfg := pixelgl.WindowConfig{
 		Title:  "TilePix",
-		Bounds: pixel.R(0, 0, 640, 320),
+		Bounds: pixel.R(0, 0, 320, 320),
 		VSync:  true,
 	}
 
@@ -21,19 +22,23 @@ func run() {
 	}
 
 	// Load and initialise the map.
-	m, err := tilepix.ReadFile("examples/tiled_test/Level.tmx")
+	m, err := tilepix.ReadFile("examples/tiled_test/Level2.tmx")
 	if err != nil {
 		panic(err)
 	}
 
 	for !win.Closed() {
-		win.Clear(color.White)
+		win.Clear(colornames.Aqua)
 
-		// Draw all layers to the window.
+		//Draw all layers to the window.
 		if err := m.DrawAll(win, color.White, pixel.IM); err != nil {
 			panic(err)
 		}
 
+		//sprite := m.TileLayers[0].Tileset.Sprite
+		//sprite.Draw(win, pixel.IM.Moved(pixel.Vec{300, 150}))
+		//_ = m.DrawAll(win, colornames.Green, pixel.IM)
+		//m.TileLayers[0].Draw(win)
 		win.Update()
 	}
 }
