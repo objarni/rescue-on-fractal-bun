@@ -112,8 +112,9 @@ func LoadLevel(path string) Level {
 		points = append(points, mp)
 	}
 	return Level{
-		Width:     level.Width,
-		Height:    level.Height,
-		MapPoints: points,
+		Width:      level.Width,
+		Height:     level.Height,
+		MapPoints:  points,
+		TilepixMap: level,
 	}
 }

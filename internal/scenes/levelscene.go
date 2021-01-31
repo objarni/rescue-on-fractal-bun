@@ -17,28 +17,12 @@ type LevelScene struct {
 }
 
 func MakeLevelScene(cfg *Config, res *Resources) *LevelScene {
-	mapPoints := []internal.MapPoint{
-		{
-			Pos:        pixel.Vec{X: 3400, Y: 60},
-			Discovered: true,
-			Location:   "Hembyn",
-		},
-		{
-			Pos:        pixel.Vec{X: 300, Y: 60},
-			Discovered: false,
-			Location:   "Korsningen",
-		},
-	}
+	level := internal.LoadLevel("assets/levels/GhostForest.tmx")
 	return &LevelScene{
 		cfg:       cfg,
 		res:       res,
 		playerPos: pixel.Vec{X: 3000, Y: 60},
-		level: internal.Level{
-			Width:      3500,
-			Height:     768,
-			ClearColor: colornames.Blue900,
-			MapPoints:  mapPoints,
-		},
+		level:     level,
 	}
 }
 
@@ -66,26 +50,31 @@ func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 }
 
 func (scene *LevelScene) Render(win *pixelgl.Window) {
+	// Clear screen
 	win.Clear(colornames.Black)
-	imd := scene.cameraTransform()
+	camMx := scene.cameraMatrix()
+	win.SetMatrix(camMx)
+	imd := imdraw.New(nil)
+
+	// map rectangle. TODO: remove when player cannot see past limits!
+	// Then, just clear screen to map background color
 	scene.drawBackdrop(imd)
+
+	layers := scene.level.TilepixMap.TileLayers
+	layers[0].Draw(win) // Background
+	layers[1].Draw(win) // Platforms
+	layers[2].Draw(win) // Walls
+
+	// Draw objects
 	scene.drawMapPoints(win, imd)
 	scene.drawPlayer(win, imd)
 	imd.Draw(win)
-	camMx := scene.cameraMatrix()
 	for i := 0; i < scene.level.Width; i += 500 {
-		scene.res.Ghost.Draw(win, pixel.IM.Moved(v(float64(i), 200)).Chained(camMx))
+		scene.res.Ghost.Draw(win,
+			pixel.IM.Moved(v(float64(i), 200)))
 	}
-}
 
-func (scene *LevelScene) cameraTransform() *imdraw.IMDraw {
-	//	start := time.Now()
-	imd := imdraw.New(nil)
-	//	duration := time.Since(start)
-	//	fmt.Println(duration)
-	cameraMatrix := scene.cameraMatrix()
-	imd.SetMatrix(cameraMatrix)
-	return imd
+	layers[3].Draw(win) // Foreground
 }
 
 func (scene *LevelScene) cameraMatrix() pixel.Matrix {
