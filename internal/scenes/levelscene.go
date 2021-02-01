@@ -121,14 +121,17 @@ func (scene *LevelScene) Tick() bool {
 
 func (scene *LevelScene) drawMapPoints(win *pixelgl.Window, imd *imdraw.IMDraw) {
 	for _, mapPoint := range scene.level.MapPoints {
-		scene.res.MapPoint.Draw(win, pixel.IM.Moved(mapPoint.Pos))
+		alignVec := v(0, scene.res.MapPoint.Frame().Center().Y)
+		scene.res.MapPoint.Draw(
+			win,
+			pixel.IM.Moved(mapPoint.Pos).Moved(alignVec))
 		if mapPoint.Discovered {
 			imd.Color = colornames.Green800
 		} else {
 			imd.Color = colornames.Orange500
 		}
-		imd.Push(mapPoint.Pos)
-		imd.Push(mapPoint.Pos.Add(v(10, 10)))
+		imd.Push(mapPoint.Pos.Sub(v(4, 4)))
+		imd.Push(mapPoint.Pos.Add(v(4, 4)))
 		imd.Rectangle(0)
 	}
 }
