@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
@@ -23,8 +24,22 @@ func run() {
 	// Load resources
 	res := loadResources()
 
-	// Initial scene
-	var scene internal.Thing = scenes.MakeMenuScene(&cfg, &res)
+	// Initial scene - depends on --level cmd line arg!
+	var scene internal.Thing
+	if len(os.Args) == 1 {
+		scene = scenes.MakeMenuScene(&cfg, &res)
+	} else {
+		argsWithoutProg := os.Args[1:]
+		if argsWithoutProg[0] == "--level" {
+			// TODO: parameterize on level arg!
+			levelName := argsWithoutProg[1]
+			fmt.Println("Loading level:", levelName)
+			scene = scenes.MakeLevelScene(&cfg, &res)
+		} else {
+			fmt.Printf("Unknown cmd.line arg: %v\n", argsWithoutProg)
+			panic("Don't understand cmd.line")
+		}
+	}
 
 	win, err := pixelgl.NewWindow(pixelgl.WindowConfig{
 		Title:  "Rescue on fractal bun (work title)",
