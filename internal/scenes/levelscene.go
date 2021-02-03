@@ -18,10 +18,11 @@ type LevelScene struct {
 
 func MakeLevelScene(cfg *Config, res *Resources) *LevelScene {
 	level := internal.LoadLevel("assets/levels/GhostForest.tmx")
+	pos := level.MapPoints[0].Pos
 	return &LevelScene{
 		cfg:       cfg,
 		res:       res,
-		playerPos: pixel.Vec{X: 3000, Y: 60},
+		playerPos: pos,
 		level:     level,
 	}
 }
@@ -61,20 +62,20 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	scene.drawBackdrop(imd)
 
 	layers := scene.level.TilepixMap.TileLayers
-	layers[0].Draw(win) // Background
-	layers[1].Draw(win) // Platforms
-	layers[2].Draw(win) // Walls
+	_ = layers[0].Draw(win) // Background
+	_ = layers[1].Draw(win) // Platforms
+	_ = layers[2].Draw(win) // Walls
 
 	// Draw objects
 	scene.drawMapPoints(win, imd)
-	scene.drawPlayer(win, imd)
+	scene.drawPlayer(win)
 	imd.Draw(win)
 	for i := 0; i < scene.level.Width; i += 500 {
 		scene.res.Ghost.Draw(win,
 			pixel.IM.Moved(v(float64(i), 200)))
 	}
 
-	layers[3].Draw(win) // Foreground
+	_ = layers[3].Draw(win) // Foreground
 }
 
 func (scene *LevelScene) cameraMatrix() pixel.Matrix {
@@ -85,20 +86,7 @@ func (scene *LevelScene) cameraMatrix() pixel.Matrix {
 	return cameraMatrix
 }
 
-func (scene *LevelScene) drawPlayer(win *pixelgl.Window, imd *imdraw.IMDraw) {
-	//playerWidthHalf := internal.PlayerWidth / 2
-	//playerBottomLeft := scene.playerPos.Sub(v(playerWidthHalf, 0))
-	//playerTopRight := scene.playerPos.Add(v(playerWidthHalf, internal.PlayerHeight))
-	//
-	//imd.Color = colornames.Brown200
-	//imd.Push(playerBottomLeft)
-	//imd.Push(playerTopRight)
-	//imd.Rectangle(0)
-	//imd.Color = colornames.Brown100
-	//imd.Push(playerBottomLeft)
-	//imd.Push(playerTopRight)
-	//imd.Rectangle(2)
-	//
+func (scene *LevelScene) drawPlayer(win *pixelgl.Window) {
 	scene.res.PlayerStanding.Draw(win, pixel.IM.Moved(scene.playerPos))
 }
 
@@ -111,10 +99,10 @@ func (scene *LevelScene) drawBackdrop(imd *imdraw.IMDraw) {
 
 func (scene *LevelScene) Tick() bool {
 	if scene.leftPressed && !scene.rightPressed {
-		scene.playerPos = scene.playerPos.Add(v(-5, 0))
+		scene.playerPos = scene.playerPos.Add(v(-scene.cfg.LevelSceneMoveSpeed, 0))
 	}
 	if !scene.leftPressed && scene.rightPressed {
-		scene.playerPos = scene.playerPos.Add(v(5, 0))
+		scene.playerPos = scene.playerPos.Add(v(scene.cfg.LevelSceneMoveSpeed, 0))
 	}
 	return true
 }
