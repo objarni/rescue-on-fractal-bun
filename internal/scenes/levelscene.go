@@ -56,6 +56,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	camMx := scene.cameraMatrix()
 	win.SetMatrix(camMx)
 	imd := imdraw.New(nil)
+	//imd.SetMatrix(camMx)
 
 	// map rectangle. TODO: remove when player cannot see past limits!
 	// Then, just clear screen to map background color
@@ -93,7 +94,7 @@ func (scene *LevelScene) drawPlayer(win *pixelgl.Window) {
 func (scene *LevelScene) drawBackdrop(imd *imdraw.IMDraw) {
 	imd.Color = scene.level.ClearColor
 	imd.Push(v(0, 0))
-	imd.Push(v(float64(scene.level.Width), float64(scene.level.Height)))
+	imd.Push(v(float64(scene.level.Width*32), float64(scene.level.Height*32)))
 	imd.Rectangle(0)
 }
 

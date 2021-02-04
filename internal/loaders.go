@@ -6,6 +6,7 @@ import (
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/wav"
 	"github.com/faiface/pixel"
+	"github.com/g4s8/hexcolor"
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
 	"image"
@@ -111,10 +112,13 @@ func LoadLevel(path string) Level {
 		}
 		points = append(points, mp)
 	}
+	color, err := hexcolor.Parse(level.BackgroundColor)
+	PanicIfError(err)
 	return Level{
 		Width:      level.Width,
 		Height:     level.Height,
 		MapPoints:  points,
 		TilepixMap: level,
+		ClearColor: color,
 	}
 }

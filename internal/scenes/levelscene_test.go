@@ -83,3 +83,15 @@ func projectColor(color color.RGBA) string {
 	return fmt.Sprintf("%v,%v,%v",
 		color.R, color.G, color.B)
 }
+
+/*
+some scenarios
+when entering level on "Hembyn", player starts
+ at map point named "Hembyn"
+when clicking jump over a map position (close enough),
+ exits to map scene with hair cross at that location
+when walking across a level, the camera pans
+ (i.e player is centered on screen)
+when walking to end of level, the camera stops panning,
+ instead the player approaches side of screen
+*/

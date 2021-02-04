@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"objarni/rescue-on-fractal-bun/internal"
 	"strings"
+	"testing"
 )
 
 func templateThis(format string, args ...string) string {
@@ -13,21 +14,26 @@ func templateThis(format string, args ...string) string {
 
 func printLevel(level internal.Level) {
 	mapPoints := printMapPoints(level.MapPoints)
-	fmt.Println(templateThis("Width: {w}   Height: {h}  (tiles)\n"+
-		"There are {countMapPoints} MapPoint(s):\n"+
-		"{mapPoints}\n"+
-		"Walls:\n"+
-		"...#\n"+
-		"...#\n"+
-		"....\n"+
-		"Platforms:\n"+
-		"....\n"+
-		"....\n"+
-		"####",
+	fmt.Println(templateThis(
+		"Width: {w}   Height: {h}  (tiles)\n"+
+			"Background color: RGB={red},{green},{blue}\n"+
+			"There are {countMapPoints} MapPoint(s):\n"+
+			"{mapPoints}\n"+
+			"Walls:\n"+
+			"...#\n"+
+			"...#\n"+
+			"....\n"+
+			"Platforms:\n"+
+			"....\n"+
+			"....\n"+
+			"####",
 		"{w}", toString(level.Width),
 		"{h}", toString(level.Height),
 		"{countMapPoints}", toString(len(level.MapPoints)),
 		"{mapPoints}", mapPoints,
+		"{red}", toString(level.ClearColor.R),
+		"{green}", toString(level.ClearColor.G),
+		"{blue}", toString(level.ClearColor.B),
 	))
 }
 
@@ -43,11 +49,12 @@ func toString(v interface{}) string {
 	return fmt.Sprint(v)
 }
 
-func ExampleLoadingMiniLevel() {
+func TestLoadingMiniLevel(t *testing.T) {
 	level := internal.LoadLevel("../testdata/MiniLevel.tmx")
 	printLevel(level)
 	// Output:
 	// Width: 4   Height: 3  (tiles)
+	// Background color: RGB=10,50,100
 	// There are 1 MapPoint(s):
 	// 'Korsningen' at 11, 56
 	// Walls:
