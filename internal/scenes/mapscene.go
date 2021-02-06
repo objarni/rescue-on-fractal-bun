@@ -122,7 +122,7 @@ func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 func (scene *MapScene) Render(win *pixelgl.Window) {
 	scene.mapImage.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
 	imd := imdraw.New(nil)
-	drawLocations(scene, imd)
+	scene.locationOps().Render(imd)
 	drawCrossHair(scene, imd)
 	imd.Draw(win)
 	drawLocationTexts(win, scene)
@@ -166,9 +166,10 @@ func locationIxFromName(locationName string) int {
 	panic(fmt.Sprintf("Unknown location name: %v", locationName))
 }
 
-func drawLocations(scene *MapScene, imd *imdraw.IMDraw) *imdraw.IMDraw {
+func (scene *MapScene) locationOps() draw.ImdOp {
 	operations := []draw.ImdOp{}
 	circleThickness := 3
+
 	for _, loc := range scene.locations {
 		pos := loc.position
 		operation := draw.Colored(
@@ -176,6 +177,7 @@ func drawLocations(scene *MapScene, imd *imdraw.IMDraw) *imdraw.IMDraw {
 			draw.Circle(scene.locCircleRadius(), int(pos.X), int(pos.Y), circleThickness))
 		operations = append(operations, operation)
 	}
+
 	blink := scene.cfg.MapSceneBlinkSpeed
 	if scene.highlightTimer/blink%2 == 0 {
 		loc := scene.locations[scene.playerLocIx]
@@ -183,6 +185,7 @@ func drawLocations(scene *MapScene, imd *imdraw.IMDraw) *imdraw.IMDraw {
 		circle := draw.Circle(scene.currentLocCircleRadius(), int(pos.X), int(pos.Y), circleThickness)
 		operations = append(operations, draw.Colored(colornames.Green, circle))
 	}
+
 	ix := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.locMaxDistance())
 	if ix > -1 {
 		pos := scene.locations[ix].position
@@ -191,9 +194,8 @@ func drawLocations(scene *MapScene, imd *imdraw.IMDraw) *imdraw.IMDraw {
 		operation := draw.Colored(colornames.Red, circle)
 		operations = append(operations, operation)
 	}
-	draw.Sequence(operations...).Render(imd)
 
-	return imd
+	return draw.Sequence(operations...)
 }
 
 func (scene *MapScene) targetLocCircleRadius() int {

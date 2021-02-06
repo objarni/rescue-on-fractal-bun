@@ -42,3 +42,14 @@ func ExampleSequence() {
 	//   Circle radius 3 center <1, 2> thickness 4
 	//   Circle radius 25 center <50, 100> thickness 2
 }
+
+func ExampleThenSequence() {
+	sequence := Sequence().
+		Then(Circle(25, 50, 100, 2)).
+		Then(Circle(3, 1, 2, 4))
+	fmt.Println(sequence.String())
+	// Output:
+	// Sequence:
+	//   Circle radius 25 center <50, 100> thickness 2
+	//   Circle radius 3 center <1, 2> thickness 4
+}

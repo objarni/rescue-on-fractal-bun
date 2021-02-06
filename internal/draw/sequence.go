@@ -13,7 +13,7 @@ func (sequence ImdSequence) String() string {
 	return strings.Join(sequence.Lines(), "\n")
 }
 
-func Sequence(imdOps ...ImdOp) ImdOp {
+func Sequence(imdOps ...ImdOp) ImdSequence {
 	return ImdSequence{
 		imdOps: imdOps,
 	}
@@ -31,4 +31,9 @@ func (sequence ImdSequence) Lines() []string {
 		result = append(result, "  "+imdOp.String())
 	}
 	return result
+}
+
+func (sequence ImdSequence) Then(imdOp ImdOp) ImdSequence {
+	ops := append(sequence.imdOps, imdOp)
+	return Sequence(ops...)
 }
