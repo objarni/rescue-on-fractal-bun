@@ -29,29 +29,29 @@ func ExampleColor() {
 	//   Circle radius 3 center <1, 2> thickness 4
 }
 
-type GfxOp interface {
+type ImdOp interface {
 	String() string
 }
 
 // Types
-type GfxCircle struct {
+type ImdCircle struct {
 	radius, x, y, thickness int
 }
 
-type GfxColor struct {
+type ImdColor struct {
 	color     color.RGBA
-	Operation GfxOp
+	Operation ImdOp
 }
 
 // Projectors
-func (circle GfxCircle) String() string {
+func (circle ImdCircle) String() string {
 	return fmt.Sprintf("Circle radius %v center <%v, %v> thickness %v",
 		circle.radius,
 		circle.x, circle.y,
 		circle.thickness)
 }
 
-func (color GfxColor) String() string {
+func (color ImdColor) String() string {
 	head := fmt.Sprintf("Color %v, %v, %v:\n  ",
 		color.color.R, color.color.G, color.color.B)
 	body := color.Operation.String()
@@ -60,15 +60,15 @@ func (color GfxColor) String() string {
 
 // Builders
 
-func Colored(color color.RGBA, gfxOp GfxOp) GfxOp {
-	return GfxColor{
+func Colored(color color.RGBA, imdOp ImdOp) ImdOp {
+	return ImdColor{
 		color:     color,
-		Operation: gfxOp,
+		Operation: imdOp,
 	}
 }
 
-func Circle(radius int, x int, y int, thickness int) GfxOp {
-	return GfxCircle{
+func Circle(radius int, x int, y int, thickness int) ImdOp {
+	return ImdCircle{
 		radius:    radius,
 		x:         x,
 		y:         y,
