@@ -96,7 +96,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	// FPS
 	tb := text.New(pixel.V(0, 0), scene.res.Atlas)
 	_, _ = fmt.Fprintf(tb, "FPS=%1.1f", scene.res.FPS)
-	tb.DrawColorMask(win, pixel.IM, colornames.White)
+	tb.DrawColorMask(win, pixel.IM, colornames.Brown800)
 }
 
 func (scene *LevelScene) cameraMatrix() pixel.Matrix {
