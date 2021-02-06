@@ -168,29 +168,48 @@ func locationIxFromName(locationName string) int {
 
 func drawLocations(scene *MapScene, imd *imdraw.IMDraw) *imdraw.IMDraw {
 	operations := []draw.ImdOp{}
+	circleThickness := 3
 	for _, loc := range scene.locations {
-		vec := loc.position
-		operations = append(
-			operations,
-			draw.Colored(
-				colornames.Darkslateblue,
-				draw.Circle(scene.cfg.MapSceneLocCircleRadius, int(vec.X), int(vec.Y), 3)))
+		pos := loc.position
+		operation := draw.Colored(
+			colornames.Darkslateblue,
+			draw.Circle(scene.locCircleRadius(), int(pos.X), int(pos.Y), circleThickness))
+		operations = append(operations, operation)
 	}
 	blink := scene.cfg.MapSceneBlinkSpeed
 	if scene.highlightTimer/blink%2 == 0 {
-		circle := draw.Circle(scene.cfg.MapSceneCurrentLocCircleRadius, int(scene.locations[scene.playerLocIx].position.X), int(scene.locations[scene.playerLocIx].position.Y), 3)
+		loc := scene.locations[scene.playerLocIx]
+		pos := loc.position
+		circle := draw.Circle(scene.currentLocCircleRadius(), int(pos.X), int(pos.Y), circleThickness)
 		operations = append(operations, draw.Colored(colornames.Green, circle))
 	}
-	ix := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.cfg.MapSceneTargetLocMaxDistance)
+	ix := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.locMaxDistance())
 	if ix > -1 {
-		color := colornames.Red
-		vec := scene.locations[ix].position
-		radius := scene.cfg.MapSceneTargetLocCircleRadius
-		operations = append(operations, draw.Colored(color, draw.Circle(radius, int(vec.X), int(vec.Y), 3)))
+		pos := scene.locations[ix].position
+		radius := scene.targetLocCircleRadius()
+		circle := draw.Circle(radius, int(pos.X), int(pos.Y), circleThickness)
+		operation := draw.Colored(colornames.Red, circle)
+		operations = append(operations, operation)
 	}
 	draw.Sequence(operations...).Render(imd)
 
 	return imd
+}
+
+func (scene *MapScene) targetLocCircleRadius() int {
+	return scene.cfg.MapSceneTargetLocCircleRadius
+}
+
+func (scene *MapScene) locMaxDistance() int {
+	return scene.cfg.MapSceneTargetLocMaxDistance
+}
+
+func (scene *MapScene) currentLocCircleRadius() int {
+	return scene.cfg.MapSceneCurrentLocCircleRadius
+}
+
+func (scene *MapScene) locCircleRadius() int {
+	return scene.cfg.MapSceneLocCircleRadius
 }
 
 func drawCrossHair(scene *MapScene, imd *imdraw.IMDraw) {
