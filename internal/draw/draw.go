@@ -6,5 +6,6 @@ import (
 
 type ImdOp interface {
 	String() string
+	Lines() []string
 	Render(imd *imdraw.IMDraw)
 }

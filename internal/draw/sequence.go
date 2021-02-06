@@ -1,17 +1,16 @@
 package draw
 
-import "github.com/faiface/pixel/imdraw"
+import (
+	"github.com/faiface/pixel/imdraw"
+	"strings"
+)
 
 type ImdSequence struct {
 	imdOps []ImdOp
 }
 
 func (sequence ImdSequence) String() string {
-	result := "Sequence:\n"
-	for _, imdOp := range sequence.imdOps {
-		result += "  " + imdOp.String() + "\n"
-	}
-	return result
+	return strings.Join(sequence.Lines(), "\n")
 }
 
 func Sequence(imdOps ...ImdOp) ImdOp {
@@ -24,4 +23,12 @@ func (sequence ImdSequence) Render(imd *imdraw.IMDraw) {
 	for _, imdOp := range sequence.imdOps {
 		imdOp.Render(imd)
 	}
+}
+
+func (sequence ImdSequence) Lines() []string {
+	result := []string{"Sequence:"}
+	for _, imdOp := range sequence.imdOps {
+		result = append(result, "  "+imdOp.String())
+	}
+	return result
 }

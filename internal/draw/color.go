@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/faiface/pixel/imdraw"
 	"image/color"
+	"strings"
 )
 
 type ImdColor struct {
@@ -12,10 +13,8 @@ type ImdColor struct {
 }
 
 func (color ImdColor) String() string {
-	head := fmt.Sprintf("Color %v, %v, %v:\n  ",
-		color.color.R, color.color.G, color.color.B)
-	body := color.Operation.String()
-	return head + body
+	//strings.Join(str, "-")
+	return strings.Join(color.Lines(), "\n")
 }
 
 func (color ImdColor) Render(imd *imdraw.IMDraw) {
@@ -29,4 +28,15 @@ func Colored(color color.RGBA, imdOp ImdOp) ImdOp {
 		color:     color,
 		Operation: imdOp,
 	}
+}
+
+func (color ImdColor) Lines() []string {
+	head := fmt.Sprintf("Color %v, %v, %v:",
+		color.color.R, color.color.G, color.color.B)
+	body := color.Operation.Lines()
+	ret := []string{head}
+	for _, elem := range body {
+		ret = append(ret, "  "+elem)
+	}
+	return ret
 }

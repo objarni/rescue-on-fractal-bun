@@ -30,3 +30,7 @@ func (circle ImdCircle) Render(imd *imdraw.IMDraw) {
 	imd.Push(pixel.Vec{X: float64(circle.x), Y: float64(circle.y)})
 	imd.Circle(float64(circle.radius), float64(circle.thickness))
 }
+
+func (circle ImdCircle) Lines() []string {
+	return []string{circle.String()}
+}
