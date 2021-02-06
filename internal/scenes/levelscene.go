@@ -82,8 +82,16 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 
 	// Heads-up display
 	win.SetMatrix(pixel.IM)
-	scene.res.InLevelHeadsUp.Draw(win,
-		pixel.IM.Moved(scene.res.InLevelHeadsUp.Frame().Center()))
+	if scene.playerPos.Sub(scene.level.MapPoints[0].Pos).Len() < 10 {
+		scene.res.InLevelHeadsUp.DrawColorMask(
+			win,
+			pixel.IM.Moved(scene.res.InLevelHeadsUp.Frame().Center()),
+			colornames.GreenA400)
+	} else {
+		scene.res.InLevelHeadsUp.Draw(
+			win,
+			pixel.IM.Moved(scene.res.InLevelHeadsUp.Frame().Center()))
+	}
 
 	// FPS
 	tb := text.New(pixel.V(0, 0), scene.res.Atlas)
@@ -107,7 +115,6 @@ func (scene *LevelScene) drawBackdrop(imd *imdraw.IMDraw) {
 	imd.Color = scene.level.ClearColor
 	imd.Push(v(0, 0))
 	imd.Push(v(float64(scene.level.Width*32), float64(scene.level.Height*32)))
-	//imd.Push(v(500, 5000))
 	imd.Rectangle(0)
 }
 
