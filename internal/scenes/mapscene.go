@@ -167,27 +167,28 @@ func locationIxFromName(locationName string) int {
 }
 
 func drawLocations(scene *MapScene, imd *imdraw.IMDraw) *imdraw.IMDraw {
+	operations := []draw.ImdOp{}
 	for _, loc := range scene.locations {
 		vec := loc.position
-		drawCircle(imd, colornames.Darkslateblue, vec,
-			scene.cfg.MapSceneLocCircleRadius)
+		operations = append(
+			operations,
+			draw.Colored(
+				colornames.Darkslateblue,
+				draw.Circle(scene.cfg.MapSceneLocCircleRadius, int(vec.X), int(vec.Y), 3)))
 	}
 	blink := scene.cfg.MapSceneBlinkSpeed
 	if scene.highlightTimer/blink%2 == 0 {
-		drawCircle(
-			imd, colornames.Green,
-			scene.locations[scene.playerLocIx].position,
-			scene.cfg.MapSceneCurrentLocCircleRadius,
-		)
+		circle := draw.Circle(scene.cfg.MapSceneCurrentLocCircleRadius, int(scene.locations[scene.playerLocIx].position.X), int(scene.locations[scene.playerLocIx].position.Y), 3)
+		operations = append(operations, draw.Colored(colornames.Green, circle))
 	}
 	ix := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.cfg.MapSceneTargetLocMaxDistance)
 	if ix > -1 {
-		drawCircle(
-			imd, colornames.Red,
-			scene.locations[ix].position,
-			scene.cfg.MapSceneTargetLocCircleRadius,
-		)
+		color := colornames.Red
+		vec := scene.locations[ix].position
+		radius := scene.cfg.MapSceneTargetLocCircleRadius
+		operations = append(operations, draw.Colored(color, draw.Circle(radius, int(vec.X), int(vec.Y), 3)))
 	}
+	draw.Sequence(operations...).Render(imd)
 
 	return imd
 }
