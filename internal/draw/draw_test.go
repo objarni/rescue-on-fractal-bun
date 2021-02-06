@@ -29,4 +29,17 @@ func ExampleColor() {
 	//   Circle radius 3 center <1, 2> thickness 4
 }
 
-// Builders
+func ExampleSequence() {
+	circle := Circle(25, 50, 100, 2)
+	smallCircle := Circle(3, 1, 2, 4)
+	fmt.Println(Sequence(circle, smallCircle).String())
+	fmt.Println(Sequence(smallCircle, circle).String())
+	// Output:
+	// Sequence:
+	//   Circle radius 25 center <50, 100> thickness 2
+	//   Circle radius 3 center <1, 2> thickness 4
+	//
+	// Sequence:
+	//   Circle radius 3 center <1, 2> thickness 4
+	//   Circle radius 25 center <50, 100> thickness 2
+}

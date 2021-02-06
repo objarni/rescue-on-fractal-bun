@@ -22,6 +22,10 @@ type ImdColor struct {
 	Operation ImdOp
 }
 
+type ImdSequence struct {
+	imdOps []ImdOp
+}
+
 // Projectors
 func (circle ImdCircle) String() string {
 	return fmt.Sprintf("Circle radius %v center <%v, %v> thickness %v",
@@ -37,6 +41,15 @@ func (color ImdColor) String() string {
 	return head + body
 }
 
+func (sequence ImdSequence) String() string {
+	result := "Sequence:\n"
+	for _, imdOp := range sequence.imdOps {
+		result += "  " + imdOp.String() + "\n"
+	}
+	return result
+}
+
+// Builders
 func Colored(color color.RGBA, imdOp ImdOp) ImdOp {
 	return ImdColor{
 		color:     color,
@@ -53,6 +66,12 @@ func Circle(radius int, x int, y int, thickness int) ImdOp {
 	}
 }
 
+func Sequence(imdOps ...ImdOp) ImdOp {
+	return ImdSequence{
+		imdOps: imdOps,
+	}
+}
+
 // Renderers
 func (circle ImdCircle) Render(imd *imdraw.IMDraw) {
 	imd.Push(pixel.Vec{X: float64(circle.x), Y: float64(circle.y)})
@@ -63,4 +82,10 @@ func (color ImdColor) Render(imd *imdraw.IMDraw) {
 	// TODO: do we want to reset color to previous state?
 	imd.Color = color.color
 	color.Operation.Render(imd)
+}
+
+func (sequence ImdSequence) Render(imd *imdraw.IMDraw) {
+	for _, imdOp := range sequence.imdOps {
+		imdOp.Render(imd)
+	}
 }
