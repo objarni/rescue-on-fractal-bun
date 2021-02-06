@@ -1,36 +1,15 @@
-package internal
+package draw
 
 import (
 	"fmt"
+	"github.com/faiface/pixel"
+	"github.com/faiface/pixel/imdraw"
 	"image/color"
 )
 
-func ExampleCircle() {
-	circle := Circle(25, 50, 100, 2)
-	smallCircle := Circle(3, 1, 2, 4)
-	fmt.Println(circle.String())
-	fmt.Println(smallCircle.String())
-	// Output:
-	// Circle radius 25 center <50, 100> thickness 2
-	// Circle radius 3 center <1, 2> thickness 4
-}
-
-func ExampleColor() {
-	circle := Circle(25, 50, 100, 2)
-	smallCircle := Circle(3, 1, 2, 4)
-	green := color.RGBA{R: 0, G: 1, B: 0}
-	fmt.Println(Colored(green, circle))
-	white := color.RGBA{R: 1, G: 1, B: 1}
-	fmt.Println(Colored(white, smallCircle))
-	// Output:
-	// Color 0, 1, 0:
-	//   Circle radius 25 center <50, 100> thickness 2
-	// Color 1, 1, 1:
-	//   Circle radius 3 center <1, 2> thickness 4
-}
-
 type ImdOp interface {
 	String() string
+	Render(imd *imdraw.IMDraw)
 }
 
 // Types
@@ -58,8 +37,6 @@ func (color ImdColor) String() string {
 	return head + body
 }
 
-// Builders
-
 func Colored(color color.RGBA, imdOp ImdOp) ImdOp {
 	return ImdColor{
 		color:     color,
@@ -74,4 +51,16 @@ func Circle(radius int, x int, y int, thickness int) ImdOp {
 		y:         y,
 		thickness: thickness,
 	}
+}
+
+// Renderers
+func (circle ImdCircle) Render(imd *imdraw.IMDraw) {
+	imd.Push(pixel.Vec{X: float64(circle.x), Y: float64(circle.y)})
+	imd.Circle(float64(circle.radius), float64(circle.thickness))
+}
+
+func (color ImdColor) Render(imd *imdraw.IMDraw) {
+	// TODO: do we want to reset color to previous state?
+	imd.Color = color.color
+	color.Operation.Render(imd)
 }
