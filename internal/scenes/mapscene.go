@@ -9,6 +9,7 @@ import (
 	"golang.org/x/image/colornames"
 	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
+	"objarni/rescue-on-fractal-bun/internal/draw"
 )
 
 /*
@@ -208,9 +209,7 @@ func drawCircle(
 	vec pixel.Vec,
 	radius int,
 ) {
-	imd.Color = color
-	imd.Push(vec)
-	imd.Circle(float64(radius), 3)
+	draw.Colored(color, draw.Circle(radius, int(vec.X), int(vec.Y), 3)).Render(imd)
 }
 
 func (scene *MapScene) Tick() bool {
