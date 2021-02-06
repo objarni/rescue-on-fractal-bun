@@ -37,3 +37,7 @@ func (sequence ImdSequence) Then(imdOp ImdOp) ImdSequence {
 	ops := append(sequence.imdOps, imdOp)
 	return Sequence(ops...)
 }
+
+func Nothing() ImdSequence {
+	return Sequence()
+}

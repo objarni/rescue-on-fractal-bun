@@ -167,37 +167,39 @@ func locationIxFromName(locationName string) int {
 }
 
 func (scene *MapScene) locationOps() draw.ImdOp {
-	return scene.levelEntrences().
+	return scene.levelEntrances().
 		Then(scene.currentLocation()).
-		Then(scene.crosshairLocation())
+		Then(scene.crossHairLocation())
 }
 
-func (scene *MapScene) crosshairLocation() draw.ImdSequence {
-	ix := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.locMaxDistance())
-	imdSequence := draw.Sequence()
-	if ix > -1 {
-		pos := scene.locations[ix].position
+func (scene *MapScene) crossHairLocation() draw.ImdOp {
+	closestLocation := scene.FindClosestLocation()
+	if closestLocation > -1 {
+		pos := scene.locations[closestLocation].position
 		radius := scene.targetLocCircleRadius()
 		circle := draw.Circle(radius, int(pos.X), int(pos.Y), scene.circleThickness())
 		operation := draw.Colored(colornames.Red, circle)
-		imdSequence = imdSequence.Then(operation)
+		return operation
 	}
-	return imdSequence
+	return draw.Nothing()
 }
 
-func (scene *MapScene) currentLocation() draw.ImdSequence {
+func (scene *MapScene) FindClosestLocation() int {
+	return FindClosestLocation(scene.hairCrossPos, scene.locations, scene.locMaxDistance())
+}
+
+func (scene *MapScene) currentLocation() draw.ImdOp {
 	blink := scene.cfg.MapSceneBlinkSpeed
-	imdSequence := draw.Sequence()
 	if scene.highlightTimer/blink%2 == 0 {
 		loc := scene.locations[scene.playerLocIx]
 		pos := loc.position
 		circle := draw.Circle(scene.currentLocCircleRadius(), int(pos.X), int(pos.Y), scene.circleThickness())
-		imdSequence = imdSequence.Then(draw.Colored(colornames.Green, circle))
+		return draw.Colored(colornames.Green, circle)
 	}
-	return imdSequence
+	return draw.Nothing()
 }
 
-func (scene *MapScene) levelEntrences() draw.ImdSequence {
+func (scene *MapScene) levelEntrances() draw.ImdSequence {
 	sequence := draw.Sequence()
 	for _, loc := range scene.locations {
 		pos := loc.position
