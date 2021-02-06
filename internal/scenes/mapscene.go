@@ -167,35 +167,50 @@ func locationIxFromName(locationName string) int {
 }
 
 func (scene *MapScene) locationOps() draw.ImdOp {
-	sequence := draw.Sequence()
-	circleThickness := 3
+	return scene.levelEntrences().
+		Then(scene.currentLocation()).
+		Then(scene.crosshairLocation())
+}
 
+func (scene *MapScene) crosshairLocation() draw.ImdSequence {
+	ix := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.locMaxDistance())
+	imdSequence := draw.Sequence()
+	if ix > -1 {
+		pos := scene.locations[ix].position
+		radius := scene.targetLocCircleRadius()
+		circle := draw.Circle(radius, int(pos.X), int(pos.Y), scene.circleThickness())
+		operation := draw.Colored(colornames.Red, circle)
+		imdSequence = imdSequence.Then(operation)
+	}
+	return imdSequence
+}
+
+func (scene *MapScene) currentLocation() draw.ImdSequence {
+	blink := scene.cfg.MapSceneBlinkSpeed
+	imdSequence := draw.Sequence()
+	if scene.highlightTimer/blink%2 == 0 {
+		loc := scene.locations[scene.playerLocIx]
+		pos := loc.position
+		circle := draw.Circle(scene.currentLocCircleRadius(), int(pos.X), int(pos.Y), scene.circleThickness())
+		imdSequence = imdSequence.Then(draw.Colored(colornames.Green, circle))
+	}
+	return imdSequence
+}
+
+func (scene *MapScene) levelEntrences() draw.ImdSequence {
+	sequence := draw.Sequence()
 	for _, loc := range scene.locations {
 		pos := loc.position
 		operation := draw.Colored(
 			colornames.Darkslateblue,
-			draw.Circle(scene.locCircleRadius(), int(pos.X), int(pos.Y), circleThickness))
+			draw.Circle(scene.locCircleRadius(), int(pos.X), int(pos.Y), scene.circleThickness()))
 		sequence = sequence.Then(operation)
 	}
-
-	blink := scene.cfg.MapSceneBlinkSpeed
-	if scene.highlightTimer/blink%2 == 0 {
-		loc := scene.locations[scene.playerLocIx]
-		pos := loc.position
-		circle := draw.Circle(scene.currentLocCircleRadius(), int(pos.X), int(pos.Y), circleThickness)
-		sequence = sequence.Then(draw.Colored(colornames.Green, circle))
-	}
-
-	ix := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.locMaxDistance())
-	if ix > -1 {
-		pos := scene.locations[ix].position
-		radius := scene.targetLocCircleRadius()
-		circle := draw.Circle(radius, int(pos.X), int(pos.Y), circleThickness)
-		operation := draw.Colored(colornames.Red, circle)
-		sequence = sequence.Then(operation)
-	}
-
 	return sequence
+}
+
+func (scene *MapScene) circleThickness() int {
+	return 3
 }
 
 func (scene *MapScene) targetLocCircleRadius() int {
@@ -217,12 +232,14 @@ func (scene *MapScene) locCircleRadius() int {
 func drawCrossHair(scene *MapScene, imd *imdraw.IMDraw) {
 	imd.Color = pixel.RGBA{R: 1, A: 0.15}
 	h := scene.hairCrossPos
+
 	imd.Push(v(h.X, 0))
 	imd.Push(v(h.X, 600))
-	imd.Rectangle(2)
+	imd.Line(2)
+
 	imd.Push(v(0, h.Y))
 	imd.Push(v(800, h.Y))
-	imd.Rectangle(2)
+	imd.Line(2)
 }
 
 func drawCircle(
