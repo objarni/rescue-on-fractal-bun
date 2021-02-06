@@ -42,8 +42,8 @@ func run() {
 	}
 
 	win, err := pixelgl.NewWindow(pixelgl.WindowConfig{
-		Title:  "Rescue on fractal bun (work title)",
-		Bounds: pixel.R(0, 0, 800, 600),
+		Title:  "Rescue",
+		Bounds: pixel.R(0, 0, internal.ScreenWidth, internal.ScreenHeight),
 	})
 	if err != nil {
 		panic(err)
