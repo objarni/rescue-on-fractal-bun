@@ -11,6 +11,7 @@ type Resources struct {
 	Ghost          *pixel.Sprite
 	MapPoint       *pixel.Sprite
 	PlayerStanding *pixel.Sprite
+	InLevelHeadsUp *pixel.Sprite
 	Blip           *beep.Buffer
 	FPS            float64
 }

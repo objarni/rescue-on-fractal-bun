@@ -140,6 +140,7 @@ func loadResources() scenes.Resources {
 	res.Ghost = internal.LoadSpriteForSure("assets/TGhost.png")
 	res.MapPoint = internal.LoadSpriteForSure("assets/TMapPoint.png")
 	res.PlayerStanding = internal.LoadSpriteForSure("assets/TStanding.png")
+	res.InLevelHeadsUp = internal.LoadSpriteForSure("assets/THeadsup.png")
 	res.Blip = internal.LoadWavForSure("assets/Bounce.wav")
 	return res
 }

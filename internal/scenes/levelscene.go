@@ -54,14 +54,15 @@ func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 
 func (scene *LevelScene) Render(win *pixelgl.Window) {
 	// Clear screen
-	win.Clear(colornames.Black)
-	camMx := scene.cameraMatrix()
-	win.SetMatrix(camMx)
+	win.Clear(colornames.Yellow50)
+	win.SetMatrix(scene.cameraMatrix())
 	imd := imdraw.New(nil)
 
-	// map rectangle. TODO: remove when player cannot see past limits!
+	// Level backdrop
+	// TODO: remove when player cannot see past limits!
 	// Then, just clear screen to map background color
 	scene.drawBackdrop(imd)
+	imd.Draw(win)
 
 	layers := scene.level.TilepixMap.TileLayers
 	_ = layers[0].Draw(win) // Background
@@ -80,9 +81,11 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	_ = layers[3].Draw(win) // Foreground
 
 	// Heads-up display
+	win.SetMatrix(pixel.IM)
+	scene.res.InLevelHeadsUp.Draw(win,
+		pixel.IM.Moved(scene.res.InLevelHeadsUp.Frame().Center()))
 
 	// FPS
-	win.SetMatrix(pixel.IM)
 	tb := text.New(pixel.V(0, 0), scene.res.Atlas)
 	_, _ = fmt.Fprintf(tb, "FPS=%1.1f", scene.res.FPS)
 	tb.DrawColorMask(win, pixel.IM, colornames.White)
@@ -104,6 +107,7 @@ func (scene *LevelScene) drawBackdrop(imd *imdraw.IMDraw) {
 	imd.Color = scene.level.ClearColor
 	imd.Push(v(0, 0))
 	imd.Push(v(float64(scene.level.Width*32), float64(scene.level.Height*32)))
+	//imd.Push(v(500, 5000))
 	imd.Rectangle(0)
 }
 
