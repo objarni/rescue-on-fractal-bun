@@ -122,7 +122,8 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 	scene.mapImage.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
 	imd := imdraw.New(nil)
 	drawLocations(scene, imd)
-	drawCrossHair(win, scene, imd)
+	drawCrossHair(scene, imd)
+	imd.Draw(win)
 	drawLocationTexts(win, scene)
 }
 
@@ -190,7 +191,7 @@ func drawLocations(scene *MapScene, imd *imdraw.IMDraw) *imdraw.IMDraw {
 	return imd
 }
 
-func drawCrossHair(win *pixelgl.Window, scene *MapScene, imd *imdraw.IMDraw) {
+func drawCrossHair(scene *MapScene, imd *imdraw.IMDraw) {
 	imd.Color = pixel.RGBA{R: 1, A: 0.15}
 	h := scene.hairCrossPos
 	imd.Push(v(h.X, 0))
@@ -199,7 +200,6 @@ func drawCrossHair(win *pixelgl.Window, scene *MapScene, imd *imdraw.IMDraw) {
 	imd.Push(v(0, h.Y))
 	imd.Push(v(800, h.Y))
 	imd.Rectangle(2)
-	imd.Draw(win)
 }
 
 func drawCircle(
