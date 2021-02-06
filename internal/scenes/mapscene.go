@@ -167,7 +167,7 @@ func locationIxFromName(locationName string) int {
 }
 
 func (scene *MapScene) locationOps() draw.ImdOp {
-	operations := []draw.ImdOp{}
+	sequence := draw.Sequence()
 	circleThickness := 3
 
 	for _, loc := range scene.locations {
@@ -175,7 +175,7 @@ func (scene *MapScene) locationOps() draw.ImdOp {
 		operation := draw.Colored(
 			colornames.Darkslateblue,
 			draw.Circle(scene.locCircleRadius(), int(pos.X), int(pos.Y), circleThickness))
-		operations = append(operations, operation)
+		sequence = sequence.Then(operation)
 	}
 
 	blink := scene.cfg.MapSceneBlinkSpeed
@@ -183,7 +183,7 @@ func (scene *MapScene) locationOps() draw.ImdOp {
 		loc := scene.locations[scene.playerLocIx]
 		pos := loc.position
 		circle := draw.Circle(scene.currentLocCircleRadius(), int(pos.X), int(pos.Y), circleThickness)
-		operations = append(operations, draw.Colored(colornames.Green, circle))
+		sequence = sequence.Then(draw.Colored(colornames.Green, circle))
 	}
 
 	ix := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.locMaxDistance())
@@ -192,10 +192,10 @@ func (scene *MapScene) locationOps() draw.ImdOp {
 		radius := scene.targetLocCircleRadius()
 		circle := draw.Circle(radius, int(pos.X), int(pos.Y), circleThickness)
 		operation := draw.Colored(colornames.Red, circle)
-		operations = append(operations, operation)
+		sequence = sequence.Then(operation)
 	}
 
-	return draw.Sequence(operations...)
+	return sequence
 }
 
 func (scene *MapScene) targetLocCircleRadius() int {
