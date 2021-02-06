@@ -12,4 +12,5 @@ type Resources struct {
 	MapPoint       *pixel.Sprite
 	PlayerStanding *pixel.Sprite
 	Blip           *beep.Buffer
+	FPS            float64
 }

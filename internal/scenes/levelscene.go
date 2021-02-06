@@ -1,9 +1,11 @@
 package scenes
 
 import (
+	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
+	"github.com/faiface/pixel/text"
 	"golang.org/x/exp/shiny/materialdesign/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
 )
@@ -56,7 +58,6 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	camMx := scene.cameraMatrix()
 	win.SetMatrix(camMx)
 	imd := imdraw.New(nil)
-	//imd.SetMatrix(camMx)
 
 	// map rectangle. TODO: remove when player cannot see past limits!
 	// Then, just clear screen to map background color
@@ -70,13 +71,21 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	// Draw objects
 	scene.drawMapPoints(win, imd)
 	scene.drawPlayer(win)
-	imd.Draw(win)
+	//imd.Draw(win)
 	for i := 0; i < scene.level.Width; i += 500 {
 		scene.res.Ghost.Draw(win,
 			pixel.IM.Moved(v(float64(i), 200)))
 	}
 
 	_ = layers[3].Draw(win) // Foreground
+
+	// Heads-up display
+
+	// FPS
+	win.SetMatrix(pixel.IM)
+	tb := text.New(pixel.V(0, 0), scene.res.Atlas)
+	_, _ = fmt.Fprintf(tb, "FPS=%1.1f", scene.res.FPS)
+	tb.DrawColorMask(win, pixel.IM, colornames.White)
 }
 
 func (scene *LevelScene) cameraMatrix() pixel.Matrix {

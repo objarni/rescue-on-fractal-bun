@@ -67,6 +67,8 @@ func run() {
 	padMap[pixelgl.ButtonA] = internal.Jump
 	padMap[pixelgl.ButtonB] = internal.Action
 
+	fpsCounter := 0
+
 	for !win.Closed() {
 
 		// Escape closes main window unconditionally
@@ -112,10 +114,23 @@ func run() {
 			continue
 		}
 
+		start := time.Now()
 		scene.Render(win)
 		win.Update()
+		duration := time.Since(start)
+		// Only update FPS every 10th tick
+		fpsCounter++
+		if fpsCounter == 40 {
+			res.FPS = computeFPS(duration)
+			fpsCounter = 0
+		}
+
 		time.Sleep(time.Millisecond * 5)
 	}
+}
+
+func computeFPS(renderTime time.Duration) float64 {
+	return 1.0 / renderTime.Seconds()
 }
 
 func loadResources() scenes.Resources {
