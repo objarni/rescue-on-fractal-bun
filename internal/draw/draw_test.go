@@ -15,6 +15,15 @@ func ExampleCircle() {
 	// Circle radius 3 center <1, 2> thickness 4
 }
 
+func ExampleLine() {
+	line := Line(C(50, 100), C(101, 202), 2)
+	fmt.Println(line.String())
+	fmt.Println(Line(C(1, 2), C(3, 4), 5).String())
+	// Output:
+	// Line from <50, 100> to <101, 202> thickness 2
+	// Line from <1, 2> to <3, 4> thickness 5
+}
+
 func ExampleColor() {
 	circle := Circle(25, C(50, 100), 2)
 	smallCircle := Circle(3, C(1, 2), 4)
