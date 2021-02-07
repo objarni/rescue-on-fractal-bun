@@ -6,8 +6,8 @@ import (
 )
 
 func ExampleCircle() {
-	circle := Circle(25, 50, 100, 2)
-	smallCircle := Circle(3, 1, 2, 4)
+	circle := Circle(25, C(50, 100), 2)
+	smallCircle := Circle(3, C(1, 2), 4)
 	fmt.Println(circle.String())
 	fmt.Println(smallCircle.String())
 	// Output:
@@ -16,8 +16,8 @@ func ExampleCircle() {
 }
 
 func ExampleColor() {
-	circle := Circle(25, 50, 100, 2)
-	smallCircle := Circle(3, 1, 2, 4)
+	circle := Circle(25, C(50, 100), 2)
+	smallCircle := Circle(3, C(1, 2), 4)
 	green := color.RGBA{R: 0, G: 1, B: 0}
 	fmt.Println(Colored(green, circle))
 	white := color.RGBA{R: 1, G: 1, B: 1}
@@ -30,8 +30,8 @@ func ExampleColor() {
 }
 
 func ExampleSequence() {
-	circle := Circle(25, 50, 100, 2)
-	smallCircle := Circle(3, 1, 2, 4)
+	circle := Circle(25, C(50, 100), 2)
+	smallCircle := Circle(3, C(1, 2), 4)
 	fmt.Println(Sequence(circle, smallCircle).String())
 	fmt.Println(Sequence(smallCircle, circle).String())
 	// Output:
@@ -45,8 +45,8 @@ func ExampleSequence() {
 
 func ExampleThenSequence() {
 	sequence := Sequence().
-		Then(Circle(25, 50, 100, 2)).
-		Then(Circle(3, 1, 2, 4))
+		Then(Circle(25, C(50, 100), 2)).
+		Then(Circle(3, C(1, 2), 4))
 	fmt.Println(sequence.String())
 	// Output:
 	// Sequence:

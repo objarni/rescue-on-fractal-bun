@@ -17,7 +17,9 @@ func (circle ImdCircle) String() string {
 		circle.thickness)
 }
 
-func Circle(radius int, x int, y int, thickness int) ImdOp {
+func Circle(radius int, coord Coordinate, thickness int) ImdOp {
+	x := coord.X
+	y := coord.Y
 	return ImdCircle{
 		radius:    radius,
 		x:         x,

@@ -7,7 +7,6 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
-	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/draw"
 )
@@ -177,11 +176,15 @@ func (scene *MapScene) crossHairLocation() draw.ImdOp {
 	if closestLocation > -1 {
 		pos := scene.locations[closestLocation].position
 		radius := scene.targetLocCircleRadius()
-		circle := draw.Circle(radius, int(pos.X), int(pos.Y), scene.circleThickness())
+		circle := draw.Circle(radius, C(pos), scene.circleThickness())
 		operation := draw.Colored(colornames.Red, circle)
 		return operation
 	}
 	return draw.Nothing()
+}
+
+func C(v pixel.Vec) draw.Coordinate {
+	return draw.C(int(v.X), int(v.Y))
 }
 
 func (scene *MapScene) FindClosestLocation() int {
@@ -193,7 +196,7 @@ func (scene *MapScene) currentLocation() draw.ImdOp {
 	if scene.highlightTimer/blink%2 == 0 {
 		loc := scene.locations[scene.playerLocIx]
 		pos := loc.position
-		circle := draw.Circle(scene.currentLocCircleRadius(), int(pos.X), int(pos.Y), scene.circleThickness())
+		circle := draw.Circle(scene.currentLocCircleRadius(), C(pos), scene.circleThickness())
 		return draw.Colored(colornames.Green, circle)
 	}
 	return draw.Nothing()
@@ -205,7 +208,7 @@ func (scene *MapScene) levelEntrances() draw.ImdSequence {
 		pos := loc.position
 		operation := draw.Colored(
 			colornames.Darkslateblue,
-			draw.Circle(scene.locCircleRadius(), int(pos.X), int(pos.Y), scene.circleThickness()))
+			draw.Circle(scene.locCircleRadius(), C(pos), scene.circleThickness()))
 		sequence = sequence.Then(operation)
 	}
 	return sequence
@@ -242,15 +245,6 @@ func drawCrossHair(scene *MapScene, imd *imdraw.IMDraw) {
 	imd.Push(v(0, h.Y))
 	imd.Push(v(800, h.Y))
 	imd.Line(2)
-}
-
-func drawCircle(
-	imd *imdraw.IMDraw,
-	color color.RGBA,
-	vec pixel.Vec,
-	radius int,
-) {
-	draw.Colored(color, draw.Circle(radius, int(vec.X), int(vec.Y), 3)).Render(imd)
 }
 
 func (scene *MapScene) Tick() bool {
