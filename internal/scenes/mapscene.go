@@ -7,6 +7,7 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
+	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/draw"
 )
@@ -121,8 +122,8 @@ func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 func (scene *MapScene) Render(win *pixelgl.Window) {
 	scene.mapImage.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
 	imd := imdraw.New(nil)
-	scene.locationOps().Render(imd)
-	drawCrossHair(scene, imd)
+	scene.locationsGfx().Render(imd)
+	scene.crossHairGfx().Render(imd)
 	imd.Draw(win)
 	drawLocationTexts(win, scene)
 }
@@ -165,7 +166,7 @@ func locationIxFromName(locationName string) int {
 	panic(fmt.Sprintf("Unknown location name: %v", locationName))
 }
 
-func (scene *MapScene) locationOps() draw.ImdOp {
+func (scene *MapScene) locationsGfx() draw.ImdOp {
 	return scene.levelEntrances().
 		Then(scene.currentLocation()).
 		Then(scene.crossHairLocation())
@@ -234,17 +235,13 @@ func (scene *MapScene) locCircleRadius() int {
 	return scene.cfg.MapSceneLocCircleRadius
 }
 
-func drawCrossHair(scene *MapScene, imd *imdraw.IMDraw) {
-	imd.Color = pixel.RGBA{R: 1, A: 0.15}
+func (scene *MapScene) crossHairGfx() draw.ImdOp {
 	h := scene.hairCrossPos
-
-	imd.Push(v(h.X, 0))
-	imd.Push(v(h.X, 600))
-	imd.Line(2)
-
-	imd.Push(v(0, h.Y))
-	imd.Push(v(800, h.Y))
-	imd.Line(2)
+	thickness := 2
+	vertical := draw.Line(draw.C(int(h.X), 0), draw.C(int(h.X), 600), thickness)
+	horisontal := draw.Line(draw.C(0, int(h.Y)), draw.C(800, int(h.Y)), thickness)
+	transparentPink := color.RGBA{R: 255, A: 32}
+	return draw.Colored(transparentPink, draw.Sequence(vertical, horisontal))
 }
 
 func (scene *MapScene) Tick() bool {
