@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"objarni/rescue-on-fractal-bun/internal"
 	"strings"
-	"testing"
 )
 
 func templateThis(format string, args ...string) string {
@@ -49,7 +48,7 @@ func toString(v interface{}) string {
 	return fmt.Sprint(v)
 }
 
-func TestLoadingMiniLevel(t *testing.T) {
+func ExampleLoadingMiniLevel() {
 	level := internal.LoadLevel("../testdata/MiniLevel.tmx")
 	printLevel(level)
 	// Output:

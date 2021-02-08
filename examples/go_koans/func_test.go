@@ -16,6 +16,7 @@ func modifyThing(thing LittleThing) {
 
 func ExampleStructsArePassByValue() {
 	aLittleThing := LittleThing{i: 1, s: "abc"}
+	modifyThing(aLittleThing)
 	fmt.Println(aLittleThing)
 	// Output:
 	// {1 abc}
