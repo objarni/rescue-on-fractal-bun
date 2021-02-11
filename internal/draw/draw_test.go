@@ -24,6 +24,15 @@ func ExampleLine() {
 	// Line from <1, 2> to <3, 4> thickness 5
 }
 
+func ExampleRectangle() {
+	rectangle := Rectangle(C(50, 100), C(101, 202), 0)
+	fmt.Println(rectangle.String())
+	fmt.Println(Rectangle(C(1, 2), C(3, 4), 5).String())
+	// Output:
+	// Rectangle from <50, 100> to <101, 202> (filled)
+	// Rectangle from <1, 2> to <3, 4> thickness 5
+}
+
 func ExampleColor() {
 	circle := Circle(25, C(50, 100), 2)
 	smallCircle := Circle(3, C(1, 2), 4)
