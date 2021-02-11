@@ -71,7 +71,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	_ = layers[2].Draw(win) // Walls
 
 	// Draw objects
-	scene.drawMapPoints(win, imd)
+	scene.drawMapPoints(win)
 	scene.drawPlayer(win)
 	//imd.Draw(win)
 	for i := 0; i < scene.level.Width; i += 500 {
@@ -130,7 +130,7 @@ func (scene *LevelScene) Tick() bool {
 	return true
 }
 
-func (scene *LevelScene) drawMapPoints(win *pixelgl.Window, imd *imdraw.IMDraw) {
+func (scene *LevelScene) drawMapPoints(win *pixelgl.Window) {
 	for _, mapPoint := range scene.level.MapPoints {
 		alignVec := v(0, scene.res.MapPoint.Frame().Center().Y)
 		scene.res.MapPoint.Draw(
