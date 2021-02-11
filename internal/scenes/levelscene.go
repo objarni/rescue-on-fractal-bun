@@ -8,6 +8,7 @@ import (
 	"github.com/faiface/pixel/text"
 	"golang.org/x/exp/shiny/materialdesign/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
+	"objarni/rescue-on-fractal-bun/internal/draw"
 )
 
 type LevelScene struct {
@@ -112,10 +113,11 @@ func (scene *LevelScene) drawPlayer(win *pixelgl.Window) {
 }
 
 func (scene *LevelScene) drawBackdrop(imd *imdraw.IMDraw) {
-	imd.Color = scene.level.ClearColor
-	imd.Push(v(0, 0))
-	imd.Push(v(float64(scene.level.Width*32), float64(scene.level.Height*32)))
-	imd.Rectangle(0)
+	widthPixels := scene.level.Width * 32
+	heightPixels := scene.level.Height * 32
+	rectangle := draw.Rectangle(draw.C(0, 0), draw.C(widthPixels, heightPixels), 0)
+	color := draw.Colored(scene.level.ClearColor, rectangle)
+	color.Render(imd)
 }
 
 func (scene *LevelScene) Tick() bool {
