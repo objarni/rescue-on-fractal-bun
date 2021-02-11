@@ -57,12 +57,12 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	// Clear screen
 	win.Clear(colornames.Yellow50)
 	win.SetMatrix(scene.cameraMatrix())
-	imd := imdraw.New(nil)
 
 	// Level backdrop
 	// TODO: remove when player cannot see past limits!
 	// Then, just clear screen to map background color
-	scene.drawBackdrop(imd)
+	imd := imdraw.New(nil)
+	scene.backdropGfx().Render(imd)
 	imd.Draw(win)
 
 	layers := scene.level.TilepixMap.TileLayers
@@ -112,12 +112,11 @@ func (scene *LevelScene) drawPlayer(win *pixelgl.Window) {
 	scene.res.PlayerStanding.Draw(win, pixel.IM.Moved(scene.playerPos))
 }
 
-func (scene *LevelScene) drawBackdrop(imd *imdraw.IMDraw) {
+func (scene *LevelScene) backdropGfx() draw.ImdOp {
 	widthPixels := scene.level.Width * 32
 	heightPixels := scene.level.Height * 32
 	rectangle := draw.Rectangle(draw.C(0, 0), draw.C(widthPixels, heightPixels), 0)
-	color := draw.Colored(scene.level.ClearColor, rectangle)
-	color.Render(imd)
+	return draw.Colored(scene.level.ClearColor, rectangle)
 }
 
 func (scene *LevelScene) Tick() bool {
