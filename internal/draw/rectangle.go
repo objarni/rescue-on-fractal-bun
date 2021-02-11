@@ -26,12 +26,12 @@ func Rectangle(from Coordinate, to Coordinate, thickness int) ImdOp {
 	return ImdRectangle{from: from, to: to, thickness: thickness}
 }
 
-func (line ImdRectangle) Render(imd *imdraw.IMDraw) {
-	imd.Push(line.from.toVec())
-	imd.Push(line.to.toVec())
-	imd.Rectangle(float64(line.thickness))
+func (rectangle ImdRectangle) Render(imd *imdraw.IMDraw) {
+	imd.Push(rectangle.from.toVec())
+	imd.Push(rectangle.to.toVec())
+	imd.Rectangle(float64(rectangle.thickness))
 }
 
-func (line ImdRectangle) Lines() []string {
-	return []string{line.String()}
+func (rectangle ImdRectangle) Lines() []string {
+	return []string{rectangle.String()}
 }
