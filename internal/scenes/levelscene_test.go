@@ -26,7 +26,7 @@ func ExampleLevelSimulation() {
 			Width:      3000,
 			Height:     1000,
 			ClearColor: colornames.White,
-			MapPoints: []internal.MapPoint{
+			MapSigns: []internal.MapPoint{
 				{
 					Pos:        v(2700, 900),
 					Discovered: true,
@@ -53,7 +53,7 @@ func ExampleLevelSimulation() {
 	// Level is 3000x1000 pixels big.
 	// Background color is 255,255,255.
 	// Player starts at 2700,900.
-	// There are MapPoints here:
+	// There are MapSigns here:
 	//   2700,900 (Discovered)
 	//   100,900 (not Discovered)
 	// Simulation started.
@@ -67,7 +67,7 @@ func printLevelSimulation(sim *LevelSimulation) {
 	fmt.Printf(`Level is %vx%v pixels big.
 Background color is %v.
 Player starts at 2700,900.
-There are MapPoints here:
+There are MapSigns here:
   2700,900 (Discovered)
   100,900 (not Discovered)
 Simulation started.

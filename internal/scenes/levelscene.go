@@ -21,7 +21,7 @@ type LevelScene struct {
 
 func MakeLevelScene(cfg *Config, res *Resources) *LevelScene {
 	level := internal.LoadLevel("assets/levels/GhostForest.tmx")
-	pos := level.MapPoints[0].Pos
+	pos := level.MapSigns[0].Pos
 	return &LevelScene{
 		cfg:       cfg,
 		res:       res,
@@ -73,7 +73,6 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	// Draw objects
 	scene.drawMapPoints(win)
 	scene.drawPlayer(win)
-	//imd.Draw(win)
 	for i := 0; i < scene.level.Width; i += 500 {
 		scene.res.Ghost.Draw(win,
 			pixel.IM.Moved(v(float64(i), 200)))
@@ -81,9 +80,12 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 
 	_ = layers[3].Draw(win) // Foreground
 
-	// Heads-up display
+	scene.drawHeadsUpDisplay(win)
+}
+
+func (scene *LevelScene) drawHeadsUpDisplay(win *pixelgl.Window) {
 	win.SetMatrix(pixel.IM)
-	if scene.playerPos.Sub(scene.level.MapPoints[0].Pos).Len() < 10 {
+	if scene.isMapSignClose() {
 		scene.res.InLevelHeadsUp.DrawColorMask(
 			win,
 			pixel.IM.Moved(scene.res.InLevelHeadsUp.Frame().Center()),
@@ -98,6 +100,15 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	tb := text.New(pixel.V(0, 0), scene.res.Atlas)
 	_, _ = fmt.Fprintf(tb, "FPS=%1.1f", scene.res.FPS)
 	tb.DrawColorMask(win, pixel.IM, colornames.Brown800)
+}
+
+func (scene *LevelScene) isMapSignClose() bool {
+	for _, mapSign := range scene.level.MapSigns {
+		if scene.playerPos.Sub(mapSign.Pos).Len() < 10 {
+			return true
+		}
+	}
+	return false
 }
 
 func (scene *LevelScene) cameraMatrix() pixel.Matrix {
@@ -130,7 +141,7 @@ func (scene *LevelScene) Tick() bool {
 }
 
 func (scene *LevelScene) drawMapPoints(win *pixelgl.Window) {
-	for _, mapPoint := range scene.level.MapPoints {
+	for _, mapPoint := range scene.level.MapSigns {
 		alignVec := v(0, scene.res.MapPoint.Frame().Center().Y)
 		scene.res.MapPoint.Draw(
 			win,

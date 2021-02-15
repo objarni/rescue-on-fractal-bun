@@ -9,7 +9,7 @@ import (
 type Level struct {
 	Width, Height int
 	ClearColor    color.RGBA
-	MapPoints     []MapPoint
+	MapSigns      []MapPoint
 	TilepixMap    *tilepix.Map
 }
 

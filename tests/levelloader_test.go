@@ -12,7 +12,7 @@ func templateThis(format string, args ...string) string {
 }
 
 func printLevel(level internal.Level) {
-	mapPoints := printMapPoints(level.MapPoints)
+	mapPoints := printMapPoints(level.MapSigns)
 	fmt.Println(templateThis(
 		"Width: {w}   Height: {h}  (tiles)\n"+
 			"Background color: RGB={red},{green},{blue}\n"+
@@ -28,7 +28,7 @@ func printLevel(level internal.Level) {
 			"####",
 		"{w}", toString(level.Width),
 		"{h}", toString(level.Height),
-		"{countMapPoints}", toString(len(level.MapPoints)),
+		"{countMapPoints}", toString(len(level.MapSigns)),
 		"{mapPoints}", mapPoints,
 		"{red}", toString(level.ClearColor.R),
 		"{green}", toString(level.ClearColor.G),
@@ -39,7 +39,7 @@ func printLevel(level internal.Level) {
 func printMapPoints(points []internal.MapPoint) string {
 	s := ""
 	for _, mp := range points {
-		s += fmt.Sprintf("'%v' at %1.0f, %1.0f", mp.Location, mp.Pos.X, mp.Pos.Y)
+		s += fmt.Sprintf("'%v' at %1.0f, %1.0f\n", mp.Location, mp.Pos.X, mp.Pos.Y)
 	}
 	return s
 }
@@ -54,8 +54,9 @@ func ExampleLoadingMiniLevel() {
 	// Output:
 	// Width: 4   Height: 3  (tiles)
 	// Background color: RGB=10,50,100
-	// There are 1 MapPoint(s):
-	// 'Korsningen' at 11, 56
+	// There are 2 MapPoint(s):
+	// 'Korsningen' at 12, 62
+	// 'Hembyn' at 10, 41
 	// Walls:
 	// ...#
 	// ...#

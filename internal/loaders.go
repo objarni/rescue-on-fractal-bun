@@ -117,7 +117,7 @@ func LoadLevel(path string) Level {
 	return Level{
 		Width:      level.Width,
 		Height:     level.Height,
-		MapPoints:  points,
+		MapSigns:   points,
 		TilepixMap: level,
 		ClearColor: color,
 	}
