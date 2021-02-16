@@ -71,3 +71,11 @@ func ExampleThenSequence() {
 	//   Circle radius 25 center <50, 100> thickness 2
 	//   Circle radius 3 center <1, 2> thickness 4
 }
+
+func ExampleText() {
+	fmt.Println(Text("First line", "Second line"))
+	// Output:
+	// Text:
+	//   First line
+	//   Second line
+}
