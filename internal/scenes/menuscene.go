@@ -32,7 +32,6 @@ func MakeMenuScene(config *Config, res *Resources) *MenuScene {
 		cfg:             config,
 		res:             res,
 		currentItem:     Play,
-		textbox:         text.New(pixel.V(0, 0), res.Atlas),
 		itemSwitchSound: res.Blip,
 		quit:            false,
 	}
@@ -60,9 +59,7 @@ func (menuScene *MenuScene) HandleKeyUp(_ internal.ControlKey) internal.Thing {
 
 func (menuScene *MenuScene) Render(win *pixelgl.Window) {
 	win.Clear(colornames.Aliceblue)
-	tb := menuScene.textbox
-	tb.Clear()
-	tb.Orig = pixel.V(300, 300)
+	tb := text.New(pixel.ZV, menuScene.res.Atlas)
 	playItem := "  Spela!"
 	if menuScene.currentItem == Play {
 		playItem = "* Spela!"
@@ -74,7 +71,9 @@ func (menuScene *MenuScene) Render(win *pixelgl.Window) {
 		quitItem = "* Avsluta"
 	}
 	_, _ = fmt.Fprintln(tb, quitItem)
-	tb.DrawColorMask(win, pixel.IM.Scaled(tb.Orig, 2), colornames.Black)
+	tbCenter := tb.Bounds().Center().Scaled(2)
+	translation := win.Bounds().Center().Sub(tbCenter)
+	tb.DrawColorMask(win, pixel.IM.Scaled(pixel.ZV, 2).Moved(translation), colornames.Black)
 }
 
 func (menuScene *MenuScene) Tick() bool {

@@ -150,9 +150,27 @@ func (scene *LevelScene) drawMapPoints(win *pixelgl.Window) {
 }
 
 /*
-type MapPoint struct {
-	Pos        pixel.Vec
-	Discovered bool
-	Location  string
-}
+Windows rit-API:er som används i Rescue:
+image.Draw(win, mx)
+image.DrawColorMask(win, mx, color)
+text.DrawColorMask(win, mx, color)
+text.Draw(win, pixel.IM)  # används inte men finns i API:et!
+layer.Draw(win)
+imd.Draw(win)
+
+Samtliga påverkas av win.Matrix (sätts med win.SetMatrix).
+
+Förenkling: skulle kunna använda identitetsmatris i de
+anrop som har mx parameter, för att istället _alltid_ använda
+win.Matrix.
+
+Har även hittat en "SetColorMask" i win; detta betyder
+att jag kan unifiera till att bara använda Draw()-anrop,
+och därmed flytta ut denna data/kunskap till modellen, så
+att det finns allmänna Color operationer att beskriva grafiken med.
+Det blir då desto viktigare att dessa "resettas" efter ritoperationer
+eftersom de annars kommer spilla över i t.ex. image eller layer ritning
+(antar jag).
+
+
 */
