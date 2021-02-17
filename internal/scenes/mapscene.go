@@ -3,7 +3,6 @@ package scenes
 import (
 	"fmt"
 	"github.com/faiface/pixel"
-	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
@@ -121,10 +120,10 @@ func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 
 func (scene *MapScene) Render(win *pixelgl.Window) {
 	scene.mapImage.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
-	imd := imdraw.New(nil)
-	scene.locationsGfx().Render(imd)
-	scene.crossHairGfx().Render(imd)
-	imd.Draw(win)
+
+	seq := draw.Sequence(scene.locationsGfx(), scene.crossHairGfx())
+	draw.ToWinOp(seq).Render(win)
+
 	drawLocationTexts(win, scene)
 }
 

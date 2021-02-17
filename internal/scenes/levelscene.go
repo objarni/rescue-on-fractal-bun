@@ -3,7 +3,6 @@ package scenes
 import (
 	"fmt"
 	"github.com/faiface/pixel"
-	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"golang.org/x/exp/shiny/materialdesign/colornames"
@@ -61,9 +60,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	// Level backdrop
 	// TODO: remove when player cannot see past limits!
 	// Then, just clear screen to map background color
-	imd := imdraw.New(nil)
-	scene.backdropGfx().Render(imd)
-	imd.Draw(win)
+	draw.ToWinOp(scene.backdropGfx()).Render(win)
 
 	layers := scene.level.TilepixMap.TileLayers
 	_ = layers[0].Draw(win) // Background

@@ -79,3 +79,14 @@ func ExampleText() {
 	//   First line
 	//   Second line
 }
+
+func ExampleLiftImdOp() {
+	fmt.Println(ToWinOp(Circle(5, C(0, 4), 1)).String())
+	fmt.Println(ToWinOp(Line(C(0, 4), C(0, 4), 1)).String())
+	// Output:
+	// WinOp from ImdOp:
+	//   Circle radius 5 center <0, 4> thickness 1
+	//
+	// WinOp from ImdOp:
+	//   Line from <0, 4> to <0, 4> thickness 1
+}
