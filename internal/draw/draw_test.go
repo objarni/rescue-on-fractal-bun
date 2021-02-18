@@ -2,8 +2,11 @@ package draw
 
 import (
 	"fmt"
+	"github.com/faiface/pixel"
 	"image/color"
 )
+
+// ImdOp
 
 func ExampleCircle() {
 	circle := Circle(25, C(50, 100), 2)
@@ -72,6 +75,8 @@ func ExampleThenSequence() {
 	//   Circle radius 3 center <1, 2> thickness 4
 }
 
+// TextOp
+
 func ExampleText() {
 	fmt.Println(Text("First line", "Second line"))
 	// Output:
@@ -80,13 +85,30 @@ func ExampleText() {
 	//   Second line
 }
 
+// WinOp
+
 func ExampleLiftImdOp() {
 	fmt.Println(ToWinOp(Circle(5, C(0, 4), 1)).String())
 	fmt.Println(ToWinOp(Line(C(0, 4), C(0, 4), 1)).String())
 	// Output:
 	// WinOp from ImdOp:
 	//   Circle radius 5 center <0, 4> thickness 1
-	//
 	// WinOp from ImdOp:
 	//   Line from <0, 4> to <0, 4> thickness 1
+}
+
+func Example_movedLineWinOp() {
+	fmt.Print(Moved(pixel.V(50, 100), ToWinOp(Line(C(0, 4), C(5, 6), 10))).String())
+	// Output:
+	// Moved 50 pixels right 100 pixels up:
+	//   WinOp from ImdOp:
+	//     Line from <0, 4> to <5, 6> thickness 10
+}
+
+func Example_movedRectangleWinOp() {
+	fmt.Println(Moved(pixel.V(-1, -2), ToWinOp(Rectangle(C(0, 4), C(5, 6), 10))).String())
+	// Output:
+	// Moved 1 pixels left 2 pixels down:
+	//   WinOp from ImdOp:
+	//     Rectangle from <0, 4> to <5, 6> thickness 10
 }

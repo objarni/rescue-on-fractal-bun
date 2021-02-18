@@ -20,5 +20,6 @@ type TextOp interface {
 
 type WinOp interface {
 	String() string
+	Lines() []string
 	Render(win *pixelgl.Window)
 }
