@@ -34,3 +34,15 @@ func Example_splitString() {
 	// bc
 	// cd
 }
+
+func Example_multiLineLiteral() {
+	fmt.Print(`
+Moved 1 pixels left 2 pixels down:
+ WinOp from ImdOp:
+   Rectangle from <0, 4> to <5, 6> thickness 10
+`)
+	// Output:
+	// Moved 1 pixels left 2 pixels down:
+	//  WinOp from ImdOp:
+	//    Rectangle from <0, 4> to <5, 6> thickness 10
+}
