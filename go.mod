@@ -13,6 +13,7 @@ require (
 	github.com/stretchr/testify v1.6.1 // indirect
 	golang.org/x/exp v0.0.0-20180710024300-14dda7b62fcd
 	golang.org/x/image v0.0.0-20191009234506-e7c1f5e7dbb8
+	golang.org/x/tools v0.0.0-20190328211700-ab21143f2384
 )
 
 replace github.com/bcvery1/tilepix => /home/olof/repos/github/oss/tilepix

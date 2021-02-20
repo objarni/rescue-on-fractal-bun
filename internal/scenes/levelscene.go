@@ -37,7 +37,12 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 		scene.rightPressed = true
 	}
 	if key == internal.Action {
-		return MakeMapScene(scene.cfg, scene.res, "Korsningen")
+		if scene.isMapSignClose() {
+			mapSign := scene.closestMapSign()
+			return MakeMapScene(scene.cfg, scene.res, mapSign.Location)
+		} else {
+			scene.playerPos = scene.playerPos.Add(v(10, 0))
+		}
 	}
 	return scene
 }
@@ -108,6 +113,19 @@ func (scene *LevelScene) isMapSignClose() bool {
 		}
 	}
 	return false
+}
+
+func (scene *LevelScene) closestMapSign() internal.MapPoint {
+	var closestMapPoint internal.MapPoint = internal.MapPoint{}
+	shortestDistance := 1000000000.0
+	for _, mapSign := range scene.level.MapSigns {
+		mapSignDistance := scene.playerPos.Sub(mapSign.Pos).Len()
+		if mapSignDistance < shortestDistance {
+			closestMapPoint = mapSign
+			shortestDistance = mapSignDistance
+		}
+	}
+	return closestMapPoint
 }
 
 func (scene *LevelScene) cameraMatrix() pixel.Matrix {
