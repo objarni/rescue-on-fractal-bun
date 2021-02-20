@@ -55,13 +55,15 @@ func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 func (scene *LevelScene) Render(win *pixelgl.Window) {
 	// Clear screen
 	win.Clear(colornames.Yellow50)
-	win.SetMatrix(scene.cameraMatrix())
 
 	// Level backdrop
 	// TODO: remove when player cannot see past limits!
 	// Then, just clear screen to map background color
-	draw.ToWinOp(scene.backdropGfx()).Render(win)
+	moved := draw.Moved(scene.cameraVector(), draw.ToWinOp(scene.backdropGfx()))
+	moved.Render(win)
+	//draw.ToWinOp(scene.backdropGfx()).Render(win)
 
+	win.SetMatrix(scene.cameraMatrix())
 	layers := scene.level.TilepixMap.TileLayers
 	_ = layers[0].Draw(win) // Background
 	_ = layers[1].Draw(win) // Platforms
@@ -109,11 +111,17 @@ func (scene *LevelScene) isMapSignClose() bool {
 }
 
 func (scene *LevelScene) cameraMatrix() pixel.Matrix {
+	reversed := scene.cameraVector()
+	cameraMatrix := pixel.IM.Moved(reversed)
+	return cameraMatrix
+}
+
+func (scene *LevelScene) cameraVector() pixel.Vec {
 	halfScreen := v(internal.ScreenWidth/2, internal.ScreenHeight/2)
 	playerHead := v(0, internal.PlayerHeight)
 	cam := scene.playerPos.Sub(halfScreen).Add(playerHead)
-	cameraMatrix := pixel.IM.Moved(cam.Scaled(-1))
-	return cameraMatrix
+	reversed := cam.Scaled(-1)
+	return reversed
 }
 
 func (scene *LevelScene) drawPlayer(win *pixelgl.Window) {
