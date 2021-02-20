@@ -2,6 +2,7 @@ package tests
 
 import (
 	"fmt"
+	"github.com/bcvery1/tilepix"
 	"objarni/rescue-on-fractal-bun/internal"
 	"strings"
 )
@@ -57,6 +58,7 @@ func ExampleLoadingMiniLevel() {
 	// There are 2 MapPoint(s):
 	// 'Korsningen' at 12, 62
 	// 'Hembyn' at 10, 41
+	//
 	// Walls:
 	// ...#
 	// ...#
@@ -65,4 +67,18 @@ func ExampleLoadingMiniLevel() {
 	// ....
 	// ....
 	// ####
+}
+
+func ExampleLoadingBrokenLevel() {
+	brokenLevelPath := "../testdata/BrokenLevel.tmx"
+	brokenLevel, _ := tilepix.ReadFile(brokenLevelPath)
+	internal.ValidateLevel(brokenLevelPath, brokenLevel)
+	// Output:
+	// ../testdata/BrokenLevel.tmx contains the following errors:
+	// There is no Background layer
+	// There is no Platforms layer
+	// There is no Walls layer
+	// There is no Foreground layer
+	// There should be an object layer named "MapPoints", instead I found:
+	// "Object Layer 1"
 }

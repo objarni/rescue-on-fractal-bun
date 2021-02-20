@@ -14,6 +14,7 @@ import (
 	_ "image/png"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 func LoadSprite(path string) (*pixel.Sprite, error) {
@@ -101,6 +102,36 @@ func LoadTTFForSure(path string, size float64) font.Face {
 func LoadLevel(path string) Level {
 	level, err := tilepix.ReadFile(path)
 	PanicIfError(err)
+	ValidateLevel(path, level)
+	return ParseLevel(level)
+}
+
+func ValidateLevel(path string, level *tilepix.Map) {
+	var errors []string
+	expectedLayers := strings.Split("Background Platforms Walls Foreground", " ")
+	for _, expectedLayer := range expectedLayers {
+		if level.GetTileLayerByName(expectedLayer) == nil {
+			errors = append(errors, "There is no "+expectedLayer+" layer")
+		}
+	}
+
+	if level.GetObjectLayerByName("MapPoints") == nil {
+		errors = append(errors, "There should be an object layer named \"MapPoints\", instead I found:")
+		for _, objectLayer := range level.ObjectGroups {
+			errors = append(errors, `"`+objectLayer.Name+`"`)
+		}
+	}
+
+	if len(errors) > 0 {
+		errorString := path + " contains the following errors:\n"
+		for _, error := range errors {
+			errorString += error + "\n"
+		}
+		fmt.Printf(errorString)
+	}
+}
+
+func ParseLevel(level *tilepix.Map) Level {
 	points := []MapPoint{}
 	for _, object := range level.ObjectGroups[0].Objects {
 		x := object.X
@@ -112,8 +143,8 @@ func LoadLevel(path string) Level {
 		}
 		points = append(points, mp)
 	}
-	color, err := hexcolor.Parse(level.BackgroundColor)
-	PanicIfError(err)
+	color, err2 := hexcolor.Parse(level.BackgroundColor)
+	PanicIfError(err2)
 	return Level{
 		Width:      level.Width,
 		Height:     level.Height,

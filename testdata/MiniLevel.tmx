@@ -3,22 +3,22 @@
  <tileset firstgid="1" source="../examples/tiled_test/TileSet.tsx"/>
  <layer id="1" name="Background" width="4" height="3">
   <data encoding="csv">
-0,0,0,151,
-151,151,151,151,
-151,151,151,151
+0,0,0,167,
+167,167,167,167,
+167,167,167,167
 </data>
  </layer>
  <layer id="2" name="Platforms" width="4" height="3">
   <data encoding="csv">
 0,0,0,0,
 0,0,0,0,
-210,210,210,210
+232,232,232,232
 </data>
  </layer>
  <layer id="3" name="Walls" width="4" height="3">
   <data encoding="csv">
-0,0,0,212,
-0,0,0,212,
+0,0,0,234,
+0,0,0,234,
 0,0,0,0
 </data>
  </layer>
