@@ -12,7 +12,7 @@ import (
 )
 
 /*
-På kartan kan man besöka "locations".
+På kartan kan man besöka "mapPoints".
 Man befinner sig alltid på precis en location (current).
 Current visas tydligt visuellt i kartscenen, kanske
 står dess namn någonstans också?
@@ -37,7 +37,7 @@ Förutom detta sparas en pekare till current location
 
 */
 
-type Location struct {
+type MapPoint struct {
 	position   pixel.Vec
 	discovered bool
 }
@@ -46,7 +46,7 @@ type MapScene struct {
 	cfg            *Config
 	res            *Resources
 	mapImage       *pixel.Sprite
-	locations      []Location
+	mapPoints      []MapPoint
 	hairCrossPos   pixel.Vec
 	hairCrossVel   pixel.Vec
 	playerLocIx    int
@@ -54,7 +54,7 @@ type MapScene struct {
 }
 
 func MakeMapScene(cfg *Config, res *Resources, locationName string) *MapScene {
-	locations := []Location{
+	locations := []MapPoint{
 		{
 			position:   pixel.Vec{X: 246, Y: 109},
 			discovered: true,
@@ -76,7 +76,7 @@ func MakeMapScene(cfg *Config, res *Resources, locationName string) *MapScene {
 		hairCrossPos: locations[locationIx].position,
 		hairCrossVel: pixel.ZV,
 		playerLocIx:  locationIx,
-		locations:    locations,
+		mapPoints:    locations,
 	}
 }
 
@@ -128,7 +128,7 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 }
 
 func drawLocationTexts(win *pixelgl.Window, scene *MapScene) {
-	locationIx := FindClosestLocation(scene.hairCrossPos, scene.locations, scene.cfg.MapSceneTargetLocMaxDistance)
+	locationIx := FindClosestLocation(scene.hairCrossPos, scene.mapPoints, scene.cfg.MapSceneTargetLocMaxDistance)
 	locationName := locationNameFromIx(locationIx)
 	tb := text.New(pixel.ZV, scene.res.Atlas)
 	draw.Text(
@@ -177,7 +177,7 @@ func (scene *MapScene) locationsGfx() draw.ImdOp {
 func (scene *MapScene) crossHairLocation() draw.ImdOp {
 	closestLocation := scene.FindClosestLocation()
 	if closestLocation > -1 {
-		pos := scene.locations[closestLocation].position
+		pos := scene.mapPoints[closestLocation].position
 		radius := scene.targetLocCircleRadius()
 		circle := draw.Circle(radius, C(pos), scene.circleThickness())
 		operation := draw.Colored(colornames.Red, circle)
@@ -191,13 +191,13 @@ func C(v pixel.Vec) draw.Coordinate {
 }
 
 func (scene *MapScene) FindClosestLocation() int {
-	return FindClosestLocation(scene.hairCrossPos, scene.locations, scene.locMaxDistance())
+	return FindClosestLocation(scene.hairCrossPos, scene.mapPoints, scene.locMaxDistance())
 }
 
 func (scene *MapScene) currentLocation() draw.ImdOp {
 	blink := scene.cfg.MapSceneBlinkSpeed
 	if scene.highlightTimer/blink%2 == 0 {
-		loc := scene.locations[scene.playerLocIx]
+		loc := scene.mapPoints[scene.playerLocIx]
 		pos := loc.position
 		circle := draw.Circle(scene.currentLocCircleRadius(), C(pos), scene.circleThickness())
 		return draw.Colored(colornames.Green, circle)
@@ -207,7 +207,7 @@ func (scene *MapScene) currentLocation() draw.ImdOp {
 
 func (scene *MapScene) levelEntrances() draw.ImdSequence {
 	sequence := draw.Sequence()
-	for _, loc := range scene.locations {
+	for _, loc := range scene.mapPoints {
 		pos := loc.position
 		operation := draw.Colored(
 			colornames.Darkslateblue,
@@ -268,7 +268,7 @@ func v(x float64, y float64) pixel.Vec {
 	return pixel.Vec{X: x, Y: y}
 }
 
-func FindClosestLocation(vec pixel.Vec, locations []Location, maxDist int) int {
+func FindClosestLocation(vec pixel.Vec, locations []MapPoint, maxDist int) int {
 	closest := -1
 	closestDist := -1.0
 	for ix, val := range locations {

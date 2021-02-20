@@ -107,16 +107,12 @@ func (scene *LevelScene) drawHeadsUpDisplay(win *pixelgl.Window) {
 }
 
 func (scene *LevelScene) isMapSignClose() bool {
-	for _, mapSign := range scene.level.MapSigns {
-		if scene.playerPos.Sub(mapSign.Pos).Len() < 10 {
-			return true
-		}
-	}
-	return false
+	sign := scene.closestMapSign()
+	return scene.playerPos.Sub(sign.Pos).Len() < 10
 }
 
 func (scene *LevelScene) closestMapSign() internal.MapPoint {
-	var closestMapPoint internal.MapPoint = internal.MapPoint{}
+	closestMapPoint := internal.MapPoint{}
 	shortestDistance := 1000000000.0
 	for _, mapSign := range scene.level.MapSigns {
 		mapSignDistance := scene.playerPos.Sub(mapSign.Pos).Len()
@@ -191,7 +187,7 @@ Har även hittat en "SetColorMask" i win; detta betyder
 att jag kan unifiera till att bara använda Draw()-anrop,
 och därmed flytta ut denna data/kunskap till modellen, så
 att det finns allmänna Color operationer att beskriva grafiken med.
-Det blir då desto viktigare att dessa "resettas" efter ritoperationer
+Det blir då desto viktigare att dessa "resets" efter rit operationer
 eftersom de annars kommer spilla över i t.ex. image eller layer ritning
 (antar jag).
 
