@@ -12,29 +12,23 @@ import (
 )
 
 /*
-På kartan kan man besöka "mapPoints".
-Man befinner sig alltid på precis en location (current).
-Current visas tydligt visuellt i kartscenen, kanske
-står dess namn någonstans också?
-När man går in på en location, hamnar man på en "kartpunkt"
-i en bana. Man kan alltid gå tillbaka till kartan
-via en kartpunkt. Om man på en bana hittar en ny kartpunkt,
-d.v.s en kartpunkt som inte besökts förut, dyker den upp
-på kartan (kanske ett ljud spelas upp en text visas för
-att demonstrera att en ny kartpunkt hittats).
-Kraftindikatorn är en liten tjej som börjar glad, men
-blir surare och surare. Till slut, när det blir jättearg
-min, flyttas man tillbaka till senaste kartpunkten på
-banan, alltså den kartpunkt som är associerad med current
-location.
+MapSign innehåller följande information:
+MapPos vec   - position på karten för MapSignen
+LevelPos vec - position på leveln den är kopplad till
+Level string - vilken level den är kopplad till
 
-En location har alltså följande egenskaper:
-  - position på kartan, x,y
-  - om den är "Discovered" eller ej; en bool.
-    (hidden eller visible kan man se det som)
-Förutom detta sparas en pekare till current location
-"någonstans".
+MapPos lagras i MapScene (som har kunskap om detta).
+De två senare lagras i Tiled maps (MapPoint objects).
 
+En idé är att konstruera alla MapSigns vid start av
+spelet, för att på så sätt
+ - validera att alla levels laddas korrekt
+   (level loading kontrollerar att layers finns och
+   är ordnade i rätt ordning)
+ - spara all MapSign info
+
+Vill börja med att validera laddning av level enligt
+ovan, för att sedan bygga upp MapSign datastrukturen.
 */
 
 type MapPoint struct {
