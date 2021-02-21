@@ -79,6 +79,6 @@ func ExampleLoadingBrokenLevel() {
 	// There is no Platforms layer
 	// There is no Walls layer
 	// There is no Foreground layer
-	// There should be an object layer named "MapPoints", instead I found:
+	// There should be an object layer named "MapSigns", instead I found:
 	// "Object Layer 1"
 }

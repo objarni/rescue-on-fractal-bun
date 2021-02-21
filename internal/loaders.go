@@ -115,8 +115,8 @@ func ValidateLevel(path string, level *tilepix.Map) {
 		}
 	}
 
-	if level.GetObjectLayerByName("MapPoints") == nil {
-		errors = append(errors, "There should be an object layer named \"MapPoints\", instead I found:")
+	if level.GetObjectLayerByName("MapSigns") == nil {
+		errors = append(errors, "There should be an object layer named \"MapSigns\", instead I found:")
 		for _, objectLayer := range level.ObjectGroups {
 			errors = append(errors, `"`+objectLayer.Name+`"`)
 		}

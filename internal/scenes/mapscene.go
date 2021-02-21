@@ -36,6 +36,12 @@ type MapPoint struct {
 	discovered bool
 }
 
+type MapSign struct {
+	MapPos    pixel.Vec // X,Y coordinate on map image
+	LevelPos  pixel.Vec // X,Y coordinate on tiled map
+	LevelName string    // Name of level where MapSign stands
+}
+
 type MapScene struct {
 	cfg            *Config
 	res            *Resources
@@ -45,6 +51,7 @@ type MapScene struct {
 	hairCrossVel   pixel.Vec
 	playerLocIx    int
 	highlightTimer int
+	mapSigns       []MapSign // All map signs in game
 }
 
 func MakeMapScene(cfg *Config, res *Resources, locationName string) *MapScene {
