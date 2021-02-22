@@ -122,6 +122,11 @@ func ValidateLevel(path string, level *tilepix.Map) {
 		}
 	}
 
+	if level.BackgroundColor == "" {
+		errors = append(errors, "The BackgroundColor should be on web-color format #RRGGBB, instead I found:")
+		errors = append(errors, `"`+level.BackgroundColor+`"`)
+	}
+
 	if len(errors) > 0 {
 		errorString := path + " contains the following errors:\n"
 		for _, error := range errors {

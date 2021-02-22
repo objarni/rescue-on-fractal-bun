@@ -1,4 +1,4 @@
-package scenes
+package internal
 
 import (
 	"github.com/faiface/beep"
@@ -14,4 +14,6 @@ type Resources struct {
 	InLevelHeadsUp *pixel.Sprite
 	Blip           *beep.Buffer
 	FPS            float64
+	MapSigns       []MapSign
+	Levels         map[string]Level
 }

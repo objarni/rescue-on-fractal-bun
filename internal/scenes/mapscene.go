@@ -12,7 +12,7 @@ import (
 )
 
 /*
-MapSign innehåller följande information:
+MapSigns innehåller följande information:
 MapPos vec   - position på karten för MapSignen
 LevelPos vec - position på leveln den är kopplad till
 Level string - vilken level den är kopplad till
@@ -25,10 +25,10 @@ spelet, för att på så sätt
  - validera att alla levels laddas korrekt
    (level loading kontrollerar att layers finns och
    är ordnade i rätt ordning)
- - spara all MapSign info
+ - spara all MapSigns info
 
 Vill börja med att validera laddning av level enligt
-ovan, för att sedan bygga upp MapSign datastrukturen.
+ovan, för att sedan bygga upp MapSigns datastrukturen.
 */
 
 type MapPoint struct {
@@ -36,25 +36,19 @@ type MapPoint struct {
 	discovered bool
 }
 
-type MapSign struct {
-	MapPos    pixel.Vec // X,Y coordinate on map image
-	LevelPos  pixel.Vec // X,Y coordinate on tiled map
-	LevelName string    // Name of level where MapSign stands
-}
-
 type MapScene struct {
 	cfg            *Config
-	res            *Resources
+	res            *internal.Resources
 	mapImage       *pixel.Sprite
 	mapPoints      []MapPoint
 	hairCrossPos   pixel.Vec
 	hairCrossVel   pixel.Vec
 	playerLocIx    int
 	highlightTimer int
-	mapSigns       []MapSign // All map signs in game
+	mapSigns       []internal.MapSign // All map signs in game
 }
 
-func MakeMapScene(cfg *Config, res *Resources, locationName string) *MapScene {
+func MakeMapScene(cfg *Config, res *internal.Resources, locationName string) *MapScene {
 	locations := []MapPoint{
 		{
 			position:   pixel.Vec{X: 246, Y: 109},

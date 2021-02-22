@@ -20,14 +20,14 @@ const (
 
 type MenuScene struct {
 	cfg             *Config
-	res             *Resources
+	res             *internal.Resources
 	currentItem     MenuItem
 	textbox         *text.Text
 	itemSwitchSound *beep.Buffer
 	quit            bool
 }
 
-func MakeMenuScene(config *Config, res *Resources) *MenuScene {
+func MakeMenuScene(config *Config, res *internal.Resources) *MenuScene {
 	return &MenuScene{
 		cfg:             config,
 		res:             res,

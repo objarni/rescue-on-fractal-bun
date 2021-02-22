@@ -12,13 +12,13 @@ import (
 
 type LevelScene struct {
 	cfg                       *Config
-	res                       *Resources
+	res                       *internal.Resources
 	playerPos                 pixel.Vec
 	leftPressed, rightPressed bool
 	level                     internal.Level
 }
 
-func MakeLevelScene(cfg *Config, res *Resources) *LevelScene {
+func MakeLevelScene(cfg *Config, res *internal.Resources) *LevelScene {
 	level := internal.LoadLevel("assets/levels/GhostForest.tmx")
 	pos := level.MapSigns[0].Pos
 	return &LevelScene{

@@ -81,4 +81,6 @@ func ExampleLoadingBrokenLevel() {
 	// There is no Foreground layer
 	// There should be an object layer named "MapSigns", instead I found:
 	// "Object Layer 1"
+	// The BackgroundColor should be on web-color format #RRGGBB, instead I found:
+	// ""
 }

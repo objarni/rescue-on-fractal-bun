@@ -133,15 +133,23 @@ func computeFPS(renderTime time.Duration) float64 {
 	return 1.0 / renderTime.Seconds()
 }
 
-func loadResources() scenes.Resources {
-	res := scenes.Resources{}
+func loadResources() internal.Resources {
 	face := internal.LoadTTFForSure("assets/Font.ttf", 32)
-	res.Atlas = text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII)
-	res.Ghost = internal.LoadSpriteForSure("assets/TGhost.png")
-	res.MapPoint = internal.LoadSpriteForSure("assets/TMapPoint.png")
-	res.PlayerStanding = internal.LoadSpriteForSure("assets/TStanding.png")
-	res.InLevelHeadsUp = internal.LoadSpriteForSure("assets/THeadsup.png")
-	res.Blip = internal.LoadWavForSure("assets/Bounce.wav")
+	levels := map[string]internal.Level{
+		"Hembyn":     internal.LoadLevel("assets/levels/GhostForest.tmx"),
+		"Korsningen": internal.LoadLevel("assets/levels/ForestOpening.tmx"),
+	}
+	res := internal.Resources{
+		Atlas:          text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII),
+		Ghost:          internal.LoadSpriteForSure("assets/TGhost.png"),
+		MapPoint:       internal.LoadSpriteForSure("assets/TMapPoint.png"),
+		PlayerStanding: internal.LoadSpriteForSure("assets/TStanding.png"),
+		InLevelHeadsUp: internal.LoadSpriteForSure("assets/THeadsup.png"),
+		Blip:           internal.LoadWavForSure("assets/Bounce.wav"),
+		FPS:            0,
+		MapSigns:       nil,
+		Levels:         levels,
+	}
 	return res
 }
 

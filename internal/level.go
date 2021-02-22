@@ -19,3 +19,9 @@ type MapPoint struct {
 	Discovered bool
 	Location   string
 }
+
+type MapSign struct {
+	MapPos    pixel.Vec // X,Y coordinate on map image
+	LevelPos  pixel.Vec // X,Y coordinate on tiled map
+	LevelName string    // Name of level where MapSign stands
+}
