@@ -115,8 +115,8 @@ func ValidateLevel(path string, level *tilepix.Map) {
 		}
 	}
 
-	if level.GetObjectLayerByName("MapSigns") == nil {
-		errors = append(errors, "There should be an object layer named \"MapSigns\", instead I found:")
+	if level.GetObjectLayerByName("SignPosts") == nil {
+		errors = append(errors, "There should be an object layer named \"SignPosts\", instead I found:")
 		for _, objectLayer := range level.ObjectGroups {
 			errors = append(errors, `"`+objectLayer.Name+`"`)
 		}
@@ -137,11 +137,11 @@ func ValidateLevel(path string, level *tilepix.Map) {
 }
 
 func ParseLevel(level *tilepix.Map) Level {
-	points := []MapPoint{}
+	points := []SignPost{}
 	for _, object := range level.ObjectGroups[0].Objects {
 		x := object.X
 		y := object.Y
-		var mp = MapPoint{
+		var mp = SignPost{
 			Pos:        pixel.Vec{x, y},
 			Discovered: false,
 			Location:   object.Name,
@@ -153,7 +153,7 @@ func ParseLevel(level *tilepix.Map) Level {
 	return Level{
 		Width:      level.Width,
 		Height:     level.Height,
-		MapSigns:   points,
+		SignPosts:  points,
 		TilepixMap: level,
 		ClearColor: color,
 	}

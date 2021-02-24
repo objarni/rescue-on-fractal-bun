@@ -20,7 +20,7 @@ type LevelScene struct {
 
 func MakeLevelScene(cfg *Config, res *internal.Resources) *LevelScene {
 	level := internal.LoadLevel("assets/levels/GhostForest.tmx")
-	pos := level.MapSigns[0].Pos
+	pos := level.SignPosts[0].Pos
 	return &LevelScene{
 		cfg:       cfg,
 		res:       res,
@@ -111,10 +111,10 @@ func (scene *LevelScene) isMapSignClose() bool {
 	return scene.playerPos.Sub(sign.Pos).Len() < 10
 }
 
-func (scene *LevelScene) closestMapSign() internal.MapPoint {
-	closestMapPoint := internal.MapPoint{}
+func (scene *LevelScene) closestMapSign() internal.SignPost {
+	closestMapPoint := internal.SignPost{}
 	shortestDistance := 1000000000.0
-	for _, mapSign := range scene.level.MapSigns {
+	for _, mapSign := range scene.level.SignPosts {
 		mapSignDistance := scene.playerPos.Sub(mapSign.Pos).Len()
 		if mapSignDistance < shortestDistance {
 			closestMapPoint = mapSign
@@ -160,7 +160,7 @@ func (scene *LevelScene) Tick() bool {
 }
 
 func (scene *LevelScene) drawMapPoints(win *pixelgl.Window) {
-	for _, mapPoint := range scene.level.MapSigns {
+	for _, mapPoint := range scene.level.SignPosts {
 		alignVec := v(0, scene.res.MapPoint.Frame().Center().Y)
 		scene.res.MapPoint.Draw(
 			win,

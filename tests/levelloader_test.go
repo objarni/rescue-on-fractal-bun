@@ -13,11 +13,11 @@ func templateThis(format string, args ...string) string {
 }
 
 func printLevel(level internal.Level) {
-	mapPoints := printMapPoints(level.MapSigns)
+	mapPoints := printMapPoints(level.SignPosts)
 	fmt.Println(templateThis(
 		"Width: {w}   Height: {h}  (tiles)\n"+
 			"Background color: RGB={red},{green},{blue}\n"+
-			"There are {countMapPoints} MapPoint(s):\n"+
+			"There are {countMapPoints} SignPost(s):\n"+
 			"{mapPoints}\n"+
 			"Walls:\n"+
 			"...#\n"+
@@ -29,7 +29,7 @@ func printLevel(level internal.Level) {
 			"####",
 		"{w}", toString(level.Width),
 		"{h}", toString(level.Height),
-		"{countMapPoints}", toString(len(level.MapSigns)),
+		"{countMapPoints}", toString(len(level.SignPosts)),
 		"{mapPoints}", mapPoints,
 		"{red}", toString(level.ClearColor.R),
 		"{green}", toString(level.ClearColor.G),
@@ -37,7 +37,7 @@ func printLevel(level internal.Level) {
 	))
 }
 
-func printMapPoints(points []internal.MapPoint) string {
+func printMapPoints(points []internal.SignPost) string {
 	s := ""
 	for _, mp := range points {
 		s += fmt.Sprintf("'%v' at %1.0f, %1.0f\n", mp.Location, mp.Pos.X, mp.Pos.Y)
@@ -55,7 +55,7 @@ func ExampleLoadingMiniLevel() {
 	// Output:
 	// Width: 4   Height: 3  (tiles)
 	// Background color: RGB=10,50,100
-	// There are 2 MapPoint(s):
+	// There are 2 SignPost(s):
 	// 'Korsningen' at 12, 62
 	// 'Hembyn' at 10, 41
 	//
@@ -79,7 +79,7 @@ func ExampleLoadingBrokenLevel() {
 	// There is no Platforms layer
 	// There is no Walls layer
 	// There is no Foreground layer
-	// There should be an object layer named "MapSigns", instead I found:
+	// There should be an object layer named "SignPosts", instead I found:
 	// "Object Layer 1"
 	// The BackgroundColor should be on web-color format #RRGGBB, instead I found:
 	// ""

@@ -12,23 +12,23 @@ import (
 )
 
 /*
-MapSigns innehåller följande information:
+SignPosts innehåller följande information:
 MapPos vec   - position på karten för MapSignen
 LevelPos vec - position på leveln den är kopplad till
 Level string - vilken level den är kopplad till
 
 MapPos lagras i MapScene (som har kunskap om detta).
-De två senare lagras i Tiled maps (MapPoint objects).
+De två senare lagras i Tiled maps (SignPost objects).
 
-En idé är att konstruera alla MapSigns vid start av
+En idé är att konstruera alla SignPosts vid start av
 spelet, för att på så sätt
  - validera att alla levels laddas korrekt
    (level loading kontrollerar att layers finns och
    är ordnade i rätt ordning)
- - spara all MapSigns info
+ - spara all SignPosts info
 
 Vill börja med att validera laddning av level enligt
-ovan, för att sedan bygga upp MapSigns datastrukturen.
+ovan, för att sedan bygga upp SignPosts datastrukturen.
 */
 
 type MapPoint struct {
