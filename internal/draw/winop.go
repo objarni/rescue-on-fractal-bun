@@ -43,9 +43,11 @@ func (winMoved WinMoved) String() string {
 
 // TODO: how to apply several moves in a row?
 // No way to 'get' matrix from window
-func (winMoved WinMoved) Render(win *pixelgl.Window) {
-	win.SetMatrix(pixel.IM.Moved(winMoved.translation))
-	winMoved.winOp.Render(win)
+func (winMoved WinMoved) Render(mx pixel.Matrix, win *pixelgl.Window) {
+	newMatrix := mx.Moved(winMoved.translation)
+	win.SetMatrix(newMatrix)
+	winMoved.winOp.Render(newMatrix, win)
+	win.SetMatrix(mx) // Restore old matrix
 }
 
 func Moved(translation pixel.Vec, winOp WinOp) WinOp {
@@ -72,7 +74,7 @@ func (winImdOp WinImdOp) String() string {
 	return result
 }
 
-func (winImdOp WinImdOp) Render(win *pixelgl.Window) {
+func (winImdOp WinImdOp) Render(_ pixel.Matrix, win *pixelgl.Window) {
 	imd := imdraw.New(nil)
 	winImdOp.imdOp.Render(imd)
 	imd.Draw(win)

@@ -117,7 +117,7 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 	scene.mapImage.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
 
 	seq := draw.Sequence(scene.locationsGfx(), scene.crossHairGfx())
-	draw.ToWinOp(seq).Render(win)
+	draw.ToWinOp(seq).Render(pixel.IM, win)
 
 	drawLocationTexts(win, scene)
 }

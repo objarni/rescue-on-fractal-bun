@@ -65,7 +65,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	// TODO: remove when player cannot see past limits!
 	// Then, just clear screen to map background color
 	moved := draw.Moved(scene.cameraVector(), draw.ToWinOp(scene.backdropGfx()))
-	moved.Render(win)
+	moved.Render(pixel.IM, win)
 	//draw.ToWinOp(scene.backdropGfx()).Render(win)
 
 	win.SetMatrix(scene.cameraMatrix())

@@ -1,6 +1,7 @@
 package draw
 
 import (
+	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
@@ -21,5 +22,5 @@ type TextOp interface {
 type WinOp interface {
 	String() string
 	Lines() []string
-	Render(win *pixelgl.Window)
+	Render(mx pixel.Matrix, win *pixelgl.Window)
 }
