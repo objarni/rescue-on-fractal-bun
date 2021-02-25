@@ -135,6 +135,11 @@ func computeFPS(renderTime time.Duration) float64 {
 
 func loadResources() internal.Resources {
 	face := internal.LoadTTFForSure("assets/Font.ttf", 32)
+	levels := map[string]internal.Level{
+		"GhostForest":   internal.LoadLevel("assets/levels/GhostForest.tmx"),
+		"ForestOpening": internal.LoadLevel("assets/levels/ForestOpening.tmx"),
+	}
+	mapSigns := internal.BuildMapSignArray(levels)
 	res := internal.Resources{
 		Atlas:          text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII),
 		Ghost:          internal.LoadSpriteForSure("assets/TGhost.png"),
@@ -143,7 +148,8 @@ func loadResources() internal.Resources {
 		InLevelHeadsUp: internal.LoadSpriteForSure("assets/THeadsup.png"),
 		Blip:           internal.LoadWavForSure("assets/Bounce.wav"),
 		FPS:            0,
-		MapSigns:       nil,
+		MapSigns:       mapSigns,
+		Levels:         levels,
 	}
 	return res
 }

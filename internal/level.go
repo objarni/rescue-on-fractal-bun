@@ -21,9 +21,9 @@ type SignPost struct {
 }
 
 type MapSign struct {
-	MapPos    pixel.Vec // X,Y coordinate on map image
-	LevelPos  pixel.Vec // X,Y coordinate on tiled map
+	MapPos    pixel.Vec // X,Y coordinate on map
 	LevelName string    // Name of level where MapSign stands
+	LevelPos  pixel.Vec // X,Y coordinate on level
 }
 
 func BuildMapSignArray(levelMap map[string]Level) []MapSign {
@@ -35,11 +35,13 @@ func BuildMapSignArray(levelMap map[string]Level) []MapSign {
 		"Skogen":     {X: 299, Y: 375},
 	}
 	for levelName, levelData := range levelMap {
-		mapSigns = append(mapSigns, MapSign{
-			MapPos:    positions[levelName],
-			LevelPos:  levelData.SignPosts[0].Pos,
-			LevelName: levelData.SignPosts[0].Location,
-		})
+		for _, signPost := range levelData.SignPosts {
+			mapSigns = append(mapSigns, MapSign{
+				MapPos:    positions[levelName],
+				LevelPos:  signPost.Pos,
+				LevelName: signPost.Location,
+			})
+		}
 	}
 	return mapSigns
 }
