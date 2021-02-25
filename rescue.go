@@ -69,6 +69,9 @@ func run() {
 
 	fpsCounter := 0
 
+	accumulatedMs := 0.0
+	timePrev := time.Now()
+
 	for !win.Closed() {
 
 		// Escape closes main window unconditionally
@@ -109,9 +112,16 @@ func run() {
 				scene = scene.HandleKeyUp(control)
 			}
 		}
-		if !scene.Tick() {
-			win.SetClosed(true)
-			continue
+
+		timeNow := time.Now()
+		deltaMs := 1000.0 * timeNow.Sub(timePrev).Seconds()
+		timePrev = timeNow
+		var steps int
+		accumulatedMs, steps = gameTimeSteps(accumulatedMs, deltaMs)
+		for i := 0; i < steps; i++ {
+			if !scene.Tick() {
+				win.SetClosed(true)
+			}
 		}
 
 		start := time.Now()
@@ -156,4 +166,12 @@ func loadResources() internal.Resources {
 
 func main() {
 	pixelgl.Run(run)
+}
+
+func gameTimeSteps(accumulated float64, deltaMs float64) (float64, int) {
+	// How many whole ticks can we step?
+	accumulated += deltaMs
+	steps := int(accumulated / 5)
+	accumulated -= float64(steps * 5)
+	return accumulated, steps
 }
