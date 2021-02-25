@@ -13,11 +13,9 @@ type Level struct {
 	TilepixMap    *tilepix.Map
 }
 
-// TODO: Discovered should probably be stored somewhere else
 type SignPost struct {
-	Pos        pixel.Vec
-	Discovered bool
-	Location   string
+	Pos      pixel.Vec
+	Location string
 }
 
 type MapSign struct {

@@ -129,8 +129,8 @@ func ValidateLevel(path string, level *tilepix.Map) {
 
 	if len(errors) > 0 {
 		errorString := path + " contains the following errors:\n"
-		for _, error := range errors {
-			errorString += error + "\n"
+		for _, err := range errors {
+			errorString += err + "\n"
 		}
 		fmt.Printf(errorString)
 	}
@@ -142,9 +142,8 @@ func ParseLevel(level *tilepix.Map) Level {
 		x := object.X
 		y := object.Y
 		var mp = SignPost{
-			Pos:        pixel.Vec{x, y},
-			Discovered: false,
-			Location:   object.Name,
+			Pos:      pixel.Vec{X: x, Y: y},
+			Location: object.Name,
 		}
 		points = append(points, mp)
 	}
