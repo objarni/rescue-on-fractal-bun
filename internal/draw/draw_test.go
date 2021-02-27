@@ -3,6 +3,7 @@ package draw
 import (
 	"fmt"
 	"github.com/faiface/pixel"
+	"github.com/faiface/pixel/pixelgl"
 	"image/color"
 )
 
@@ -118,4 +119,38 @@ func Example_movedTileLayerWinOp() {
 	// Output:
 	// Moved 100 pixels right 80 pixels down:
 	//   TileLayer "Foreground"
+}
+
+func Example_movedImageWinOp() {
+	fmt.Println(Moved(pixel.V(55, -88), Image(nil, "Ghost")).String())
+	fmt.Println(Moved(pixel.V(1, 2), Image(nil, "Ghost2")).String())
+	// Output:
+	// Moved 55 pixels right 88 pixels down:
+	//   Image "Ghost"
+	// Moved 1 pixels right 2 pixels up:
+	//   Image "Ghost2"
+}
+
+type ImageOp struct {
+	imageMap  map[string]*pixel.Picture
+	imageName string
+}
+
+func (imageOp ImageOp) String() string {
+	return fmt.Sprintf("Image \"%v\"", imageOp.imageName)
+}
+
+func (imageOp ImageOp) Lines() []string {
+	return []string{imageOp.String()}
+}
+
+func (imageOp ImageOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
+	panic("implement me")
+}
+
+func Image(imageMap map[string]*pixel.Picture, imageName string) WinOp {
+	return ImageOp{
+		imageMap:  imageMap,
+		imageName: imageName,
+	}
 }
