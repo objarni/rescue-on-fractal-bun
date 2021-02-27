@@ -108,3 +108,28 @@ func TileLayer(tileMap *tilepix.Map, layerName string) WinOp {
 		tileMap:   tileMap,
 	}
 }
+
+type ImageOp struct {
+	imageMap  map[string]*pixel.Sprite
+	imageName string
+}
+
+func (imageOp ImageOp) String() string {
+	return fmt.Sprintf("Image \"%v\"", imageOp.imageName)
+}
+
+func (imageOp ImageOp) Lines() []string {
+	return []string{imageOp.String()}
+}
+
+func (imageOp ImageOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
+	sprite := imageOp.imageMap[imageOp.imageName]
+	sprite.Draw(win, pixel.IM)
+}
+
+func Image(imageMap map[string]*pixel.Sprite, imageName string) WinOp {
+	return ImageOp{
+		imageMap:  imageMap,
+		imageName: imageName,
+	}
+}

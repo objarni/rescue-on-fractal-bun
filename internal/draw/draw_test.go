@@ -3,7 +3,6 @@ package draw
 import (
 	"fmt"
 	"github.com/faiface/pixel"
-	"github.com/faiface/pixel/pixelgl"
 	"image/color"
 )
 
@@ -129,29 +128,4 @@ func Example_movedImageWinOp() {
 	//   Image "Ghost"
 	// Moved 1 pixels right 2 pixels up:
 	//   Image "Ghost2"
-}
-
-type ImageOp struct {
-	imageMap  map[string]*pixel.Sprite
-	imageName string
-}
-
-func (imageOp ImageOp) String() string {
-	return fmt.Sprintf("Image \"%v\"", imageOp.imageName)
-}
-
-func (imageOp ImageOp) Lines() []string {
-	return []string{imageOp.String()}
-}
-
-func (imageOp ImageOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
-	sprite := imageOp.imageMap[imageOp.imageName]
-	sprite.Draw(win, pixel.IM)
-}
-
-func Image(imageMap map[string]*pixel.Sprite, imageName string) WinOp {
-	return ImageOp{
-		imageMap:  imageMap,
-		imageName: imageName,
-	}
 }
