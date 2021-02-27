@@ -82,10 +82,13 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	// Draw objects
 	scene.drawMapPoints(win)
 	scene.drawPlayer(win)
-	for i := 0; i < scene.level.Width; i += 500 {
-		scene.res.Ghost.Draw(win,
-			pixel.IM.Moved(v(float64(i), 200)))
-	}
+
+	// Ghost
+	win.SetMatrix(pixel.IM)
+	ghostPos := v(float64(0), 200)
+	ghostSprite := draw.Moved(scene.cameraVector(), draw.Moved(ghostPos, draw.Image(scene.res.ImageMap, internal.Ghost)))
+	ghostSprite.Render(pixel.IM, win)
+	win.SetMatrix(scene.cameraMatrix())
 
 	movedForeground := draw.Moved(scene.cameraVector(), draw.TileLayer(scene.level.TilepixMap, "Foreground"))
 	movedForeground.Render(pixel.IM, win)

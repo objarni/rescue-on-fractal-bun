@@ -23,8 +23,9 @@ type Image int
 
 const (
 	Map Image = iota
+	Ghost
 )
 
 func (image Image) String() string {
-	return [...]string{"Map"}[image]
+	return [...]string{"Map", "Ghost"}[image]
 }

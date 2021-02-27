@@ -152,7 +152,6 @@ func loadResources() internal.Resources {
 	mapSigns := internal.BuildMapSignArray(levels)
 	res := internal.Resources{
 		Atlas:          text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII),
-		Ghost:          internal.LoadSpriteForSure("assets/TGhost.png"),
 		MapPoint:       internal.LoadSpriteForSure("assets/TMapPoint.png"),
 		PlayerStanding: internal.LoadSpriteForSure("assets/TStanding.png"),
 		InLevelHeadsUp: internal.LoadSpriteForSure("assets/THeadsup.png"),
@@ -162,7 +161,8 @@ func loadResources() internal.Resources {
 		Levels:         levels,
 	}
 	res.ImageMap = map[internal.Image]*pixel.Sprite{
-		internal.Map: internal.LoadSpriteForSure("assets/TMap.png"),
+		internal.Map:   internal.LoadSpriteForSure("assets/TMap.png"),
+		internal.Ghost: internal.LoadSpriteForSure("assets/TGhost.png"),
 	}
 	return res
 }
