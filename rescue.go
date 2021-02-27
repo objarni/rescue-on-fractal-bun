@@ -161,6 +161,9 @@ func loadResources() internal.Resources {
 		MapSigns:       mapSigns,
 		Levels:         levels,
 	}
+	res.ImageMap = map[internal.Image]*pixel.Sprite{
+		internal.Map: internal.LoadSpriteForSure("assets/TMap.png"),
+	}
 	return res
 }
 

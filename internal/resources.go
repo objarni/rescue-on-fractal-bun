@@ -16,6 +16,7 @@ type Resources struct {
 	FPS            float64
 	MapSigns       []MapSign
 	Levels         map[string]Level
+	ImageMap       map[Image]*pixel.Sprite
 }
 
 type Image int
