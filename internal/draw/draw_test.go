@@ -132,7 +132,7 @@ func Example_movedImageWinOp() {
 }
 
 type ImageOp struct {
-	imageMap  map[string]*pixel.Picture
+	imageMap  map[string]*pixel.Sprite
 	imageName string
 }
 
@@ -145,10 +145,11 @@ func (imageOp ImageOp) Lines() []string {
 }
 
 func (imageOp ImageOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
-	panic("implement me")
+	sprite := imageOp.imageMap[imageOp.imageName]
+	sprite.Draw(win, pixel.IM)
 }
 
-func Image(imageMap map[string]*pixel.Picture, imageName string) WinOp {
+func Image(imageMap map[string]*pixel.Sprite, imageName string) WinOp {
 	return ImageOp{
 		imageMap:  imageMap,
 		imageName: imageName,
