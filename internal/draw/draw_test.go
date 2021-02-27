@@ -3,6 +3,7 @@ package draw
 import (
 	"fmt"
 	"github.com/faiface/pixel"
+	"golang.org/x/image/colornames"
 	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
 )
@@ -126,5 +127,13 @@ func Example_movedImageWinOp() {
 	fmt.Println(Moved(pixel.V(55, -88), Image(fakeMap, internal.Map)).String())
 	// Output:
 	// Moved 55 pixels right 88 pixels down:
+	//   Image "Map"
+}
+
+func Example_colorImageWinOp() {
+	fakeMap := map[internal.Image]*pixel.Sprite{}
+	fmt.Println(Color(colornames.Red, Image(fakeMap, internal.Map)).String())
+	// Output:
+	// Color 255, 0, 0:
 	//   Image "Map"
 }

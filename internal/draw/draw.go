@@ -24,3 +24,11 @@ type WinOp interface {
 	Lines() []string
 	Render(mx pixel.Matrix, win *pixelgl.Window)
 }
+
+func headerWithIndentedBody(head string, body []string) []string {
+	ret := []string{head}
+	for _, elem := range body {
+		ret = append(ret, "  "+elem)
+	}
+	return ret
+}

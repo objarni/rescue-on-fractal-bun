@@ -6,6 +6,7 @@ import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
+	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
 	"strings"
 )
@@ -15,7 +16,17 @@ type WinMoved struct {
 	winOp       WinOp
 }
 
+func (winMoved WinMoved) String() string {
+	return strings.Join(winMoved.Lines(), "\n")
+}
+
 func (winMoved WinMoved) Lines() []string {
+	head := winMovedHeader(winMoved)
+	body := winMoved.winOp.Lines()
+	return headerWithIndentedBody(head, body)
+}
+
+func winMovedHeader(winMoved WinMoved) string {
 	xnum := winMoved.translation.X
 	xword := "right"
 	if xnum < 0 {
@@ -28,19 +39,12 @@ func (winMoved WinMoved) Lines() []string {
 		ynum *= -1
 		yword = "down"
 	}
-	result := []string{fmt.Sprintf("Moved %v pixels %v %v pixels %v:",
+	head := fmt.Sprintf("Moved %v pixels %v %v pixels %v:",
 		xnum,
 		xword,
 		ynum,
-		yword)}
-	for _, line := range winMoved.winOp.Lines() {
-		result = append(result, "  "+line)
-	}
-	return result
-}
-
-func (winMoved WinMoved) String() string {
-	return strings.Join(winMoved.Lines(), "\n")
+		yword)
+	return head
 }
 
 // TODO: how to apply several moves in a row?
@@ -63,17 +67,14 @@ type WinImdOp struct {
 	imdOp ImdOp
 }
 
-func (winImdOp WinImdOp) Lines() []string {
-	return strings.Split(winImdOp.String(), "\n")
+func (winImdOp WinImdOp) String() string {
+	return strings.Join(winImdOp.Lines(), "\n")
 }
 
-func (winImdOp WinImdOp) String() string {
-	imdOpLines := winImdOp.imdOp.Lines()
-	result := "WinOp from ImdOp:"
-	for _, line := range imdOpLines {
-		result += "\n  " + line
-	}
-	return result
+func (winImdOp WinImdOp) Lines() []string {
+	head := "WinOp from ImdOp:"
+	body := winImdOp.imdOp.Lines()
+	return headerWithIndentedBody(head, body)
 }
 
 func (winImdOp WinImdOp) Render(_ pixel.Matrix, win *pixelgl.Window) {
@@ -123,7 +124,7 @@ func (imageOp ImageOp) Lines() []string {
 	return []string{imageOp.String()}
 }
 
-func (imageOp ImageOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
+func (imageOp ImageOp) Render(_ pixel.Matrix, win *pixelgl.Window) {
 	sprite := imageOp.imageMap[imageOp.imageName]
 	sprite.Draw(win, pixel.IM)
 }
@@ -132,5 +133,32 @@ func Image(imageMap map[internal.Image]*pixel.Sprite, imageName internal.Image) 
 	return ImageOp{
 		imageMap:  imageMap,
 		imageName: imageName,
+	}
+}
+
+type ColorOp struct {
+	color color.RGBA
+	winOp WinOp
+}
+
+func (colorOp ColorOp) String() string {
+	return strings.Join(colorOp.Lines(), "\n")
+}
+
+func (color ColorOp) Lines() []string {
+	head := fmt.Sprintf("Color %v, %v, %v:",
+		color.color.R, color.color.G, color.color.B)
+	body := color.winOp.Lines()
+	return headerWithIndentedBody(head, body)
+}
+
+func (colorOp ColorOp) Render(_ pixel.Matrix, _ *pixelgl.Window) {
+	panic("implement me")
+}
+
+func Color(color color.RGBA, winOp WinOp) WinOp {
+	return ColorOp{
+		color: color,
+		winOp: winOp,
 	}
 }

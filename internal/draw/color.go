@@ -13,7 +13,6 @@ type ImdColor struct {
 }
 
 func (color ImdColor) String() string {
-	//strings.Join(str, "-")
 	return strings.Join(color.Lines(), "\n")
 }
 
@@ -34,9 +33,5 @@ func (color ImdColor) Lines() []string {
 	head := fmt.Sprintf("Color %v, %v, %v:",
 		color.color.R, color.color.G, color.color.B)
 	body := color.Operation.Lines()
-	ret := []string{head}
-	for _, elem := range body {
-		ret = append(ret, "  "+elem)
-	}
-	return ret
+	return headerWithIndentedBody(head, body)
 }

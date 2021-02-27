@@ -26,6 +26,10 @@ func (sequence ImdSequence) Render(imd *imdraw.IMDraw) {
 }
 
 func (sequence ImdSequence) Lines() []string {
+	// TODO: refactor to non-array (only Then.)
+	// Also, this is buggy; "  "+imdOp.String() will
+	// fail for any imdOp which is a sequence of more
+	// than one imdOp!
 	result := []string{"Sequence:"}
 	for _, imdOp := range sequence.imdOps {
 		result = append(result, "  "+imdOp.String())
