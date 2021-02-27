@@ -102,11 +102,13 @@ func LoadTTFForSure(path string, size float64) font.Face {
 func LoadLevel(path string) Level {
 	level, err := tilepix.ReadFile(path)
 	PanicIfError(err)
-	ValidateLevel(path, level)
+	err = ValidateLevel(path, level)
+	PanicIfError(err)
+
 	return ParseLevel(level)
 }
 
-func ValidateLevel(path string, level *tilepix.Map) {
+func ValidateLevel(path string, level *tilepix.Map) error {
 	var errors []string
 	expectedLayers := strings.Split("Background Platforms Walls Foreground", " ")
 	for _, expectedLayer := range expectedLayers {
@@ -133,7 +135,10 @@ func ValidateLevel(path string, level *tilepix.Map) {
 			errorString += err + "\n"
 		}
 		fmt.Printf(errorString)
+		return fmt.Errorf("Error(s) in level %v", path)
 	}
+
+	return nil
 }
 
 func ParseLevel(level *tilepix.Map) Level {
