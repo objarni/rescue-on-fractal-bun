@@ -64,7 +64,7 @@ func ExampleSequence() {
 	//   Circle radius 25 center <50, 100> thickness 2
 }
 
-func ExampleThenSequence() {
+func Example_thenSequence() {
 	sequence := Sequence().
 		Then(Circle(25, C(50, 100), 2)).
 		Then(Circle(3, C(1, 2), 4))
@@ -87,7 +87,7 @@ func ExampleText() {
 
 // WinOp
 
-func ExampleLiftImdOp() {
+func Example_liftImdOp() {
 	fmt.Println(ToWinOp(Circle(5, C(0, 4), 1)).String())
 	fmt.Println(ToWinOp(Line(C(0, 4), C(0, 4), 1)).String())
 	// Output:
@@ -111,4 +111,11 @@ func Example_movedRectangleWinOp() {
 	// Moved 1 pixels left 2 pixels down:
 	//   WinOp from ImdOp:
 	//     Rectangle from <0, 4> to <5, 6> thickness 10
+}
+
+func Example_movedTileLayerWinOp() {
+	fmt.Println(Moved(pixel.V(100, -80), TileLayer(nil, "Foreground")).String())
+	// Output:
+	// Moved 100 pixels right 80 pixels down:
+	//   TileLayer "Foreground"
 }

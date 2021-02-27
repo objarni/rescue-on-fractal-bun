@@ -2,6 +2,7 @@ package draw
 
 import (
 	"fmt"
+	"github.com/bcvery1/tilepix"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
@@ -82,4 +83,28 @@ func (winImdOp WinImdOp) Render(_ pixel.Matrix, win *pixelgl.Window) {
 
 func ToWinOp(imdOp ImdOp) WinOp {
 	return WinImdOp{imdOp: imdOp}
+}
+
+type TileLayerOp struct {
+	layerName string
+	tileMap   *tilepix.Map
+}
+
+func (tileLayerOp TileLayerOp) String() string {
+	return fmt.Sprintf("TileLayer \"Foreground\"")
+}
+
+func (tileLayerOp TileLayerOp) Lines() []string {
+	return []string{tileLayerOp.String()}
+}
+
+func (tileLayerOp TileLayerOp) Render(_ pixel.Matrix, win *pixelgl.Window) {
+	_ = tileLayerOp.tileMap.GetTileLayerByName(tileLayerOp.layerName).Draw(win)
+}
+
+func TileLayer(tileMap *tilepix.Map, layerName string) WinOp {
+	return TileLayerOp{
+		layerName: layerName,
+		tileMap:   tileMap,
+	}
 }
