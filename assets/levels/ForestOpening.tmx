@@ -57,7 +57,7 @@
 0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="6" name="MapSigns">
+ <objectgroup id="6" name="SignPosts">
   <object id="1" name="Skogen" x="153.813" y="246.5" width="10" height="10">
    <text wrap="1">Skogen</text>
   </object>
