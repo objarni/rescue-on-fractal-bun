@@ -71,10 +71,13 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	movedBackground := draw.Moved(scene.cameraVector(), draw.TileLayer(scene.level.TilepixMap, "Background"))
 	movedBackground.Render(pixel.IM, win)
 
+	movedPlatforms := draw.Moved(scene.cameraVector(), draw.TileLayer(scene.level.TilepixMap, "Platforms"))
+	movedPlatforms.Render(pixel.IM, win)
+
+	movedWalls := draw.Moved(scene.cameraVector(), draw.TileLayer(scene.level.TilepixMap, "Walls"))
+	movedWalls.Render(pixel.IM, win)
+
 	win.SetMatrix(scene.cameraMatrix())
-	layers := scene.level.TilepixMap.TileLayers
-	_ = layers[1].Draw(win) // Platforms
-	_ = layers[2].Draw(win) // Walls
 
 	// Draw objects
 	scene.drawMapPoints(win)
@@ -84,7 +87,8 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 			pixel.IM.Moved(v(float64(i), 200)))
 	}
 
-	_ = layers[3].Draw(win) // Foreground
+	movedForeground := draw.Moved(scene.cameraVector(), draw.TileLayer(scene.level.TilepixMap, "Foreground"))
+	movedForeground.Render(pixel.IM, win)
 
 	scene.drawHeadsUpDisplay(win)
 }
