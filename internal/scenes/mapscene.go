@@ -115,12 +115,10 @@ func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 
 func (scene *MapScene) Render(win *pixelgl.Window) {
 	center := win.Bounds().Center()
-	// TODO: Consider switching to enum based image naming, to avoid late runtime errors
-	// (lean on the compiler). Then all image loading errors would barf at boot!
-	spriteMap := map[string]*pixel.Sprite{
-		"Map": scene.mapImage,
+	spriteMap := map[internal.Image]*pixel.Sprite{
+		internal.Map: scene.mapImage,
 	}
-	mapImageOp := draw.Moved(center, draw.Image(spriteMap, "Map"))
+	mapImageOp := draw.Moved(center, draw.Image(spriteMap, internal.Map))
 	mapImageOp.Render(pixel.IM, win)
 
 	seq := draw.Sequence(scene.locationsGfx(), scene.crossHairGfx())

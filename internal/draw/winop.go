@@ -6,6 +6,7 @@ import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
+	"objarni/rescue-on-fractal-bun/internal"
 	"strings"
 )
 
@@ -110,8 +111,8 @@ func TileLayer(tileMap *tilepix.Map, layerName string) WinOp {
 }
 
 type ImageOp struct {
-	imageMap  map[string]*pixel.Sprite
-	imageName string
+	imageMap  map[internal.Image]*pixel.Sprite
+	imageName internal.Image
 }
 
 func (imageOp ImageOp) String() string {
@@ -127,7 +128,7 @@ func (imageOp ImageOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
 	sprite.Draw(win, pixel.IM)
 }
 
-func Image(imageMap map[string]*pixel.Sprite, imageName string) WinOp {
+func Image(imageMap map[internal.Image]*pixel.Sprite, imageName internal.Image) WinOp {
 	return ImageOp{
 		imageMap:  imageMap,
 		imageName: imageName,

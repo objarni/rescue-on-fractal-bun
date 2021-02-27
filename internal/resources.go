@@ -17,3 +17,13 @@ type Resources struct {
 	MapSigns       []MapSign
 	Levels         map[string]Level
 }
+
+type Image int
+
+const (
+	Map Image = iota
+)
+
+func (image Image) String() string {
+	return [...]string{"Map"}[image]
+}

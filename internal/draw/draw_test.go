@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/faiface/pixel"
 	"image/color"
+	"objarni/rescue-on-fractal-bun/internal"
 )
 
 // ImdOp
@@ -121,11 +122,9 @@ func Example_movedTileLayerWinOp() {
 }
 
 func Example_movedImageWinOp() {
-	fmt.Println(Moved(pixel.V(55, -88), Image(nil, "Ghost")).String())
-	fmt.Println(Moved(pixel.V(1, 2), Image(nil, "Ghost2")).String())
+	fakeMap := map[internal.Image]*pixel.Sprite{}
+	fmt.Println(Moved(pixel.V(55, -88), Image(fakeMap, internal.Map)).String())
 	// Output:
 	// Moved 55 pixels right 88 pixels down:
-	//   Image "Ghost"
-	// Moved 1 pixels right 2 pixels up:
-	//   Image "Ghost2"
+	//   Image "Map"
 }
