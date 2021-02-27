@@ -114,7 +114,12 @@ func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 }
 
 func (scene *MapScene) Render(win *pixelgl.Window) {
-	scene.mapImage.Draw(win, pixel.IM.Moved(win.Bounds().Center()))
+	center := win.Bounds().Center()
+	spriteMap := map[string]*pixel.Sprite{
+		"Map": scene.mapImage,
+	}
+	mapImageOp := draw.Moved(center, draw.Image(spriteMap, "Map"))
+	mapImageOp.Render(pixel.IM, win)
 
 	seq := draw.Sequence(scene.locationsGfx(), scene.crossHairGfx())
 	draw.ToWinOp(seq).Render(pixel.IM, win)
