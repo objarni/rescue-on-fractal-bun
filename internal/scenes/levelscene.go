@@ -97,19 +97,15 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 }
 
 func (scene *LevelScene) drawHeadsUpDisplay(win *pixelgl.Window) {
-	win.SetMatrix(pixel.IM)
+	mapSymbolCenter := scene.res.MapSymbol.Frame().Center()
+	op := draw.Moved(mapSymbolCenter, draw.Image(scene.res.ImageMap, internal.MapSymbol))
 	if scene.isMapSignClose() {
-		scene.res.InLevelHeadsUp.DrawColorMask(
-			win,
-			pixel.IM.Moved(scene.res.InLevelHeadsUp.Frame().Center()),
-			colornames.GreenA400)
-	} else {
-		scene.res.InLevelHeadsUp.Draw(
-			win,
-			pixel.IM.Moved(scene.res.InLevelHeadsUp.Frame().Center()))
+		op = draw.Color(colornames.GreenA400, op)
 	}
+	op.Render(pixel.IM, win)
 
 	// FPS
+	win.SetMatrix(pixel.IM)
 	tb := text.New(pixel.V(0, 0), scene.res.Atlas)
 	_, _ = fmt.Fprintf(tb, "FPS=%1.1f", scene.res.FPS)
 	tb.DrawColorMask(win, pixel.IM, colornames.Brown800)

@@ -154,15 +154,19 @@ func loadResources() internal.Resources {
 		Atlas:          text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII),
 		MapPoint:       internal.LoadSpriteForSure("assets/TMapPoint.png"),
 		PlayerStanding: internal.LoadSpriteForSure("assets/TStanding.png"),
-		InLevelHeadsUp: internal.LoadSpriteForSure("assets/THeadsup.png"),
+		MapSymbol:      internal.LoadSpriteForSure("assets/THeadsup.png"),
 		Blip:           internal.LoadWavForSure("assets/Bounce.wav"),
 		FPS:            0,
 		MapSigns:       mapSigns,
 		Levels:         levels,
 	}
 	res.ImageMap = map[internal.Image]*pixel.Sprite{
-		internal.Map:   internal.LoadSpriteForSure("assets/TMap.png"),
-		internal.Ghost: internal.LoadSpriteForSure("assets/TGhost.png"),
+		internal.Map:       internal.LoadSpriteForSure("assets/TMap.png"),
+		internal.Ghost:     internal.LoadSpriteForSure("assets/TGhost.png"),
+		internal.MapSymbol: internal.LoadSpriteForSure("assets/THeadsup.png"),
+	}
+	if len(res.ImageMap) < int(internal.AfterLastImage) {
+		panic("Expect one image loaded per map item")
 	}
 	return res
 }

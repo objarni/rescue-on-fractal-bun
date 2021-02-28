@@ -11,7 +11,7 @@ type Resources struct {
 	Ghost          *pixel.Sprite
 	MapPoint       *pixel.Sprite
 	PlayerStanding *pixel.Sprite
-	InLevelHeadsUp *pixel.Sprite
+	MapSymbol      *pixel.Sprite
 	Blip           *beep.Buffer
 	FPS            float64
 	MapSigns       []MapSign
@@ -24,8 +24,10 @@ type Image int
 const (
 	Map Image = iota
 	Ghost
+	MapSymbol
+	AfterLastImage
 )
 
 func (image Image) String() string {
-	return [...]string{"Map", "Ghost"}[image]
+	return [...]string{"Map", "Ghost", "MapSymbol"}[image]
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
+	"golang.org/x/image/colornames"
 	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
 	"strings"
@@ -152,8 +153,11 @@ func (color ColorOp) Lines() []string {
 	return headerWithIndentedBody(head, body)
 }
 
-func (colorOp ColorOp) Render(_ pixel.Matrix, _ *pixelgl.Window) {
-	panic("implement me")
+func (colorOp ColorOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
+	win.SetColorMask(colorOp.color)
+	colorOp.winOp.Render(mx, win)
+	// @remind: if I nest colors, assuming white 'restore' color will not work anymore!
+	win.SetColorMask(colornames.White)
 }
 
 func Color(color color.RGBA, winOp WinOp) WinOp {
