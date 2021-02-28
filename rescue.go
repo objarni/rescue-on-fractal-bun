@@ -150,6 +150,8 @@ func loadResources() internal.Resources {
 		"ForestOpening": internal.LoadLevel("assets/levels/ForestOpening.tmx"),
 	}
 	mapSigns := internal.BuildMapSignArray(levels)
+
+	// @remind: having pixel Images directly in Resources is deprecated. Use ImageMap below instead!
 	res := internal.Resources{
 		Atlas:          text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII),
 		MapPoint:       internal.LoadSpriteForSure("assets/TMapPoint.png"),

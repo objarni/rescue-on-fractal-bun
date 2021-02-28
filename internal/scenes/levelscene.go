@@ -97,6 +97,8 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 }
 
 func (scene *LevelScene) drawHeadsUpDisplay(win *pixelgl.Window) {
+	// TODO: crop this screen-sized image and translate it in position
+	// (coloring only works now since it's the only image used in headsup!)
 	mapSymbolCenter := scene.res.MapSymbol.Frame().Center()
 	op := draw.Moved(mapSymbolCenter, draw.Image(scene.res.ImageMap, internal.MapSymbol))
 	if scene.isMapSignClose() {
@@ -106,6 +108,8 @@ func (scene *LevelScene) drawHeadsUpDisplay(win *pixelgl.Window) {
 
 	// FPS
 	win.SetMatrix(pixel.IM)
+	scene.res.MapPoint.Draw(win, pixel.IM)
+
 	tb := text.New(pixel.V(0, 0), scene.res.Atlas)
 	_, _ = fmt.Fprintf(tb, "FPS=%1.1f", scene.res.FPS)
 	tb.DrawColorMask(win, pixel.IM, colornames.Brown800)
