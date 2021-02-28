@@ -74,7 +74,6 @@ type Gubbe struct {
 }
 
 func (gubbe *Gubbe) HandleKeyDown(key internal.ControlKey) internal.Thing {
-	// TODO: Clean up this duplicated code everywhere
 	if key == internal.Left {
 		gubbe.controls.left = true
 	}

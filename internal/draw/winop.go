@@ -48,8 +48,6 @@ func winMovedHeader(winMoved WinMoved) string {
 	return head
 }
 
-// TODO: how to apply several moves in a row?
-// No way to 'get' matrix from window
 func (winMoved WinMoved) Render(mx pixel.Matrix, win *pixelgl.Window) {
 	newMatrix := mx.Moved(winMoved.translation)
 	win.SetMatrix(newMatrix)
