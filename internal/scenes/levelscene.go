@@ -80,13 +80,14 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	win.SetMatrix(scene.cameraMatrix())
 
 	// Draw objects
-	scene.drawMapPoints(win)
+	scene.drawSignPosts(win)
+	win.SetMatrix(scene.cameraMatrix())
 	scene.drawPlayer(win)
 
-	// Ghost
+	// IGhost
 	win.SetMatrix(pixel.IM)
 	ghostPos := v(float64(0), 200)
-	ghostSprite := draw.Moved(scene.cameraVector(), draw.Moved(ghostPos, draw.Image(scene.res.ImageMap, internal.Ghost)))
+	ghostSprite := draw.Moved(scene.cameraVector(), draw.Moved(ghostPos, draw.Image(scene.res.ImageMap, internal.IGhost)))
 	ghostSprite.Render(pixel.IM, win)
 	win.SetMatrix(scene.cameraMatrix())
 
@@ -100,7 +101,7 @@ func (scene *LevelScene) drawHeadsUpDisplay(win *pixelgl.Window) {
 	// TODO: crop this screen-sized image and translate it in position
 	// (coloring only works now since it's the only image used in headsup!)
 	mapSymbolCenter := scene.res.MapSymbol.Frame().Center()
-	op := draw.Moved(mapSymbolCenter, draw.Image(scene.res.ImageMap, internal.MapSymbol))
+	op := draw.Moved(mapSymbolCenter, draw.Image(scene.res.ImageMap, internal.IMapSymbol))
 	if scene.isMapSignClose() {
 		op = draw.Color(colornames.GreenA400, op)
 	}
@@ -108,7 +109,6 @@ func (scene *LevelScene) drawHeadsUpDisplay(win *pixelgl.Window) {
 
 	// FPS
 	win.SetMatrix(pixel.IM)
-	scene.res.MapPoint.Draw(win, pixel.IM)
 
 	tb := text.New(pixel.V(0, 0), scene.res.Atlas)
 	_, _ = fmt.Fprintf(tb, "FPS=%1.1f", scene.res.FPS)
@@ -168,12 +168,12 @@ func (scene *LevelScene) Tick() bool {
 	return true
 }
 
-func (scene *LevelScene) drawMapPoints(win *pixelgl.Window) {
+func (scene *LevelScene) drawSignPosts(win *pixelgl.Window) {
 	for _, mapPoint := range scene.level.SignPosts {
-		alignVec := v(0, scene.res.MapPoint.Frame().Center().Y)
-		scene.res.MapPoint.Draw(
-			win,
-			pixel.IM.Moved(mapPoint.Pos).Moved(alignVec))
+		alignVec := v(0, scene.res.ImageMap[internal.ISignPost].Frame().Center().Y)
+		signPostOp := draw.Moved(scene.cameraVector(), draw.Moved(mapPoint.Pos, draw.Moved(alignVec,
+			draw.Image(scene.res.ImageMap, internal.ISignPost))))
+		signPostOp.Render(pixel.IM, win)
 	}
 }
 

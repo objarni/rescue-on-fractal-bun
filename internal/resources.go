@@ -9,7 +9,6 @@ import (
 type Resources struct {
 	Atlas          *text.Atlas
 	Ghost          *pixel.Sprite
-	MapPoint       *pixel.Sprite
 	PlayerStanding *pixel.Sprite
 	MapSymbol      *pixel.Sprite
 	Blip           *beep.Buffer
@@ -22,12 +21,13 @@ type Resources struct {
 type Image int
 
 const (
-	Map Image = iota
-	Ghost
-	MapSymbol
+	IMap Image = iota
+	IGhost
+	IMapSymbol
+	ISignPost
 	AfterLastImage
 )
 
 func (image Image) String() string {
-	return [...]string{"Map", "Ghost", "MapSymbol"}[image]
+	return [...]string{"IMap", "IGhost", "IMapSymbol", "ISignPost"}[image]
 }

@@ -154,7 +154,6 @@ func loadResources() internal.Resources {
 	// @remind: having pixel Images directly in Resources is deprecated. Use ImageMap below instead!
 	res := internal.Resources{
 		Atlas:          text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII),
-		MapPoint:       internal.LoadSpriteForSure("assets/TMapPoint.png"),
 		PlayerStanding: internal.LoadSpriteForSure("assets/TStanding.png"),
 		MapSymbol:      internal.LoadSpriteForSure("assets/THeadsup.png"),
 		Blip:           internal.LoadWavForSure("assets/Bounce.wav"),
@@ -163,9 +162,10 @@ func loadResources() internal.Resources {
 		Levels:         levels,
 	}
 	res.ImageMap = map[internal.Image]*pixel.Sprite{
-		internal.Map:       internal.LoadSpriteForSure("assets/TMap.png"),
-		internal.Ghost:     internal.LoadSpriteForSure("assets/TGhost.png"),
-		internal.MapSymbol: internal.LoadSpriteForSure("assets/THeadsup.png"),
+		internal.IMap:       internal.LoadSpriteForSure("assets/TMap.png"),
+		internal.IGhost:     internal.LoadSpriteForSure("assets/TGhost.png"),
+		internal.IMapSymbol: internal.LoadSpriteForSure("assets/THeadsup.png"),
+		internal.ISignPost:  internal.LoadSpriteForSure("assets/TMapPoint.png"),
 	}
 	if len(res.ImageMap) < int(internal.AfterLastImage) {
 		panic("Expect one image loaded per map item")
