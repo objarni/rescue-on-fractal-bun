@@ -8,7 +8,6 @@ import (
 
 type Resources struct {
 	Atlas          *text.Atlas
-	Ghost          *pixel.Sprite
 	PlayerStanding *pixel.Sprite
 	MapSymbol      *pixel.Sprite
 	Blip           *beep.Buffer
