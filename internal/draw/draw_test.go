@@ -123,16 +123,14 @@ func Example_movedTileLayerWinOp() {
 }
 
 func Example_movedImageWinOp() {
-	fakeMap := map[internal.Image]*pixel.Sprite{}
-	fmt.Println(Moved(pixel.V(55, -88), Image(fakeMap, internal.IMap)).String())
+	fmt.Println(Moved(pixel.V(55, -88), Image(nil, internal.IMap)).String())
 	// Output:
 	// Moved 55 pixels right 88 pixels down:
 	//   Image "IMap"
 }
 
 func Example_colorImageWinOp() {
-	fakeMap := map[internal.Image]*pixel.Sprite{}
-	fmt.Println(Color(colornames.Red, Image(fakeMap, internal.IMap)).String())
+	fmt.Println(Color(colornames.Red, Image(nil, internal.IMap)).String())
 	// Output:
 	// Color 255, 0, 0:
 	//   Image "IMap"
