@@ -7,15 +7,15 @@ import (
 )
 
 type Resources struct {
-	Atlas          *text.Atlas
-	PlayerStanding *pixel.Sprite
-	Blip           *beep.Buffer
-	FPS            float64
-	MapSigns       []MapSign
-	Levels         map[string]Level
-	ImageMap       map[Image]*pixel.Sprite
+	Atlas    *text.Atlas
+	Blip     *beep.Buffer
+	FPS      float64
+	MapSigns []MapSign
+	Levels   map[string]Level
+	ImageMap map[Image]*pixel.Sprite
 }
 
+// This is so repetitive. Can we have a Python script to generate the enum+String func?
 type Image int
 
 const (
@@ -23,9 +23,15 @@ const (
 	IGhost
 	IMapSymbol
 	ISignPost
+	ITemporaryPlayerImage
 	AfterLastImage
 )
 
 func (image Image) String() string {
-	return [...]string{"IMap", "IGhost", "IMapSymbol", "ISignPost"}[image]
+	return [...]string{
+		"IMap",
+		"IGhost",
+		"IMapSymbol",
+		"ISignPost",
+		"ITemporaryPlayerImage"}[image]
 }

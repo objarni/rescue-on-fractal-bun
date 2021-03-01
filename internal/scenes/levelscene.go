@@ -148,7 +148,9 @@ func (scene *LevelScene) cameraVector() pixel.Vec {
 }
 
 func (scene *LevelScene) drawPlayer(win *pixelgl.Window) {
-	scene.res.PlayerStanding.Draw(win, pixel.IM.Moved(scene.playerPos))
+	draw.Moved(
+		scene.playerPos.Add(scene.cameraVector()),
+		draw.Image(scene.res.ImageMap, internal.ITemporaryPlayerImage)).Render(pixel.IM, win)
 }
 
 func (scene *LevelScene) backdropGfx() draw.ImdOp {

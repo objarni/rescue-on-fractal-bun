@@ -151,20 +151,19 @@ func loadResources() internal.Resources {
 	}
 	mapSigns := internal.BuildMapSignArray(levels)
 
-	// @remind: having pixel Sprites directly in Resources is deprecated. Use ImageMap below instead!
 	res := internal.Resources{
-		Atlas:          text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII),
-		PlayerStanding: internal.LoadSpriteForSure("assets/TStanding.png"),
-		Blip:           internal.LoadWavForSure("assets/Bounce.wav"),
-		FPS:            0,
-		MapSigns:       mapSigns,
-		Levels:         levels,
+		Atlas:    text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII),
+		Blip:     internal.LoadWavForSure("assets/Bounce.wav"),
+		FPS:      0,
+		MapSigns: mapSigns,
+		Levels:   levels,
 	}
 	res.ImageMap = map[internal.Image]*pixel.Sprite{
-		internal.IMap:       internal.LoadSpriteForSure("assets/TMap.png"),
-		internal.IGhost:     internal.LoadSpriteForSure("assets/TGhost.png"),
-		internal.IMapSymbol: internal.LoadSpriteForSure("assets/THeadsup.png"),
-		internal.ISignPost:  internal.LoadSpriteForSure("assets/TMapPoint.png"),
+		internal.IMap:                  internal.LoadSpriteForSure("assets/TMap.png"),
+		internal.IGhost:                internal.LoadSpriteForSure("assets/TGhost.png"),
+		internal.IMapSymbol:            internal.LoadSpriteForSure("assets/THeadsup.png"),
+		internal.ISignPost:             internal.LoadSpriteForSure("assets/TMapPoint.png"),
+		internal.ITemporaryPlayerImage: internal.LoadSpriteForSure("assets/TStanding.png"),
 	}
 	if len(res.ImageMap) < int(internal.AfterLastImage) {
 		panic("Expect one image loaded per map item")
