@@ -100,7 +100,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 func (scene *LevelScene) drawHeadsUpDisplay(win *pixelgl.Window) {
 	// TODO: crop this screen-sized image and translate it in position
 	// (coloring only works now since it's the only image used in headsup!)
-	mapSymbolCenter := scene.res.MapSymbol.Frame().Center()
+	mapSymbolCenter := scene.res.ImageMap[internal.IMapSymbol].Frame().Center()
 	op := draw.Moved(mapSymbolCenter, draw.Image(scene.res.ImageMap, internal.IMapSymbol))
 	if scene.isMapSignClose() {
 		op = draw.Color(colornames.GreenA400, op)

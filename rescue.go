@@ -151,11 +151,10 @@ func loadResources() internal.Resources {
 	}
 	mapSigns := internal.BuildMapSignArray(levels)
 
-	// @remind: having pixel Images directly in Resources is deprecated. Use ImageMap below instead!
+	// @remind: having pixel Sprites directly in Resources is deprecated. Use ImageMap below instead!
 	res := internal.Resources{
 		Atlas:          text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII),
 		PlayerStanding: internal.LoadSpriteForSure("assets/TStanding.png"),
-		MapSymbol:      internal.LoadSpriteForSure("assets/THeadsup.png"),
 		Blip:           internal.LoadWavForSure("assets/Bounce.wav"),
 		FPS:            0,
 		MapSigns:       mapSigns,

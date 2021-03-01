@@ -9,7 +9,6 @@ import (
 type Resources struct {
 	Atlas          *text.Atlas
 	PlayerStanding *pixel.Sprite
-	MapSymbol      *pixel.Sprite
 	Blip           *beep.Buffer
 	FPS            float64
 	MapSigns       []MapSign
