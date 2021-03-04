@@ -5,8 +5,8 @@ import (
 	"github.com/faiface/pixel"
 )
 
-func ExampleFindClosestLocation_SinglePoint() {
-	ix := FindClosestLocation(
+func Example_findClosestLocation_SinglePoint() {
+	ix := FindNearLocation(
 		pixel.Vec{50, 50},
 		[]MapPoint{
 			LocAt(50, 50),
@@ -25,8 +25,8 @@ func LocAt(x float64, y float64) MapPoint {
 	}
 }
 
-func ExampleFindClosestLocation_TwoPoints() {
-	ix := FindClosestLocation(
+func Example_findClosestLocation_TwoPoints() {
+	ix := FindNearLocation(
 		pixel.Vec{0, 0},
 		[]MapPoint{
 			LocAt(100, 100),
@@ -39,8 +39,8 @@ func ExampleFindClosestLocation_TwoPoints() {
 	// Index of closest location: 1
 }
 
-func ExampleFindClosestLocation_TwoPoints_first_is_closest() {
-	ix := FindClosestLocation(
+func Example_findClosestLocation_TwoPoints_first_is_closest() {
+	ix := FindNearLocation(
 		pixel.Vec{99, 99},
 		[]MapPoint{
 			LocAt(100, 100),
@@ -53,8 +53,8 @@ func ExampleFindClosestLocation_TwoPoints_first_is_closest() {
 	// Index of closest location: 0
 }
 
-func ExampleFindClosestLocation_TooFarAwayMeansNotClose() {
-	ix := FindClosestLocation(
+func Example_findClosestLocation_TooFarAwayMeansNotClose() {
+	ix := FindNearLocation(
 		pixel.Vec{99, 99},
 		[]MapPoint{
 			LocAt(1000, 1000),

@@ -125,7 +125,7 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 }
 
 func drawLocationTexts(win *pixelgl.Window, scene *MapScene) {
-	locationIx := FindClosestLocation(scene.hairCrossPos, scene.mapPoints, scene.cfg.MapSceneTargetLocMaxDistance)
+	locationIx := FindNearLocation(scene.hairCrossPos, scene.mapPoints, scene.cfg.MapSceneTargetLocMaxDistance)
 	locationName := locationNameFromIx(locationIx)
 	tb := text.New(pixel.ZV, scene.res.Atlas)
 	draw.Text(
@@ -188,7 +188,7 @@ func C(v pixel.Vec) draw.Coordinate {
 }
 
 func (scene *MapScene) FindClosestLocation() int {
-	return FindClosestLocation(scene.hairCrossPos, scene.mapPoints, scene.locMaxDistance())
+	return FindNearLocation(scene.hairCrossPos, scene.mapPoints, scene.locMaxDistance())
 }
 
 func (scene *MapScene) currentLocation() draw.ImdOp {
@@ -265,22 +265,15 @@ func v(x float64, y float64) pixel.Vec {
 	return pixel.Vec{X: x, Y: y}
 }
 
-func FindClosestLocation(vec pixel.Vec, locations []MapPoint, maxDist int) int {
-	closest := -1
-	closestDist := -1.0
-	for ix, val := range locations {
-		d := distance(vec, val.position)
-		if closest == -1 || d < closestDist {
-			closest = ix
-			closestDist = d
-		}
+func FindNearLocation(vec pixel.Vec, locations []MapPoint, maxDist int) int {
+	points := []pixel.Vec{}
+	for _, val := range locations {
+		point := val.position
+		points = append(points, point)
 	}
-	if closestDist > float64(maxDist) {
+	closest := internal.ClosestPoint(vec, points)
+	if internal.Distance(vec, points[closest]) > float64(maxDist) {
 		return -1
 	}
 	return closest
-}
-
-func distance(a pixel.Vec, b pixel.Vec) float64 {
-	return a.Sub(b).Len()
 }
