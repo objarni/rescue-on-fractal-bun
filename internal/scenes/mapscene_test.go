@@ -12,7 +12,7 @@ func LocAt(x float64, y float64) MapPoint {
 	}
 }
 
-func Example_findClosestLocation_TooFarAwayMeansNotClose() {
+func ExampleFindNearLocation_tooFarAwayMeansNotClose() {
 	ix := FindNearLocation(
 		pixel.Vec{X: 99, Y: 99},
 		[]MapPoint{
