@@ -7,7 +7,7 @@ import (
 
 func Example_findClosestLocation_SinglePoint() {
 	ix := FindNearLocation(
-		pixel.Vec{50, 50},
+		pixel.Vec{X: 50, Y: 50},
 		[]MapPoint{
 			LocAt(50, 50),
 		},
@@ -20,14 +20,14 @@ func Example_findClosestLocation_SinglePoint() {
 
 func LocAt(x float64, y float64) MapPoint {
 	return MapPoint{
-		position:   pixel.Vec{x, y},
+		position:   pixel.Vec{X: x, Y: y},
 		discovered: false,
 	}
 }
 
 func Example_findClosestLocation_TwoPoints() {
 	ix := FindNearLocation(
-		pixel.Vec{0, 0},
+		pixel.Vec{},
 		[]MapPoint{
 			LocAt(100, 100),
 			LocAt(50, 50),
@@ -41,7 +41,7 @@ func Example_findClosestLocation_TwoPoints() {
 
 func Example_findClosestLocation_TwoPoints_first_is_closest() {
 	ix := FindNearLocation(
-		pixel.Vec{99, 99},
+		pixel.Vec{X: 99, Y: 99},
 		[]MapPoint{
 			LocAt(100, 100),
 			LocAt(50, 50),
@@ -55,7 +55,7 @@ func Example_findClosestLocation_TwoPoints_first_is_closest() {
 
 func Example_findClosestLocation_TooFarAwayMeansNotClose() {
 	ix := FindNearLocation(
-		pixel.Vec{99, 99},
+		pixel.Vec{X: 99, Y: 99},
 		[]MapPoint{
 			LocAt(1000, 1000),
 		},
