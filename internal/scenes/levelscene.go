@@ -121,16 +121,15 @@ func (scene *LevelScene) isMapSignClose() bool {
 }
 
 func (scene *LevelScene) closestMapSign() internal.SignPost {
-	closestMapPoint := internal.SignPost{}
-	shortestDistance := 1000000000.0
-	for _, mapSign := range scene.level.SignPosts {
-		mapSignDistance := scene.playerPos.Sub(mapSign.Pos).Len()
-		if mapSignDistance < shortestDistance {
-			closestMapPoint = mapSign
-			shortestDistance = mapSignDistance
-		}
+	// Potential: ClosestPoint could take an array of objects implementing
+	// 'WithPoint' interface, and we only define anon func here
+	getPoint := func(mp internal.SignPost) pixel.Vec { return mp.Pos }
+	points := []pixel.Vec{}
+	for _, val := range scene.level.SignPosts {
+		point := getPoint(val)
+		points = append(points, point)
 	}
-	return closestMapPoint
+	return scene.level.SignPosts[internal.ClosestPoint(scene.playerPos, points)]
 }
 
 func (scene *LevelScene) cameraMatrix() pixel.Matrix {
