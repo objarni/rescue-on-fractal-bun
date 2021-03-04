@@ -267,8 +267,11 @@ func v(x float64, y float64) pixel.Vec {
 
 func FindNearLocation(vec pixel.Vec, locations []MapPoint, maxDist int) int {
 	points := []pixel.Vec{}
+	getPoint := func(mp MapPoint) pixel.Vec { return mp.position }
+	// Potential: ClosestPoint could take an array of objects implementing
+	// 'WithPoint' interface, and we only define anon func here
 	for _, val := range locations {
-		point := val.position
+		point := getPoint(val)
 		points = append(points, point)
 	}
 	closest := internal.ClosestPoint(vec, points)
