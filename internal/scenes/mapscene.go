@@ -77,10 +77,14 @@ func MakeMapScene(cfg *Config, res *internal.Resources, locationName string) *Ma
 
 func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Jump {
-		// TODO: load level scene of target location, with location
-		// as starting point (map point)
-		// (if there is a location close enough to crossHair, that is)
-		return MakeLevelScene(scene.cfg, scene.res)
+		locationIx := scene.FindClosestLocation()
+		if locationIx != -1 {
+			levelName := "GhostForest" // TODO: initialize mapSigns on game boot (it's nil!)
+			if scene.mapSigns != nil {
+				levelName = scene.mapSigns[locationIx].LevelName
+			}
+			return MakeLevelScene(scene.cfg, scene.res, levelName)
+		}
 	}
 	if key == internal.Left {
 		scene.hairCrossVel.X -= 1

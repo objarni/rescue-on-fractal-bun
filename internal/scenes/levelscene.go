@@ -18,8 +18,9 @@ type LevelScene struct {
 	level                     internal.Level
 }
 
-func MakeLevelScene(cfg *Config, res *internal.Resources) *LevelScene {
-	level := internal.LoadLevel("assets/levels/GhostForest.tmx")
+func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *LevelScene {
+	level := res.Levels[levelName]
+	//level := internal.LoadLevel("assets/levels/GhostForest.tmx")
 	pos := level.SignPosts[0].Pos
 	return &LevelScene{
 		cfg:       cfg,

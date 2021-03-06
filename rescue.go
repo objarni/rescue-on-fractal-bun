@@ -34,7 +34,7 @@ func run() {
 			// TODO: parameterize on level arg!
 			levelName := argsWithoutProg[1]
 			fmt.Println("Loading level:", levelName)
-			scene = scenes.MakeLevelScene(&cfg, &res)
+			scene = scenes.MakeLevelScene(&cfg, &res, levelName)
 		} else {
 			fmt.Printf("Unknown cmd.line arg: %v\n", argsWithoutProg)
 			panic("Don't understand cmd.line")
