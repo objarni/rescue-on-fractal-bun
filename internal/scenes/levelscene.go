@@ -65,15 +65,15 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	// Level backdrop
 	// TODO: remove when player cannot see past limits!
 	// Then, just clear screen to map background color
-	movedBackdrop := draw.Moved(scene.cameraVector(), draw.ToWinOp(scene.backdropGfx()))
-	movedBackdrop.Render(pixel.IM, win)
-	//draw.ToWinOp(scene.backdropGfx()).Render(win)
 
-	movedBackground := draw.Moved(scene.cameraVector(), draw.TileLayer(scene.level.TilepixMap, "Background"))
-	movedBackground.Render(pixel.IM, win)
-
-	movedPlatforms := draw.Moved(scene.cameraVector(), draw.TileLayer(scene.level.TilepixMap, "Platforms"))
-	movedPlatforms.Render(pixel.IM, win)
+	moved := draw.Moved(
+		scene.cameraVector(),
+		draw.OpSequence(
+			draw.ToWinOp(scene.backdropGfx()),
+			draw.TileLayer(scene.level.TilepixMap, "Background"),
+			draw.TileLayer(
+				scene.level.TilepixMap, "Platforms")))
+	moved.Render(pixel.IM, win)
 
 	movedWalls := draw.Moved(scene.cameraVector(), draw.TileLayer(scene.level.TilepixMap, "Walls"))
 	movedWalls.Render(pixel.IM, win)

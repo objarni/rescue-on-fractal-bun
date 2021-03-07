@@ -135,3 +135,16 @@ func Example_colorImageWinOp() {
 	// Color 255, 0, 0:
 	//   Image "IMap"
 }
+
+func Example_sequencedWinOps() {
+	mapImage := Color(colornames.Red, Image(nil, internal.IMap))
+	ghostImage := Color(colornames.Yellow, Image(nil, internal.IGhost))
+	sequence := OpSequence(mapImage, ghostImage)
+	fmt.Println(sequence.String())
+	// Output:
+	// WinOp Sequence:
+	//   Color 255, 0, 0:
+	//     Image "IMap"
+	//   Color 255, 255, 0:
+	//     Image "IGhost"
+}

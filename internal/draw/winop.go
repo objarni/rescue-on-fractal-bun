@@ -164,3 +164,40 @@ func Color(color color.RGBA, winOp WinOp) WinOp {
 		winOp: winOp,
 	}
 }
+
+type WinOpSequence struct {
+	winOps []WinOp
+}
+
+type WinOp interface {
+	String() string
+	Lines() []string
+	Render(mx pixel.Matrix, win *pixelgl.Window)
+}
+
+func (sequence WinOpSequence) String() string {
+	head := "WinOp Sequence:"
+	body := []string{}
+	for _, op := range sequence.winOps {
+		for _, line := range op.Lines() {
+			body = append(body, line)
+		}
+	}
+	return strings.Join(headerWithIndentedBody(head, body), "\n")
+}
+
+func (sequence WinOpSequence) Lines() []string {
+	return strings.Split(sequence.String(), "\n")
+}
+
+func (sequence WinOpSequence) Render(mx pixel.Matrix, win *pixelgl.Window) {
+	for _, op := range sequence.winOps {
+		op.Render(mx, win)
+	}
+}
+
+func OpSequence(ops ...WinOp) WinOp {
+	return WinOpSequence{
+		winOps: ops,
+	}
+}

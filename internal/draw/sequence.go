@@ -9,10 +9,6 @@ type ImdSequence struct {
 	imdOps []ImdOp
 }
 
-func (sequence ImdSequence) String() string {
-	return strings.Join(sequence.Lines(), "\n")
-}
-
 func Sequence(imdOps ...ImdOp) ImdSequence {
 	return ImdSequence{
 		imdOps: imdOps,
@@ -23,6 +19,10 @@ func (sequence ImdSequence) Render(imd *imdraw.IMDraw) {
 	for _, imdOp := range sequence.imdOps {
 		imdOp.Render(imd)
 	}
+}
+
+func (sequence ImdSequence) String() string {
+	return strings.Join(sequence.Lines(), "\n")
 }
 
 func (sequence ImdSequence) Lines() []string {
