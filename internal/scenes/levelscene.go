@@ -71,17 +71,11 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 		draw.OpSequence(
 			draw.ToWinOp(scene.backdropGfx()),
 			draw.TileLayer(scene.level.TilepixMap, "Background"),
-			draw.TileLayer(
-				scene.level.TilepixMap, "Platforms")))
+			draw.TileLayer(scene.level.TilepixMap, "Platforms"),
+			draw.TileLayer(scene.level.TilepixMap, "Walls"),
+			scene.signPostsOp()))
+
 	moved.Render(pixel.IM, win)
-
-	movedWalls := draw.Moved(scene.cameraVector(), draw.TileLayer(scene.level.TilepixMap, "Walls"))
-	movedWalls.Render(pixel.IM, win)
-
-	win.SetMatrix(scene.cameraMatrix())
-
-	// Draw objects
-	scene.drawSignPosts(win)
 	win.SetMatrix(scene.cameraMatrix())
 	scene.drawPlayer(win)
 
@@ -170,13 +164,15 @@ func (scene *LevelScene) Tick() bool {
 	return true
 }
 
-func (scene *LevelScene) drawSignPosts(win *pixelgl.Window) {
+func (scene *LevelScene) signPostsOp() draw.WinOp {
+	ops := []draw.WinOp{}
 	for _, mapPoint := range scene.level.SignPosts {
 		alignVec := v(0, scene.res.ImageMap[internal.ISignPost].Frame().Center().Y)
-		signPostOp := draw.Moved(scene.cameraVector(), draw.Moved(mapPoint.Pos, draw.Moved(alignVec,
-			draw.Image(scene.res.ImageMap, internal.ISignPost))))
-		signPostOp.Render(pixel.IM, win)
+		signPostOp := draw.Moved(mapPoint.Pos, draw.Moved(alignVec,
+			draw.Image(scene.res.ImageMap, internal.ISignPost)))
+		ops = append(ops, signPostOp)
 	}
+	return draw.OpSequence(ops...)
 }
 
 /*
