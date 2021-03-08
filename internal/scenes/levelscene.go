@@ -101,10 +101,8 @@ func (scene *LevelScene) mapSymbolOp() draw.WinOp {
 }
 
 func (scene *LevelScene) playerOp() draw.WinOp {
-	playerOp := draw.Moved(
-		scene.playerPos,
+	return draw.Moved(scene.playerPos,
 		draw.Image(scene.res.ImageMap, internal.ITemporaryPlayerImage))
-	return playerOp
 }
 
 func (scene *LevelScene) backdropOp() draw.ImdOp {
