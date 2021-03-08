@@ -73,11 +73,15 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 			draw.TileLayer(scene.level.TilepixMap, "Background"),
 			draw.TileLayer(scene.level.TilepixMap, "Platforms"),
 			draw.TileLayer(scene.level.TilepixMap, "Walls"),
-			scene.signPostsOp()))
+			scene.signPostsOp(),
+			scene.playerOp(),
+		),
+	)
 
 	moved.Render(pixel.IM, win)
-	win.SetMatrix(scene.cameraMatrix())
-	scene.drawPlayer(win)
+
+	//win.SetMatrix(scene.cameraMatrix())
+	//scene.drawPlayer(win)
 
 	// IGhost
 	win.SetMatrix(pixel.IM)
@@ -141,10 +145,11 @@ func (scene *LevelScene) cameraVector() pixel.Vec {
 	return reversed
 }
 
-func (scene *LevelScene) drawPlayer(win *pixelgl.Window) {
-	draw.Moved(
-		scene.playerPos.Add(scene.cameraVector()),
-		draw.Image(scene.res.ImageMap, internal.ITemporaryPlayerImage)).Render(pixel.IM, win)
+func (scene *LevelScene) playerOp() draw.WinOp {
+	playerOp := draw.Moved(
+		scene.playerPos,
+		draw.Image(scene.res.ImageMap, internal.ITemporaryPlayerImage))
+	return playerOp
 }
 
 func (scene *LevelScene) backdropGfx() draw.ImdOp {
