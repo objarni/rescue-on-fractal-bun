@@ -75,25 +75,22 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 			draw.TileLayer(scene.level.TilepixMap, "Walls"),
 			scene.signPostsOp(),
 			scene.playerOp(),
+			scene.ghostOp(),
+			draw.TileLayer(scene.level.TilepixMap, "Foreground"),
 		),
 	)
 
 	moved.Render(pixel.IM, win)
 
-	//win.SetMatrix(scene.cameraMatrix())
-	//scene.drawPlayer(win)
-
-	// IGhost
-	win.SetMatrix(pixel.IM)
-	ghostPos := v(float64(0), 200)
-	ghostSprite := draw.Moved(scene.cameraVector(), draw.Moved(ghostPos, draw.Image(scene.res.ImageMap, internal.IGhost)))
-	ghostSprite.Render(pixel.IM, win)
 	win.SetMatrix(scene.cameraMatrix())
 
-	movedForeground := draw.Moved(scene.cameraVector(), draw.TileLayer(scene.level.TilepixMap, "Foreground"))
-	movedForeground.Render(pixel.IM, win)
-
 	scene.drawHeadsUpDisplay(win)
+}
+
+func (scene *LevelScene) ghostOp() draw.WinOp {
+	ghostPos := v(float64(0), 200)
+	ghostSprite := draw.Moved(scene.cameraVector(), draw.Moved(ghostPos, draw.Image(scene.res.ImageMap, internal.IGhost)))
+	return ghostSprite
 }
 
 func (scene *LevelScene) drawHeadsUpDisplay(win *pixelgl.Window) {
