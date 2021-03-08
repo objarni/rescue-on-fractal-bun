@@ -59,32 +59,29 @@ func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 }
 
 func (scene *LevelScene) Render(win *pixelgl.Window) {
-	// Clear screen
+	// TODO: if player cannot see past level limists,
+	// this clear is not needed (camera like WonderBoy)
 	win.Clear(colornames.Yellow50)
 
-	// Level backdrop
-	// TODO: remove when player cannot see past limits!
-	// Then, just clear screen to map background color
-
-	moved := draw.Moved(
-		scene.cameraVector(),
-		draw.OpSequence(
-			draw.ToWinOp(scene.backdropGfx()),
-			draw.TileLayer(scene.level.TilepixMap, "Background"),
-			draw.TileLayer(scene.level.TilepixMap, "Platforms"),
-			draw.TileLayer(scene.level.TilepixMap, "Walls"),
-			scene.signPostsOp(),
-			scene.playerOp(),
-			scene.ghostOp(),
-			draw.TileLayer(scene.level.TilepixMap, "Foreground"),
+	gfx := draw.OpSequence(
+		draw.Moved(
+			scene.cameraVector(),
+			draw.OpSequence(
+				draw.ToWinOp(scene.backdropGfx()),
+				draw.TileLayer(scene.level.TilepixMap, "Background"),
+				draw.TileLayer(scene.level.TilepixMap, "Platforms"),
+				draw.TileLayer(scene.level.TilepixMap, "Walls"),
+				scene.signPostsOp(),
+				scene.playerOp(),
+				scene.ghostOp(),
+				draw.TileLayer(scene.level.TilepixMap, "Foreground"),
+			),
 		),
+		scene.mapSymbolOp(),
 	)
+	gfx.Render(pixel.IM, win)
 
-	moved.Render(pixel.IM, win)
-
-	win.SetMatrix(scene.cameraMatrix())
-
-	scene.drawHeadsUpDisplay(win)
+	scene.drawFPS(win)
 }
 
 func (scene *LevelScene) ghostOp() draw.WinOp {
@@ -93,22 +90,20 @@ func (scene *LevelScene) ghostOp() draw.WinOp {
 	return ghostSprite
 }
 
-func (scene *LevelScene) drawHeadsUpDisplay(win *pixelgl.Window) {
-	// TODO: crop this screen-sized image and translate it in position
-	// (coloring only works now since it's the only image used in headsup!)
+func (scene *LevelScene) drawFPS(win *pixelgl.Window) {
+	win.SetMatrix(pixel.IM)
+	tb := text.New(pixel.V(0, 0), scene.res.Atlas)
+	_, _ = fmt.Fprintf(tb, "FPS=%1.1f", scene.res.FPS)
+	tb.DrawColorMask(win, pixel.IM, colornames.Brown800)
+}
+
+func (scene *LevelScene) mapSymbolOp() draw.WinOp {
 	mapSymbolCenter := scene.res.ImageMap[internal.IMapSymbol].Frame().Center()
 	op := draw.Moved(mapSymbolCenter, draw.Image(scene.res.ImageMap, internal.IMapSymbol))
 	if scene.isMapSignClose() {
 		op = draw.Color(colornames.GreenA400, op)
 	}
-	op.Render(pixel.IM, win)
-
-	// FPS
-	win.SetMatrix(pixel.IM)
-
-	tb := text.New(pixel.V(0, 0), scene.res.Atlas)
-	_, _ = fmt.Fprintf(tb, "FPS=%1.1f", scene.res.FPS)
-	tb.DrawColorMask(win, pixel.IM, colornames.Brown800)
+	return op
 }
 
 func (scene *LevelScene) isMapSignClose() bool {
