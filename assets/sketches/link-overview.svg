@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg220"
+   inkscape:version="1.0.1 (0767f8302a, 2020-10-17)"
+   sodipodi:docname="link-overview.svg">
+  <defs
+     id="defs214">
+    <pattern
+       inkscape:collect="always"
+       xlink:href="#pattern1054"
+       id="pattern2024"
+       patternTransform="matrix(0.26458333,0,0,0.26458333,-21.123727,9.8865002)" />
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="936.01509"
+       height="702.01132"
+       patternTransform="translate(725.04737,-15.252368)"
+       id="pattern1054">
+      <image
+         sodipodi:absref="/home/olof/Downloads/IMG_20210130_080801.jpg"
+         xlink:href="../../../../../Downloads/IMG_20210130_080801.jpg"
+         width="936.01508"
+         height="702.01129"
+         preserveAspectRatio="none"
+         style="image-rendering:optimizeSpeed"
+         id="image1050"
+         x="-936.01508"
+         y="-702.01129"
+         transform="scale(-1)" />
+    </pattern>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="552.46288"
+     inkscape:cy="195.88472"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     showborder="false"
+     inkscape:window-width="2560"
+     inkscape:window-height="1376"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata217">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.9389px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="139.09883"
+       y="-18.143053"
+       id="text340"><tspan
+         sodipodi:role="line"
+         id="tspan338"
+         x="139.09883"
+         y="-18.143053"
+         style="stroke-width:0.264583">En Link innehåller information som beskriver</tspan><tspan
+         sodipodi:role="line"
+         x="139.09883"
+         y="-11.969429"
+         style="stroke-width:0.264583"
+         id="tspan342">1) var på kartan den ligger</tspan><tspan
+         sodipodi:role="line"
+         x="139.09883"
+         y="-5.7958035"
+         style="stroke-width:0.264583"
+         id="tspan344">2) i vilken level den ligger, samt var på leveln</tspan><tspan
+         sodipodi:role="line"
+         x="139.09883"
+         y="0.37782127"
+         style="stroke-width:0.264583"
+         id="tspan356">De representerar alltså en länk mellan en SignPost (på en level)</tspan><tspan
+         sodipodi:role="line"
+         x="139.09883"
+         y="6.5514464"
+         style="stroke-width:0.264583"
+         id="tspan358">och en punkt på kartan!</tspan></text>
+    <path
+       id="path2022"
+       style="fill:url(#pattern2024);stroke:none;stroke-width:0.264583"
+       d="m 91.431013,63.910378 c 4.62271,0.424261 8.588507,0.805691 12.904257,0.04914 l 1.28504,9.120125 -4.44653,0.50176 c 0.90812,5.97416 0.69688,9.630496 0.56248,13.913706 h -3.545917 c 0.76138,-3.80005 0.0872,-8.966746 -0.47601,-14.170126 l -5.83837,-0.54163 z"
+       sodipodi:nodetypes="ccccccccc" />
+    <image
+       sodipodi:absref="/home/olof/repos/github/rescue-on-fractal-bun/assets/TMap.png"
+       xlink:href="../TMap.png"
+       y="33.341423"
+       x="164.32158"
+       id="image312"
+       preserveAspectRatio="none"
+       height="158.75"
+       width="211.66667" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.9389px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="168.55141"
+       y="16.526806"
+       id="text318"><tspan
+         sodipodi:role="line"
+         id="tspan316"
+         x="168.55141"
+         y="16.526806"
+         style="stroke-width:0.264583">Link</tspan></text>
+    <circle
+       style="fill:none;stroke:#0000ff;stroke-width:0.443971;paint-order:stroke fill markers"
+       id="circle346"
+       cx="259.96368"
+       cy="129.73485"
+       r="4.5080304" />
+    <circle
+       style="fill:none;stroke:#0000ff;stroke-width:0.443971;paint-order:stroke fill markers"
+       id="path322"
+       cx="230.10941"
+       cy="161.07687"
+       r="4.5080304" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 108.53119,81.670495 174.3964,20.000094 255.30196,123.76229"
+       id="path324"
+       sodipodi:nodetypes="ccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.9389px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="219.215"
+       y="103.63185"
+       id="text328"><tspan
+         sodipodi:role="line"
+         id="tspan326"
+         x="219.215"
+         y="103.63185"
+         style="stroke-width:0.264583">link.MapPos (Vec)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.9389px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="83.089478"
+       y="94.682289"
+       id="text332"><tspan
+         sodipodi:role="line"
+         id="tspan330"
+         x="83.089478"
+         y="94.682289"
+         style="stroke-width:0.264583">link.SignPost</tspan><tspan
+         sodipodi:role="line"
+         x="83.089478"
+         y="100.85591"
+         style="stroke-width:0.264583"
+         id="tspan350">link.SignPost.Level</tspan><tspan
+         sodipodi:role="line"
+         x="83.089478"
+         y="107.02954"
+         style="stroke-width:0.264583"
+         id="tspan354">link.SignPost.Pos</tspan><tspan
+         sodipodi:role="line"
+         x="83.089478"
+         y="113.20316"
+         style="stroke-width:0.264583"
+         id="tspan352" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.9389px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="182.68074"
+       y="24.712996"
+       id="text336"><tspan
+         sodipodi:role="line"
+         id="tspan334"
+         x="182.68074"
+         y="24.712996"
+         style="stroke-width:0.264583" /></text>
+    <rect
+       style="fill:none;stroke:#ffff00;stroke-width:0.332523;paint-order:stroke fill markers"
+       id="rect348"
+       width="57.746151"
+       height="19.427372"
+       x="80.49987"
+       y="262.14313"
+       transform="matrix(0.73830062,-0.67447179,0.5967949,0.80239382,0,0)" />
+  </g>
+</svg>
