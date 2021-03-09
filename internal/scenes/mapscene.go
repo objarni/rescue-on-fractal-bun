@@ -135,11 +135,16 @@ func drawLocationTexts(win *pixelgl.Window, scene *MapScene) {
 		fmt.Sprintf("Här är du: %s\n", "Hembyn"),
 		fmt.Sprintf("Gå till? %s", locationName),
 	).Render(tb)
-	//_, _ = fmt.Fprintf(tb, "Här är du: %s\n", "Hembyn")
-	//_, _ = fmt.Fprintf(tb, "Gå till? %s", locationName)
-	tb.DrawColorMask(win, pixel.IM.Moved(pixel.V(
+	textPosition := pixel.V(
 		float64(scene.cfg.MapSceneLocationTextX),
-		float64(scene.cfg.MapSceneLocationTextY))), colornames.Black)
+		float64(scene.cfg.MapSceneLocationTextY))
+	// Observation: tb ankras i första radens nedre vänstra hörn.
+	// Med två rader blir det alltså riktigt rörigt att positionera!
+	// För att kunna beräkna positionering, behövs:
+	// 1) Resultatparagrafens totala bredd
+	// 2) En textrads höjd
+	// Finns det något sätt som inte inbegriper "beräkna textdim i förväg"?
+	tb.DrawColorMask(win, pixel.IM.Moved(textPosition), colornames.Black)
 }
 
 func locationNameFromIx(locationIx int) string {
