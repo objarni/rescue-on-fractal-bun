@@ -8,6 +8,7 @@ require (
 	github.com/faiface/beep v1.0.2
 	github.com/faiface/pixel v0.10.0
 	github.com/g4s8/hexcolor v0.0.0-20190127080027-f2cd1c90f5c4
+	github.com/go-gl/gl v0.0.0-20190320180904-bf2b1f2f34d7
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/stretchr/testify v1.6.1 // indirect
