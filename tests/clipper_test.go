@@ -19,6 +19,19 @@ func Example_clipObjectWithBlackBorder() {
 	// Saving output to 'object_with_black_border_clipped.png'.
 }
 
+func Example_lassoAlgorithm() {
+	// Input:
+	// Image 4x4.
+	// ....
+	// .##.
+	// .##.
+	// ....
+	// Start at 1,1
+	// Output:
+	// Worm of length 4, movements:
+	// >v<^
+}
+
 func LoadImageForSure(path string) image.Image {
 	file, err := os.Open(path)
 	internal.PanicIfError(err)
