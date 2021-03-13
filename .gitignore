@@ -21,3 +21,4 @@ main
 rescue
 *.received.txt
 wishlist.txt
+/tests/object_with_black_border_clipped.png
