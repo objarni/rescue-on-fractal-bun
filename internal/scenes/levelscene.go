@@ -72,6 +72,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 				draw.TileLayer(scene.level.TilepixMap, "Platforms"),
 				draw.TileLayer(scene.level.TilepixMap, "Walls"),
 				scene.signPostsOp(),
+				draw.TileLayer(scene.level.TilepixMap, "Objects"),
 				scene.playerOp(),
 				scene.ghostOp(),
 				draw.TileLayer(scene.level.TilepixMap, "Foreground"),
