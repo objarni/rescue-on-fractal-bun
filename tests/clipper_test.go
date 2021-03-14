@@ -28,9 +28,19 @@ func Example_lassoAlgorithm() {
 	// ....
 	// Start at 1,1
 	// Output:
-	// Worm of length 4, movements:
-	// >v<^
+	// Worm of length 8, movements:
+	// NEESSWWN
 }
+
+// Lasso property test ideas
+// Every result has these properties:
+// - they start with NE
+// - they contain as many N as S
+// - they contain as many W as E
+// - for every segment, left of it is
+//   empty space, right of it is filled
+// - every position in result is within
+//   the boundary of image
 
 func LoadImageForSure(path string) image.Image {
 	file, err := os.Open(path)
