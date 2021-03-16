@@ -19,6 +19,12 @@ func Example_skipFirstCharacter() {
 	// bc
 }
 
+func Example_takeFirst2Chars() {
+	fmt.Printf("abc"[:2])
+	// Output:
+	// ab
+}
+
 func Example_joinStrings() {
 	fmt.Printf(strings.Join([]string{"ab", "bc", "cd"}, ","))
 	// Output:
