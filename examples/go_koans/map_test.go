@@ -82,14 +82,15 @@ func ExampleLookupExistingKey() {
 }
 
 func ExampleNonExistentKey() {
-	myMap := map[int]string{
-		1: "One",
-		2: "Two",
+	myMap := map[int]bool{
+		1: true,
+		2: true,
 	}
-	fmt.Println("When element does not exist it is an empty string:")
+	fmt.Println("When element does not exist it is 'default value' of type:")
 	fmt.Println(myMap[5])
 	// Output:
-	// When element does not exist it is an empty string:
+	// When element does not exist it is 'default value' of type:
+	// false
 }
 
 func ExampleMayExistIdiom() {

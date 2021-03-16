@@ -8,6 +8,7 @@ import (
 	"image/png"
 	"objarni/rescue-on-fractal-bun/internal"
 	"os"
+	"strings"
 )
 
 func Example_clipObjectWithBlackBorder() {
@@ -19,6 +20,41 @@ func Example_clipObjectWithBlackBorder() {
 	// Saving output to 'object_with_black_border_clipped.png'.
 }
 
+type TraceImage interface {
+	IsTransparent(x int, y int) bool
+}
+
+type Lasso struct {
+}
+
+func ComputeLassoFrom(image TraceImage, startX int, startY int) Lasso {
+	return Lasso{}
+}
+
+func (im FakeImage) IsTransparent(x int, y int) bool {
+	return !im.blackPixels[Pos{x, y}]
+}
+
+type Pos struct {
+	x, y int
+}
+
+type FakeImage struct {
+	blackPixels map[Pos]bool
+}
+
+func BuildFakeImageFrom(asciiImage string) FakeImage {
+	blackPixels := make(map[Pos]bool)
+	for y, row := range strings.Split(asciiImage, "\n") {
+		for x, pixel := range row {
+			if pixel == '#' {
+				blackPixels[Pos{x, y}] = true
+			}
+		}
+	}
+	return FakeImage{blackPixels: blackPixels}
+}
+
 func Example_lassoAlgorithm() {
 	// Input:
 	// Image 4x4.
@@ -27,9 +63,26 @@ func Example_lassoAlgorithm() {
 	// .##.
 	// ....
 	// Start at 1,1
+	var input FakeImage = BuildFakeImageFrom(`....
+.##.
+.##.
+....`)
+	_ = ComputeLassoFrom(input, 1, 1)
+
+	fmt.Println("-=Properties of lasso=-")
+	fmt.Println("It starts with NE: true")
+	fmt.Println("It has length: 8")
+	fmt.Println("It has same number of N and S: true")
+	fmt.Println("It has same number of E and W: true")
+	fmt.Println("Every segment is an edge: true")
+
 	// Output:
-	// Worm of length 8, movements:
-	// NEESSWWN
+	// -=Properties of lasso=-
+	// It starts with NE: true
+	// It has length: 8
+	// It has same number of N and S: true
+	// It has same number of E and W: true
+	// Every segment is an edge: true
 }
 
 // Lasso property test ideas
