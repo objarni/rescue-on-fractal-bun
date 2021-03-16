@@ -144,6 +144,7 @@ func drawLocationTexts(win *pixelgl.Window, scene *MapScene) {
 	// 1) Resultatparagrafens totala bredd
 	// 2) En textrads höjd
 	// Finns det något sätt som inte inbegriper "beräkna textdim i förväg"?
+	//win.SetComposeMethod(pixel.ComposeRin)
 	tb.DrawColorMask(win, pixel.IM.Moved(textPosition), colornames.Black)
 }
 
