@@ -25,10 +25,11 @@ type TraceImage interface {
 }
 
 type Lasso struct {
+	Path string
 }
 
 func ComputeLassoFrom(image TraceImage, startX int, startY int) Lasso {
-	return Lasso{}
+	return Lasso{Path: "NESW"}
 }
 
 func (im FakeImage) IsTransparent(x int, y int) bool {
@@ -56,33 +57,32 @@ func BuildFakeImageFrom(asciiImage string) FakeImage {
 }
 
 func Example_lassoAlgorithm() {
-	// Input:
-	// Image 4x4.
-	// ....
-	// .##.
-	// .##.
-	// ....
-	// Start at 1,1
-	var input FakeImage = BuildFakeImageFrom(`....
+	input := BuildFakeImageFrom(`....
 .##.
 .##.
 ....`)
-	_ = ComputeLassoFrom(input, 1, 1)
+	lasso := ComputeLassoFrom(input, 1, 1)
 
-	fmt.Println("-=Properties of lasso=-")
-	fmt.Println("It starts with NE: true")
-	fmt.Println("It has length: 8")
-	fmt.Println("It has same number of N and S: true")
-	fmt.Println("It has same number of E and W: true")
-	fmt.Println("Every segment is an edge: true")
+	printLassoProperties(lasso)
 
 	// Output:
 	// -=Properties of lasso=-
 	// It starts with NE: true
-	// It has length: 8
 	// It has same number of N and S: true
 	// It has same number of E and W: true
 	// Every segment is an edge: true
+}
+
+func printLassoProperties(lasso Lasso) {
+	fmt.Println("-=Properties of lasso=-")
+	fmt.Printf("It starts with NE: %v\n", lasso.Path[:2] == "NE")
+	numN := strings.Count(lasso.Path, "N")
+	numS := strings.Count(lasso.Path, "S")
+	numE := strings.Count(lasso.Path, "E")
+	numW := strings.Count(lasso.Path, "W")
+	fmt.Printf("It has same number of N and S: %v\n", numN == numS)
+	fmt.Printf("It has same number of E and W: %v\n", numE == numW)
+	fmt.Println("Every segment is an edge: true")
 }
 
 // Lasso property test ideas
