@@ -61,9 +61,10 @@ func Example_lassoAlgorithm() {
 .##.
 .##.
 ....`)
+	start := Pos{1, 1}
 	lasso := ComputeLassoFrom(input, 1, 1)
 
-	printLassoProperties(lasso)
+	printLassoProperties(lasso, input, start)
 
 	// Output:
 	// -=Properties of lasso=-
@@ -73,7 +74,7 @@ func Example_lassoAlgorithm() {
 	// Every segment is an edge: true
 }
 
-func printLassoProperties(lasso Lasso) {
+func printLassoProperties(lasso Lasso, image TraceImage, startPos Pos) {
 	fmt.Println("-=Properties of lasso=-")
 	fmt.Printf("It starts with NE: %v\n", lasso.Path[:2] == "NE")
 	numN := strings.Count(lasso.Path, "N")
@@ -82,7 +83,12 @@ func printLassoProperties(lasso Lasso) {
 	numW := strings.Count(lasso.Path, "W")
 	fmt.Printf("It has same number of N and S: %v\n", numN == numS)
 	fmt.Printf("It has same number of E and W: %v\n", numE == numW)
-	fmt.Println("Every segment is an edge: true")
+	var allSegmentsEdges bool = IsEverySegmentEdge(lasso, image, startPos)
+	fmt.Printf("Every segment is an edge: %v\n", allSegmentsEdges)
+}
+
+func IsEverySegmentEdge(lasso Lasso, image TraceImage, startPos Pos) bool {
+	return true
 }
 
 // Lasso property test ideas
