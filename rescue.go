@@ -163,7 +163,7 @@ func loadResources() internal.Resources {
 		internal.IGhost:                internal.LoadSpriteForSure("assets/TGhost.png"),
 		internal.IMapSymbol:            internal.LoadSpriteForSure("assets/THeadsup.png"),
 		internal.ISignPost:             internal.LoadSpriteForSure("assets/TMapPoint.png"),
-		internal.ITemporaryPlayerImage: internal.LoadSpriteForSure("assets/TStanding.png"),
+		internal.ITemporaryPlayerImage: internal.LoadSpriteForSure("assets/TEliseWalk1.png"),
 	}
 	if len(res.ImageMap) < int(internal.AfterLastImage) {
 		panic("Expect one image loaded per map item")
