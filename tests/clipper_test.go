@@ -21,6 +21,8 @@ func Example_clipObjectWithBlackBorder() {
 }
 
 type TraceImage interface {
+	Width() int
+	Height() int
 	IsTransparent(x int, y int) bool
 }
 
@@ -32,28 +34,115 @@ func ComputeLassoFrom(image TraceImage, startX int, startY int) Lasso {
 	return Lasso{Path: "NESW"}
 }
 
-func (im FakeImage) IsTransparent(x int, y int) bool {
-	return !im.blackPixels[Pos{x, y}]
+func (im BoolImage) IsTransparent(x int, y int) bool {
+	return !im.truePixels[Pos{x, y}]
 }
 
 type Pos struct {
 	x, y int
 }
 
-type FakeImage struct {
-	blackPixels map[Pos]bool
+type BoolImage struct {
+	truePixels map[Pos]bool
+	w, h       int
 }
 
-func BuildFakeImageFrom(asciiImage string) FakeImage {
+func (im BoolImage) Width() int {
+	return im.w
+}
+
+func (im BoolImage) Height() int {
+	return im.h
+}
+
+func BuildFakeImageFrom(asciiImage string) BoolImage {
 	blackPixels := make(map[Pos]bool)
+	w, h := 0, 0
 	for y, row := range strings.Split(asciiImage, "\n") {
+		h += 1
 		for x, pixel := range row {
+			if h == 1 {
+				w += 1
+			}
 			if pixel == '#' {
 				blackPixels[Pos{x, y}] = true
 			}
 		}
 	}
-	return FakeImage{blackPixels: blackPixels}
+	return BoolImage{
+		truePixels: blackPixels,
+		w:          w,
+		h:          h,
+	}
+}
+
+func Example_countourAlgorithm_simpleSquare() {
+	input := BuildFakeImageFrom(`....
+.##.
+.##.
+....`)
+	printBoolImage(FindContour(input))
+	// Output:
+	// ####
+	// #..#
+	// #..#
+	// ####
+}
+
+func Example_countourAlgorithm_L() {
+	input := BuildFakeImageFrom(`....
+.#..
+.#..
+.##.
+....`)
+	printBoolImage(FindContour(input))
+	// Output:
+	// ###.
+	// #.#.
+	// #.##
+	// #..#
+	// ####
+}
+
+func printBoolImage(image BoolImage) {
+	for y := 0; y < image.Height(); y++ {
+		for x := 0; x < image.Width(); x++ {
+			if image.IsTransparent(x, y) {
+				fmt.Print(".")
+			} else {
+				fmt.Print("#")
+			}
+		}
+		fmt.Print("\n")
+	}
+}
+
+func FindContour(image TraceImage) BoolImage {
+	contourPixels := map[Pos]bool{}
+	for y := 0; y < image.Height(); y++ {
+		for x := 0; x < image.Width(); x++ {
+			// Only transparent pixels relevant
+			if image.IsTransparent(x, y) {
+				// If any if the 8 neighbours is
+				// not transparent, fill this one
+				if !image.IsTransparent(x-1, y-1) ||
+					!image.IsTransparent(x, y-1) ||
+					!image.IsTransparent(x+1, y-1) ||
+					!image.IsTransparent(x-1, y) ||
+					!image.IsTransparent(x+1, y) ||
+					!image.IsTransparent(x-1, y+1) ||
+					!image.IsTransparent(x, y+1) ||
+					!image.IsTransparent(x+1, y+1) {
+					contourPixels[Pos{x, y}] = true
+				}
+			}
+		}
+	}
+	return BoolImage{
+		truePixels: contourPixels,
+		w:          image.Width(),
+		h:          image.Height(),
+	}
 }
 
 func Example_lassoAlgorithm() {
@@ -83,7 +172,7 @@ func printLassoProperties(lasso Lasso, image TraceImage, startPos Pos) {
 	numW := strings.Count(lasso.Path, "W")
 	fmt.Printf("It has same number of N and S: %v\n", numN == numS)
 	fmt.Printf("It has same number of E and W: %v\n", numE == numW)
-	var allSegmentsEdges bool = IsEverySegmentEdge(lasso, image, startPos)
+	var allSegmentsEdges = IsEverySegmentEdge(lasso, image, startPos)
 	fmt.Printf("Every segment is an edge: %v\n", allSegmentsEdges)
 }
 
