@@ -164,6 +164,12 @@ func loadResources() internal.Resources {
 		internal.IMapSymbol:            internal.LoadSpriteForSure("assets/THeadsup.png"),
 		internal.ISignPost:             internal.LoadSpriteForSure("assets/TMapPoint.png"),
 		internal.ITemporaryPlayerImage: internal.LoadSpriteForSure("assets/TEliseWalk1.png"),
+		internal.IEliseWalk1:           internal.LoadSpriteForSure("assets/TEliseWalk1.png"),
+		internal.IEliseWalk2:           internal.LoadSpriteForSure("assets/TEliseWalk2.png"),
+		internal.IEliseWalk3:           internal.LoadSpriteForSure("assets/TEliseWalk3.png"),
+		internal.IEliseWalk4:           internal.LoadSpriteForSure("assets/TEliseWalk4.png"),
+		internal.IEliseWalk5:           internal.LoadSpriteForSure("assets/TEliseWalk5.png"),
+		internal.IEliseWalk6:           internal.LoadSpriteForSure("assets/TEliseWalk6.png"),
 	}
 	if len(res.ImageMap) < int(internal.AfterLastImage) {
 		panic("Expect one image loaded per map item")
@@ -178,7 +184,7 @@ func main() {
 func gameTimeSteps(accumulated float64, deltaMs float64) (float64, int) {
 	// How many whole ticks can we step?
 	accumulated += deltaMs
-	steps := int(accumulated / 5)
+	steps := int(accumulated / 5) // 200 logical frames per second
 	accumulated -= float64(steps * 5)
 	return accumulated, steps
 }

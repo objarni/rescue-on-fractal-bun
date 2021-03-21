@@ -24,6 +24,12 @@ const (
 	IMapSymbol
 	ISignPost
 	ITemporaryPlayerImage
+	IEliseWalk1
+	IEliseWalk2
+	IEliseWalk3
+	IEliseWalk4
+	IEliseWalk5
+	IEliseWalk6
 	AfterLastImage
 )
 
@@ -33,5 +39,13 @@ func (image Image) String() string {
 		"IGhost",
 		"IMapSymbol",
 		"ISignPost",
-		"ITemporaryPlayerImage"}[image]
+		"ITemporaryPlayerImage",
+		"IEliseWalk1",
+		"IEliseWalk2",
+		"IEliseWalk3",
+		"IEliseWalk4",
+		"IEliseWalk5",
+		"IEliseWalk6",
+		"AfterLastImage",
+	}[image]
 }

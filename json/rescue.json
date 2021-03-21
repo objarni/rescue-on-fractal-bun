@@ -7,5 +7,6 @@
   "MapSceneCurrentLocCircleRadius": 15,
   "MapSceneTargetLocCircleRadius": 11,
   "MapSceneTargetLocMaxDistance": 30,
-  "LevelSceneMoveSpeed": 2.5
+  "LevelSceneMoveSpeed": 1.2,
+  "LevelSceneEliseFPS": 10
 }

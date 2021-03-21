@@ -16,17 +16,18 @@ type LevelScene struct {
 	playerPos                 pixel.Vec
 	leftPressed, rightPressed bool
 	level                     internal.Level
+	timeMs                    float64
 }
 
 func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *LevelScene {
 	level := res.Levels[levelName]
-	//level := internal.LoadLevel("assets/levels/GhostForest.tmx")
 	pos := level.SignPosts[0].Pos
 	return &LevelScene{
 		cfg:       cfg,
 		res:       res,
 		playerPos: pos,
 		level:     level,
+		timeMs:    0,
 	}
 }
 
@@ -73,7 +74,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 				draw.TileLayer(scene.level.TilepixMap, "Walls"),
 				scene.signPostsOp(),
 				draw.TileLayer(scene.level.TilepixMap, "Objects"),
-				scene.playerOp(),
+				scene.playerOp(scene.timeMs/1000.0),
 				scene.ghostOp(),
 				draw.TileLayer(scene.level.TilepixMap, "Foreground"),
 			),
@@ -101,9 +102,22 @@ func (scene *LevelScene) mapSymbolOp() draw.WinOp {
 	return op
 }
 
-func (scene *LevelScene) playerOp() draw.WinOp {
+func (scene *LevelScene) playerOp(gameTimeS float64) draw.WinOp {
+	frame := internal.Animation{
+		Frames:    6,
+		TargetFPS: scene.cfg.LevelSceneEliseFPS,
+	}.FrameAtTime(gameTimeS)
+	frames := []internal.Image{
+		internal.IEliseWalk6,
+		internal.IEliseWalk5,
+		internal.IEliseWalk4,
+		internal.IEliseWalk3,
+		internal.IEliseWalk2,
+		internal.IEliseWalk1,
+	}
+	image := frames[frame]
 	return draw.Moved(scene.playerPos,
-		draw.Image(scene.res.ImageMap, internal.ITemporaryPlayerImage))
+		draw.Image(scene.res.ImageMap, image))
 }
 
 func (scene *LevelScene) backdropOp() draw.ImdOp {
@@ -159,6 +173,7 @@ func (scene *LevelScene) cameraVector() pixel.Vec {
 }
 
 func (scene *LevelScene) Tick() bool {
+	scene.timeMs += 5.0
 	if scene.leftPressed && !scene.rightPressed {
 		scene.playerPos = scene.playerPos.Add(v(-scene.cfg.LevelSceneMoveSpeed, 0))
 	}
