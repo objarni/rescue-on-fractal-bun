@@ -34,29 +34,33 @@ func ComputeLassoFrom(image TraceImage, startX int, startY int) Lasso {
 	return Lasso{Path: "NESW"}
 }
 
-func (im BoolImage) IsTransparent(x int, y int) bool {
-	return !im.truePixels[Pos{x, y}]
+func (im BitField) IsTransparent(x int, y int) bool {
+	return !im.Field[Pos{x, y}]
+}
+
+func (im BitField) IsSet(x int, y int) bool {
+	return im.Field[Pos{x, y}]
 }
 
 type Pos struct {
 	x, y int
 }
 
-type BoolImage struct {
-	truePixels map[Pos]bool
-	w, h       int
+type BitField struct {
+	Field map[Pos]bool
+	w, h  int
 }
 
-func (im BoolImage) Width() int {
+func (im BitField) Width() int {
 	return im.w
 }
 
-func (im BoolImage) Height() int {
+func (im BitField) Height() int {
 	return im.h
 }
 
-func BuildFakeImageFrom(asciiImage string) BoolImage {
-	blackPixels := make(map[Pos]bool)
+func BuildBitFieldFrom(asciiImage string) BitField {
+	setPixels := make(map[Pos]bool)
 	w, h := 0, 0
 	for y, row := range strings.Split(asciiImage, "\n") {
 		h += 1
@@ -65,23 +69,23 @@ func BuildFakeImageFrom(asciiImage string) BoolImage {
 				w += 1
 			}
 			if pixel == '#' {
-				blackPixels[Pos{x, y}] = true
+				setPixels[Pos{x, y}] = true
 			}
 		}
 	}
-	return BoolImage{
-		truePixels: blackPixels,
-		w:          w,
-		h:          h,
+	return BitField{
+		Field: setPixels,
+		w:     w,
+		h:     h,
 	}
 }
 
 func Example_countourAlgorithm_simpleSquare() {
-	input := BuildFakeImageFrom(`....
+	input := BuildBitFieldFrom(`....
 .##.
 .##.
 ....`)
-	printBoolImage(FindContour(input))
+	printBitField(FindContour(input))
 	// Output:
 	// ####
 	// #..#
@@ -90,12 +94,12 @@ func Example_countourAlgorithm_simpleSquare() {
 }
 
 func Example_countourAlgorithm_L() {
-	input := BuildFakeImageFrom(`....
+	input := BuildBitFieldFrom(`....
 .#..
 .#..
 .##.
 ....`)
-	printBoolImage(FindContour(input))
+	printBitField(FindContour(input))
 	// Output:
 	// ###.
 	// #.#.
@@ -104,49 +108,51 @@ func Example_countourAlgorithm_L() {
 	// ####
 }
 
-func printBoolImage(image BoolImage) {
-	for y := 0; y < image.Height(); y++ {
-		for x := 0; x < image.Width(); x++ {
-			if image.IsTransparent(x, y) {
-				fmt.Print(".")
-			} else {
+func printBitField(bitField BitField) {
+	for y := 0; y < bitField.h; y++ {
+		for x := 0; x < bitField.w; x++ {
+			if bitField.IsSet(x, y) {
 				fmt.Print("#")
+			} else {
+				fmt.Print(".")
 			}
 		}
 		fmt.Print("\n")
 	}
 }
 
-func FindContour(image TraceImage) BoolImage {
+func FindContour(bitField BitField) BitField {
+	// Set bits in the bitField means material
+	// Clear bits in the bitField means transparent
 	contourPixels := map[Pos]bool{}
-	for y := 0; y < image.Height(); y++ {
-		for x := 0; x < image.Width(); x++ {
+	for y := 0; y < bitField.h; y++ {
+		for x := 0; x < bitField.w; x++ {
 			// Only transparent pixels relevant
-			if image.IsTransparent(x, y) {
+			if !bitField.IsSet(x, y) {
 				// If any if the 8 neighbours is
 				// not transparent, fill this one
-				if !image.IsTransparent(x-1, y-1) ||
-					!image.IsTransparent(x, y-1) ||
-					!image.IsTransparent(x+1, y-1) ||
-					!image.IsTransparent(x-1, y) ||
-					!image.IsTransparent(x+1, y) ||
-					!image.IsTransparent(x-1, y+1) ||
-					!image.IsTransparent(x, y+1) ||
-					!image.IsTransparent(x+1, y+1) {
+				if bitField.IsSet(x-1, y-1) ||
+					bitField.IsSet(x, y-1) ||
+					bitField.IsSet(x+1, y-1) ||
+					bitField.IsSet(x-1, y) ||
+					bitField.IsSet(x+1, y) ||
+					bitField.IsSet(x-1, y+1) ||
+					bitField.IsSet(x, y+1) ||
+					bitField.IsSet(x+1, y+1) {
 					contourPixels[Pos{x, y}] = true
 				}
 			}
 		}
 	}
-	return BoolImage{
-		truePixels: contourPixels,
-		w:          image.Width(),
-		h:          image.Height(),
+	return BitField{
+		Field: contourPixels,
+		w:     bitField.w,
+		h:     bitField.h,
 	}
 }
 
 func Example_lassoAlgorithm() {
-	input := BuildFakeImageFrom(`....
+	input := BuildBitFieldFrom(`....
 .##.
 .##.
 ....`)
