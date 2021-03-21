@@ -33,6 +33,30 @@
          style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffff00;fill-opacity:0.580262;stroke:#000000;stroke-width:0.265451px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
          d="m 1207.7436,234.38014 7.6104,-13.79143 c -5.4998,-27.69682 0.5253,-35.95345 8.4353,-41.0306 7.936,-2.37098 16.4591,-3.35442 27.3393,1.23295 9.2148,10.81069 9.0286,21.10538 8.041,31.35608 l 10.9839,-0.49046 c 0.045,-10.98333 -1.2525,-22.98759 5.9756,-28.50665 10.1529,-6.41256 20.804,-6.73249 32.2744,2.96675 2.9407,6.23685 5.992,7.09422 8.7058,24.36166 13.4968,2.00389 23.6173,9.96324 25.076,27.51767 -9.3339,13.5524 -24.8078,22.58531 -47.2734,16.94998 l -8.8403,2.44882 -11.5194,-5.84535 c -6.8117,2.21522 -15.9131,6.20556 -21.7454,5.76816 -9.5618,0.82332 -15.6919,-0.95012 -26.5319,-2.25369 l -11.5484,-3.68987 c -2.6919,-4.90602 -5.5709,-10.68035 -6.9829,-16.99402 z M 1172.8711,57.573233 c -30.8631,-27.377655 -8.7291,-145.272046 40.041,-171.095423 17.2356,-9.9798 39.8871,-12.95276 61.8258,-8.69316 37.7946,7.33814 74.8226,30.658843 71.6381,54.598703 11.7731,24.04735 -0.8767,32.119742 -17.125,36.397523 7.2342,24.8484788 -20.3585,54.599993 -47.7233,64.055646 -9.4297,1.94541 -20.8495,2.952967 -41.6494,-0.459737 l 4.1942,13.329422 c 12.0258,-22.746462 46.3102,-3.062105 60.5438,21.810647 23.3708,31.510827 31.1853,42.000426 46.5176,74.038706 -0.095,18.51481 -9.2885,32.76621 -24.4974,28.3826 l -138.2427,0.88269 c -9.6241,-5.23841 -4.7274,-10.98528 -6.8891,-15.57241 10.202,-26.58181 24.3214,-48.36684 37.4946,-72.968225 l 17.4068,-32.151897 c -11.7518,24.60765 -48.6432,12.250169 -63.535,7.444915 z" />
     </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath871">
+      <path
+         id="path873"
+         style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffff00;fill-opacity:0.537623;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
+         d="m 242.5285,-2658.9659 30.08658,2.0103 c 21.45898,5.96 23.49883,-2.8533 30.2278,-8.6154 3.22987,-7.0638 5.63295,-30.2501 -0.50755,-50.0623 -4.806,-6.0677 -5.18224,-19.0511 -27.10757,-17.2133 -7.89916,-0.4776 -12.41878,14.6757 -14.85537,25.5974 l -27.93172,4.745 c -5.4786,3.2208 -10.44611,7.1073 -8.92032,19.4506 -3.51266,15.4882 4.85077,23.7564 19.00815,24.0877 z m 1.8747,110.3847 30.70375,0.4487 c 20.69669,15.2072 23.48098,-1.339 30.48468,-10.4334 -0.17478,-10.0539 -0.50276,-31.7016 -0.77626,-49.2271 -5.41393,-4.1184 -11.67643,-8.2919 -29.61502,-13.2242 -10.86142,0.3323 -14.36774,9.9913 -13.76035,24.8667 l -27.93172,4.7448 c -5.4786,3.2208 -10.44611,7.1073 -8.92032,19.4506 -3.51266,15.4884 5.65786,23.0428 19.81524,23.3739 z m -44.08323,8.8109 c -9.05082,12.6168 -136.388286,-72.8517 -130.566821,-88.5209 4.337712,-7.6285 60.531111,-74.8591 116.355571,-94.3136 18.48276,2.6545 25.9901,15.6572 26.67261,26.0186 -1.55509,52.036 0.28265,99.963 5.04964,144.3424 -3.30934,5.1624 -4.5021,11.1661 -17.511,12.4735 z m -115.795969,9.5543 c -47.78221,23.6949 -163.163613,4.5921 -176.216726,-62.7453 -23.594285,-80.462 40.169222,-137.055 76.048078,-129.7195 15.37863354,5.1927 15.65234782,11.1123 13.6251828,23.131 77.2614872,10.5836 72.5694642,84.3972 59.3730132,104.8251 12.988735,-2.4555 25.528556,-8.7142 40.029027,1.6374 2.612017,11.5632 2.375236,25.1854 1.920608,38.965 -3.750583,9.607 -7.197397,19.6371 -14.779183,23.9063 z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath912">
+      <path
+         id="path914"
+         style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffff00;fill-opacity:0.468495;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
+         d="m 396.99634,-3704.9607 c 11.88826,2.2127 22.08252,0.784 48.61237,1.6293 15.60806,-3.2062 17.26128,-24.7195 16.87552,-45.4639 -0.11768,-14.9153 -11.33559,-29.8947 -37.52241,-22.988 -11.90046,8.7416 -8.71538,14.4812 -8.88527,22.7817 -14.20135,0.3402 -20.85501,-2.6871 -29.6877,2.5545 -7.1641,6.1976 -12.2868,10.6749 -6.41316,30.5239 5.2991,11.8428 12.61306,11.6015 17.02065,10.9625 z m 0.87556,83.0821 c 11.88823,2.2127 21.62651,3.0165 48.15639,3.8616 20.58982,-12.0317 17.71726,-26.9518 17.3315,-47.6962 -1.99353,-8.9987 -9.26531,-25.0904 -33.48252,-24.3959 -11.90045,8.7416 -14.2331,17.445 -14.40299,25.7453 -8.83269,-1.1893 -17.66535,-4.2429 -26.49805,0.9988 -8.12043,8.5863 -16.31338,16.4565 -8.12498,30.5239 7.60555,7.5107 13.06894,10.7453 17.02065,10.9625 z m -47.54946,18.5306 c -42.25518,-21.527 -78.52522,-44.8381 -111.94132,-69.0001 -14.38643,-13.9595 -4.85268,-25.2659 -1.00879,-37.2034 16.85983,-18.6753 35.58075,-36.2619 64.04415,-48.1499 17.15257,-12.6746 34.52268,-33.0348 51.09427,-25.1873 10.03382,-1.8417 18.0049,2.1331 17.59405,29.744 -1.57982,48.2885 -2.91129,95.5548 1.20663,120.396 -4.29929,25.2312 -12.40099,28.7072 -20.98899,29.4007 z m -106.17499,10.0092 c -50.79615,5.8846 -100.04939,20.5513 -161.308512,-33.1176 -11.071714,-27.4937 -23.235854,-54.2811 -9.226216,-97.9961 19.070976,-18.2621 28.351808,-46.1307 59.720518,-52.3256 8.06699,-1.0083 14.80784,-7.3628 29.94358,20.1242 16.57175,1.2411 34.04354,8.8828 53.45717,30.3342 6.02942,17.081 10.73489,35.0218 4.28551,60.2094 24.52735,2.3286 29.53693,13.6538 35.1601,24.6959 -0.26396,23.486 -3.40347,41.2459 -12.03215,48.0756 z" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath951">
+      <path
+         id="path953"
+         style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffff00;fill-opacity:0.505044;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
+         d="m 86.010218,-5098.3216 c 0.546561,19.5715 26.946192,18.0573 38.303742,22.2819 8.58454,-0.5715 17.49845,2.9017 23.02828,-2.5477 5.45382,-2.9739 8.20922,-12.0049 7.45477,-28.915 0.56682,-13.7758 -1.39728,-17.8395 -3.21493,-22.4655 l 4.00454,-32.1701 c -4.85928,-8.9686 0.63653,-19.5025 -18.24773,-26.3512 l -17.37664,2.5884 c -6.41718,9.6422 -6.25986,13.036 -7.91462,18.152 l -20.176047,4.7778 c -3.699629,4.8583 -5.9909,10.8982 -3.679883,20.8008 3.235558,4.4966 6.4384,8.9932 15.64134,13.4898 l 15.27158,-3.0634 -3.31871,14.0944 c -15.6758,-1.4954 -18.768403,1.5446 -23.300507,5.402 -4.131627,2.5368 -4.791265,8.7778 -6.475185,13.9258 z m -10.863045,-28.8655 2.222788,61.7858 c -0.236215,10.9315 -0.916032,21.1685 -12.160504,14.8679 -18.305484,-2.2431 -62.679455,-28.9755 -105.006907,-58.4295 -13.835285,-13.7623 -4.375158,-20.6078 2.187551,-28.3138 40.0632969,-37.1549 62.580764,-49.5131 91.052973,-70.2871 12.241797,1.0678 19.529642,8.7082 19.934875,25.4807 z m -107.304936,92.0713 c -9.550024,7.5716 -32.119199,4.5397 -64.348741,5.3454 -19.652626,0.491 -36.029296,-1.1777 -53.678216,-15.0755 -49.13013,-25.0465 -39.90864,-44.9728 -49.61897,-66.5604 1.4865,-52.5613 21.43126,-68.7475 43.97046,-79.8208 l 22.81311,-15.1247 c 14.83602,1.8934 17.38679,11.987 20.34778,21.8067 37.790677,5.6431 56.649994,21.7432 58.686987,47.1358 -0.446151,14.5158 4.766305,31.5092 -4.535715,42.1473 14.403824,-1.7131 31.167559,-5.507 31.916933,4.817 5.458296,38.1466 2.271019,49.828 -5.553628,55.3292 z" />
+    </clipPath>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -41,18 +65,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.0875"
-     inkscape:cx="8064.0806"
-     inkscape:cy="-681.16743"
+     inkscape:zoom="0.030935922"
+     inkscape:cx="9637.7402"
+     inkscape:cy="-3555.3827"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
-     inkscape:window-width="2560"
-     inkscape:window-height="1376"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1"
+     inkscape:window-width="1515"
+     inkscape:window-height="1199"
+     inkscape:window-x="433"
+     inkscape:window-y="60"
+     inkscape:window-maximized="0"
      inkscape:snap-global="false" />
   <metadata
      id="metadata5">
@@ -73,64 +97,80 @@
     <image
        sodipodi:absref="/home/olof/repos/github/rescue-on-fractal-bun/assets/sketches/elise-walk2.jpg"
        xlink:href="elise-walk2.jpg"
-       clip-path="url(#clipPath1194)"
-       width="914.40002"
-       height="1219.2"
-       preserveAspectRatio="none"
-       id="image895"
+       transform="translate(1013.5649,69.3507)"
+       inkscape:export-ydpi="6.8225989"
+       inkscape:export-xdpi="6.8225989"
+       inkscape:export-filename="/home/olof/repos/github/rescue-on-fractal-bun/assets/TEliseWalk2.png"
+       y="-461.43332"
        x="-351.36667"
-       y="-461.43332" />
+       id="image895"
+       preserveAspectRatio="none"
+       height="1219.2"
+       width="914.40002"
+       clip-path="url(#clipPath1194)" />
     <image
        sodipodi:absref="/home/olof/repos/github/rescue-on-fractal-bun/assets/sketches/elise-walk1.jpg"
        xlink:href="elise-walk1.jpg"
-       y="-471.84219"
-       x="-1587.4636"
-       id="image929"
-       preserveAspectRatio="none"
+       width="914.40002"
        height="1219.2"
-       width="914.40002" />
+       preserveAspectRatio="none"
+       id="image929"
+       x="-1587.4636"
+       y="-471.84219" />
     <image
        sodipodi:absref="/home/olof/repos/github/rescue-on-fractal-bun/assets/sketches/elise-walk3.jpg"
        xlink:href="elise-walk3.jpg"
-       inkscape:export-ydpi="6.655652"
-       inkscape:export-xdpi="6.655652"
-       inkscape:export-filename="/home/olof/repos/github/rescue-on-fractal-bun/assets/TEliseWalk3.png"
-       clip-path="url(#clipPath1216)"
-       y="-445.03021"
-       x="829.75342"
-       id="image993"
-       preserveAspectRatio="none"
+       width="914.40002"
        height="1219.2"
-       width="914.40002" />
+       preserveAspectRatio="none"
+       id="image993"
+       x="829.75342"
+       y="-445.03021"
+       clip-path="url(#clipPath1216)"
+       inkscape:export-filename="/home/olof/repos/github/rescue-on-fractal-bun/assets/TEliseWalk3.png"
+       inkscape:export-xdpi="6.655652"
+       inkscape:export-ydpi="6.655652" />
     <image
        sodipodi:absref="/home/olof/repos/github/rescue-on-fractal-bun/assets/sketches/elise-walk4.jpg"
        xlink:href="elise-walk4.jpg"
-       transform="rotate(90)"
-       y="-3090.7148"
-       x="-364.34985"
-       id="image1057"
-       preserveAspectRatio="none"
+       inkscape:export-ydpi="6.3036609"
+       inkscape:export-xdpi="6.3036609"
+       inkscape:export-filename="/home/olof/repos/github/rescue-on-fractal-bun/assets/TEliseWalk4.png"
+       clip-path="url(#clipPath871)"
+       width="1219.2"
        height="914.40002"
-       width="1219.2" />
+       preserveAspectRatio="none"
+       id="image1057"
+       x="-364.34985"
+       y="-3090.7148"
+       transform="rotate(90,-437.8851,-429.56999)" />
     <image
        sodipodi:absref="/home/olof/repos/github/rescue-on-fractal-bun/assets/sketches/elise-walk5.jpg"
        xlink:href="elise-walk5.jpg"
-       transform="rotate(90)"
-       y="-4121.2974"
-       x="-380.6825"
-       id="image1121"
-       preserveAspectRatio="none"
+       inkscape:export-ydpi="6.4076781"
+       inkscape:export-xdpi="6.4076781"
+       inkscape:export-filename="/home/olof/repos/github/rescue-on-fractal-bun/assets/TEliseWalk5.png"
+       clip-path="url(#clipPath912)"
+       width="1219.2"
        height="914.40002"
-       width="1219.2" />
+       preserveAspectRatio="none"
+       id="image1121"
+       x="-380.6825"
+       y="-4121.2974"
+       transform="rotate(90,-646.67715,-798.56819)" />
     <image
        sodipodi:absref="/home/olof/repos/github/rescue-on-fractal-bun/assets/sketches/elise-walk6.jpg"
        xlink:href="elise-walk6.jpg"
-       transform="rotate(90)"
-       y="-5576.6006"
-       x="-486.87595"
-       id="image1169"
-       preserveAspectRatio="none"
+       inkscape:export-ydpi="6.4179459"
+       inkscape:export-xdpi="6.4179459"
+       inkscape:export-filename="/home/olof/repos/github/rescue-on-fractal-bun/assets/TEliseWalk6.png"
+       clip-path="url(#clipPath951)"
+       width="1219.2"
        height="914.40002"
-       width="1219.2" />
+       preserveAspectRatio="none"
+       id="image1169"
+       x="-486.87595"
+       y="-5576.6006"
+       transform="matrix(0,1.1136073,-1.1136073,0,-2893.7097,124.64995)" />
   </g>
 </svg>
