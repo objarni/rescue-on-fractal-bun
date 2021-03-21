@@ -2,65 +2,52 @@ package tests
 
 import (
 	"fmt"
-	"github.com/lucasb-eyer/go-colorful"
-	"image"
-	"image/color"
-	"image/png"
-	"objarni/rescue-on-fractal-bun/internal"
-	"os"
+	"objarni/rescue-on-fractal-bun/internal/imaging"
 	"strings"
 )
 
-func Example_clipObjectWithBlackBorder() {
-	clip("../testdata/object_with_black_border.png", "object_with_black_border_clipped.png")
-	// Output:
-	// Clipping 'object_with_black_border.png'.
-	// Dimensions: 517x407
-	// 550 pixels clipped, 1550 left.
-	// Saving output to 'object_with_black_border_clipped.png'.
-}
+//func Example_clipObjectWithBlackBorder() {
+//	clip("../testdata/object_with_black_border.png", "object_with_black_border_clipped.png")
+//	// Output:
+//	// Clipping 'object_with_black_border.png'.
+//	// Dimensions: 517x407
+//	// 550 pixels clipped, 1550 left.
+//	// Saving output to 'object_with_black_border_clipped.png'.
+//}
 
-type TraceImage interface {
-	Width() int
-	Height() int
-	IsTransparent(x int, y int) bool
-}
+//type TraceImage interface {
+//	GetWidth() int
+//	GetHeight() int
+//	IsTransparent(x int, y int) bool
+//}
+//
+//type Lasso struct {
+//	Path string
+//}
+//
+//func ComputeLassoFrom(image TraceImage, startX int, startY int) Lasso {
+//	return Lasso{Path: "NESW"}
+//}
 
-type Lasso struct {
-	Path string
-}
+//type BitField struct {
+//	Field         map[Pos]bool
+//	Width, Height int
+//}
 
-func ComputeLassoFrom(image TraceImage, startX int, startY int) Lasso {
-	return Lasso{Path: "NESW"}
-}
+//func (im BitField) IsTransparent(x int, y int) bool {
+//	return !im.Field[imaging.Pos{x, y}]
+//}
+//
+//func (im BitField) GetWidth() int {
+//	return im.Width
+//}
+//
+//func (im BitField) GetHeight() int {
+//	return im.Height
+//}
 
-func (im BitField) IsTransparent(x int, y int) bool {
-	return !im.Field[Pos{x, y}]
-}
-
-func (im BitField) IsSet(x int, y int) bool {
-	return im.Field[Pos{x, y}]
-}
-
-type Pos struct {
-	x, y int
-}
-
-type BitField struct {
-	Field map[Pos]bool
-	w, h  int
-}
-
-func (im BitField) Width() int {
-	return im.w
-}
-
-func (im BitField) Height() int {
-	return im.h
-}
-
-func BuildBitFieldFrom(asciiImage string) BitField {
-	setPixels := make(map[Pos]bool)
+func BuildBitFieldFrom(asciiImage string) imaging.BitField {
+	setPixels := make(map[imaging.Pos]bool)
 	w, h := 0, 0
 	for y, row := range strings.Split(asciiImage, "\n") {
 		h += 1
@@ -69,23 +56,23 @@ func BuildBitFieldFrom(asciiImage string) BitField {
 				w += 1
 			}
 			if pixel == '#' {
-				setPixels[Pos{x, y}] = true
+				setPixels[imaging.Pos{X: x, Y: y}] = true
 			}
 		}
 	}
-	return BitField{
-		Field: setPixels,
-		w:     w,
-		h:     h,
+	return imaging.BitField{
+		Field:  setPixels,
+		Width:  w,
+		Height: h,
 	}
 }
 
-func Example_countourAlgorithm_simpleSquare() {
+func Example_contourAlgorithm_simpleSquare() {
 	input := BuildBitFieldFrom(`....
 .##.
 .##.
 ....`)
-	printBitField(FindContour(input))
+	printBitField(imaging.FindContour(input))
 	// Output:
 	// ####
 	// #..#
@@ -93,13 +80,13 @@ func Example_countourAlgorithm_simpleSquare() {
 	// ####
 }
 
-func Example_countourAlgorithm_L() {
+func Example_contourAlgorithm_L() {
 	input := BuildBitFieldFrom(`....
 .#..
 .#..
 .##.
 ....`)
-	printBitField(FindContour(input))
+	printBitField(imaging.FindContour(input))
 	// Output:
 	// ###.
 	// #.#.
@@ -108,9 +95,9 @@ func Example_countourAlgorithm_L() {
 	// ####
 }
 
-func printBitField(bitField BitField) {
-	for y := 0; y < bitField.h; y++ {
-		for x := 0; x < bitField.w; x++ {
+func printBitField(bitField imaging.BitField) {
+	for y := 0; y < bitField.Height; y++ {
+		for x := 0; x < bitField.Width; x++ {
 			if bitField.IsSet(x, y) {
 				fmt.Print("#")
 			} else {
@@ -121,70 +108,40 @@ func printBitField(bitField BitField) {
 	}
 }
 
-func FindContour(bitField BitField) BitField {
-	// Set bits in the bitField means material
-	// Clear bits in the bitField means transparent
-	contourPixels := map[Pos]bool{}
-	for y := 0; y < bitField.h; y++ {
-		for x := 0; x < bitField.w; x++ {
-			// Only transparent pixels relevant
-			if !bitField.IsSet(x, y) {
-				// If any if the 8 neighbours is
-				// not transparent, fill this one
-				if bitField.IsSet(x-1, y-1) ||
-					bitField.IsSet(x, y-1) ||
-					bitField.IsSet(x+1, y-1) ||
-					bitField.IsSet(x-1, y) ||
-					bitField.IsSet(x+1, y) ||
-					bitField.IsSet(x-1, y+1) ||
-					bitField.IsSet(x, y+1) ||
-					bitField.IsSet(x+1, y+1) {
-					contourPixels[Pos{x, y}] = true
-				}
-			}
-		}
-	}
-	return BitField{
-		Field: contourPixels,
-		w:     bitField.w,
-		h:     bitField.h,
-	}
-}
-
-func Example_lassoAlgorithm() {
-	input := BuildBitFieldFrom(`....
-.##.
-.##.
-....`)
-	start := Pos{1, 1}
-	lasso := ComputeLassoFrom(input, 1, 1)
-
-	printLassoProperties(lasso, input, start)
-
-	// Output:
-	// -=Properties of lasso=-
-	// It starts with NE: true
-	// It has same number of N and S: true
-	// It has same number of E and W: true
-	// Every segment is an edge: true
-}
-
-func printLassoProperties(lasso Lasso, image TraceImage, startPos Pos) {
-	fmt.Println("-=Properties of lasso=-")
-	fmt.Printf("It starts with NE: %v\n", lasso.Path[:2] == "NE")
-	numN := strings.Count(lasso.Path, "N")
-	numS := strings.Count(lasso.Path, "S")
-	numE := strings.Count(lasso.Path, "E")
-	numW := strings.Count(lasso.Path, "W")
-	fmt.Printf("It has same number of N and S: %v\n", numN == numS)
-	fmt.Printf("It has same number of E and W: %v\n", numE == numW)
-	var allSegmentsEdges = IsEverySegmentEdge(lasso, image, startPos)
-	fmt.Printf("Every segment is an edge: %v\n", allSegmentsEdges)
-}
-
-func IsEverySegmentEdge(lasso Lasso, image TraceImage, startPos Pos) bool {
-	return true
-}
+//func Example_lassoAlgorithm() {
+//	input := BuildBitFieldFrom(`....
+//.##.
+//.##.
+//....`)
+//	start := imaging.Pos{1, 1}
+//	lasso := ComputeLassoFrom(input, 1, 1)
+//
+//	printLassoProperties(lasso, input, start)
+//
+//	// Output:
+//	// -=Properties of lasso=-
+//	// It starts with NE: true
+//	// It has same number of N and S: true
+//	// It has same number of E and W: true
+//	// Every segment is an edge: true
+//}
+//
+//func printLassoProperties(lasso Lasso, image TraceImage, startPos imaging.Pos) {
+//	fmt.Println("-=Properties of lasso=-")
+//	fmt.Printf("It starts with NE: %v\n", lasso.Path[:2] == "NE")
+//	numN := strings.Count(lasso.Path, "N")
+//	numS := strings.Count(lasso.Path, "S")
+//	numE := strings.Count(lasso.Path, "E")
+//	numW := strings.Count(lasso.Path, "W")
+//	fmt.Printf("It has same number of N and S: %v\n", numN == numS)
+//	fmt.Printf("It has same number of E and W: %v\n", numE == numW)
+//	var allSegmentsEdges = IsEverySegmentEdge(lasso, image, startPos)
+//	fmt.Printf("Every segment is an edge: %v\n", allSegmentsEdges)
+//}
+//
+//func IsEverySegmentEdge(lasso Lasso, image TraceImage, startPos imaging.Pos) bool {
+//	return true
+//}
 
 // Lasso property test ideas
 // Every result has these properties:
@@ -196,54 +153,54 @@ func IsEverySegmentEdge(lasso Lasso, image TraceImage, startPos Pos) bool {
 // - every position in result is within
 //   the boundary of image
 
-func LoadImageForSure(path string) image.Image {
-	file, err := os.Open(path)
-	internal.PanicIfError(err)
-	img, _, err := image.Decode(file)
-	internal.PanicIfError(err)
-	return img
-}
-
-func clip(toClip string, saveTo string) {
-	fmt.Println("Clipping 'object_with_black_border.png'.")
-	img := LoadImageForSure(toClip)
-	var width = img.Bounds().Dx()
-	var height = img.Bounds().Dy()
-	clippedImage := image.NewRGBA(img.Bounds())
-	for x := 0; x < width; x++ {
-		firstBlackX := -1
-		for y := 0; y < height; y++ {
-			srcColor := img.At(x, y)
-			src, _ := colorful.MakeColor(srcColor)
-			black := colorful.Color{
-				R: 0,
-				G: 0,
-				B: 0,
-			}
-			var alpha uint8 = 0
-			dist := src.DistanceCIE76(black)
-			//fmt.Println(dist)
-			if dist < 0.5 {
-				if firstBlackX == -1 {
-					firstBlackX = x
-				}
-				alpha = 255
-			}
-			r, g, b := uint8(src.R), uint8(src.G), uint8(src.B)
-			clippedImage.Set(x, y, color.RGBA{r, g, b, alpha})
-		}
-	}
-	fmt.Printf("Dimensions: %vx%v\n", width, height)
-	fmt.Println("550 pixels clipped, 1550 left.")
-	fmt.Printf("Saving output to '%v'.\n", saveTo)
-	SaveImage(clippedImage, saveTo)
-}
-
-func SaveImage(image *image.RGBA, path string) {
-	f, err := os.Create(path)
-	internal.PanicIfError(err)
-	err = png.Encode(f, image)
-	internal.PanicIfError(err)
-	err = f.Close()
-	internal.PanicIfError(err)
-}
+//func LoadImageForSure(path string) image.Image {
+//	file, err := os.Open(path)
+//	internal.PanicIfError(err)
+//	img, _, err := image.Decode(file)
+//	internal.PanicIfError(err)
+//	return img
+//}
+//
+//func clip(toClip string, saveTo string) {
+//	fmt.Println("Clipping 'object_with_black_border.png'.")
+//	img := LoadImageForSure(toClip)
+//	var width = img.Bounds().Dx()
+//	var height = img.Bounds().Dy()
+//	clippedImage := image.NewRGBA(img.Bounds())
+//	for x := 0; x < width; x++ {
+//		firstBlackX := -1
+//		for y := 0; y < height; y++ {
+//			srcColor := img.At(x, y)
+//			src, _ := colorful.MakeColor(srcColor)
+//			black := colorful.Color{
+//				R: 0,
+//				G: 0,
+//				B: 0,
+//			}
+//			var alpha uint8 = 0
+//			dist := src.DistanceCIE76(black)
+//			//fmt.Println(dist)
+//			if dist < 0.5 {
+//				if firstBlackX == -1 {
+//					firstBlackX = x
+//				}
+//				alpha = 255
+//			}
+//			r, g, b := uint8(src.R), uint8(src.G), uint8(src.B)
+//			clippedImage.Set(x, y, color.RGBA{r, g, b, alpha})
+//		}
+//	}
+//	fmt.Printf("Dimensions: %vx%v\n", width, height)
+//	fmt.Println("550 pixels clipped, 1550 left.")
+//	fmt.Printf("Saving output to '%v'.\n", saveTo)
+//	SaveImage(clippedImage, saveTo)
+//}
+//
+//func SaveImage(image *image.RGBA, path string) {
+//	f, err := os.Create(path)
+//	internal.PanicIfError(err)
+//	err = png.Encode(f, image)
+//	internal.PanicIfError(err)
+//	err = f.Close()
+//	internal.PanicIfError(err)
+//}

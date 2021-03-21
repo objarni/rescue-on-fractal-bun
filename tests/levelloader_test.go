@@ -15,7 +15,7 @@ func templateThis(format string, args ...string) string {
 func printLevel(level internal.Level) {
 	mapPoints := printMapPoints(level.SignPosts)
 	fmt.Println(templateThis(
-		"Width: {w}   Height: {h}  (tiles)\n"+
+		"GetWidth: {Width}   GetHeight: {Height}  (tiles)\n"+
 			"Background color: RGB={red},{green},{blue}\n"+
 			"There are {countMapPoints} SignPost(s):\n"+
 			"{mapPoints}\n"+
@@ -27,8 +27,8 @@ func printLevel(level internal.Level) {
 			"....\n"+
 			"....\n"+
 			"####",
-		"{w}", toString(level.Width),
-		"{h}", toString(level.Height),
+		"{Width}", toString(level.Width),
+		"{Height}", toString(level.Height),
 		"{countMapPoints}", toString(len(level.SignPosts)),
 		"{mapPoints}", mapPoints,
 		"{red}", toString(level.ClearColor.R),
@@ -53,7 +53,7 @@ func ExampleLoadingMiniLevel() {
 	level := internal.LoadLevel("../testdata/MiniLevel.tmx")
 	printLevel(level)
 	// Output:
-	// Width: 4   Height: 3  (tiles)
+	// GetWidth: 4   GetHeight: 3  (tiles)
 	// Background color: RGB=10,50,100
 	// There are 2 SignPost(s):
 	// 'Korsningen' at 12, 62
