@@ -39,7 +39,6 @@ type MapPoint struct {
 type MapScene struct {
 	cfg            *Config
 	res            *internal.Resources
-	mapImage       *pixel.Sprite
 	mapPoints      []MapPoint
 	hairCrossPos   pixel.Vec
 	hairCrossVel   pixel.Vec
@@ -67,7 +66,6 @@ func MakeMapScene(cfg *Config, res *internal.Resources, locationName string) *Ma
 	return &MapScene{
 		cfg:          cfg,
 		res:          res,
-		mapImage:     internal.LoadSpriteForSure("assets/TMap.png"),
 		hairCrossPos: locations[locationIx].position,
 		hairCrossVel: pixel.ZV,
 		playerLocIx:  locationIx,
@@ -118,13 +116,17 @@ func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 }
 
 func (scene *MapScene) Render(win *pixelgl.Window) {
+	sceneGfxOp := scene.MapSceneWinOp()
+	sceneGfxOp.Render(pixel.IM, win)
+	drawLocationTexts(win, scene)
+}
+
+func (scene *MapScene) MapSceneWinOp() draw.WinOp {
 	lineOps := draw.ToWinOp(draw.Sequence(scene.locationsGfx(), scene.crossHairGfx()))
-	mapOp := draw.Moved(win.Bounds().Center(),
+	mapOp := draw.Moved(pixel.Rect{Min: v(0, 0), Max: v(internal.ScreenWidth, internal.ScreenHeight)}.Center(),
 		draw.Image(scene.res.ImageMap, internal.IMap))
 	sceneGfxOp := draw.OpSequence(mapOp, lineOps)
-	sceneGfxOp.Render(pixel.IM, win)
-
-	drawLocationTexts(win, scene)
+	return sceneGfxOp
 }
 
 func drawLocationTexts(win *pixelgl.Window, scene *MapScene) {

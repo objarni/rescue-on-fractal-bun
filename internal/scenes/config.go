@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"time"
 )
 
 type Config struct {
@@ -21,7 +20,6 @@ type Config struct {
 }
 
 func TryReadCfgFrom(filename string, defaultCfg Config) Config {
-	fmt.Println("Reading ", filename, " at ", time.Now().Format(time.Stamp))
 	byteArray, err := ioutil.ReadFile(filename)
 	if err != nil {
 		fmt.Println("ReadFile error, defaulting")

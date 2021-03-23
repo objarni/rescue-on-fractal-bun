@@ -15,9 +15,8 @@ import (
 )
 
 func run() {
-	configFile := "json/rescue.json"
-	cfg := scenes.TryReadCfgFrom(configFile, scenes.Config{})
-	info, err := os.Stat(configFile)
+	cfg := scenes.TryReadCfgFrom(internal.ConfigFile, scenes.Config{})
+	info, err := os.Stat(internal.ConfigFile)
 	internal.PanicIfError(err)
 	cfgTime := info.ModTime()
 
@@ -80,11 +79,12 @@ func run() {
 		}
 
 		// Tweak system
-		info, err := os.Stat(configFile)
+		info, err := os.Stat(internal.ConfigFile)
 		internal.PanicIfError(err)
 		if cfgTime != info.ModTime() {
 			cfgTime = info.ModTime()
-			cfg = scenes.TryReadCfgFrom(configFile, cfg)
+			fmt.Println("Reading ", internal.ConfigFile, " at ", time.Now().Format(time.Stamp))
+			cfg = scenes.TryReadCfgFrom(internal.ConfigFile, cfg)
 		}
 
 		// Keyboard control
