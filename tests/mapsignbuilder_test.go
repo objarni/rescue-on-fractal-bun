@@ -32,15 +32,17 @@ func Example_loadFromTwoSimpleLevels() {
 
 	printMapSigns(internal.BuildMapSignArray(levels))
 	// Output:
-	// MapSign 1:
-	//   Position on map <44,55>
-	//   Links to Asbestzonen <100, 10>
-	// MapSign 2:
-	//   Position on map <144,155>
-	//   Links to Hembyn <1000, 10>
-	// MapSign 3:
-	//   Position on map <244,255>
-	//   Links to Korsningen <678, 11>
+	/*
+	   MapSign 1:
+	     Position on map <246, 109>
+	     Links to Hembyn <100, 10>
+	   MapSign 2:
+	     Position on map <246, 109>
+	     Links to Asbest <1000, 10>
+	   MapSign 3:
+	     Position on map <355, 235>
+	     Links to Hembyn <100, 10>
+	*/
 }
 
 func printMapSigns(signs []internal.MapSign) {
