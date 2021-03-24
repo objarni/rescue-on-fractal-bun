@@ -66,6 +66,17 @@ func ExampleSequence() {
 	//   Circle radius 25 center <50, 100> thickness 2
 }
 
+func Example_nestedSequence() {
+	circle := Circle(25, C(50, 100), 2)
+	smallCircle := Circle(3, C(1, 2), 4)
+	fmt.Println(Sequence(Sequence(smallCircle, circle)).String())
+	// Output:
+	// Sequence:
+	//   Sequence:
+	//     Circle radius 25 center <50, 100> thickness 2
+	//     Circle radius 3 center <1, 2> thickness 4
+}
+
 func Example_thenSequence() {
 	sequence := Sequence().
 		Then(Circle(25, C(50, 100), 2)).
