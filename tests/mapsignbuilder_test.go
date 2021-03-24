@@ -33,15 +33,15 @@ func Example_loadFromTwoSimpleLevels() {
 	printMapSigns(internal.BuildMapSignArray(levels))
 	// Output:
 	/*
-	   MapSign 1:
-	     Position on map <246, 109>
-	     Links to Hembyn <100, 10>
-	   MapSign 2:
-	     Position on map <246, 109>
-	     Links to Asbest <1000, 10>
-	   MapSign 3:
-	     Position on map <355, 235>
-	     Links to Hembyn <100, 10>
+	MapSign 1:
+	  Position on map <246, 109>
+	  Links to Hembyn <100, 10>
+	MapSign 2:
+	  Position on map <246, 109>
+	  Links to Asbest <1000, 10>
+	MapSign 3:
+	  Position on map <355, 235>
+	  Links to Hembyn <100, 10>
 	*/
 }
 
