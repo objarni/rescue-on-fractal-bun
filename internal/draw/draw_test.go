@@ -55,8 +55,8 @@ func ExampleColor() {
 func ExampleSequence() {
 	circle := Circle(25, C(50, 100), 2)
 	smallCircle := Circle(3, C(1, 2), 4)
-	fmt.Println(Sequence(circle, smallCircle).String())
-	fmt.Println(Sequence(smallCircle, circle).String())
+	fmt.Println(ImdOpSequence(circle, smallCircle).String())
+	fmt.Println(ImdOpSequence(smallCircle, circle).String())
 	// Output:
 	// ImdOp Sequence:
 	//   Circle radius 25 center <50, 100> thickness 2
@@ -69,7 +69,7 @@ func ExampleSequence() {
 func Example_nestedSequence() {
 	circle := Circle(25, C(50, 100), 2)
 	smallCircle := Circle(3, C(1, 2), 4)
-	fmt.Println(Sequence(Sequence(smallCircle, circle)).String())
+	fmt.Println(ImdOpSequence(ImdOpSequence(smallCircle, circle)).String())
 	// Output:
 	// ImdOp Sequence:
 	//   ImdOp Sequence:
@@ -78,7 +78,7 @@ func Example_nestedSequence() {
 }
 
 func Example_thenSequence() {
-	sequence := Sequence().
+	sequence := ImdOpSequence().
 		Then(Circle(25, C(50, 100), 2)).
 		Then(Circle(3, C(1, 2), 4))
 	fmt.Println(sequence.String())

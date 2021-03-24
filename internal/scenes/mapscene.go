@@ -122,7 +122,7 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 }
 
 func (scene *MapScene) MapSceneWinOp() draw.WinOp {
-	lineOps := draw.ToWinOp(draw.Sequence(scene.locationsGfx(), scene.crossHairGfx()))
+	lineOps := draw.ToWinOp(draw.ImdOpSequence(scene.locationsGfx(), scene.crossHairGfx()))
 	mapOp := draw.Moved(pixel.Rect{Min: v(0, 0), Max: v(internal.ScreenWidth, internal.ScreenHeight)}.Center(),
 		draw.Image(scene.res.ImageMap, internal.IMap))
 	sceneGfxOp := draw.OpSequence(mapOp, lineOps)
@@ -214,7 +214,7 @@ func (scene *MapScene) currentLocation() draw.ImdOp {
 }
 
 func (scene *MapScene) levelEntrances() draw.ImdSequence {
-	sequence := draw.Sequence()
+	sequence := draw.ImdOpSequence()
 	for _, loc := range scene.mapPoints {
 		pos := loc.position
 		operation := draw.Colored(
@@ -251,7 +251,7 @@ func (scene *MapScene) crossHairGfx() draw.ImdOp {
 	vertical := draw.Line(draw.C(int(h.X), 0), draw.C(int(h.X), 600), thickness)
 	horisontal := draw.Line(draw.C(0, int(h.Y)), draw.C(800, int(h.Y)), thickness)
 	transparentPink := color.RGBA{R: 255, A: 32}
-	return draw.Colored(transparentPink, draw.Sequence(vertical, horisontal))
+	return draw.Colored(transparentPink, draw.ImdOpSequence(vertical, horisontal))
 }
 
 func (scene *MapScene) Tick() bool {

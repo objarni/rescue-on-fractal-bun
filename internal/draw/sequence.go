@@ -9,7 +9,7 @@ type ImdSequence struct {
 	imdOps []ImdOp
 }
 
-func Sequence(imdOps ...ImdOp) ImdSequence {
+func ImdOpSequence(imdOps ...ImdOp) ImdSequence {
 	return ImdSequence{
 		imdOps: imdOps,
 	}
@@ -38,9 +38,9 @@ func (sequence ImdSequence) Lines() []string {
 
 func (sequence ImdSequence) Then(imdOp ImdOp) ImdSequence {
 	ops := append(sequence.imdOps, imdOp)
-	return Sequence(ops...)
+	return ImdOpSequence(ops...)
 }
 
 func Nothing() ImdSequence {
-	return Sequence()
+	return ImdOpSequence()
 }
