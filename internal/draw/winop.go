@@ -169,12 +169,6 @@ type WinOpSequence struct {
 	winOps []WinOp
 }
 
-type WinOp interface {
-	String() string
-	Lines() []string
-	Render(mx pixel.Matrix, win *pixelgl.Window)
-}
-
 func (sequence WinOpSequence) String() string {
 	head := "WinOp Sequence:"
 	body := []string{}

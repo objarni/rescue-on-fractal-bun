@@ -31,3 +31,9 @@ func (text Paragraph) Lines() []string {
 	}
 	return result
 }
+
+type TextOp interface {
+	String() string
+	Lines() []string
+	Render(tb *text.Text)
+}

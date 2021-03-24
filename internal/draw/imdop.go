@@ -2,6 +2,7 @@ package draw
 
 import (
 	"fmt"
+	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"image/color"
 	"strings"
@@ -160,4 +161,20 @@ func (sequence ImdSequence) Then(imdOp ImdOp) ImdSequence {
 
 func Nothing() ImdSequence {
 	return ImdOpSequence()
+}
+
+type Coordinate struct {
+	X, Y int
+}
+
+func C(x, y int) Coordinate {
+	return Coordinate{X: x, Y: y}
+}
+
+func (c Coordinate) toVec() pixel.Vec {
+	return pixel.Vec{X: float64(c.X), Y: float64(c.Y)}
+}
+
+func (c Coordinate) String() string {
+	return fmt.Sprintf("<%v, %v>", c.X, c.Y)
 }
