@@ -58,10 +58,10 @@ func ExampleSequence() {
 	fmt.Println(Sequence(circle, smallCircle).String())
 	fmt.Println(Sequence(smallCircle, circle).String())
 	// Output:
-	// Sequence:
+	// ImdOp Sequence:
 	//   Circle radius 25 center <50, 100> thickness 2
 	//   Circle radius 3 center <1, 2> thickness 4
-	// Sequence:
+	// ImdOp Sequence:
 	//   Circle radius 3 center <1, 2> thickness 4
 	//   Circle radius 25 center <50, 100> thickness 2
 }
@@ -71,10 +71,10 @@ func Example_nestedSequence() {
 	smallCircle := Circle(3, C(1, 2), 4)
 	fmt.Println(Sequence(Sequence(smallCircle, circle)).String())
 	// Output:
-	// Sequence:
-	//   Sequence:
-	//     Circle radius 25 center <50, 100> thickness 2
+	// ImdOp Sequence:
+	//   ImdOp Sequence:
 	//     Circle radius 3 center <1, 2> thickness 4
+	//     Circle radius 25 center <50, 100> thickness 2
 }
 
 func Example_thenSequence() {
@@ -83,7 +83,7 @@ func Example_thenSequence() {
 		Then(Circle(3, C(1, 2), 4))
 	fmt.Println(sequence.String())
 	// Output:
-	// Sequence:
+	// ImdOp Sequence:
 	//   Circle radius 25 center <50, 100> thickness 2
 	//   Circle radius 3 center <1, 2> thickness 4
 }
