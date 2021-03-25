@@ -9,13 +9,13 @@ import (
 )
 
 func main() {
-	img := LoadImageForSure("assets/TEliseWalk2.png")
-	bitfield := BitFieldFromImage(img, )
-	contourImage := image.NewRGBA(img.Bounds().Add(image.Point{
-		X: 2,
-		Y: 2,
-	}))
-	img.
+	//img := LoadImageForSure("assets/TEliseWalk2.png")
+	//bitfield := BitFieldFromImage(img, )
+	//contourImage := image.NewRGBA(img.Bounds().Add(image.Point{
+	//	X: 2,
+	//	Y: 2,
+	//}))
+	//img.
 }
 
 func LoadImageForSure(path string) image.Image {
@@ -50,7 +50,7 @@ func LoadImageForSure(path string) image.Image {
 //		}
 //	}
 
-func BitFieldFromImage(image draw.Image, keep func(pos imaging.Pos) bool ) imaging.BitField {
+func BitFieldFromImage(image draw.Image, keep func(pos imaging.Pos) bool) imaging.BitField {
 	bits := map[imaging.Pos]bool{}
 	dimensions := image.Bounds().Max
 	width := dimensions.X
