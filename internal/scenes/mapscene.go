@@ -130,7 +130,7 @@ func (scene *MapScene) MapSceneWinOp() draw.WinOp {
 }
 
 func drawLocationTexts(win *pixelgl.Window, scene *MapScene) {
-	locationIx := FindNearLocation(scene.hairCrossPos, scene.mapPoints, scene.cfg.MapSceneTargetLocMaxDistance)
+	locationIx := FindNearLocation(scene.hairCrossPos, scene.res.MapSigns, scene.cfg.MapSceneTargetLocMaxDistance)
 	locationName := locationNameFromIx(locationIx)
 	tb := text.New(pixel.ZV, scene.res.Atlas)
 	draw.Text(
@@ -183,9 +183,9 @@ func (scene *MapScene) locationsGfx() draw.ImdOp {
 }
 
 func (scene *MapScene) crossHairLocation() draw.ImdOp {
-	closestLocation := scene.FindClosestLocation()
-	if closestLocation > -1 {
-		pos := scene.mapPoints[closestLocation].position
+	closestMapSignIx := scene.FindClosestLocation()
+	if closestMapSignIx > -1 {
+		pos := scene.res.MapSigns[closestMapSignIx].MapPos
 		radius := scene.targetLocCircleRadius()
 		circle := draw.Circle(radius, C(pos), scene.circleThickness())
 		operation := draw.Colored(colornames.Red, circle)
@@ -199,7 +199,7 @@ func C(v pixel.Vec) draw.Coordinate {
 }
 
 func (scene *MapScene) FindClosestLocation() int {
-	return FindNearLocation(scene.hairCrossPos, scene.mapPoints, scene.locMaxDistance())
+	return FindNearLocation(scene.hairCrossPos, scene.res.MapSigns, scene.locMaxDistance())
 }
 
 func (scene *MapScene) currentLocation() draw.ImdOp {
@@ -276,12 +276,12 @@ func v(x float64, y float64) pixel.Vec {
 	return pixel.Vec{X: x, Y: y}
 }
 
-func FindNearLocation(vec pixel.Vec, locations []MapPoint, maxDist int) int {
+func FindNearLocation(vec pixel.Vec, mapSigns []internal.MapSign, maxDist int) int {
 	points := []pixel.Vec{}
-	getPoint := func(mp MapPoint) pixel.Vec { return mp.position }
+	getPoint := func(mp internal.MapSign) pixel.Vec { return mp.MapPos }
 	// Potential: ClosestPoint could take an array of objects implementing
 	// 'WithPoint' interface, and we only define anon func here
-	for _, val := range locations {
+	for _, val := range mapSigns {
 		point := getPoint(val)
 		points = append(points, point)
 	}

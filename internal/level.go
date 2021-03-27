@@ -35,9 +35,9 @@ func BuildMapSignArray(levelMap map[string]Level) []MapSign {
 	for levelName, levelData := range levelMap {
 		for _, signPost := range levelData.SignPosts {
 			mapSigns = append(mapSigns, MapSign{
-				MapPos:    positions[levelName],
+				MapPos:    positions[signPost.Location],
 				LevelPos:  signPost.Pos,
-				LevelName: signPost.Location,
+				LevelName: levelName,
 			})
 		}
 	}
