@@ -20,7 +20,7 @@ func TestMapSignBuilder(t *testing.T) {
 				},
 				{
 					Pos:      pixel.Vec{1000, 10},
-					Location: "Asbest",
+					Location: "Skogen",
 				},
 			},
 		},
