@@ -31,56 +31,32 @@ Vill börja med att validera laddning av level enligt
 ovan, för att sedan bygga upp SignPosts datastrukturen.
 */
 
-type MapPoint struct {
-	position   pixel.Vec
-	discovered bool
-}
-
 type MapScene struct {
 	cfg            *Config
 	res            *internal.Resources
-	mapPoints      []MapPoint
 	hairCrossPos   pixel.Vec
 	hairCrossVel   pixel.Vec
 	playerLocIx    int
 	highlightTimer int
-	mapSigns       []internal.MapSign // All map signs in game
 }
 
-func MakeMapScene(cfg *Config, res *internal.Resources, locationName string) *MapScene {
-	locations := []MapPoint{
-		{
-			position:   pixel.Vec{X: 246, Y: 109},
-			discovered: true,
-		},
-		{
-			position:   pixel.Vec{X: 355, Y: 235},
-			discovered: true,
-		},
-		{
-			position:   pixel.Vec{X: 299, Y: 375},
-			discovered: false,
-		},
-	}
-	locationIx := locationIxFromName(locationName)
+func MakeMapScene(cfg *Config, res *internal.Resources, mapSignName string) *MapScene {
+	mapSignIx := mapSignIndexFromName(mapSignName)
 	return &MapScene{
 		cfg:          cfg,
 		res:          res,
-		hairCrossPos: locations[locationIx].position,
+		hairCrossPos: res.MapSigns[mapSignIx].MapPos,
 		hairCrossVel: pixel.ZV,
-		playerLocIx:  locationIx,
-		mapPoints:    locations,
+		playerLocIx:  mapSignIx,
 	}
 }
 
 func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Jump {
-		locationIx := scene.FindClosestLocation()
-		if locationIx != -1 {
-			levelName := "GhostForest" // TODO: initialize mapSigns on game boot (it's nil!)
-			if scene.mapSigns != nil {
-				levelName = scene.mapSigns[locationIx].LevelName
-			}
+		mapSignIx := scene.FindClosestMapSign()
+		if mapSignIx != -1 {
+			levelName := scene.res.MapSigns[mapSignIx].LevelName
+			// TODO: spawn at right mapsign of level, not just 'mapsign 0'
 			return MakeLevelScene(scene.cfg, scene.res, levelName)
 		}
 	}
@@ -163,7 +139,7 @@ func locationNameFromIx(locationIx int) string {
 	return "-"
 }
 
-func locationIxFromName(locationName string) int {
+func mapSignIndexFromName(locationName string) int {
 	if locationName == "Hembyn" {
 		return 0
 	}
@@ -183,7 +159,7 @@ func (scene *MapScene) locationsGfx() draw.ImdOp {
 }
 
 func (scene *MapScene) crossHairLocation() draw.ImdOp {
-	closestMapSignIx := scene.FindClosestLocation()
+	closestMapSignIx := scene.FindClosestMapSign()
 	if closestMapSignIx > -1 {
 		pos := scene.res.MapSigns[closestMapSignIx].MapPos
 		radius := scene.targetLocCircleRadius()
@@ -198,15 +174,15 @@ func C(v pixel.Vec) draw.Coordinate {
 	return draw.C(int(v.X), int(v.Y))
 }
 
-func (scene *MapScene) FindClosestLocation() int {
+func (scene *MapScene) FindClosestMapSign() int {
 	return FindNearLocation(scene.hairCrossPos, scene.res.MapSigns, scene.locMaxDistance())
 }
 
 func (scene *MapScene) currentLocation() draw.ImdOp {
 	blink := scene.cfg.MapSceneBlinkSpeed
 	if scene.highlightTimer/blink%2 == 0 {
-		loc := scene.mapPoints[scene.playerLocIx]
-		pos := loc.position
+		// TODO: remove playerCurrIx in favor of 'currentMapSign' or something
+		pos := scene.res.MapSigns[0].MapPos
 		circle := draw.Circle(scene.currentLocCircleRadius(), C(pos), scene.circleThickness())
 		return draw.Colored(colornames.Green, circle)
 	}
@@ -215,8 +191,8 @@ func (scene *MapScene) currentLocation() draw.ImdOp {
 
 func (scene *MapScene) levelEntrances() draw.ImdSequence {
 	sequence := draw.ImdOpSequence()
-	for _, loc := range scene.mapPoints {
-		pos := loc.position
+	for _, mapSign := range scene.res.MapSigns {
+		pos := mapSign.MapPos
 		operation := draw.Colored(
 			colornames.Darkslateblue,
 			draw.Circle(scene.locCircleRadius(), C(pos), scene.circleThickness()))
