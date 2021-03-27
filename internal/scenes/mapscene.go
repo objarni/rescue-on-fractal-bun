@@ -36,7 +36,6 @@ type MapScene struct {
 	res            *internal.Resources
 	hairCrossPos   pixel.Vec
 	hairCrossVel   pixel.Vec
-	playerLocIx    int
 	highlightTimer int
 }
 
@@ -47,7 +46,6 @@ func MakeMapScene(cfg *Config, res *internal.Resources, mapSignName string) *Map
 		res:          res,
 		hairCrossPos: res.MapSigns[mapSignIx].MapPos,
 		hairCrossVel: pixel.ZV,
-		playerLocIx:  mapSignIx,
 	}
 }
 
