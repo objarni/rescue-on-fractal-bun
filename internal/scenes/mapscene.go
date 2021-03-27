@@ -94,24 +94,24 @@ func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 func (scene *MapScene) Render(win *pixelgl.Window) {
 	sceneGfxOp := scene.MapSceneWinOp()
 	sceneGfxOp.Render(pixel.IM, win)
-	drawLocationTexts(win, scene)
+	drawMapSignTexts(win, scene)
 }
 
 func (scene *MapScene) MapSceneWinOp() draw.WinOp {
-	lineOps := draw.ToWinOp(draw.ImdOpSequence(scene.locationsGfx(), scene.crossHairGfx()))
+	lineOps := draw.ToWinOp(draw.ImdOpSequence(scene.mapSignsGfx(), scene.crossHairGfx()))
 	mapOp := draw.Moved(pixel.Rect{Min: v(0, 0), Max: v(internal.ScreenWidth, internal.ScreenHeight)}.Center(),
 		draw.Image(scene.res.ImageMap, internal.IMap))
 	sceneGfxOp := draw.OpSequence(mapOp, lineOps)
 	return sceneGfxOp
 }
 
-func drawLocationTexts(win *pixelgl.Window, scene *MapScene) {
-	locationIx := FindNearLocation(scene.hairCrossPos, scene.res.MapSigns, scene.cfg.MapSceneTargetLocMaxDistance)
-	locationName := locationNameFromIx(locationIx)
+func drawMapSignTexts(win *pixelgl.Window, scene *MapScene) {
+	mapSignIx := FindNearMapSign(scene.hairCrossPos, scene.res.MapSigns, scene.cfg.MapSceneTargetLocMaxDistance)
+	mapSignName := mapSignNameFromIx(mapSignIx)
 	tb := text.New(pixel.ZV, scene.res.Atlas)
 	draw.Text(
 		fmt.Sprintf("Här är du: %s\n", "Hembyn"),
-		fmt.Sprintf("Gå till? %s", locationName),
+		fmt.Sprintf("Gå till? %s", mapSignName),
 	).Render(tb)
 	textPosition := pixel.V(
 		float64(scene.cfg.MapSceneLocationTextX),
@@ -126,14 +126,14 @@ func drawLocationTexts(win *pixelgl.Window, scene *MapScene) {
 	tb.DrawColorMask(win, pixel.IM.Moved(textPosition), colornames.Black)
 }
 
-func locationNameFromIx(locationIx int) string {
-	if locationIx == 0 {
+func mapSignNameFromIx(mapSignIx int) string {
+	if mapSignIx == 0 {
 		return "Hembyn"
 	}
-	if locationIx == 1 {
+	if mapSignIx == 1 {
 		return "Korsningen"
 	}
-	if locationIx == 2 {
+	if mapSignIx == 2 {
 		return "Skogen"
 	}
 	return "-"
@@ -152,7 +152,7 @@ func mapSignIndexFromName(locationName string) int {
 	panic(fmt.Sprintf("Unknown location name: %v", locationName))
 }
 
-func (scene *MapScene) locationsGfx() draw.ImdOp {
+func (scene *MapScene) mapSignsGfx() draw.ImdOp {
 	return scene.levelEntrances().
 		Then(scene.currentLocation()).
 		Then(scene.crossHairLocation())
@@ -175,7 +175,7 @@ func C(v pixel.Vec) draw.Coordinate {
 }
 
 func (scene *MapScene) FindClosestMapSign() int {
-	return FindNearLocation(scene.hairCrossPos, scene.res.MapSigns, scene.locMaxDistance())
+	return FindNearMapSign(scene.hairCrossPos, scene.res.MapSigns, scene.locMaxDistance())
 }
 
 func (scene *MapScene) currentLocation() draw.ImdOp {
@@ -252,7 +252,7 @@ func v(x float64, y float64) pixel.Vec {
 	return pixel.Vec{X: x, Y: y}
 }
 
-func FindNearLocation(vec pixel.Vec, mapSigns []internal.MapSign, maxDist int) int {
+func FindNearMapSign(vec pixel.Vec, mapSigns []internal.MapSign, maxDist int) int {
 	points := []pixel.Vec{}
 	getPoint := func(mp internal.MapSign) pixel.Vec { return mp.MapPos }
 	// Potential: ClosestPoint could take an array of objects implementing
