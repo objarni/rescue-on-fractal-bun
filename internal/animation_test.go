@@ -1,14 +1,13 @@
-package tests
+package internal
 
 import (
 	"fmt"
-	"objarni/rescue-on-fractal-bun/internal"
 )
 
 func Example_anim3Frames() {
 	var timeSeconds float64
 	for timeSeconds = 0; timeSeconds < 1.0; timeSeconds += 0.34 {
-		fmt.Println(internal.Animation{Frames: 3, TargetFPS: 3}.FrameAtTime(timeSeconds))
+		fmt.Println(Animation{Frames: 3, TargetFPS: 3}.FrameAtTime(timeSeconds))
 	}
 	// Output:
 	// 0
@@ -19,7 +18,7 @@ func Example_anim3Frames() {
 func Example_anim10Frames() {
 	var timeSeconds float64
 	for timeSeconds = 0; timeSeconds < 0.45; timeSeconds += 0.1 {
-		fmt.Println(internal.Animation{Frames: 10, TargetFPS: 10}.FrameAtTime(timeSeconds))
+		fmt.Println(Animation{Frames: 10, TargetFPS: 10}.FrameAtTime(timeSeconds))
 	}
 	// Output:
 	// 0

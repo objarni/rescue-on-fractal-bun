@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"github.com/bcvery1/tilepix"
 	"github.com/faiface/pixel"
 	"image/color"
@@ -33,6 +34,7 @@ func BuildMapSignArray(levelMap map[string]Level) []MapSign {
 		"Skogen":     {X: 299, Y: 375},
 	}
 	for levelName, levelData := range levelMap {
+		fmt.Println(levelName)
 		for _, signPost := range levelData.SignPosts {
 			mapSigns = append(mapSigns, MapSign{
 				MapPos:    positions[signPost.Location],

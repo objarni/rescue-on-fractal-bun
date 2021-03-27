@@ -1,9 +1,8 @@
-package tests
+package internal
 
 import (
 	"fmt"
 	"github.com/bcvery1/tilepix"
-	"objarni/rescue-on-fractal-bun/internal"
 	"strings"
 )
 
@@ -12,7 +11,7 @@ func templateThis(format string, args ...string) string {
 	return r.Replace(format)
 }
 
-func printLevel(level internal.Level) {
+func printLevel(level Level) {
 	mapPoints := printMapPoints(level.SignPosts)
 	fmt.Println(templateThis(
 		"GetWidth: {Width}   GetHeight: {Height}  (tiles)\n"+
@@ -37,7 +36,7 @@ func printLevel(level internal.Level) {
 	))
 }
 
-func printMapPoints(points []internal.SignPost) string {
+func printMapPoints(points []SignPost) string {
 	s := ""
 	for _, mp := range points {
 		s += fmt.Sprintf("'%v' at %1.0f, %1.0f\n", mp.Location, mp.Pos.X, mp.Pos.Y)
@@ -50,7 +49,7 @@ func toString(v interface{}) string {
 }
 
 func ExampleLoadingMiniLevel() {
-	level := internal.LoadLevel("../testdata/MiniLevel.tmx")
+	level := LoadLevel("../testdata/MiniLevel.tmx")
 	printLevel(level)
 	// Output:
 	// GetWidth: 4   GetHeight: 3  (tiles)
@@ -72,7 +71,7 @@ func ExampleLoadingMiniLevel() {
 func ExampleLoadingBrokenLevel() {
 	brokenLevelPath := "../testdata/BrokenLevel.tmx"
 	brokenLevel, _ := tilepix.ReadFile(brokenLevelPath)
-	internal.ValidateLevel(brokenLevelPath, brokenLevel)
+	ValidateLevel(brokenLevelPath, brokenLevel)
 	// Output:
 	// ../testdata/BrokenLevel.tmx contains the following errors:
 	// There is no Background layer

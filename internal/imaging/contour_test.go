@@ -1,8 +1,7 @@
-package tests
+package imaging
 
 import (
 	"fmt"
-	"objarni/rescue-on-fractal-bun/internal/imaging"
 	"strings"
 )
 
@@ -46,8 +45,8 @@ import (
 //	return im.Height
 //}
 
-func BuildBitFieldFrom(asciiImage string) imaging.BitField {
-	setPixels := make(map[imaging.Pos]bool)
+func BuildBitFieldFrom(asciiImage string) BitField {
+	setPixels := make(map[Pos]bool)
 	w, h := 0, 0
 	for y, row := range strings.Split(asciiImage, "\n") {
 		h += 1
@@ -56,11 +55,11 @@ func BuildBitFieldFrom(asciiImage string) imaging.BitField {
 				w += 1
 			}
 			if pixel == '#' {
-				setPixels[imaging.Pos{X: x, Y: y}] = true
+				setPixels[Pos{X: x, Y: y}] = true
 			}
 		}
 	}
-	return imaging.BitField{
+	return BitField{
 		Field:  setPixels,
 		Width:  w,
 		Height: h,
@@ -72,7 +71,7 @@ func Example_contourAlgorithm_simpleSquare() {
 .##.
 .##.
 ....`)
-	printBitField(imaging.FindContour(input))
+	printBitField(FindContour(input))
 	// Output:
 	// ####
 	// #..#
@@ -86,7 +85,7 @@ func Example_contourAlgorithm_L() {
 .#..
 .##.
 ....`)
-	printBitField(imaging.FindContour(input))
+	printBitField(FindContour(input))
 	// Output:
 	// ###.
 	// #.#.
@@ -95,7 +94,7 @@ func Example_contourAlgorithm_L() {
 	// ####
 }
 
-func printBitField(bitField imaging.BitField) {
+func printBitField(bitField BitField) {
 	for y := 0; y < bitField.Height; y++ {
 		for x := 0; x < bitField.Width; x++ {
 			if bitField.IsSet(x, y) {

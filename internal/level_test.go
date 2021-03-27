@@ -1,19 +1,18 @@
-package tests
+package internal
 
 import (
 	"fmt"
 	approvals "github.com/approvals/go-approval-tests"
 	"github.com/faiface/pixel"
-	"objarni/rescue-on-fractal-bun/internal"
 	"sort"
 	"strings"
 	"testing"
 )
 
 func TestMapSignBuilder(t *testing.T) {
-	var levels = map[string]internal.Level{
+	var levels = map[string]Level{
 		"Hembyn": {
-			SignPosts: []internal.SignPost{
+			SignPosts: []SignPost{
 				{
 					Pos:      pixel.Vec{100, 10},
 					Location: "Hembyn",
@@ -25,7 +24,7 @@ func TestMapSignBuilder(t *testing.T) {
 			},
 		},
 		"Korsningen": {
-			SignPosts: []internal.SignPost{
+			SignPosts: []SignPost{
 				{
 					Pos:      pixel.Vec{100, 10},
 					Location: "Hembyn",
@@ -34,10 +33,10 @@ func TestMapSignBuilder(t *testing.T) {
 		},
 	}
 
-	approvals.VerifyString(t, mapSignsToString(internal.BuildMapSignArray(levels)))
+	approvals.VerifyString(t, mapSignsToString(BuildMapSignArray(levels)))
 }
 
-func mapSignsToString(signs []internal.MapSign) string {
+func mapSignsToString(signs []MapSign) string {
 	descriptions := []string{}
 	printVec := func(vec pixel.Vec) string {
 		return fmt.Sprintf("<%v, %v>", vec.X, vec.Y)
