@@ -14,20 +14,20 @@ func TestMapSignBuilder(t *testing.T) {
 		"Hembyn": {
 			SignPosts: []SignPost{
 				{
-					Pos:      pixel.Vec{100, 10},
-					Location: "Hembyn",
+					Pos:  pixel.Vec{100, 10},
+					Text: "Hembyn",
 				},
 				{
-					Pos:      pixel.Vec{1000, 10},
-					Location: "Skogen",
+					Pos:  pixel.Vec{1000, 10},
+					Text: "Skogen",
 				},
 			},
 		},
 		"Korsningen": {
 			SignPosts: []SignPost{
 				{
-					Pos:      pixel.Vec{100, 10},
-					Location: "Hembyn",
+					Pos:  pixel.Vec{100, 10},
+					Text: "Hembyn",
 				},
 			},
 		},

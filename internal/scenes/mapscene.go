@@ -41,7 +41,7 @@ type MapScene struct {
 }
 
 func MakeMapScene(cfg *Config, res *internal.Resources, mapSignName string) *MapScene {
-	mapSignIx := mapSignIndexFromName(mapSignName)
+	mapSignIx := mapSignWithText(mapSignName)
 	return &MapScene{
 		cfg:          cfg,
 		res:          res,
@@ -139,26 +139,26 @@ func mapSignNameFromIx(mapSignIx int) string {
 	return "-"
 }
 
-func mapSignIndexFromName(locationName string) int {
-	if locationName == "Hembyn" {
+func mapSignWithText(mapSignText string) int {
+	if mapSignText == "Hembyn" {
 		return 0
 	}
-	if locationName == "Korsningen" {
+	if mapSignText == "Korsningen" {
 		return 1
 	}
-	if locationName == "Skogen" {
+	if mapSignText == "Skogen" {
 		return 2
 	}
-	panic(fmt.Sprintf("Unknown location name: %v", locationName))
+	panic(fmt.Sprintf("Unknown map sign text: %v", mapSignText))
 }
 
 func (scene *MapScene) mapSignsGfx() draw.ImdOp {
 	return scene.levelEntrances().
-		Then(scene.currentLocation()).
-		Then(scene.crossHairLocation())
+		Then(scene.currentMapSignOp()).
+		Then(scene.crossHairsOp())
 }
 
-func (scene *MapScene) crossHairLocation() draw.ImdOp {
+func (scene *MapScene) crossHairsOp() draw.ImdOp {
 	closestMapSignIx := scene.FindClosestMapSign()
 	if closestMapSignIx > -1 {
 		pos := scene.res.MapSigns[closestMapSignIx].MapPos
@@ -178,7 +178,7 @@ func (scene *MapScene) FindClosestMapSign() int {
 	return FindNearMapSign(scene.hairCrossPos, scene.res.MapSigns, scene.locMaxDistance())
 }
 
-func (scene *MapScene) currentLocation() draw.ImdOp {
+func (scene *MapScene) currentMapSignOp() draw.ImdOp {
 	blink := scene.cfg.MapSceneBlinkSpeed
 	if scene.highlightTimer/blink%2 == 0 {
 		// TODO: remove playerCurrIx in favor of 'currentMapSign' or something

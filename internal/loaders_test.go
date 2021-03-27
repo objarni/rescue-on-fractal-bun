@@ -39,7 +39,7 @@ func printLevel(level Level) {
 func printMapPoints(points []SignPost) string {
 	s := ""
 	for _, mp := range points {
-		s += fmt.Sprintf("'%v' at %1.0f, %1.0f\n", mp.Location, mp.Pos.X, mp.Pos.Y)
+		s += fmt.Sprintf("'%v' at %1.0f, %1.0f\n", mp.Text, mp.Pos.X, mp.Pos.Y)
 	}
 	return s
 }

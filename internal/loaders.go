@@ -147,8 +147,8 @@ func ParseLevel(level *tilepix.Map) Level {
 		x := object.X
 		y := object.Y
 		var mp = SignPost{
-			Pos:      pixel.Vec{X: x, Y: y},
-			Location: object.Name,
+			Pos:  pixel.Vec{X: x, Y: y},
+			Text: object.Name,
 		}
 		points = append(points, mp)
 	}

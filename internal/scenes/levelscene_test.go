@@ -28,12 +28,12 @@ func ExampleLevelSimulation() {
 			ClearColor: colornames.White,
 			SignPosts: []internal.SignPost{
 				{
-					Pos:      v(2700, 900),
-					Location: "Hembyn",
+					Pos:  v(2700, 900),
+					Text: "Hembyn",
 				},
 				{
-					Pos:      v(100, 900),
-					Location: "Korsningen",
+					Pos:  v(100, 900),
+					Text: "Korsningen",
 				},
 			},
 		},

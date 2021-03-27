@@ -41,7 +41,7 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Action {
 		if scene.isMapSignClose() {
 			mapSign := scene.closestMapSign()
-			return MakeMapScene(scene.cfg, scene.res, mapSign.Location)
+			return MakeMapScene(scene.cfg, scene.res, mapSign.Text)
 		} else {
 			scene.playerPos = scene.playerPos.Add(v(10, 0))
 		}

@@ -15,8 +15,8 @@ type Level struct {
 }
 
 type SignPost struct {
-	Pos      pixel.Vec
-	Location string
+	Pos  pixel.Vec
+	Text string // Text on signpost
 }
 
 type MapSign struct {
@@ -37,7 +37,7 @@ func BuildMapSignArray(levelMap map[string]Level) []MapSign {
 		fmt.Println(levelName)
 		for _, signPost := range levelData.SignPosts {
 			mapSigns = append(mapSigns, MapSign{
-				MapPos:    positions[signPost.Location],
+				MapPos:    positions[signPost.Text],
 				LevelPos:  signPost.Pos,
 				LevelName: levelName,
 			})
