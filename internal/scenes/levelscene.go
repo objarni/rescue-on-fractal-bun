@@ -74,8 +74,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 				draw.Color(colornames.Black, draw.TileLayer(scene.level.TilepixMap, "Walls")),
 				draw.Color(colornames.Black, scene.signPostsOp()),
 				draw.TileLayer(scene.level.TilepixMap, "Objects"),
-				scene.playerOp(scene.timeMs/1000.0),
-				scene.ghostOp(),
+				scene.entitiesOp(scene.timeMs),
 				draw.Color(colornames.Black, draw.TileLayer(scene.level.TilepixMap, "Foreground")),
 			),
 		),
@@ -86,11 +85,9 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	scene.drawFPS(win)
 }
 
-/* gfxOp start */
 func (scene *LevelScene) ghostOp() draw.WinOp {
-	return draw.Moved(scene.cameraVector(),
-		draw.Moved(v(float64(0), 200),
-			draw.Image(scene.res.ImageMap, internal.IGhost)))
+	return draw.Moved(v(float64(2000), 50),
+		draw.Image(scene.res.ImageMap, internal.IGhost))
 }
 
 func (scene *LevelScene) mapSymbolOp() draw.WinOp {
@@ -181,6 +178,10 @@ func (scene *LevelScene) Tick() bool {
 		scene.playerPos = scene.playerPos.Add(v(scene.cfg.LevelSceneMoveSpeed, 0))
 	}
 	return true
+}
+
+func (scene *LevelScene) entitiesOp(timeMs float64) draw.WinOp {
+	return draw.OpSequence(scene.playerOp(scene.timeMs/1000.0), scene.ghostOp())
 }
 
 /*
