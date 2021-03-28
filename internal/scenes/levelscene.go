@@ -6,6 +6,7 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"golang.org/x/exp/shiny/materialdesign/colornames"
+	"math"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/draw"
 )
@@ -34,7 +35,15 @@ func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *Lev
 }
 
 type Ghost struct {
-	pos pixel.Vec
+	pos      pixel.Vec
+	baseLine float64
+}
+
+func (ghost Ghost) Tick(gameTimeMs float64) Entity {
+	return Ghost{
+		pos:      v(ghost.pos.X, ghost.baseLine+math.Sin(gameTimeMs/300.0)*50),
+		baseLine: ghost.baseLine,
+	}
 }
 
 func (ghost Ghost) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
@@ -43,7 +52,7 @@ func (ghost Ghost) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 }
 
 func MakeGhost(position pixel.Vec) Entity {
-	return Ghost{pos: position}
+	return Ghost{pos: position, baseLine: position.Y}
 }
 
 func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
@@ -102,6 +111,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 
 type Entity interface {
 	GfxOp(imageMap *internal.ImageMap) draw.WinOp
+	Tick(gameTimeMs float64) Entity
 }
 
 func (scene *LevelScene) entityOp() draw.WinOp {
@@ -196,6 +206,7 @@ func (scene *LevelScene) Tick() bool {
 	if !scene.leftPressed && scene.rightPressed {
 		scene.playerPos = scene.playerPos.Add(v(scene.cfg.LevelSceneMoveSpeed, 0))
 	}
+	scene.entities[0] = scene.entities[0].Tick(scene.timeMs)
 	return true
 }
 
