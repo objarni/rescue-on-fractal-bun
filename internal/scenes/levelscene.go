@@ -17,6 +17,7 @@ type LevelScene struct {
 	leftPressed, rightPressed bool
 	level                     internal.Level
 	timeMs                    float64
+	entities                  []Entity
 }
 
 func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *LevelScene {
@@ -28,7 +29,21 @@ func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *Lev
 		playerPos: pos,
 		level:     level,
 		timeMs:    0,
+		entities:  []Entity{MakeGhost(v(2000, 150))},
 	}
+}
+
+type Ghost struct {
+	pos pixel.Vec
+}
+
+func (ghost Ghost) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
+	return draw.Moved(ghost.pos,
+		draw.Image(*imageMap, internal.IGhost))
+}
+
+func MakeGhost(position pixel.Vec) Entity {
+	return Ghost{pos: position}
 }
 
 func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
@@ -85,9 +100,13 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	scene.drawFPS(win)
 }
 
-func (scene *LevelScene) ghostOp() draw.WinOp {
-	return draw.Moved(v(float64(2000), 50),
-		draw.Image(scene.res.ImageMap, internal.IGhost))
+type Entity interface {
+	GfxOp(imageMap *internal.ImageMap) draw.WinOp
+}
+
+func (scene *LevelScene) entityOp() draw.WinOp {
+	var entity Entity = scene.entities[0]
+	return entity.GfxOp(&scene.res.ImageMap)
 }
 
 func (scene *LevelScene) mapSymbolOp() draw.WinOp {
@@ -181,7 +200,7 @@ func (scene *LevelScene) Tick() bool {
 }
 
 func (scene *LevelScene) entitiesOp(timeMs float64) draw.WinOp {
-	return draw.OpSequence(scene.playerOp(scene.timeMs/1000.0), scene.ghostOp())
+	return draw.OpSequence(scene.playerOp(scene.timeMs/1000.0), scene.entityOp())
 }
 
 /*

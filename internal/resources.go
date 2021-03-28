@@ -6,13 +6,15 @@ import (
 	"github.com/faiface/pixel/text"
 )
 
+type ImageMap map[Image]*pixel.Sprite
+
 type Resources struct {
 	Atlas    *text.Atlas
 	Blip     *beep.Buffer
 	FPS      float64
 	MapSigns []MapSign
 	Levels   map[string]Level
-	ImageMap map[Image]*pixel.Sprite
+	ImageMap ImageMap
 }
 
 // This is so repetitive. Can we have a Python script to generate the enum+String func?
