@@ -97,7 +97,7 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 
 func (scene *MapScene) MapSceneWinOp() draw.WinOp {
 	lineOps := draw.ToWinOp(draw.ImdOpSequence(scene.mapSignsGfx(), scene.crossHairGfx()))
-	mapOp := draw.Moved(pixel.Rect{Min: v(0, 0), Max: v(internal.ScreenWidth, internal.ScreenHeight)}.Center(),
+	mapOp := draw.Moved(pixel.Rect{Min: internal.V(0, 0), Max: internal.V(internal.ScreenWidth, internal.ScreenHeight)}.Center(),
 		draw.Image(scene.res.ImageMap, internal.IMap))
 	sceneGfxOp := draw.OpSequence(mapOp, lineOps)
 	return sceneGfxOp
@@ -244,10 +244,6 @@ func (scene *MapScene) Tick() bool {
 	}
 	scene.highlightTimer += 1
 	return true
-}
-
-func v(x float64, y float64) pixel.Vec {
-	return pixel.Vec{X: x, Y: y}
 }
 
 func FindNearMapSign(vec pixel.Vec, mapSigns []internal.MapSign, maxDist int) int {

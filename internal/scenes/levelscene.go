@@ -6,9 +6,9 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"golang.org/x/exp/shiny/materialdesign/colornames"
-	"math"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/draw"
+	"objarni/rescue-on-fractal-bun/internal/entities"
 )
 
 type LevelScene struct {
@@ -18,41 +18,23 @@ type LevelScene struct {
 	leftPressed, rightPressed bool
 	level                     internal.Level
 	timeMs                    float64
-	entities                  []Entity
+	entities                  []entities.Entity
+	elise                     entities.Elise
 }
 
 func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *LevelScene {
 	level := res.Levels[levelName]
 	pos := level.SignPosts[0].Pos
+	elise := entities.MakeElise(pos)
 	return &LevelScene{
 		cfg:       cfg,
 		res:       res,
 		playerPos: pos,
 		level:     level,
 		timeMs:    0,
-		entities:  []Entity{MakeGhost(v(2000, 150))},
+		entities:  []entities.Entity{elise, entities.MakeGhost(internal.V(2000, 150))},
+		elise:     elise,
 	}
-}
-
-type Ghost struct {
-	pos      pixel.Vec
-	baseLine float64
-}
-
-func (ghost Ghost) Tick(gameTimeMs float64) Entity {
-	return Ghost{
-		pos:      v(ghost.pos.X, ghost.baseLine+math.Sin(gameTimeMs/300.0)*50),
-		baseLine: ghost.baseLine,
-	}
-}
-
-func (ghost Ghost) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
-	return draw.Moved(ghost.pos,
-		draw.Image(*imageMap, internal.IGhost))
-}
-
-func MakeGhost(position pixel.Vec) Entity {
-	return Ghost{pos: position, baseLine: position.Y}
 }
 
 func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
@@ -67,7 +49,7 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 			mapSign := scene.closestMapSign()
 			return MakeMapScene(scene.cfg, scene.res, mapSign.Text)
 		} else {
-			scene.playerPos = scene.playerPos.Add(v(10, 0))
+			scene.playerPos = scene.playerPos.Add(internal.V(10, 0))
 		}
 	}
 	return scene
@@ -109,14 +91,9 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	scene.drawFPS(win)
 }
 
-type Entity interface {
-	GfxOp(imageMap *internal.ImageMap) draw.WinOp
-	Tick(gameTimeMs float64) Entity
-}
-
 func (scene *LevelScene) entityOp() draw.WinOp {
-	var entity Entity = scene.entities[0]
-	return entity.GfxOp(&scene.res.ImageMap)
+	return draw.OpSequence(scene.entities[0].GfxOp(&scene.res.ImageMap),
+		scene.entities[1].GfxOp(&scene.res.ImageMap))
 }
 
 func (scene *LevelScene) mapSymbolOp() draw.WinOp {
@@ -156,7 +133,7 @@ func (scene *LevelScene) backdropOp() draw.ImdOp {
 func (scene *LevelScene) signPostsOp() draw.WinOp {
 	ops := []draw.WinOp{}
 	for _, mapPoint := range scene.level.SignPosts {
-		alignVec := v(0, scene.res.ImageMap[internal.ISignPost].Frame().Center().Y)
+		alignVec := internal.V(0, scene.res.ImageMap[internal.ISignPost].Frame().Center().Y)
 		signPostOp := draw.Moved(mapPoint.Pos, draw.Moved(alignVec,
 			draw.Image(scene.res.ImageMap, internal.ISignPost)))
 		ops = append(ops, signPostOp)
@@ -191,8 +168,8 @@ func (scene *LevelScene) closestMapSign() internal.SignPost {
 }
 
 func (scene *LevelScene) cameraVector() pixel.Vec {
-	halfScreen := v(internal.ScreenWidth/2, internal.ScreenHeight/2)
-	playerHead := v(0, internal.PlayerHeight)
+	halfScreen := internal.V(internal.ScreenWidth/2, internal.ScreenHeight/2)
+	playerHead := internal.V(0, internal.PlayerHeight)
 	cam := scene.playerPos.Sub(halfScreen).Add(playerHead)
 	reversed := cam.Scaled(-1)
 	return reversed
@@ -201,12 +178,14 @@ func (scene *LevelScene) cameraVector() pixel.Vec {
 func (scene *LevelScene) Tick() bool {
 	scene.timeMs += 5.0
 	if scene.leftPressed && !scene.rightPressed {
-		scene.playerPos = scene.playerPos.Add(v(-scene.cfg.LevelSceneMoveSpeed, 0))
+		scene.playerPos = scene.playerPos.Add(internal.V(-scene.cfg.LevelSceneMoveSpeed, 0))
 	}
 	if !scene.leftPressed && scene.rightPressed {
-		scene.playerPos = scene.playerPos.Add(v(scene.cfg.LevelSceneMoveSpeed, 0))
+		scene.playerPos = scene.playerPos.Add(internal.V(scene.cfg.LevelSceneMoveSpeed, 0))
 	}
-	scene.entities[0] = scene.entities[0].Tick(scene.timeMs)
+	for i := range scene.entities {
+		scene.entities[i] = scene.entities[i].Tick(scene.timeMs)
+	}
 	return true
 }
 

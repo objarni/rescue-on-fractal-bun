@@ -18,3 +18,7 @@ func ClosestPoint(vec pixel.Vec, points []pixel.Vec) int {
 func Distance(a pixel.Vec, b pixel.Vec) float64 {
 	return a.Sub(b).Len()
 }
+
+func V(x float64, y float64) pixel.Vec {
+	return pixel.Vec{X: x, Y: y}
+}
