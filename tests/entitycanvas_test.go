@@ -39,7 +39,7 @@ func Test_oneEntityNoOverlapping(t *testing.T) {
 	)
 }
 
-func Test_twoEntityOneOverlap(t *testing.T) {
+func Test_2_Entities_1_EventBox_1_overlap(t *testing.T) {
 	entityCanvas := entities.MakeEntityCanvas()
 	entityCanvas.AddEntityHitBox(entities.EntityHitBox{Entity: 1, HitBox: pixel.Rect{
 		Min: pixel.Vec{0, 0},
@@ -59,7 +59,7 @@ func Test_twoEntityOneOverlap(t *testing.T) {
 	)
 }
 
-func Test_twoEntitiesOneEventBox(t *testing.T) {
+func Test_2_Entities_1_EventBox_2_overlaps(t *testing.T) {
 	entityCanvas := entities.MakeEntityCanvas()
 	entityCanvas.AddEntityHitBox(entities.EntityHitBox{Entity: 1, HitBox: pixel.Rect{
 		Min: pixel.Vec{20, 20},
@@ -79,7 +79,7 @@ func Test_twoEntitiesOneEventBox(t *testing.T) {
 	)
 }
 
-func Test_oneEntityTwoEventBoxes(t *testing.T) {
+func Test_1_Entity_2_EventBoxes_2_overlaps(t *testing.T) {
 	entityCanvas := entities.MakeEntityCanvas()
 	entityCanvas.AddEntityHitBox(entities.EntityHitBox{Entity: 1, HitBox: pixel.Rect{
 		Min: pixel.Vec{20, 20},
@@ -98,11 +98,3 @@ func Test_oneEntityTwoEventBoxes(t *testing.T) {
 		entityCanvas.String(),
 	)
 }
-
-/* notes / test list - general behaviour
-#   adding an entity with a hitbox HB, and an event box that overlaps
-#   adding an entity, and a event box that does not overlap the entity
-#   adding two entities, and a event box, that overlaps only one entity
-#   adding two entities, and a event box that overlaps both entities
-   adding an entity, and two hitboxes HB1, HB2, both overlapping the entity
-*/
