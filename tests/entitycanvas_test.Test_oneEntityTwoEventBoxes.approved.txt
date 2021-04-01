@@ -1,0 +1,6 @@
+Entity 1 is at Rect(20, 20, 30, 30)
+BOOM1 happened at Rect(21, 21, 22, 22)
+BOOM2 happened at Rect(29, 29, 30, 30)
+Consequences:
+- Entity 1 needs to handle BOOM1
+- Entity 1 needs to handle BOOM2
