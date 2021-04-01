@@ -10,6 +10,10 @@ type Elise struct {
 	pos pixel.Vec
 }
 
+func MakeElise(position pixel.Vec) Elise {
+	return Elise{pos: position}
+}
+
 func (elise Elise) Tick(gameTimeMs float64) Entity {
 	return elise
 }
@@ -17,8 +21,4 @@ func (elise Elise) Tick(gameTimeMs float64) Entity {
 func (elise Elise) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 	return draw.Moved(elise.pos,
 		draw.Image(*imageMap, internal.IEliseWalk1))
-}
-
-func MakeElise(position pixel.Vec) Elise {
-	return Elise{pos: position}
 }

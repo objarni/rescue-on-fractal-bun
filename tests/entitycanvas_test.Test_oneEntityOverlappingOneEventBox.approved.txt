@@ -1,0 +1,4 @@
+Entity 1 is at Rect(0, 0, 10, 10)
+ACTION happened at Rect(5, 5, 6, 6)
+Consequences:
+- Entity 1 needs to handle ACTION

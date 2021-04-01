@@ -27,3 +27,9 @@ func (ghost Ghost) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 func MakeGhost(position pixel.Vec) Entity {
 	return Ghost{pos: position, baseLine: position.Y}
 }
+
+/* notes ghost/elise behaviour
+when ghost does overlap elise
+when ghost does not overlap elise
+when ghost overlaps light box
+*/

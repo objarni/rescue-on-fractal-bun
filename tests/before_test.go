@@ -21,7 +21,7 @@ func NewBCompare() reporters.Reporter {
 }
 
 func (s *beyondCompare) Report(approved, received string) bool {
-	cmd := exec.Command("/usr/bin/bcompare", approved, received)
+	cmd := exec.Command("/usr/bin/meld", approved, received)
 	err := cmd.Run()
 	if err != nil {
 		panic(err)
