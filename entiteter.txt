@@ -127,4 +127,23 @@ func (ghost *Ghost) Tick(entitySet *EntitySet, eventBoxes *EventBoxes) bool {
     return true // om denna entitet ska vara kvar eller ej
 }
 
-func (ghost
+När det gäller generella funktionaliteten tror jag approval tests passar bra!
+
+Så här:
+
+entitySystem.AddHitBox(HitBox{EntityId:1, Box:R(...)})
+entitySystem.AddHitBox(HitBox{EntityId:2, Box:R(...)})
+entitySystem.AddEventBox(EventBox("ACTION", R(...)))
+approvals.verify(entitySystem.String())
+
+.. som skulle ge en approval.txt på typ formen
+
+Entity 1 hitbox is at {...}
+Entity 2 hitbox is at {...}
+Event "ACTION" at {...}
+ACTION overlaps entity 1.
+
+Hmm, skulle kunna användas för entiteter också:
+
+elise.HandleKey(Action, entitySystem)
+verify(entitySystem.print())
