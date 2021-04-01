@@ -1,0 +1,130 @@
+Entiteter och interaktion dem emellan i Rescue
+++++++++++++++++++++++++++++++++++++++++++++++
+
+Jag utgår ifrån de entiteter som finns på
+GhostForest, och ser till att 'systemet'
+är tillräckligt generellt för att fungera
+där, och undviker att göra det mer flexibelt
+än så!
+
+Så här är interaktionen beskriven på svenska:
+
+- om Elise rör vid ett spöke (som syns),
+  förlorar hon kraft (och eventuellt
+  hamnar i senaste mapsign om kraften når 0)
+- det kan dyka upp "träffpartiklar" mot
+  spöket också, typ lite damm eller annat
+  symboliskt a la serietidningar. Inte strikt 
+  nödvändigt i just denna bana, men absolut
+  nödvändigt i spelet (det ska alltså gå att
+  lägga till / ta bort entiteter)
+- om Elise trycker på en knapp (Action key),
+  tänds motsvarande streetlight
+- om Elise trycker Action i närheten av en
+  MapSign, byts scen till kartan
+
+Matematiskt kan allt detta hanteras av
+rektangelkollissioner!
+
+Men hur organiseras?
+
+Vad vill jag undvika?
+- långa kompileringstider / cykeltider
+- störiga "dependency chain" problem (som jag redan stött på!) d.v.s loose coupling
+
+Vad vill jag ha istället?
+- enhetstestbara entiteter
+- gärna PureScript!
+
+Features
+- entiteter ska kunna lägga nya entiteter
+ Ex: Elise träffar Ghost, och ett litet dammoln
+   animeras
+- entiteter ska kunna ta bort sig själva
+ Ex:
+   damm-molnet försvinner när det animerats klart
+- entiteter ska kunna "meddela" något
+  till annan entiterer
+   en knapp trycks och tänder eller släcker
+   ett ljus
+
+Frågetecken
+1. Hur "vet" Elise och Ghost att de träffar varandra?
+ Fel svar: de har referens till varandra / kan läsa av hela världen.
+2. Hur "vet" en knapp vilken lampa den tänder/släcker, och hur gör de den det?
+ Fel svar: referenser
+
+Tänk om ...
+Det är scenens uppgift att reda ut om saker kolliderar, genom
+att entiteter själva vet sin collission rektangel, och "typ".
+Och när scenen upptäcker en kollission, så får *båda* entiteterna
+reda på detta och reder ut det själva. Så här:
+
+Exempel ghost<->elise
+Ghost1 har en rektangel R1.
+Elise har en rektangel R2.
+LevelScene upptäcker att R1 och R2 överlappar, och ger
+Elise och Ghost följande meddelanden:
+  elise.HitBy("Ghost", R1)
+  ghost.HitBy("Elise", R2)
+  
+Konsekvenser:
+  Varje entiteter har möjlighet att reagera när det behövs (ingen
+  kollissionskod i entiteter), och välja hur de reagerar per annan
+  entitetstyp.
+  Elise kommer behöva mycket HitBy-kod! :)
+  De flesta andra entiteter kommer ha mycket lite HitBy-kod.
+
+Exempel elise<->button
+  elise.HitBy("Button", R3)
+  
+Försök 2
+========
+"Event rectangles". Entiteter kan skicka ut, från Tick,
+"Event rectangles". En event rectangle består av en rektangel,
+samt en sträng. T.ex. när Elise gör Action, skickar hon ut
+{"Action", R}. Och Ghost skickar ut {"Hitzone", R} varje tick.
+Alla entiteter, som skär rektangeln, får denna ER:
+   entity.HandleEventRectangle(ER)
+
+Detta betyder att entiteter har en "event inbox", som anger
+var de berörs av event rektangles.
+
+Det löser inte button->streelight, dock. Eller, det skulle
+kunna fungera om buttons skapar en stor ER, och/eller street-
+lights har en stor inbox, och bandesignen är sådan att
+dessa bara skärs av sådana som kontrolleras. Fast då blir det
+en kill-your-darling av associationen mellan button och streelight!
+
+Och det är inte en lösning som håller för långväga knappmekanismer.
+
+MEN: det är good enough for now, tänker jag!
+
+En liten detalj. Elise Action sker i HandleKeyDown, men alla andra
+entiteter skapar sina event boxes i Tick. Antingen får jag leva
+med mer state i Elise (doAction bool) eller att även HandleKeyDown
+tar emot "EB/ER" mottagaren. Eftersom Elise är den enda entiteten
+med HandleKeyDown/Up så känns det inte så viktigt vilket det blir...
+
+Vad kan jag enhetstesta av detta?
+Generellt:
+- den generella inbox vs event box kollissionen
+- entiteter som skapar nya entiteter?
+- entiteter som tar bort sig själva
+Specifikt:
+- att elise skapar action eb efter action key, på rätt position
+- att ghost skapar hitzone varje tick på sin position
+- att elise kraft minskar vid träff av hitzone
+
+Känns ganska bra måste jag säga.
+
+Hur skapa nya entiteter?
+Enklast är ju om Tick tar emot en DI kring entitetskapande:
+
+func (ghost *Ghost) Tick(entitySet *EntitySet, eventBoxes *EventBoxes) bool {
+    entities.Spawn(EDust, V(...), FacingRight)
+    eventBoxes.Add(HitZone, R(...))
+    return true // om denna entitet ska vara kvar eller ej
+}
+
+func (ghost
