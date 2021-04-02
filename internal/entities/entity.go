@@ -8,4 +8,5 @@ import (
 type Entity interface {
 	GfxOp(imageMap *internal.ImageMap) draw.WinOp
 	Tick(gameTimeMs float64) Entity
+	HitBox() EntityHitBox
 }

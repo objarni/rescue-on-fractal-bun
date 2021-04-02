@@ -66,7 +66,7 @@ func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 }
 
 func (scene *LevelScene) Render(win *pixelgl.Window) {
-	// TODO: if player cannot see past level limists,
+	// TODO: if player cannot see past level limits,
 	// this clear is not needed (camera like WonderBoy)
 	win.Clear(colornames.Yellow50)
 
@@ -82,6 +82,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 				draw.TileLayer(scene.level.TilepixMap, "Objects"),
 				scene.entitiesOp(scene.timeMs),
 				draw.Color(colornames.Black, draw.TileLayer(scene.level.TilepixMap, "Foreground")),
+				scene.debugGfx(),
 			),
 		),
 		scene.mapSymbolOp(),
@@ -89,6 +90,23 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	gfx.Render(pixel.IM, win)
 
 	scene.drawFPS(win)
+}
+
+/*
+annoyances with draw.*
+- color/colored
+- Coordinate
+- draw.
+- intellisense confusion between structs and funcs
+*/
+func (scene *LevelScene) debugGfx() draw.WinOp {
+	rectangles := []draw.ImdOp{}
+	for _, entity := range scene.entities {
+		r := entity.HitBox().HitBox
+		rectangles = append(rectangles, draw.Rectangle(C(r.Min), C(r.Max), 2))
+	}
+	color := draw.Colored(colornames.White, draw.ImdOpSequence(rectangles...))
+	return draw.OpSequence(draw.ToWinOp(color))
 }
 
 func (scene *LevelScene) entityOp() draw.WinOp {

@@ -12,6 +12,13 @@ type Ghost struct {
 	baseLine float64
 }
 
+func (ghost Ghost) HitBox() EntityHitBox {
+	return EntityHitBox{
+		Entity: 1,
+		HitBox: pixel.Rect{},
+	}
+}
+
 func (ghost Ghost) Tick(gameTimeMs float64) Entity {
 	return Ghost{
 		pos:      internal.V(ghost.pos.X, ghost.baseLine+math.Sin(gameTimeMs/300.0)*50),
