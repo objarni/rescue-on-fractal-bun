@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
@@ -10,11 +11,26 @@ import (
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/scenes"
 	"os"
+	"runtime/pprof"
 	"time"
 	"unicode"
 )
 
+var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
+var startlevel = flag.String("level", "", "start at specified game level")
+
 func run() {
+
+	flag.Parse()
+	if *cpuprofile != "" {
+		f, err := os.Create(*cpuprofile)
+		if err != nil {
+			panic(err)
+		}
+		pprof.StartCPUProfile(f)
+		defer pprof.StopCPUProfile()
+	}
+
 	cfg := scenes.TryReadCfgFrom(internal.ConfigFile, scenes.Config{})
 	info, err := os.Stat(internal.ConfigFile)
 	internal.PanicIfError(err)
@@ -25,19 +41,12 @@ func run() {
 
 	// Initial scene - depends on --level cmd line arg!
 	var scene internal.Thing
-	if len(os.Args) == 1 {
-		scene = scenes.MakeMenuScene(&cfg, &res)
+	if *startlevel != "" {
+		levelName := startlevel
+		fmt.Println("Loading level:", *levelName)
+		scene = scenes.MakeLevelScene(&cfg, &res, *levelName)
 	} else {
-		argsWithoutProg := os.Args[1:]
-		if argsWithoutProg[0] == "--level" {
-			// TODO: parameterize on level arg!
-			levelName := argsWithoutProg[1]
-			fmt.Println("Loading level:", levelName)
-			scene = scenes.MakeLevelScene(&cfg, &res, levelName)
-		} else {
-			fmt.Printf("Unknown cmd.line arg: %v\n", argsWithoutProg)
-			panic("Don't understand cmd.line")
-		}
+		scene = scenes.MakeMenuScene(&cfg, &res)
 	}
 
 	win, err := pixelgl.NewWindow(pixelgl.WindowConfig{
