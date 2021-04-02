@@ -24,7 +24,7 @@ type LevelScene struct {
 
 func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *LevelScene {
 	level := res.Levels[levelName]
-	pos := level.SignPosts[0].Pos
+	pos := level.SignPosts[0].Pos.Add(pixel.V(0, -50))
 	elise := entities.MakeElise(pos)
 	return &LevelScene{
 		cfg:       cfg,
