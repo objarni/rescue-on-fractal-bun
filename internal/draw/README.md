@@ -4,6 +4,16 @@ Features left TODO
 - ScaleOp (Is this really needed? Menu screen can use larger font instead...)
 - MirrorOp (at least along vertical axis)
 
+/*
+annoyances with draw.*
+- color/colored
+[x] color takes RGBA instead of Color interface
+- Coordinate
+- draw.
+- intellisense confusion between structs and funcs
+  (how avoid without hiding something from tests?)
+  */
+
 Potential improvements
 
 This little 'internal library' called draw is starting to look good, however there are some warts I'd like to improve upon:

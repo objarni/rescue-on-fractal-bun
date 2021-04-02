@@ -93,13 +93,6 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	scene.drawFPS(win)
 }
 
-/*
-annoyances with draw.*
-- color/colored
-- Coordinate
-- draw.
-- intellisense confusion between structs and funcs
-*/
 func (scene *LevelScene) debugGfx() draw.WinOp {
 	rectangles := []draw.ImdOp{}
 	for _, entity := range scene.entities {
