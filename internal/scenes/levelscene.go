@@ -208,7 +208,7 @@ func (scene *LevelScene) Tick() bool {
 }
 
 func (scene *LevelScene) entitiesOp(timeMs float64) draw.WinOp {
-	return draw.OpSequence(scene.playerOp(scene.timeMs/1000.0), scene.entityOp())
+	return draw.OpSequence(scene.playerOp(timeMs/1000.0), scene.entityOp())
 }
 
 /*
