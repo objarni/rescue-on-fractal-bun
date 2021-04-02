@@ -143,7 +143,7 @@ func Example_movedImageWinOp() {
 func Example_colorImageWinOp() {
 	fmt.Println(Color(colornames.Red, Image(nil, internal.IMap)).String())
 	// Output:
-	// Color 255, 0, 0:
+	// Color {255 0 0 255}:
 	//   Image "IMap"
 }
 
@@ -154,8 +154,8 @@ func Example_sequencedWinOps() {
 	fmt.Println(sequence.String())
 	// Output:
 	// WinOp Sequence:
-	//   Color 255, 0, 0:
+	//   Color {255 0 0 255}:
 	//     Image "IMap"
-	//   Color 255, 255, 0:
+	//   Color {255 255 0 255}:
 	//     Image "IGhost"
 }

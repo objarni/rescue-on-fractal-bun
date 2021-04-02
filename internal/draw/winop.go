@@ -136,7 +136,7 @@ func Image(imageMap map[internal.Image]*pixel.Sprite, imageName internal.Image) 
 }
 
 type ColorOp struct {
-	color color.RGBA
+	color color.Color
 	winOp WinOp
 }
 
@@ -145,8 +145,7 @@ func (colorOp ColorOp) String() string {
 }
 
 func (color ColorOp) Lines() []string {
-	head := fmt.Sprintf("Color %v, %v, %v:",
-		color.color.R, color.color.G, color.color.B)
+	head := fmt.Sprintf("Color %v:", color.color)
 	body := color.winOp.Lines()
 	return headerWithIndentedBody(head, body)
 }
