@@ -13,7 +13,7 @@
    viewBox="0 0 210 297"
    version="1.1"
    id="svg8"
-   inkscape:version="1.0.1 (0767f8302a, 2020-10-17)"
+   inkscape:version="1.0.2 (394de47547, 2021-03-26)"
    sodipodi:docname="elise-walk.svg">
   <defs
      id="defs2">
@@ -57,6 +57,32 @@
          style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffff00;fill-opacity:0.505044;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
          d="m 86.010218,-5098.3216 c 0.546561,19.5715 26.946192,18.0573 38.303742,22.2819 8.58454,-0.5715 17.49845,2.9017 23.02828,-2.5477 5.45382,-2.9739 8.20922,-12.0049 7.45477,-28.915 0.56682,-13.7758 -1.39728,-17.8395 -3.21493,-22.4655 l 4.00454,-32.1701 c -4.85928,-8.9686 0.63653,-19.5025 -18.24773,-26.3512 l -17.37664,2.5884 c -6.41718,9.6422 -6.25986,13.036 -7.91462,18.152 l -20.176047,4.7778 c -3.699629,4.8583 -5.9909,10.8982 -3.679883,20.8008 3.235558,4.4966 6.4384,8.9932 15.64134,13.4898 l 15.27158,-3.0634 -3.31871,14.0944 c -15.6758,-1.4954 -18.768403,1.5446 -23.300507,5.402 -4.131627,2.5368 -4.791265,8.7778 -6.475185,13.9258 z m -10.863045,-28.8655 2.222788,61.7858 c -0.236215,10.9315 -0.916032,21.1685 -12.160504,14.8679 -18.305484,-2.2431 -62.679455,-28.9755 -105.006907,-58.4295 -13.835285,-13.7623 -4.375158,-20.6078 2.187551,-28.3138 40.0632969,-37.1549 62.580764,-49.5131 91.052973,-70.2871 12.241797,1.0678 19.529642,8.7082 19.934875,25.4807 z m -107.304936,92.0713 c -9.550024,7.5716 -32.119199,4.5397 -64.348741,5.3454 -19.652626,0.491 -36.029296,-1.1777 -53.678216,-15.0755 -49.13013,-25.0465 -39.90864,-44.9728 -49.61897,-66.5604 1.4865,-52.5613 21.43126,-68.7475 43.97046,-79.8208 l 22.81311,-15.1247 c 14.83602,1.8934 17.38679,11.987 20.34778,21.8067 37.790677,5.6431 56.649994,21.7432 58.686987,47.1358 -0.446151,14.5158 4.766305,31.5092 -4.535715,42.1473 14.403824,-1.7131 31.167559,-5.507 31.916933,4.817 5.458296,38.1466 2.271019,49.828 -5.553628,55.3292 z" />
     </clipPath>
+    <pattern
+       patternUnits="userSpaceOnUse"
+       width="3456.0001"
+       height="4607.9998"
+       patternTransform="translate(11888.563,-1559.0637)"
+       id="pattern79">
+      <image
+         sodipodi:absref="/home/olof/repos/github/rescue-on-fractal-bun/assets/sketches/elise-crouch.jpg"
+         xlink:href="elise-crouch.jpg"
+         width="4608"
+         height="3456"
+         preserveAspectRatio="none"
+         id="image75"
+         x="0"
+         y="-3456"
+         transform="rotate(90)" />
+    </pattern>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1868">
+      <path
+         style="opacity:0.4755;fill:#ff00ff;stroke:#000000;stroke-width:0.999999px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 13289.448,359.5471 c -29.742,-199.29721 62.288,-286.28824 137.149,-404.290755 155.362,-164.594875 388.476,-189.908245 489.986,-136.274895 160.845,88.257188 210.004,212.15339 224.921,349.3595 -8.075,112.19705 -50.856,97.0352 -86.931,106.48519 l -30.327,-9.53775 c -65.563,52.48857 -39.07,124.42716 -241.301,148.03958 102.291,109.72551 159.639,265.36785 207.77,377.1795 -20.012,46.60891 -50.636,99.64026 -151.233,74.21156 l -44.701,-3.31491 c -6.615,94.52303 -25.541,86.82285 -40.688,110.50102 27.444,22.10102 76.439,109.86216 33.602,150.07036 -30.711,18.5421 -63.597,29.8494 -100.926,26.3846 -34.536,-9.6108 -67.556,-30.833 -99.519,-60.1531 -15.144,20.6449 -15.306,44.8571 -85.245,52.4545 -106.556,-45.5503 -131.049,-84.9867 -167.233,-125.294 -25.182,-57.16042 -15.807,-66.36739 27.506,-90.58218 37.79,-77.13804 45.56,-64.80839 79.439,-93.88233 -54.542,15.95104 -84.031,0.62113 -121.249,-10.88848 -56.524,-32.67704 -34.382,-40.3649 -28.261,-74.75444 18.05,-24.95513 191.673,-314.65588 299.93,-392.41412 l -37.139,-19.45271 c -32.604,66.67347 -62.311,106.06922 -87.106,99.20586 -75.126,-20.10217 -165.862,-37.67381 -178.444,-73.052 z"
+         id="path1870"
+         sodipodi:nodetypes="cccccccccccccccccccccccc" />
+    </clipPath>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -65,17 +91,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.030935922"
-     inkscape:cx="9637.7402"
-     inkscape:cy="-3555.3827"
+     inkscape:zoom="0.12374369"
+     inkscape:cx="12902.291"
+     inkscape:cy="-1073.6992"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1515"
      inkscape:window-height="1199"
-     inkscape:window-x="433"
-     inkscape:window-y="60"
+     inkscape:window-x="357"
+     inkscape:window-y="103"
      inkscape:window-maximized="0"
      inkscape:snap-global="false" />
   <metadata
@@ -90,6 +116,23 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="rectangles"
+     style="opacity:0">
+    <rect
+       style="opacity:0.4755;fill:#ff00ff;fill-opacity:0.505044;stroke:#000000;stroke-width:0.247069px;paint-order:stroke fill markers;stop-color:#000000"
+       id="rect1817"
+       width="289.06818"
+       height="407.92639"
+       x="3466.0442"
+       y="-101.22249"
+       ry="3.952107"
+       inkscape:export-filename="/home/olof/repos/github/rescue-on-fractal-bun/assets/TEliseCrouch.png"
+       inkscape:export-xdpi="6.2228446"
+       inkscape:export-ydpi="6.2228446" />
+  </g>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
@@ -172,5 +215,15 @@
        x="-486.87595"
        y="-5576.6006"
        transform="matrix(0,1.1136073,-1.1136073,0,-2893.7097,124.64995)" />
+    <path
+       id="rect82"
+       style="fill:url(#pattern79);stroke:none"
+       transform="scale(0.26458333)"
+       d="m 12959.672,-606.50021 1510.835,56.75055 V 1678.694 l -1510.835,-56.7506 z"
+       sodipodi:nodetypes="ccccc"
+       clip-path="url(#clipPath1868)"
+       inkscape:export-filename="/home/olof/repos/github/rescue-on-fractal-bun/assets/TEliseCrouch.png"
+       inkscape:export-xdpi="6"
+       inkscape:export-ydpi="6" />
   </g>
 </svg>
