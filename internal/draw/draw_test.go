@@ -52,7 +52,7 @@ func ExampleColor() {
 	//   Circle radius 3 center <1, 2> thickness 4
 }
 
-func ExampleImdOpSequence() {
+func Example_imdOpSequence() {
 	circle := Circle(25, C(50, 100), 2)
 	smallCircle := Circle(3, C(1, 2), 4)
 	fmt.Println(ImdOpSequence(circle, smallCircle).String())
