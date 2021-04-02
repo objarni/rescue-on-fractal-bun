@@ -170,6 +170,7 @@ func loadResources() internal.Resources {
 		internal.IEliseWalk4:           internal.LoadSpriteForSure("assets/TEliseWalk4.png"),
 		internal.IEliseWalk5:           internal.LoadSpriteForSure("assets/TEliseWalk5.png"),
 		internal.IEliseWalk6:           internal.LoadSpriteForSure("assets/TEliseWalk6.png"),
+		internal.IEliseCrouch:          internal.LoadSpriteForSure("assets/TEliseCrouch.png"),
 	}
 	if len(res.ImageMap) < int(internal.AfterLastImage) {
 		panic("Expect one image loaded per map item")

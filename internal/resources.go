@@ -32,6 +32,7 @@ const (
 	IEliseWalk4
 	IEliseWalk5
 	IEliseWalk6
+	IEliseCrouch
 	AfterLastImage
 )
 
@@ -48,6 +49,7 @@ func (image Image) String() string {
 		"IEliseWalk4",
 		"IEliseWalk5",
 		"IEliseWalk6",
+		"IEliseCrouch",
 		"AfterLastImage",
 	}[image]
 }
