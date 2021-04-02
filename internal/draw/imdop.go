@@ -95,7 +95,7 @@ func (rectangle ImdRectangle) Lines() []string {
 }
 
 type ImdColor struct {
-	color     color.RGBA
+	color     color.Color
 	Operation ImdOp
 }
 
@@ -109,7 +109,7 @@ func (color ImdColor) Render(imd *imdraw.IMDraw) {
 	color.Operation.Render(imd)
 }
 
-func Colored(color color.RGBA, imdOp ImdOp) ImdOp {
+func Colored(color color.Color, imdOp ImdOp) ImdOp {
 	return ImdColor{
 		color:     color,
 		Operation: imdOp,
@@ -117,8 +117,7 @@ func Colored(color color.RGBA, imdOp ImdOp) ImdOp {
 }
 
 func (color ImdColor) Lines() []string {
-	head := fmt.Sprintf("Color %v, %v, %v:",
-		color.color.R, color.color.G, color.color.B)
+	head := fmt.Sprintf("Color %v:", color.color)
 	body := color.Operation.Lines()
 	return headerWithIndentedBody(head, body)
 }

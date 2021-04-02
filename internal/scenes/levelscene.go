@@ -5,6 +5,7 @@ import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
+	"github.com/lucasb-eyer/go-colorful"
 	"golang.org/x/exp/shiny/materialdesign/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/draw"
@@ -105,7 +106,7 @@ func (scene *LevelScene) debugGfx() draw.WinOp {
 		r := entity.HitBox().HitBox
 		rectangles = append(rectangles, draw.Rectangle(C(r.Min), C(r.Max), 2))
 	}
-	color := draw.Colored(colornames.White, draw.ImdOpSequence(rectangles...))
+	color := draw.Colored(colorful.HappyColor(), draw.ImdOpSequence(rectangles...))
 	return draw.OpSequence(draw.ToWinOp(color))
 }
 
