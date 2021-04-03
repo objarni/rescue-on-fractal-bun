@@ -33,12 +33,13 @@ func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *Lev
 		playerPos: pos,
 		level:     level,
 		timeMs:    0,
-		entities:  []entities.Entity{elise, entities.MakeGhost(internal.V(2000, 150))},
+		entities:  []entities.Entity{entities.MakeGhost(internal.V(2000, 150))},
 		elise:     elise,
 	}
 }
 
 func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
+	scene.elise = scene.elise.HandleKeyDown(key)
 	if key == internal.Left {
 		scene.leftPressed = true
 	}
@@ -57,6 +58,7 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 }
 
 func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
+	scene.elise = scene.elise.HandleKeyUp(key)
 	if key == internal.Left {
 		scene.leftPressed = false
 	}
@@ -90,7 +92,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	)
 	gfx.Render(pixel.IM, win)
 
-	scene.drawFPS(win)
+	//scene.drawFPS(win)
 }
 
 func (scene *LevelScene) debugGfx() draw.WinOp {
@@ -105,7 +107,7 @@ func (scene *LevelScene) debugGfx() draw.WinOp {
 
 func (scene *LevelScene) entityOp() draw.WinOp {
 	return draw.OpSequence(scene.entities[0].GfxOp(&scene.res.ImageMap),
-		scene.entities[1].GfxOp(&scene.res.ImageMap))
+		scene.elise.GfxOp(&scene.res.ImageMap))
 }
 
 func (scene *LevelScene) mapSymbolOp() draw.WinOp {
@@ -198,6 +200,7 @@ func (scene *LevelScene) Tick() bool {
 	for i := range scene.entities {
 		scene.entities[i] = scene.entities[i].Tick(scene.timeMs)
 	}
+	scene.elise = scene.elise.Tick(scene.timeMs)
 	return true
 }
 
