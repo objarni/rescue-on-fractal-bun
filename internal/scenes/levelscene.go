@@ -184,19 +184,19 @@ func (scene *LevelScene) closestMapSign() internal.SignPost {
 func (scene *LevelScene) cameraVector() pixel.Vec {
 	halfScreen := internal.V(internal.ScreenWidth/2, internal.ScreenHeight/2)
 	playerHead := internal.V(0, internal.PlayerHeight)
-	cam := scene.playerPos.Sub(halfScreen).Add(playerHead)
+	cam := scene.elise.Pos.Sub(halfScreen).Add(playerHead)
 	reversed := cam.Scaled(-1)
 	return reversed
 }
 
 func (scene *LevelScene) Tick() bool {
 	scene.timeMs += 5.0
-	if scene.leftPressed && !scene.rightPressed {
-		scene.playerPos = scene.playerPos.Add(internal.V(-scene.cfg.LevelSceneMoveSpeed, 0))
-	}
-	if !scene.leftPressed && scene.rightPressed {
-		scene.playerPos = scene.playerPos.Add(internal.V(scene.cfg.LevelSceneMoveSpeed, 0))
-	}
+	//if scene.leftPressed && !scene.rightPressed {
+	//	scene.playerPos = scene.playerPos.Add(internal.V(-scene.cfg.LevelSceneMoveSpeed, 0))
+	//}
+	//if !scene.leftPressed && scene.rightPressed {
+	//	scene.playerPos = scene.playerPos.Add(internal.V(scene.cfg.LevelSceneMoveSpeed, 0))
+	//}
 	for i := range scene.entities {
 		scene.entities[i] = scene.entities[i].Tick()
 	}

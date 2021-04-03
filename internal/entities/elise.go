@@ -10,13 +10,13 @@ const eliseWidth = 20.0
 const eliseHeight = 100.0
 
 type Elise struct {
-	pos                       pixel.Vec
+	Pos                       pixel.Vec
 	leftPressed, rightPressed bool
 }
 
 func (elise Elise) HitBox() EntityHitBox {
-	min := elise.pos.Add(pixel.V(-eliseWidth/2, 0))
-	max := elise.pos.Add(pixel.V(eliseWidth/2, eliseHeight))
+	min := elise.Pos.Add(pixel.V(-eliseWidth/2, 0))
+	max := elise.Pos.Add(pixel.V(eliseWidth/2, eliseHeight))
 	return EntityHitBox{
 		Entity: 2,
 		HitBox: pixel.Rect{min, max},
@@ -24,17 +24,17 @@ func (elise Elise) HitBox() EntityHitBox {
 }
 
 func MakeElise(position pixel.Vec) Elise {
-	elise := Elise{pos: position}
+	elise := Elise{Pos: position}
 	return elise
 }
 
 func (elise Elise) Tick() Elise {
 	eliseMoveSpeed := 1.2
 	if elise.leftPressed && !elise.rightPressed {
-		elise.pos = elise.pos.Add(internal.V(-eliseMoveSpeed, 0))
+		elise.Pos = elise.Pos.Add(internal.V(-eliseMoveSpeed, 0))
 	}
 	if !elise.leftPressed && elise.rightPressed {
-		elise.pos = elise.pos.Add(internal.V(eliseMoveSpeed, 0))
+		elise.Pos = elise.Pos.Add(internal.V(eliseMoveSpeed, 0))
 	}
 	return elise
 }
@@ -60,6 +60,6 @@ func (elise Elise) HandleKeyUp(key internal.ControlKey) Elise {
 }
 
 func (elise Elise) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
-	return draw.Moved(elise.pos.Add(pixel.V(0, eliseHeight/2)),
-		draw.Image(*imageMap, internal.IEliseCrouch))
+	return draw.Moved(elise.Pos.Add(pixel.V(0, eliseHeight/2)),
+		draw.Image(*imageMap, internal.IEliseWalk1))
 }
