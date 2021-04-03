@@ -198,9 +198,9 @@ func (scene *LevelScene) Tick() bool {
 		scene.playerPos = scene.playerPos.Add(internal.V(scene.cfg.LevelSceneMoveSpeed, 0))
 	}
 	for i := range scene.entities {
-		scene.entities[i] = scene.entities[i].Tick(scene.timeMs)
+		scene.entities[i] = scene.entities[i].Tick()
 	}
-	scene.elise = scene.elise.Tick(scene.timeMs)
+	scene.elise = scene.elise.Tick()
 	return true
 }
 

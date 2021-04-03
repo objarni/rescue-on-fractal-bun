@@ -28,7 +28,7 @@ func MakeElise(position pixel.Vec) Elise {
 	return elise
 }
 
-func (elise Elise) Tick(gameTimeMs float64) Elise {
+func (elise Elise) Tick() Elise {
 	eliseMoveSpeed := 1.2
 	if elise.leftPressed && !elise.rightPressed {
 		elise.pos = elise.pos.Add(internal.V(-eliseMoveSpeed, 0))

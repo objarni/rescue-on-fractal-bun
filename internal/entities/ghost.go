@@ -11,8 +11,9 @@ const ghostWidth = 50
 const ghostHeight = 125
 
 type Ghost struct {
-	pos      pixel.Vec
-	baseLine float64
+	pos        pixel.Vec
+	baseLine   float64
+	gameTimeMs float64
 }
 
 func (ghost Ghost) HitBox() EntityHitBox {
@@ -24,9 +25,10 @@ func (ghost Ghost) HitBox() EntityHitBox {
 	}
 }
 
-func (ghost Ghost) Tick(gameTimeMs float64) Entity {
+func (ghost Ghost) Tick() Entity {
+	ghost.gameTimeMs += internal.TickTimeMs
 	return Ghost{
-		pos:      internal.V(ghost.pos.X, ghost.baseLine+math.Sin(gameTimeMs/300.0)*50),
+		pos:      internal.V(ghost.pos.X, ghost.baseLine+math.Sin(ghost.gameTimeMs/300.0)*50),
 		baseLine: ghost.baseLine,
 	}
 }

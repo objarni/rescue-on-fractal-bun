@@ -7,7 +7,6 @@ import (
 
 type Entity interface {
 	GfxOp(imageMap *internal.ImageMap) draw.WinOp
-	// TODO: remove gameTimeMs, ticks are constant!
-	Tick(gameTimeMs float64) Entity
+	Tick() Entity
 	HitBox() EntityHitBox
 }
