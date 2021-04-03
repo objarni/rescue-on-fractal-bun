@@ -16,21 +16,33 @@ type Ghost struct {
 	gameTimeMs float64
 }
 
+func (ghost Ghost) Handle(eb EventBox) Entity {
+	return ghost
+}
+
 func (ghost Ghost) HitBox() EntityHitBox {
-	min := ghost.pos.Add(pixel.V(-ghostWidth/2, 0))
-	max := ghost.pos.Add(pixel.V(ghostWidth/2, ghostHeight))
+	rect := ghost.ghostRectangle()
 	return EntityHitBox{
-		Entity: 1,
-		HitBox: pixel.Rect{min, max},
+		Entity: 0,
+		HitBox: rect,
 	}
 }
 
-func (ghost Ghost) Tick() Entity {
+func (ghost Ghost) ghostRectangle() pixel.Rect {
+	min := ghost.pos.Add(pixel.V(-ghostWidth/2, 0))
+	max := ghost.pos.Add(pixel.V(ghostWidth/2, ghostHeight))
+	rect := pixel.Rect{min, max}
+	return rect
+}
+
+func (ghost Ghost) Tick(receiver EventBoxReceiver) Entity {
+	receiver.AddEventBox(EventBox{
+		Event: "DAMAGE",
+		Box:   ghost.ghostRectangle(),
+	})
 	ghost.gameTimeMs += internal.TickTimeMs
-	return Ghost{
-		pos:      internal.V(ghost.pos.X, ghost.baseLine+math.Sin(ghost.gameTimeMs/300.0)*50),
-		baseLine: ghost.baseLine,
-	}
+	ghost.pos = internal.V(ghost.pos.X, ghost.baseLine+math.Sin(ghost.gameTimeMs/300.0)*50)
+	return ghost
 }
 
 func (ghost Ghost) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
@@ -39,7 +51,7 @@ func (ghost Ghost) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 }
 
 func MakeGhost(position pixel.Vec) Entity {
-	return Ghost{pos: position, baseLine: position.Y}
+	return Ghost{pos: position, baseLine: position.Y, gameTimeMs: 0}
 }
 
 /* notes ghost/elise behaviour

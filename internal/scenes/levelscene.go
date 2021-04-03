@@ -5,7 +5,6 @@ import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
-	"github.com/lucasb-eyer/go-colorful"
 	"golang.org/x/exp/shiny/materialdesign/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/draw"
@@ -21,6 +20,7 @@ type LevelScene struct {
 	timeMs                    float64
 	entities                  []entities.Entity
 	elise                     entities.Elise
+	entityCanvas              entities.EntityCanvas
 }
 
 func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *LevelScene {
@@ -28,13 +28,14 @@ func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *Lev
 	pos := level.SignPosts[0].Pos.Add(pixel.V(0, -50))
 	elise := entities.MakeElise(pos)
 	return &LevelScene{
-		cfg:       cfg,
-		res:       res,
-		playerPos: pos,
-		level:     level,
-		timeMs:    0,
-		entities:  []entities.Entity{entities.MakeGhost(internal.V(2000, 150))},
-		elise:     elise,
+		cfg:          cfg,
+		res:          res,
+		playerPos:    pos,
+		level:        level,
+		timeMs:       0,
+		entities:     []entities.Entity{entities.MakeGhost(internal.V(2000, 150))},
+		elise:        elise,
+		entityCanvas: entities.MakeEntityCanvas(),
 	}
 }
 
@@ -99,10 +100,15 @@ func (scene *LevelScene) debugGfx() draw.WinOp {
 	rectangles := []draw.ImdOp{}
 	for _, entity := range scene.entities {
 		r := entity.HitBox().HitBox
-		rectangles = append(rectangles, draw.Rectangle(C(r.Min), C(r.Max), 2))
+		rectangles = append(rectangles, rectDrawOp(r))
 	}
-	color := draw.Colored(colorful.HappyColor(), draw.ImdOpSequence(rectangles...))
+	rectangles = append(rectangles, rectDrawOp(scene.elise.HitBox().HitBox))
+	color := draw.Colored(colornames.White, draw.ImdOpSequence(rectangles...))
 	return draw.OpSequence(draw.ToWinOp(color))
+}
+
+func rectDrawOp(r pixel.Rect) draw.ImdOp {
+	return draw.Rectangle(C(r.Min), C(r.Max), 2)
 }
 
 func (scene *LevelScene) entityOp() draw.WinOp {
@@ -190,17 +196,27 @@ func (scene *LevelScene) cameraVector() pixel.Vec {
 }
 
 func (scene *LevelScene) Tick() bool {
+	// Handle event boxes from previous tick first of all
+	scene.entityCanvas.Consequences(func(eb entities.EventBox, box entities.EntityHitBox) {
+		id := box.Entity
+		fmt.Printf("%v will handle %v\n", id, eb.Event)
+		// Elise?
+		if id == -1 {
+			scene.elise = scene.elise.Handle(eb)
+		} else {
+			scene.entities[id] = scene.entities[id].Handle(eb)
+		}
+		// Otherwise, ordinary entity
+	})
+	// Reset the canvas
+	scene.entityCanvas = entities.MakeEntityCanvas()
 	scene.timeMs += 5.0
-	//if scene.leftPressed && !scene.rightPressed {
-	//	scene.playerPos = scene.playerPos.Add(internal.V(-scene.cfg.LevelSceneMoveSpeed, 0))
-	//}
-	//if !scene.leftPressed && scene.rightPressed {
-	//	scene.playerPos = scene.playerPos.Add(internal.V(scene.cfg.LevelSceneMoveSpeed, 0))
-	//}
-	for i := range scene.entities {
-		scene.entities[i] = scene.entities[i].Tick()
-	}
 	scene.elise = scene.elise.Tick()
+	scene.entityCanvas.AddEntityHitBox(scene.elise.HitBox())
+	for i := range scene.entities {
+		scene.entities[i] = scene.entities[i].Tick(&scene.entityCanvas)
+		scene.entityCanvas.AddEntityHitBox(scene.entities[i].HitBox())
+	}
 	return true
 }
 

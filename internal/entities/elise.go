@@ -14,11 +14,12 @@ type Elise struct {
 	leftPressed, rightPressed bool
 }
 
+// TODO: The HitBox API could just return Rect simply
 func (elise Elise) HitBox() EntityHitBox {
 	min := elise.Pos.Add(pixel.V(-eliseWidth/2, 0))
 	max := elise.Pos.Add(pixel.V(eliseWidth/2, eliseHeight))
 	return EntityHitBox{
-		Entity: 2,
+		Entity: -1, // TODO: entities need not know their ID, levelscenes concern
 		HitBox: pixel.Rect{min, max},
 	}
 }
@@ -62,4 +63,11 @@ func (elise Elise) HandleKeyUp(key internal.ControlKey) Elise {
 func (elise Elise) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 	return draw.Moved(elise.Pos.Add(pixel.V(0, eliseHeight/2)),
 		draw.Image(*imageMap, internal.IEliseWalk1))
+}
+
+func (elise Elise) Handle(eb EventBox) Elise {
+	if eb.Event == "DAMAGE" {
+		elise.Pos = elise.Pos.Add(pixel.V(5, 0))
+	}
+	return elise
 }
