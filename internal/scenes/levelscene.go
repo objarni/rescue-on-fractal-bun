@@ -7,7 +7,7 @@ import (
 	"github.com/faiface/pixel/text"
 	"golang.org/x/exp/shiny/materialdesign/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
-	"objarni/rescue-on-fractal-bun/internal/draw"
+	d "objarni/rescue-on-fractal-bun/internal/draw"
 	"objarni/rescue-on-fractal-bun/internal/entities"
 )
 
@@ -57,18 +57,18 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	// this clear is not needed (camera like WonderBoy)
 	win.Clear(colornames.Yellow50)
 
-	gfx := draw.OpSequence(
-		draw.Moved(
+	gfx := d.OpSequence(
+		d.Moved(
 			scene.cameraVector(),
-			draw.OpSequence(
-				draw.ToWinOp(scene.backdropOp()),
-				draw.Color(colornames.Black, draw.TileLayer(scene.level.TilepixMap, "Background")),
-				draw.Color(colornames.Black, draw.TileLayer(scene.level.TilepixMap, "Platforms")),
-				draw.Color(colornames.Black, draw.TileLayer(scene.level.TilepixMap, "Walls")),
-				draw.Color(colornames.Black, scene.signPostsOp()),
-				draw.TileLayer(scene.level.TilepixMap, "Objects"),
+			d.OpSequence(
+				d.ToWinOp(scene.backdropOp()),
+				d.Color(colornames.Black, d.TileLayer(scene.level.TilepixMap, "Background")),
+				d.Color(colornames.Black, d.TileLayer(scene.level.TilepixMap, "Platforms")),
+				d.Color(colornames.Black, d.TileLayer(scene.level.TilepixMap, "Walls")),
+				d.Color(colornames.Black, scene.signPostsOp()),
+				d.TileLayer(scene.level.TilepixMap, "Objects"),
 				scene.entityOp(),
-				draw.Color(colornames.Black, draw.TileLayer(scene.level.TilepixMap, "Foreground")),
+				d.Color(colornames.Black, d.TileLayer(scene.level.TilepixMap, "Foreground")),
 				scene.debugGfx(),
 			),
 		),
@@ -79,51 +79,51 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	//scene.drawFPS(win)
 }
 
-func (scene *LevelScene) debugGfx() draw.WinOp {
-	rectangles := make([]draw.ImdOp, 0)
+func (scene *LevelScene) debugGfx() d.WinOp {
+	rectangles := make([]d.ImdOp, 0)
 	for _, entity := range scene.entities {
 		rectangles = append(rectangles, rectDrawOp(entity.HitBox()))
 	}
 	eliseHitBox := scene.elise.HitBoxRect()
 	rectangles = append(rectangles, rectDrawOp(eliseHitBox))
-	color := draw.Colored(colornames.White, draw.ImdOpSequence(rectangles...))
-	return draw.OpSequence(draw.ToWinOp(color))
+	color := d.Colored(colornames.White, d.ImdOpSequence(rectangles...))
+	return d.OpSequence(d.ToWinOp(color))
 }
 
-func rectDrawOp(r pixel.Rect) draw.ImdOp {
-	return draw.Rectangle(C(r.Min), C(r.Max), 2)
+func rectDrawOp(r pixel.Rect) d.ImdOp {
+	return d.Rectangle(C(r.Min), C(r.Max), 2)
 }
 
-func (scene *LevelScene) entityOp() draw.WinOp {
-	return draw.OpSequence(scene.entities[0].GfxOp(&scene.res.ImageMap),
+func (scene *LevelScene) entityOp() d.WinOp {
+	return d.OpSequence(scene.entities[0].GfxOp(&scene.res.ImageMap),
 		scene.elise.GfxOp(&scene.res.ImageMap))
 }
 
-func (scene *LevelScene) mapSymbolOp() draw.WinOp {
+func (scene *LevelScene) mapSymbolOp() d.WinOp {
 	mapSymbolCenter := scene.res.ImageMap[internal.IMapSymbol].Frame().Center()
-	op := draw.Moved(mapSymbolCenter, draw.Image(scene.res.ImageMap, internal.IMapSymbol))
+	op := d.Moved(mapSymbolCenter, d.Image(scene.res.ImageMap, internal.IMapSymbol))
 	if scene.isMapSignClose() {
-		op = draw.Color(colornames.GreenA400, op)
+		op = d.Color(colornames.GreenA400, op)
 	}
 	return op
 }
 
-func (scene *LevelScene) backdropOp() draw.ImdOp {
+func (scene *LevelScene) backdropOp() d.ImdOp {
 	widthPixels := scene.level.Width * 32
 	heightPixels := scene.level.Height * 32
-	rectangle := draw.Rectangle(draw.C(0, 0), draw.C(float64(widthPixels), float64(heightPixels)), 0)
-	return draw.Colored(scene.level.ClearColor, rectangle)
+	rectangle := d.Rectangle(d.C(0, 0), d.C(float64(widthPixels), float64(heightPixels)), 0)
+	return d.Colored(scene.level.ClearColor, rectangle)
 }
 
-func (scene *LevelScene) signPostsOp() draw.WinOp {
-	ops := make([]draw.WinOp, 0)
+func (scene *LevelScene) signPostsOp() d.WinOp {
+	ops := make([]d.WinOp, 0)
 	for _, mapPoint := range scene.level.SignPosts {
 		alignVec := internal.V(0, scene.res.ImageMap[internal.ISignPost].Frame().Center().Y)
-		signPostOp := draw.Moved(mapPoint.Pos, draw.Moved(alignVec,
-			draw.Image(scene.res.ImageMap, internal.ISignPost)))
+		signPostOp := d.Moved(mapPoint.Pos, d.Moved(alignVec,
+			d.Image(scene.res.ImageMap, internal.ISignPost)))
 		ops = append(ops, signPostOp)
 	}
-	return draw.OpSequence(ops...)
+	return d.OpSequence(ops...)
 }
 
 /* gfxOp stop */

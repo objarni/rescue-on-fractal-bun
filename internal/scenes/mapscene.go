@@ -8,7 +8,7 @@ import (
 	"golang.org/x/image/colornames"
 	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
-	"objarni/rescue-on-fractal-bun/internal/draw"
+	d "objarni/rescue-on-fractal-bun/internal/draw"
 )
 
 /*
@@ -95,11 +95,11 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 	drawMapSignTexts(win, scene)
 }
 
-func (scene *MapScene) MapSceneWinOp() draw.WinOp {
-	lineOps := draw.ToWinOp(draw.ImdOpSequence(scene.mapSignsGfx(), scene.crossHairGfx()))
-	mapOp := draw.Moved(pixel.Rect{Min: internal.V(0, 0), Max: internal.V(internal.ScreenWidth, internal.ScreenHeight)}.Center(),
-		draw.Image(scene.res.ImageMap, internal.IMap))
-	sceneGfxOp := draw.OpSequence(mapOp, lineOps)
+func (scene *MapScene) MapSceneWinOp() d.WinOp {
+	lineOps := d.ToWinOp(d.ImdOpSequence(scene.mapSignsGfx(), scene.crossHairGfx()))
+	mapOp := d.Moved(pixel.Rect{Min: internal.V(0, 0), Max: internal.V(internal.ScreenWidth, internal.ScreenHeight)}.Center(),
+		d.Image(scene.res.ImageMap, internal.IMap))
+	sceneGfxOp := d.OpSequence(mapOp, lineOps)
 	return sceneGfxOp
 }
 
@@ -107,7 +107,7 @@ func drawMapSignTexts(win *pixelgl.Window, scene *MapScene) {
 	mapSignIx := FindNearMapSign(scene.hairCrossPos, scene.res.MapSigns, scene.cfg.MapSceneTargetLocMaxDistance)
 	mapSignName := mapSignNameFromIx(mapSignIx)
 	tb := text.New(pixel.ZV, scene.res.Atlas)
-	draw.Text(
+	d.Text(
 		fmt.Sprintf("Här är du: %s\n", "Hembyn"),
 		fmt.Sprintf("Gå till? %s", mapSignName),
 	).Render(tb)
@@ -150,50 +150,50 @@ func mapSignWithText(mapSignText string) int {
 	panic(fmt.Sprintf("Unknown map sign text: %v", mapSignText))
 }
 
-func (scene *MapScene) mapSignsGfx() draw.ImdOp {
+func (scene *MapScene) mapSignsGfx() d.ImdOp {
 	return scene.levelEntrances().
 		Then(scene.currentMapSignOp()).
 		Then(scene.crossHairsOp())
 }
 
-func (scene *MapScene) crossHairsOp() draw.ImdOp {
+func (scene *MapScene) crossHairsOp() d.ImdOp {
 	closestMapSignIx := scene.FindClosestMapSign()
 	if closestMapSignIx > -1 {
 		pos := scene.res.MapSigns[closestMapSignIx].MapPos
 		radius := scene.targetLocCircleRadius()
-		circle := draw.Circle(radius, C(pos), scene.circleThickness())
-		operation := draw.Colored(colornames.Red, circle)
+		circle := d.Circle(radius, C(pos), scene.circleThickness())
+		operation := d.Colored(colornames.Red, circle)
 		return operation
 	}
-	return draw.Nothing()
+	return d.Nothing()
 }
 
-func C(v pixel.Vec) draw.Coordinate {
-	return draw.C(int(v.X), int(v.Y))
+func C(v pixel.Vec) d.Coordinate {
+	return d.C(v.X, v.Y)
 }
 
 func (scene *MapScene) FindClosestMapSign() int {
 	return FindNearMapSign(scene.hairCrossPos, scene.res.MapSigns, scene.locMaxDistance())
 }
 
-func (scene *MapScene) currentMapSignOp() draw.ImdOp {
+func (scene *MapScene) currentMapSignOp() d.ImdOp {
 	blink := scene.cfg.MapSceneBlinkSpeed
 	if scene.highlightTimer/blink%2 == 0 {
 		// TODO: remove playerCurrIx in favor of 'currentMapSign' or something
 		pos := scene.res.MapSigns[0].MapPos
-		circle := draw.Circle(scene.currentLocCircleRadius(), C(pos), scene.circleThickness())
-		return draw.Colored(colornames.Green, circle)
+		circle := d.Circle(scene.currentLocCircleRadius(), C(pos), scene.circleThickness())
+		return d.Colored(colornames.Green, circle)
 	}
-	return draw.Nothing()
+	return d.Nothing()
 }
 
-func (scene *MapScene) levelEntrances() draw.ImdSequence {
-	sequence := draw.ImdOpSequence()
+func (scene *MapScene) levelEntrances() d.ImdSequence {
+	sequence := d.ImdOpSequence()
 	for _, mapSign := range scene.res.MapSigns {
 		pos := mapSign.MapPos
-		operation := draw.Colored(
+		operation := d.Colored(
 			colornames.Darkslateblue,
-			draw.Circle(scene.locCircleRadius(), C(pos), scene.circleThickness()))
+			d.Circle(scene.locCircleRadius(), C(pos), scene.circleThickness()))
 		sequence = sequence.Then(operation)
 	}
 	return sequence
@@ -219,13 +219,13 @@ func (scene *MapScene) locCircleRadius() int {
 	return scene.cfg.MapSceneLocCircleRadius
 }
 
-func (scene *MapScene) crossHairGfx() draw.ImdOp {
+func (scene *MapScene) crossHairGfx() d.ImdOp {
 	h := scene.hairCrossPos
 	thickness := 2
-	vertical := draw.Line(draw.C(int(h.X), 0), draw.C(int(h.X), 600), thickness)
-	horisontal := draw.Line(draw.C(0, int(h.Y)), draw.C(800, int(h.Y)), thickness)
+	vertical := d.Line(d.C(h.X, 0), d.C(h.X, 600), thickness)
+	horisontal := d.Line(d.C(0, h.Y), d.C(800, h.Y), thickness)
 	transparentPink := color.RGBA{R: 255, A: 32}
-	return draw.Colored(transparentPink, draw.ImdOpSequence(vertical, horisontal))
+	return d.Colored(transparentPink, d.ImdOpSequence(vertical, horisontal))
 }
 
 func (scene *MapScene) Tick() bool {
