@@ -82,7 +82,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 func (scene *LevelScene) debugGfx() draw.WinOp {
 	rectangles := make([]draw.ImdOp, 0)
 	for _, entity := range scene.entities {
-		rectangles = append(rectangles, rectDrawOp(entity.HitBoxRect()))
+		rectangles = append(rectangles, rectDrawOp(entity.HitBox()))
 	}
 	eliseHitBox := scene.elise.HitBoxRect()
 	rectangles = append(rectangles, rectDrawOp(eliseHitBox))
@@ -185,7 +185,7 @@ func (scene *LevelScene) Tick() bool {
 		scene.entities[i] = scene.entities[i].Tick(&scene.entityCanvas)
 		scene.entityCanvas.AddEntityHitBox(entities.EntityHitBox{
 			Entity: i,
-			HitBox: scene.entities[i].HitBoxRect(),
+			HitBox: scene.entities[i].HitBox(),
 		})
 	}
 	return true

@@ -20,7 +20,7 @@ func (ghost Ghost) Handle(_ EventBox) Entity {
 	return ghost
 }
 
-func (ghost Ghost) HitBoxRect() pixel.Rect {
+func (ghost Ghost) HitBox() pixel.Rect {
 	min := ghost.pos.Add(pixel.V(-ghostWidth/2, 0))
 	max := ghost.pos.Add(pixel.V(ghostWidth/2, ghostHeight))
 	rect := pixel.Rect{min, max}
@@ -30,7 +30,7 @@ func (ghost Ghost) HitBoxRect() pixel.Rect {
 func (ghost Ghost) Tick(receiver EventBoxReceiver) Entity {
 	receiver.AddEventBox(EventBox{
 		Event: "DAMAGE",
-		Box:   ghost.HitBoxRect(),
+		Box:   ghost.HitBox(),
 	})
 	ghost.gameTimeMs += internal.TickTimeMs
 	ghost.pos = internal.V(ghost.pos.X, ghost.baseLine+math.Sin(ghost.gameTimeMs/300.0)*50)

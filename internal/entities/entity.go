@@ -13,6 +13,6 @@ type EventBoxReceiver interface {
 type Entity interface {
 	GfxOp(imageMap *internal.ImageMap) draw.WinOp
 	Tick(ebReceiver EventBoxReceiver) Entity
-	HitBoxRect() pixel.Rect
+	HitBox() pixel.Rect
 	Handle(eb EventBox) Entity
 }
