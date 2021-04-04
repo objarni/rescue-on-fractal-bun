@@ -12,15 +12,13 @@ import (
 )
 
 type LevelScene struct {
-	cfg                       *Config
-	res                       *internal.Resources
-	playerPos                 pixel.Vec
-	leftPressed, rightPressed bool
-	level                     internal.Level
-	timeMs                    float64
-	entities                  []entities.Entity
-	elise                     entities.Elise
-	entityCanvas              entities.EntityCanvas
+	cfg          *Config
+	res          *internal.Resources
+	level        internal.Level
+	timeMs       float64
+	entities     []entities.Entity
+	elise        entities.Elise
+	entityCanvas entities.EntityCanvas
 }
 
 func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *LevelScene {
@@ -30,7 +28,6 @@ func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *Lev
 	return &LevelScene{
 		cfg:          cfg,
 		res:          res,
-		playerPos:    pos,
 		level:        level,
 		timeMs:       0,
 		entities:     []entities.Entity{entities.MakeGhost(internal.V(2000, 150))},
@@ -41,18 +38,10 @@ func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *Lev
 
 func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	scene.elise = scene.elise.HandleKeyDown(key)
-	if key == internal.Left {
-		scene.leftPressed = true
-	}
-	if key == internal.Right {
-		scene.rightPressed = true
-	}
 	if key == internal.Action {
 		if scene.isMapSignClose() {
 			mapSign := scene.closestMapSign()
 			return MakeMapScene(scene.cfg, scene.res, mapSign.Text)
-		} else {
-			scene.playerPos = scene.playerPos.Add(internal.V(10, 0))
 		}
 	}
 	return scene
@@ -60,12 +49,6 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 
 func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 	scene.elise = scene.elise.HandleKeyUp(key)
-	if key == internal.Left {
-		scene.leftPressed = false
-	}
-	if key == internal.Right {
-		scene.rightPressed = false
-	}
 	return scene
 }
 
@@ -84,7 +67,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 				draw.Color(colornames.Black, draw.TileLayer(scene.level.TilepixMap, "Walls")),
 				draw.Color(colornames.Black, scene.signPostsOp()),
 				draw.TileLayer(scene.level.TilepixMap, "Objects"),
-				scene.entitiesOp(scene.timeMs),
+				scene.entityOp(),
 				draw.Color(colornames.Black, draw.TileLayer(scene.level.TilepixMap, "Foreground")),
 				scene.debugGfx(),
 			),
@@ -97,7 +80,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 }
 
 func (scene *LevelScene) debugGfx() draw.WinOp {
-	rectangles := []draw.ImdOp{}
+	rectangles := make([]draw.ImdOp, 0)
 	for _, entity := range scene.entities {
 		r := entity.HitBox().HitBox
 		rectangles = append(rectangles, rectDrawOp(r))
@@ -125,12 +108,6 @@ func (scene *LevelScene) mapSymbolOp() draw.WinOp {
 	return op
 }
 
-func (scene *LevelScene) playerOp(gameTimeS float64) draw.WinOp {
-	image := entities.EliseWalkFrame(gameTimeS, scene.cfg.LevelSceneEliseFPS)
-	return draw.Moved(scene.playerPos,
-		draw.Image(scene.res.ImageMap, image))
-}
-
 func (scene *LevelScene) backdropOp() draw.ImdOp {
 	widthPixels := scene.level.Width * 32
 	heightPixels := scene.level.Height * 32
@@ -139,7 +116,7 @@ func (scene *LevelScene) backdropOp() draw.ImdOp {
 }
 
 func (scene *LevelScene) signPostsOp() draw.WinOp {
-	ops := []draw.WinOp{}
+	ops := make([]draw.WinOp, 0)
 	for _, mapPoint := range scene.level.SignPosts {
 		alignVec := internal.V(0, scene.res.ImageMap[internal.ISignPost].Frame().Center().Y)
 		signPostOp := draw.Moved(mapPoint.Pos, draw.Moved(alignVec,
@@ -160,19 +137,19 @@ func (scene *LevelScene) drawFPS(win *pixelgl.Window) {
 
 func (scene *LevelScene) isMapSignClose() bool {
 	sign := scene.closestMapSign()
-	return scene.playerPos.Sub(sign.Pos).Len() < 10
+	return scene.elise.Pos.Sub(sign.Pos).Len() < 75
 }
 
 func (scene *LevelScene) closestMapSign() internal.SignPost {
 	// Potential: ClosestPoint could take an array of objects implementing
 	// 'WithPoint' interface, and we only define anon func here
 	getPoint := func(mp internal.SignPost) pixel.Vec { return mp.Pos }
-	points := []pixel.Vec{}
+	points := make([]pixel.Vec, 0)
 	for _, val := range scene.level.SignPosts {
 		point := getPoint(val)
 		points = append(points, point)
 	}
-	return scene.level.SignPosts[internal.ClosestPoint(scene.playerPos, points)]
+	return scene.level.SignPosts[internal.ClosestPoint(scene.elise.Pos, points)]
 }
 
 func (scene *LevelScene) cameraVector() pixel.Vec {
@@ -206,10 +183,6 @@ func (scene *LevelScene) Tick() bool {
 		scene.entityCanvas.AddEntityHitBox(scene.entities[i].HitBox())
 	}
 	return true
-}
-
-func (scene *LevelScene) entitiesOp(timeMs float64) draw.WinOp {
-	return draw.OpSequence(scene.playerOp(timeMs/1000.0), scene.entityOp())
 }
 
 /*
