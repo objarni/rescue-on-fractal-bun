@@ -82,22 +82,10 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 func (scene *LevelScene) debugGfx() draw.WinOp {
 	rectangles := make([]draw.ImdOp, 0)
 	for _, entity := range scene.entities {
-		ghost := entity
-		rect := ghost.HitBoxRect()
-		box4 := entities.EntityHitBox{
-			Entity: 0,
-			HitBox: rect,
-		}
-		r := box4.HitBox
-		rectangles = append(rectangles, rectDrawOp(r))
+		rectangles = append(rectangles, rectDrawOp(entity.HitBoxRect()))
 	}
-	elise := scene.elise
-	rect := elise.HitBoxRect()
-	box3 := entities.EntityHitBox{
-		Entity: -1, // TODO: entities need not know their ID, levelscenes concern
-		HitBox: rect,
-	}
-	rectangles = append(rectangles, rectDrawOp(box3.HitBox))
+	eliseHitBox := scene.elise.HitBoxRect()
+	rectangles = append(rectangles, rectDrawOp(eliseHitBox))
 	color := draw.Colored(colornames.White, draw.ImdOpSequence(rectangles...))
 	return draw.OpSequence(draw.ToWinOp(color))
 }
@@ -189,22 +177,16 @@ func (scene *LevelScene) Tick() bool {
 	scene.entityCanvas = entities.MakeEntityCanvas()
 	scene.timeMs += 5.0
 	scene.elise = scene.elise.Tick()
-	elise := scene.elise
-	rect := elise.HitBoxRect()
-	box3 := entities.EntityHitBox{
-		Entity: -1, // TODO: entities need not know their ID, levelscenes concern
-		HitBox: rect,
-	}
-	scene.entityCanvas.AddEntityHitBox(box3)
+	scene.entityCanvas.AddEntityHitBox(entities.EntityHitBox{
+		Entity: -1,
+		HitBox: scene.elise.HitBoxRect(),
+	})
 	for i := range scene.entities {
 		scene.entities[i] = scene.entities[i].Tick(&scene.entityCanvas)
-		ghost := scene.entities[i]
-		rect := ghost.HitBoxRect()
-		box4 := entities.EntityHitBox{
-			Entity: 0,
-			HitBox: rect,
-		}
-		scene.entityCanvas.AddEntityHitBox(box4)
+		scene.entityCanvas.AddEntityHitBox(entities.EntityHitBox{
+			Entity: i,
+			HitBox: scene.entities[i].HitBoxRect(),
+		})
 	}
 	return true
 }
