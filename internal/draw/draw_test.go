@@ -16,8 +16,8 @@ func ExampleCircle() {
 	fmt.Println(circle.String())
 	fmt.Println(smallCircle.String())
 	// Output:
-	// Circle radius 25 center <50, 100> thickness 2
-	// Circle radius 3 center <1, 2> thickness 4
+	// Circle radius 25 center Vec(50, 100) thickness 2
+	// Circle radius 3 center Vec(1, 2) thickness 4
 }
 
 func ExampleLine() {
@@ -25,8 +25,8 @@ func ExampleLine() {
 	fmt.Println(line.String())
 	fmt.Println(Line(C(1, 2), C(3, 4), 5).String())
 	// Output:
-	// Line from <50, 100> to <101, 202> thickness 2
-	// Line from <1, 2> to <3, 4> thickness 5
+	// Line from Vec(50, 100) to Vec(101, 202) thickness 2
+	// Line from Vec(1, 2) to Vec(3, 4) thickness 5
 }
 
 func ExampleRectangle() {
@@ -34,8 +34,8 @@ func ExampleRectangle() {
 	fmt.Println(rectangle.String())
 	fmt.Println(Rectangle(C(1, 2), C(3, 4), 5).String())
 	// Output:
-	// Rectangle from <50, 100> to <101, 202> (filled)
-	// Rectangle from <1, 2> to <3, 4> thickness 5
+	// Rectangle from Vec(50, 100) to Vec(101, 202) (filled)
+	// Rectangle from Vec(1, 2) to Vec(3, 4) thickness 5
 }
 
 func ExampleColor() {
@@ -47,9 +47,9 @@ func ExampleColor() {
 	fmt.Println(Colored(white, smallCircle))
 	// Output:
 	// Color {0 1 0 0}:
-	//   Circle radius 25 center <50, 100> thickness 2
+	//   Circle radius 25 center Vec(50, 100) thickness 2
 	// Color {1 1 1 0}:
-	//   Circle radius 3 center <1, 2> thickness 4
+	//   Circle radius 3 center Vec(1, 2) thickness 4
 }
 
 func Example_imdOpSequence() {
@@ -59,11 +59,11 @@ func Example_imdOpSequence() {
 	fmt.Println(ImdOpSequence(smallCircle, circle).String())
 	// Output:
 	// ImdOp Sequence:
-	//   Circle radius 25 center <50, 100> thickness 2
-	//   Circle radius 3 center <1, 2> thickness 4
+	//   Circle radius 25 center Vec(50, 100) thickness 2
+	//   Circle radius 3 center Vec(1, 2) thickness 4
 	// ImdOp Sequence:
-	//   Circle radius 3 center <1, 2> thickness 4
-	//   Circle radius 25 center <50, 100> thickness 2
+	//   Circle radius 3 center Vec(1, 2) thickness 4
+	//   Circle radius 25 center Vec(50, 100) thickness 2
 }
 
 func Example_nestedSequence() {
@@ -73,8 +73,8 @@ func Example_nestedSequence() {
 	// Output:
 	// ImdOp Sequence:
 	//   ImdOp Sequence:
-	//     Circle radius 3 center <1, 2> thickness 4
-	//     Circle radius 25 center <50, 100> thickness 2
+	//     Circle radius 3 center Vec(1, 2) thickness 4
+	//     Circle radius 25 center Vec(50, 100) thickness 2
 }
 
 func Example_thenSequence() {
@@ -84,8 +84,8 @@ func Example_thenSequence() {
 	fmt.Println(sequence.String())
 	// Output:
 	// ImdOp Sequence:
-	//   Circle radius 25 center <50, 100> thickness 2
-	//   Circle radius 3 center <1, 2> thickness 4
+	//   Circle radius 25 center Vec(50, 100) thickness 2
+	//   Circle radius 3 center Vec(1, 2) thickness 4
 }
 
 // TextOp
@@ -105,9 +105,9 @@ func Example_liftImdOp() {
 	fmt.Println(ToWinOp(Line(C(0, 4), C(0, 4), 1)).String())
 	// Output:
 	// WinOp from ImdOp:
-	//   Circle radius 5 center <0, 4> thickness 1
+	//   Circle radius 5 center Vec(0, 4) thickness 1
 	// WinOp from ImdOp:
-	//   Line from <0, 4> to <0, 4> thickness 1
+	//   Line from Vec(0, 4) to Vec(0, 4) thickness 1
 }
 
 func Example_movedLineWinOp() {
@@ -115,7 +115,7 @@ func Example_movedLineWinOp() {
 	// Output:
 	// Moved 50 pixels right 100 pixels up:
 	//   WinOp from ImdOp:
-	//     Line from <0, 4> to <5, 6> thickness 10
+	//     Line from Vec(0, 4) to Vec(5, 6) thickness 10
 }
 
 func Example_movedRectangleWinOp() {
@@ -123,7 +123,7 @@ func Example_movedRectangleWinOp() {
 	// Output:
 	// Moved 1 pixels left 2 pixels down:
 	//   WinOp from ImdOp:
-	//     Rectangle from <0, 4> to <5, 6> thickness 10
+	//     Rectangle from Vec(0, 4) to Vec(5, 6) thickness 10
 }
 
 func Example_movedTileLayerWinOp() {

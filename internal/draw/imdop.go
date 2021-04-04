@@ -10,13 +10,11 @@ import (
 
 type ImdCircle struct {
 	radius, thickness int
-	center            Coordinate
+	center            pixel.Vec
 }
 
-type Coordinate pixel.Vec
-
-func C(x, y float64) Coordinate {
-	return Coordinate(pixel.V(x, y))
+func C(x, y float64) pixel.Vec {
+	return pixel.V(x, y)
 }
 
 func (circle ImdCircle) String() string {
@@ -26,7 +24,7 @@ func (circle ImdCircle) String() string {
 		circle.thickness)
 }
 
-func Circle(radius int, center Coordinate, thickness int) ImdOp {
+func Circle(radius int, center pixel.Vec, thickness int) ImdOp {
 	return ImdCircle{
 		radius:    radius,
 		thickness: thickness,
@@ -35,7 +33,7 @@ func Circle(radius int, center Coordinate, thickness int) ImdOp {
 }
 
 func (circle ImdCircle) Render(imd *imdraw.IMDraw) {
-	imd.Push(circle.center.toVec())
+	imd.Push(circle.center)
 	imd.Circle(float64(circle.radius), float64(circle.thickness))
 }
 
@@ -44,7 +42,7 @@ func (circle ImdCircle) Lines() []string {
 }
 
 type ImdLine struct {
-	from, to  Coordinate
+	from, to  pixel.Vec
 	thickness int
 }
 
@@ -55,13 +53,13 @@ func (line ImdLine) String() string {
 		line.thickness)
 }
 
-func Line(from Coordinate, to Coordinate, thickness int) ImdOp {
+func Line(from pixel.Vec, to pixel.Vec, thickness int) ImdOp {
 	return ImdLine{from: from, to: to, thickness: thickness}
 }
 
 func (line ImdLine) Render(imd *imdraw.IMDraw) {
-	imd.Push(line.from.toVec())
-	imd.Push(line.to.toVec())
+	imd.Push(line.from)
+	imd.Push(line.to)
 	imd.Line(float64(line.thickness))
 }
 
@@ -70,7 +68,7 @@ func (line ImdLine) Lines() []string {
 }
 
 type ImdRectangle struct {
-	from, to  Coordinate
+	from, to  pixel.Vec
 	thickness int
 }
 
@@ -86,13 +84,13 @@ func (rectangle ImdRectangle) String() string {
 		rectangleStyle)
 }
 
-func Rectangle(from Coordinate, to Coordinate, thickness int) ImdOp {
+func Rectangle(from pixel.Vec, to pixel.Vec, thickness int) ImdOp {
 	return ImdRectangle{from: from, to: to, thickness: thickness}
 }
 
 func (rectangle ImdRectangle) Render(imd *imdraw.IMDraw) {
-	imd.Push(rectangle.from.toVec())
-	imd.Push(rectangle.to.toVec())
+	imd.Push(rectangle.from)
+	imd.Push(rectangle.to)
 	imd.Rectangle(float64(rectangle.thickness))
 }
 
@@ -166,12 +164,4 @@ func (sequence ImdSequence) Then(imdOp ImdOp) ImdSequence {
 
 func Nothing() ImdSequence {
 	return ImdOpSequence()
-}
-
-func (c Coordinate) toVec() pixel.Vec {
-	return pixel.Vec{X: float64(c.X), Y: float64(c.Y)}
-}
-
-func (c Coordinate) String() string {
-	return fmt.Sprintf("<%v, %v>", c.X, c.Y)
 }

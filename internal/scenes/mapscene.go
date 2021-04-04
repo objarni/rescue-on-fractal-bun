@@ -168,7 +168,7 @@ func (scene *MapScene) crossHairsOp() d.ImdOp {
 	return d.Nothing()
 }
 
-func C(v pixel.Vec) d.Coordinate {
+func C(v pixel.Vec) pixel.Vec {
 	return d.C(v.X, v.Y)
 }
 

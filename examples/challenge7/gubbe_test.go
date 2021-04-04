@@ -3,25 +3,29 @@ package main
 import (
 	"fmt"
 	"github.com/approvals/go-approval-tests"
-	"github.com/approvals/go-approval-tests/reporters"
 	"github.com/faiface/pixel"
 	"objarni/rescue-on-fractal-bun/internal"
-	"os"
+	"objarni/rescue-on-fractal-bun/tests"
 	"testing"
 	"unicode"
 )
 
 var globalStepVariable int = 0
 
-func TestMain(m *testing.M) {
-	// This code is run before all tests
-	r := approvals.UseReporter(reporters.NewIntelliJReporter())
-	code := m.Run()
-	err := r.Close()
-	if err != nil {
-		panic(err)
-	}
-	os.Exit(code)
+//
+//func TestMain(m *testing.M) {
+//	// This code is run before all tests
+//	r := approvals.UseReporter(reporters.NewIntelliJReporter())
+//	code := m.Run()
+//	err := r.Close()
+//	if err != nil {
+//		panic(err)
+//	}
+//	os.Exit(code)
+//}
+
+func init() {
+	approvals.UseReporter(tests.NewBCompare())
 }
 
 func simulateSteps(gubbe *Gubbe, simulationSteps int, controls Controls) string {

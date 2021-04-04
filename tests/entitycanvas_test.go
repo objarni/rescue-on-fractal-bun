@@ -23,6 +23,10 @@ func Test_1_Entity_1_EventBox_1_overlap(t *testing.T) {
 	)
 }
 
+func init() {
+	approvals.UseReporter(NewBCompare())
+}
+
 func Test_1_Entity_1_EventBox_no_overlapping(t *testing.T) {
 	entityCanvas := entities.MakeEntityCanvas()
 	entityCanvas.AddEntityHitBox(entities.EntityHitBox{Entity: 1, HitBox: pixel.Rect{

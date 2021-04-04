@@ -1,18 +1,9 @@
 package tests
 
 import (
-	"github.com/approvals/go-approval-tests"
 	"github.com/approvals/go-approval-tests/reporters"
-	"os"
 	"os/exec"
-	"testing"
 )
-
-func TestMain(m *testing.M) {
-	r := approvals.UseReporter(NewBCompare())
-	defer r.Close()
-	os.Exit(m.Run())
-}
 
 type beyondCompare struct{}
 
