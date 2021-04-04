@@ -111,7 +111,7 @@ func (scene *LevelScene) mapSymbolOp() draw.WinOp {
 func (scene *LevelScene) backdropOp() draw.ImdOp {
 	widthPixels := scene.level.Width * 32
 	heightPixels := scene.level.Height * 32
-	rectangle := draw.Rectangle(draw.C(0, 0), draw.C(widthPixels, heightPixels), 0)
+	rectangle := draw.Rectangle(draw.C(0, 0), draw.C(float64(widthPixels), float64(heightPixels)), 0)
 	return draw.Colored(scene.level.ClearColor, rectangle)
 }
 
