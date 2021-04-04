@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	approvals.UseReporter(tests.NewBCompare())
+	approvals.UseReporter(tests.ReportWithMeld())
 }
 
 func Test_initialRender(t *testing.T) {

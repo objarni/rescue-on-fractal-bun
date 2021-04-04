@@ -25,7 +25,7 @@ var globalStepVariable int = 0
 //}
 
 func init() {
-	approvals.UseReporter(tests.NewBCompare())
+	approvals.UseReporter(tests.ReportWithMeld())
 }
 
 func simulateSteps(gubbe *Gubbe, simulationSteps int, controls Controls) string {

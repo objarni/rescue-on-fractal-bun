@@ -5,13 +5,13 @@ import (
 	"os/exec"
 )
 
-type beyondCompare struct{}
+type reportWithMeld struct{}
 
-func NewBCompare() reporters.Reporter {
-	return &beyondCompare{}
+func ReportWithMeld() reporters.Reporter {
+	return &reportWithMeld{}
 }
 
-func (s *beyondCompare) Report(approved, received string) bool {
+func (s *reportWithMeld) Report(approved, received string) bool {
 	cmd := exec.Command("/usr/bin/meld", approved, received)
 	err := cmd.Run()
 	if err != nil {
