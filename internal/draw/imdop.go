@@ -13,6 +13,12 @@ type ImdCircle struct {
 	center            Coordinate
 }
 
+type Coordinate pixel.Vec
+
+func C(x, y float64) Coordinate {
+	return Coordinate(pixel.V(x, y))
+}
+
 func (circle ImdCircle) String() string {
 	return fmt.Sprintf("Circle radius %v center %v thickness %v",
 		circle.radius,
@@ -140,7 +146,7 @@ func (sequence ImdSequence) Render(imd *imdraw.IMDraw) {
 
 func (sequence ImdSequence) String() string {
 	head := "ImdOp Sequence:"
-	body := []string{}
+	body := make([]string, 0)
 	for _, op := range sequence.imdOps {
 		for _, line := range op.Lines() {
 			body = append(body, line)
@@ -160,14 +166,6 @@ func (sequence ImdSequence) Then(imdOp ImdOp) ImdSequence {
 
 func Nothing() ImdSequence {
 	return ImdOpSequence()
-}
-
-type Coordinate struct {
-	X, Y int
-}
-
-func C(x, y int) Coordinate {
-	return Coordinate{X: x, Y: y}
 }
 
 func (c Coordinate) toVec() pixel.Vec {
