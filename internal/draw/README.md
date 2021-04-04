@@ -18,6 +18,9 @@ Potential improvements
 
 This little 'internal library' called draw is starting to look good, however there are some warts I'd like to improve upon:
 
+0. draw.Image could take only the "Image enum" instead
+   of an map enum->*sprite, instead the map could be
+   part of the Render(...) call!
 1. The Coordinate vector never really 'flew'. Since the library is tightly integrated with Pixel anyway, just using pixel.Vec seems cleaner.
 2. ImdOp Sequence uses array instead of combination through "Then" internally; this means annoyance w.r.t duplicated headBody code, used in other combinations. It's also incorrect, as it only inserts "  " in front of the first line and not others
 3. Is it necessary to have Sequence twice...? It's on both
