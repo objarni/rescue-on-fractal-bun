@@ -15,14 +15,11 @@ type Elise struct {
 	gameTimeMs                int
 }
 
-// TODO: The HitBox API could just return Rect simply
-func (elise Elise) HitBox() EntityHitBox {
+func (elise Elise) HitBoxRect() pixel.Rect {
 	min := elise.Pos.Add(pixel.V(-eliseWidth/2, 0))
 	max := elise.Pos.Add(pixel.V(eliseWidth/2, eliseHeight))
-	return EntityHitBox{
-		Entity: -1, // TODO: entities need not know their ID, levelscenes concern
-		HitBox: pixel.Rect{min, max},
-	}
+	rect := pixel.Rect{min, max}
+	return rect
 }
 
 func MakeElise(position pixel.Vec) Elise {
