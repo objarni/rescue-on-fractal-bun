@@ -12,6 +12,7 @@ const eliseHeight = 100.0
 type Elise struct {
 	Pos                       pixel.Vec
 	leftPressed, rightPressed bool
+	gameTimeMs                int
 }
 
 // TODO: The HitBox API could just return Rect simply
@@ -30,6 +31,7 @@ func MakeElise(position pixel.Vec) Elise {
 }
 
 func (elise Elise) Tick() Elise {
+	elise.gameTimeMs += 5
 	eliseMoveSpeed := 1.2
 	if elise.leftPressed && !elise.rightPressed {
 		elise.Pos = elise.Pos.Add(internal.V(-eliseMoveSpeed, 0))
@@ -61,8 +63,9 @@ func (elise Elise) HandleKeyUp(key internal.ControlKey) Elise {
 }
 
 func (elise Elise) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
+	image := EliseWalkFrame(float64(elise.gameTimeMs)/1000.0, 10)
 	return draw.Moved(elise.Pos.Add(pixel.V(0, eliseHeight/2)),
-		draw.Image(*imageMap, internal.IEliseWalk1))
+		draw.Image(*imageMap, image))
 }
 
 func (elise Elise) Handle(eb EventBox) Elise {
@@ -70,4 +73,23 @@ func (elise Elise) Handle(eb EventBox) Elise {
 		elise.Pos = elise.Pos.Add(pixel.V(5, 0))
 	}
 	return elise
+}
+
+var frames = [...]internal.Image{
+	internal.IEliseWalk6,
+	internal.IEliseWalk5,
+	internal.IEliseWalk4,
+	internal.IEliseWalk3,
+	internal.IEliseWalk2,
+	internal.IEliseWalk1,
+}
+
+func EliseWalkFrame(gameTimeS float64, targetFPS int) internal.Image {
+	var eliseAnimation = internal.Animation{
+		Frames:    6,
+		TargetFPS: targetFPS,
+	}
+	frame := eliseAnimation.FrameAtTime(gameTimeS)
+	image := frames[frame]
+	return image
 }
