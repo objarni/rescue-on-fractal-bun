@@ -125,22 +125,29 @@ func (scene *LevelScene) mapSymbolOp() draw.WinOp {
 	return op
 }
 
+var frames = [...]internal.Image{
+	internal.IEliseWalk6,
+	internal.IEliseWalk5,
+	internal.IEliseWalk4,
+	internal.IEliseWalk3,
+	internal.IEliseWalk2,
+	internal.IEliseWalk1,
+}
+
 func (scene *LevelScene) playerOp(gameTimeS float64) draw.WinOp {
-	frame := internal.Animation{
-		Frames:    6,
-		TargetFPS: scene.cfg.LevelSceneEliseFPS,
-	}.FrameAtTime(gameTimeS)
-	frames := []internal.Image{
-		internal.IEliseWalk6,
-		internal.IEliseWalk5,
-		internal.IEliseWalk4,
-		internal.IEliseWalk3,
-		internal.IEliseWalk2,
-		internal.IEliseWalk1,
-	}
-	image := frames[frame]
+	image := eliseWalkFrame(gameTimeS, scene.cfg.LevelSceneEliseFPS)
 	return draw.Moved(scene.playerPos,
 		draw.Image(scene.res.ImageMap, image))
+}
+
+func eliseWalkFrame(gameTimeS float64, targetFPS int) internal.Image {
+	var eliseAnimation = internal.Animation{
+		Frames:    6,
+		TargetFPS: targetFPS,
+	}
+	frame := eliseAnimation.FrameAtTime(gameTimeS)
+	image := frames[frame]
+	return image
 }
 
 func (scene *LevelScene) backdropOp() draw.ImdOp {
