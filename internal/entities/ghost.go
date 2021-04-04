@@ -16,19 +16,11 @@ type Ghost struct {
 	gameTimeMs float64
 }
 
-func (ghost Ghost) Handle(eb EventBox) Entity {
+func (ghost Ghost) Handle(_ EventBox) Entity {
 	return ghost
 }
 
-func (ghost Ghost) HitBox() EntityHitBox {
-	rect := ghost.ghostRectangle()
-	return EntityHitBox{
-		Entity: 0,
-		HitBox: rect,
-	}
-}
-
-func (ghost Ghost) ghostRectangle() pixel.Rect {
+func (ghost Ghost) HitBoxRect() pixel.Rect {
 	min := ghost.pos.Add(pixel.V(-ghostWidth/2, 0))
 	max := ghost.pos.Add(pixel.V(ghostWidth/2, ghostHeight))
 	rect := pixel.Rect{min, max}
@@ -38,7 +30,7 @@ func (ghost Ghost) ghostRectangle() pixel.Rect {
 func (ghost Ghost) Tick(receiver EventBoxReceiver) Entity {
 	receiver.AddEventBox(EventBox{
 		Event: "DAMAGE",
-		Box:   ghost.ghostRectangle(),
+		Box:   ghost.HitBoxRect(),
 	})
 	ghost.gameTimeMs += internal.TickTimeMs
 	ghost.pos = internal.V(ghost.pos.X, ghost.baseLine+math.Sin(ghost.gameTimeMs/300.0)*50)
