@@ -60,7 +60,19 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 }
 
 func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
-	scene.elise = scene.elise.HandleKeyUp(key)
+	event := ""
+	if key == internal.Left {
+		event = "LEFT_UP"
+	}
+	if key == internal.Right {
+		event = "RIGHT_UP"
+	}
+	if event != "" {
+		scene.elise = scene.elise.Handle(entities.EventBox{
+			Event: event,
+			Box:   pixel.Rect{},
+		})
+	}
 	return scene
 }
 

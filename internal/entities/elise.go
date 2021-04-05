@@ -39,16 +39,6 @@ func (elise Elise) Tick() Elise {
 	return elise
 }
 
-func (elise Elise) HandleKeyUp(key internal.ControlKey) Elise {
-	if key == internal.Left {
-		elise.leftPressed = false
-	}
-	if key == internal.Right {
-		elise.rightPressed = false
-	}
-	return elise
-}
-
 func (elise Elise) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 	image := EliseWalkFrame(float64(elise.gameTimeMs)/1000.0, 10)
 	return draw.Moved(elise.Pos.Add(pixel.V(0, eliseHeight/2)),
@@ -64,6 +54,12 @@ func (elise Elise) Handle(eb EventBox) Elise {
 	}
 	if eb.Event == "RIGHT_DOWN" {
 		elise.rightPressed = true
+	}
+	if eb.Event == "LEFT_UP" {
+		elise.leftPressed = false
+	}
+	if eb.Event == "RIGHT_UP" {
+		elise.rightPressed = false
 	}
 	return elise
 }
