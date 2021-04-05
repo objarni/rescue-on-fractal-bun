@@ -196,7 +196,7 @@ func (scene *LevelScene) Tick() bool {
 	})
 	// Reset the canvas
 	scene.entityCanvas = entities.MakeEntityCanvas()
-	scene.timeMs += 5.0
+	scene.timeMs += internal.TickTimeMs
 	for i := range scene.entities {
 		scene.entities[i] = scene.entities[i].Tick(&scene.entityCanvas)
 		scene.entityCanvas.AddEntityHitBox(entities.EntityHitBox{
