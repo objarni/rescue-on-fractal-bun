@@ -15,7 +15,7 @@ type Elise struct {
 	gameTimeMs                int
 }
 
-func (elise Elise) HitBoxRect() pixel.Rect {
+func (elise Elise) HitBox() pixel.Rect {
 	min := elise.Pos.Add(pixel.V(-eliseWidth/2, 0))
 	max := elise.Pos.Add(pixel.V(eliseWidth/2, eliseHeight))
 	rect := pixel.Rect{min, max}
@@ -39,16 +39,6 @@ func (elise Elise) Tick() Elise {
 	return elise
 }
 
-func (elise Elise) HandleKeyDown(key internal.ControlKey) Elise {
-	if key == internal.Left {
-		elise.leftPressed = true
-	}
-	if key == internal.Right {
-		elise.rightPressed = true
-	}
-	return elise
-}
-
 func (elise Elise) HandleKeyUp(key internal.ControlKey) Elise {
 	if key == internal.Left {
 		elise.leftPressed = false
@@ -68,6 +58,12 @@ func (elise Elise) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 func (elise Elise) Handle(eb EventBox) Elise {
 	if eb.Event == "DAMAGE" {
 		elise.Pos = elise.Pos.Add(pixel.V(5, 0))
+	}
+	if eb.Event == "LEFT_DOWN" {
+		elise.leftPressed = true
+	}
+	if eb.Event == "RIGHT_DOWN" {
+		elise.rightPressed = true
 	}
 	return elise
 }

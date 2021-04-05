@@ -37,7 +37,19 @@ func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *Lev
 }
 
 func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
-	scene.elise = scene.elise.HandleKeyDown(key)
+	event := ""
+	if key == internal.Left {
+		event = "LEFT_DOWN"
+	}
+	if key == internal.Right {
+		event = "RIGHT_DOWN"
+	}
+	if event != "" {
+		scene.elise = scene.elise.Handle(entities.EventBox{
+			Event: event,
+			Box:   pixel.Rect{},
+		})
+	}
 	if key == internal.Action {
 		if scene.isMapSignClose() {
 			mapSign := scene.closestMapSign()
@@ -84,7 +96,7 @@ func (scene *LevelScene) debugGfx() d.WinOp {
 	for _, entity := range scene.entities {
 		rectangles = append(rectangles, rectDrawOp(entity.HitBox()))
 	}
-	eliseHitBox := scene.elise.HitBoxRect()
+	eliseHitBox := scene.elise.HitBox()
 	rectangles = append(rectangles, rectDrawOp(eliseHitBox))
 	color := d.Colored(colornames.White, d.ImdOpSequence(rectangles...))
 	return d.OpSequence(d.ToWinOp(color))
@@ -179,7 +191,7 @@ func (scene *LevelScene) Tick() bool {
 	scene.elise = scene.elise.Tick()
 	scene.entityCanvas.AddEntityHitBox(entities.EntityHitBox{
 		Entity: -1,
-		HitBox: scene.elise.HitBoxRect(),
+		HitBox: scene.elise.HitBox(),
 	})
 	for i := range scene.entities {
 		scene.entities[i] = scene.entities[i].Tick(&scene.entityCanvas)
