@@ -13,6 +13,7 @@ type Elise struct {
 	Pos                       pixel.Vec
 	leftPressed, rightPressed bool
 	gameTimeMs                int
+	flip                      bool
 }
 
 func (elise Elise) HitBox() pixel.Rect {
@@ -30,9 +31,11 @@ func (elise Elise) Tick(_ EventBoxReceiver) Entity {
 	elise.gameTimeMs += 5
 	eliseMoveSpeed := 1.2
 	if elise.leftPressed && !elise.rightPressed {
+		elise.flip = true
 		elise.Pos = elise.Pos.Add(internal.V(-eliseMoveSpeed, 0))
 	}
 	if !elise.leftPressed && elise.rightPressed {
+		elise.flip = false
 		elise.Pos = elise.Pos.Add(internal.V(eliseMoveSpeed, 0))
 	}
 	return elise
@@ -40,8 +43,11 @@ func (elise Elise) Tick(_ EventBoxReceiver) Entity {
 
 func (elise Elise) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 	image := EliseWalkFrame(float64(elise.gameTimeMs)/1000.0, 10)
-	return draw.Moved(elise.Pos.Add(pixel.V(0, eliseHeight/2)),
-		draw.Image(*imageMap, image))
+	imgOp := draw.Image(*imageMap, image)
+	if elise.flip {
+		imgOp = draw.Mirrored(imgOp)
+	}
+	return draw.Moved(elise.Pos.Add(pixel.V(0, eliseHeight/2)), imgOp)
 }
 
 func (elise Elise) Handle(eb EventBox) Entity {
