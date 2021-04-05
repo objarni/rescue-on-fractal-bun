@@ -2,10 +2,13 @@ package draw
 
 import (
 	"fmt"
+	approvals "github.com/approvals/go-approval-tests"
 	"github.com/faiface/pixel"
 	"golang.org/x/image/colornames"
 	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
+	"objarni/rescue-on-fractal-bun/tests"
+	"testing"
 )
 
 // ImdOp
@@ -158,4 +161,16 @@ func Example_sequencedWinOps() {
 	//     Image "IMap"
 	//   Color {255 255 0 255}:
 	//     Image "IGhost"
+}
+
+func init() {
+	approvals.UseReporter(tests.ReportWithMeld())
+}
+
+func Test_mirroredImage(t *testing.T) {
+	mapImage := Image(nil, internal.IMap)
+	ghostImage := Color(colornames.Yellow, Image(nil, internal.IGhost))
+	seq := OpSequence(mapImage, ghostImage)
+	mirrored := Mirrored(seq)
+	approvals.VerifyString(t, mirrored.String()+"\n")
 }

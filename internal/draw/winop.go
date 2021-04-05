@@ -194,3 +194,29 @@ func OpSequence(ops ...WinOp) WinOp {
 		winOps: ops,
 	}
 }
+
+type OpMirrored struct {
+	op WinOp
+}
+
+func (mirrored OpMirrored) String() string {
+	return strings.Join(mirrored.Lines(), "\n")
+}
+
+func (mirrored OpMirrored) Lines() []string {
+	head := "Mirrored around Y axis:"
+	body := make([]string, 0)
+	for _, line := range mirrored.op.Lines() {
+		body = append(body, line)
+	}
+	return headerWithIndentedBody(head, body)
+}
+
+func (mirrored OpMirrored) Render(mx pixel.Matrix, win *pixelgl.Window) {
+	mirroredMatrix := mx.ScaledXY(pixel.V(0, 1), pixel.V(1, 1))
+	mirrored.op.Render(mirroredMatrix, win)
+}
+
+func Mirrored(winOp WinOp) WinOp {
+	return OpMirrored{op: winOp}
+}
