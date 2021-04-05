@@ -17,7 +17,6 @@ type LevelScene struct {
 	level        internal.Level
 	timeMs       float64
 	entities     []entities.Entity
-	elise        entities.Elise
 	entityCanvas entities.EntityCanvas
 }
 
@@ -30,8 +29,7 @@ func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *Lev
 		res:          res,
 		level:        level,
 		timeMs:       0,
-		entities:     []entities.Entity{entities.MakeGhost(internal.V(2000, 150))},
-		elise:        elise,
+		entities:     []entities.Entity{elise, entities.MakeGhost(internal.V(2000, 150))},
 		entityCanvas: entities.MakeEntityCanvas(),
 	}
 }
@@ -45,7 +43,7 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 		event = "RIGHT_DOWN"
 	}
 	if event != "" {
-		scene.elise = scene.elise.Handle(entities.EventBox{
+		scene.entities[0] = scene.entities[0].Handle(entities.EventBox{
 			Event: event,
 			Box:   pixel.Rect{},
 		})
@@ -68,7 +66,7 @@ func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 		event = "RIGHT_UP"
 	}
 	if event != "" {
-		scene.elise = scene.elise.Handle(entities.EventBox{
+		scene.entities[0] = scene.entities[0].Handle(entities.EventBox{
 			Event: event,
 			Box:   pixel.Rect{},
 		})
@@ -108,8 +106,6 @@ func (scene *LevelScene) debugGfx() d.WinOp {
 	for _, entity := range scene.entities {
 		rectangles = append(rectangles, rectDrawOp(entity.HitBox()))
 	}
-	eliseHitBox := scene.elise.HitBox()
-	rectangles = append(rectangles, rectDrawOp(eliseHitBox))
 	color := d.Colored(colornames.White, d.ImdOpSequence(rectangles...))
 	return d.OpSequence(d.ToWinOp(color))
 }
@@ -119,8 +115,11 @@ func rectDrawOp(r pixel.Rect) d.ImdOp {
 }
 
 func (scene *LevelScene) entityOp() d.WinOp {
-	return d.OpSequence(scene.entities[0].GfxOp(&scene.res.ImageMap),
-		scene.elise.GfxOp(&scene.res.ImageMap))
+	ops := make([]d.WinOp, 0)
+	for _, entity := range scene.entities {
+		ops = append(ops, entity.GfxOp(&scene.res.ImageMap))
+	}
+	return d.OpSequence(ops...)
 }
 
 func (scene *LevelScene) mapSymbolOp() d.WinOp {
@@ -161,7 +160,11 @@ func (scene *LevelScene) drawFPS(win *pixelgl.Window) {
 
 func (scene *LevelScene) isMapSignClose() bool {
 	sign := scene.closestMapSign()
-	return scene.elise.Pos.Sub(sign.Pos).Len() < 75
+	return scene.elisePos().Sub(sign.Pos).Len() < 75
+}
+
+func (scene *LevelScene) elisePos() pixel.Vec {
+	return scene.entities[0].HitBox().Center()
 }
 
 func (scene *LevelScene) closestMapSign() internal.SignPost {
@@ -173,13 +176,13 @@ func (scene *LevelScene) closestMapSign() internal.SignPost {
 		point := getPoint(val)
 		points = append(points, point)
 	}
-	return scene.level.SignPosts[internal.ClosestPoint(scene.elise.Pos, points)]
+	return scene.level.SignPosts[internal.ClosestPoint(scene.elisePos(), points)]
 }
 
 func (scene *LevelScene) cameraVector() pixel.Vec {
 	halfScreen := internal.V(internal.ScreenWidth/2, internal.ScreenHeight/2)
 	playerHead := internal.V(0, internal.PlayerHeight)
-	cam := scene.elise.Pos.Sub(halfScreen).Add(playerHead)
+	cam := scene.elisePos().Sub(halfScreen).Add(playerHead)
 	reversed := cam.Scaled(-1)
 	return reversed
 }
@@ -189,22 +192,11 @@ func (scene *LevelScene) Tick() bool {
 	scene.entityCanvas.Consequences(func(eb entities.EventBox, box entities.EntityHitBox) {
 		id := box.Entity
 		fmt.Printf("%v will handle %v\n", id, eb.Event)
-		// Elise?
-		if id == -1 {
-			scene.elise = scene.elise.Handle(eb)
-		} else {
-			scene.entities[id] = scene.entities[id].Handle(eb)
-		}
-		// Otherwise, ordinary entity
+		scene.entities[id] = scene.entities[id].Handle(eb)
 	})
 	// Reset the canvas
 	scene.entityCanvas = entities.MakeEntityCanvas()
 	scene.timeMs += 5.0
-	scene.elise = scene.elise.Tick()
-	scene.entityCanvas.AddEntityHitBox(entities.EntityHitBox{
-		Entity: -1,
-		HitBox: scene.elise.HitBox(),
-	})
 	for i := range scene.entities {
 		scene.entities[i] = scene.entities[i].Tick(&scene.entityCanvas)
 		scene.entityCanvas.AddEntityHitBox(entities.EntityHitBox{

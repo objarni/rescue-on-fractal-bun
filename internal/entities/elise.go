@@ -18,16 +18,15 @@ type Elise struct {
 func (elise Elise) HitBox() pixel.Rect {
 	min := elise.Pos.Add(pixel.V(-eliseWidth/2, 0))
 	max := elise.Pos.Add(pixel.V(eliseWidth/2, eliseHeight))
-	rect := pixel.Rect{min, max}
+	rect := pixel.Rect{Min: min, Max: max}
 	return rect
 }
 
-func MakeElise(position pixel.Vec) Elise {
-	elise := Elise{Pos: position}
-	return elise
+func MakeElise(position pixel.Vec) Entity {
+	return Elise{Pos: position}
 }
 
-func (elise Elise) Tick() Elise {
+func (elise Elise) Tick(_ EventBoxReceiver) Entity {
 	elise.gameTimeMs += 5
 	eliseMoveSpeed := 1.2
 	if elise.leftPressed && !elise.rightPressed {
@@ -45,7 +44,7 @@ func (elise Elise) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 		draw.Image(*imageMap, image))
 }
 
-func (elise Elise) Handle(eb EventBox) Elise {
+func (elise Elise) Handle(eb EventBox) Entity {
 	if eb.Event == "DAMAGE" {
 		elise.Pos = elise.Pos.Add(pixel.V(5, 0))
 	}
