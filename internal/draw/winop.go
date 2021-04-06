@@ -90,7 +90,7 @@ func (winImdOp WinImdOp) Lines() []string {
 	return headerWithIndentedBody(head, body)
 }
 
-func (winImdOp WinImdOp) Render(mx px.Matrix, win *pixelgl.Window) {
+func (winImdOp WinImdOp) Render(_ px.Matrix, win *pixelgl.Window) {
 	imd := imdraw.New(nil)
 	winImdOp.imdOp.Render(imd)
 	imd.Draw(win)
@@ -113,7 +113,7 @@ func (tileLayerOp TileLayerOp) Lines() []string {
 	return []string{tileLayerOp.String()}
 }
 
-func (tileLayerOp TileLayerOp) Render(mx px.Matrix, win *pixelgl.Window) {
+func (tileLayerOp TileLayerOp) Render(_ px.Matrix, win *pixelgl.Window) {
 	_ = tileLayerOp.tileMap.GetTileLayerByName(tileLayerOp.layerName).Draw(win)
 }
 
@@ -137,7 +137,7 @@ func (imageOp ImageOp) Lines() []string {
 	return []string{imageOp.String()}
 }
 
-func (imageOp ImageOp) Render(mx px.Matrix, win *pixelgl.Window) {
+func (imageOp ImageOp) Render(_ px.Matrix, win *pixelgl.Window) {
 	sprite := imageOp.imageMap[imageOp.imageName]
 	sprite.Draw(win, px.IM)
 }
