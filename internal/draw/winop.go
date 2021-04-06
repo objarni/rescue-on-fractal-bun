@@ -50,9 +50,7 @@ func winMovedHeader(winMoved WinMoved) string {
 
 func (winMoved WinMoved) Render(mx pixel.Matrix, win *pixelgl.Window) {
 	newMatrix := mx.Moved(winMoved.translation)
-	win.SetMatrix(newMatrix)
 	winMoved.winOp.Render(newMatrix, win)
-	win.SetMatrix(mx) // Restore old matrix
 }
 
 func Moved(translation pixel.Vec, winOp WinOp) WinOp {
@@ -76,9 +74,10 @@ func (winImdOp WinImdOp) Lines() []string {
 	return headerWithIndentedBody(head, body)
 }
 
-func (winImdOp WinImdOp) Render(_ pixel.Matrix, win *pixelgl.Window) {
+func (winImdOp WinImdOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
 	imd := imdraw.New(nil)
 	winImdOp.imdOp.Render(imd)
+	win.SetMatrix(mx)
 	imd.Draw(win)
 }
 
@@ -99,7 +98,8 @@ func (tileLayerOp TileLayerOp) Lines() []string {
 	return []string{tileLayerOp.String()}
 }
 
-func (tileLayerOp TileLayerOp) Render(_ pixel.Matrix, win *pixelgl.Window) {
+func (tileLayerOp TileLayerOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
+	win.SetMatrix(mx)
 	_ = tileLayerOp.tileMap.GetTileLayerByName(tileLayerOp.layerName).Draw(win)
 }
 
@@ -123,8 +123,9 @@ func (imageOp ImageOp) Lines() []string {
 	return []string{imageOp.String()}
 }
 
-func (imageOp ImageOp) Render(_ pixel.Matrix, win *pixelgl.Window) {
+func (imageOp ImageOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
 	sprite := imageOp.imageMap[imageOp.imageName]
+	win.SetMatrix(mx)
 	sprite.Draw(win, pixel.IM)
 }
 
@@ -213,7 +214,7 @@ func (mirrored OpMirrored) Lines() []string {
 }
 
 func (mirrored OpMirrored) Render(mx pixel.Matrix, win *pixelgl.Window) {
-	mirroredMatrix := mx.ScaledXY(pixel.V(0, 1), pixel.V(1, 1))
+	mirroredMatrix := pixel.IM.ScaledXY(pixel.V(0, 1), pixel.V(-1, 1)).Chained(mx)
 	mirrored.op.Render(mirroredMatrix, win)
 }
 
