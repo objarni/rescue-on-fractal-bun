@@ -2,7 +2,7 @@ package scenes
 
 import (
 	"fmt"
-	"github.com/faiface/pixel"
+	px "github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"golang.org/x/exp/shiny/materialdesign/colornames"
@@ -22,7 +22,7 @@ type LevelScene struct {
 
 func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *LevelScene {
 	level := res.Levels[levelName]
-	pos := level.SignPosts[0].Pos.Add(pixel.V(0, -50))
+	pos := level.SignPosts[0].Pos.Add(px.V(0, -50))
 	elise := entities.MakeElise(pos)
 	return &LevelScene{
 		cfg:          cfg,
@@ -45,7 +45,7 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if event != "" {
 		scene.entities[0] = scene.entities[0].Handle(entities.EventBox{
 			Event: event,
-			Box:   pixel.Rect{},
+			Box:   px.Rect{},
 		})
 	}
 	if key == internal.Action {
@@ -68,7 +68,7 @@ func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 	if event != "" {
 		scene.entities[0] = scene.entities[0].Handle(entities.EventBox{
 			Event: event,
-			Box:   pixel.Rect{},
+			Box:   px.Rect{},
 		})
 	}
 	return scene
@@ -96,7 +96,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 		),
 		scene.mapSymbolOp(),
 	)
-	gfx.Render(pixel.IM, win)
+	gfx.Render(px.IM, win)
 
 	//scene.drawFPS(win)
 }
@@ -110,7 +110,7 @@ func (scene *LevelScene) debugGfx() d.WinOp {
 	return d.OpSequence(d.ToWinOp(color))
 }
 
-func rectDrawOp(r pixel.Rect) d.ImdOp {
+func rectDrawOp(r px.Rect) d.ImdOp {
 	return d.Rectangle(C(r.Min), C(r.Max), 2)
 }
 
@@ -152,10 +152,10 @@ func (scene *LevelScene) signPostsOp() d.WinOp {
 /* gfxOp stop */
 
 func (scene *LevelScene) drawFPS(win *pixelgl.Window) {
-	win.SetMatrix(pixel.IM)
-	tb := text.New(pixel.V(0, 0), scene.res.Atlas)
+	win.SetMatrix(px.IM)
+	tb := text.New(px.V(0, 0), scene.res.Atlas)
 	_, _ = fmt.Fprintf(tb, "FPS=%1.1f", scene.res.FPS)
-	tb.DrawColorMask(win, pixel.IM, colornames.Brown800)
+	tb.DrawColorMask(win, px.IM, colornames.Brown800)
 }
 
 func (scene *LevelScene) isMapSignClose() bool {
@@ -163,15 +163,15 @@ func (scene *LevelScene) isMapSignClose() bool {
 	return scene.elisePos().Sub(sign.Pos).Len() < 75
 }
 
-func (scene *LevelScene) elisePos() pixel.Vec {
+func (scene *LevelScene) elisePos() px.Vec {
 	return scene.entities[0].HitBox().Center()
 }
 
 func (scene *LevelScene) closestMapSign() internal.SignPost {
 	// Potential: ClosestPoint could take an array of objects implementing
 	// 'WithPoint' interface, and we only define anon func here
-	getPoint := func(mp internal.SignPost) pixel.Vec { return mp.Pos }
-	points := make([]pixel.Vec, 0)
+	getPoint := func(mp internal.SignPost) px.Vec { return mp.Pos }
+	points := make([]px.Vec, 0)
 	for _, val := range scene.level.SignPosts {
 		point := getPoint(val)
 		points = append(points, point)
@@ -179,7 +179,7 @@ func (scene *LevelScene) closestMapSign() internal.SignPost {
 	return scene.level.SignPosts[internal.ClosestPoint(scene.elisePos(), points)]
 }
 
-func (scene *LevelScene) cameraVector() pixel.Vec {
+func (scene *LevelScene) cameraVector() px.Vec {
 	halfScreen := internal.V(internal.ScreenWidth/2, internal.ScreenHeight/2)
 	playerHead := internal.V(0, internal.PlayerHeight)
 	cam := scene.elisePos().Sub(halfScreen).Add(playerHead)
@@ -212,7 +212,7 @@ Windows rit-API:er som används i Rescue:
 image.Draw(win, mx)
 image.DrawColorMask(win, mx, color)
 text.DrawColorMask(win, mx, color)
-text.Draw(win, pixel.IM)  # används inte men finns i API:et!
+text.Draw(win, px.IM)  # används inte men finns i API:et!
 layer.Draw(win)
 imd.Draw(win)
 
