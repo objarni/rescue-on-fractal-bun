@@ -3,7 +3,7 @@ package draw
 import (
 	"fmt"
 	"github.com/bcvery1/tilepix"
-	"github.com/faiface/pixel"
+	px "github.com/faiface/pixel"
 	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
 	"golang.org/x/image/colornames"
@@ -12,8 +12,22 @@ import (
 	"strings"
 )
 
+/*
+Some general conventions on the Render(..) functions.
+The parameters that are passed to Render are called
+'context'. An operation that is composite modifies
+this context, and restores is when it's child element
+has rendered. A leaf operation does not modify the context,
+but instead renders 'in the context it is'.
+
+For example, an image will just render in the context
+it is in; the window (part of context) has already been
+setup for the rendering, with all translations/scales/rotations,
+and color masks and so on.
+*/
+
 type WinMoved struct {
-	translation pixel.Vec
+	translation px.Vec
 	winOp       WinOp
 }
 
@@ -48,12 +62,14 @@ func winMovedHeader(winMoved WinMoved) string {
 	return head
 }
 
-func (winMoved WinMoved) Render(mx pixel.Matrix, win *pixelgl.Window) {
+func (winMoved WinMoved) Render(mx px.Matrix, win *pixelgl.Window) {
 	newMatrix := mx.Moved(winMoved.translation)
+	win.SetMatrix(newMatrix)
 	winMoved.winOp.Render(newMatrix, win)
+	win.SetMatrix(mx)
 }
 
-func Moved(translation pixel.Vec, winOp WinOp) WinOp {
+func Moved(translation px.Vec, winOp WinOp) WinOp {
 	return WinMoved{
 		translation: translation,
 		winOp:       winOp,
@@ -74,10 +90,9 @@ func (winImdOp WinImdOp) Lines() []string {
 	return headerWithIndentedBody(head, body)
 }
 
-func (winImdOp WinImdOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
+func (winImdOp WinImdOp) Render(mx px.Matrix, win *pixelgl.Window) {
 	imd := imdraw.New(nil)
 	winImdOp.imdOp.Render(imd)
-	win.SetMatrix(mx)
 	imd.Draw(win)
 }
 
@@ -98,8 +113,7 @@ func (tileLayerOp TileLayerOp) Lines() []string {
 	return []string{tileLayerOp.String()}
 }
 
-func (tileLayerOp TileLayerOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
-	win.SetMatrix(mx)
+func (tileLayerOp TileLayerOp) Render(mx px.Matrix, win *pixelgl.Window) {
 	_ = tileLayerOp.tileMap.GetTileLayerByName(tileLayerOp.layerName).Draw(win)
 }
 
@@ -111,7 +125,7 @@ func TileLayer(tileMap *tilepix.Map, layerName string) WinOp {
 }
 
 type ImageOp struct {
-	imageMap  map[internal.Image]*pixel.Sprite
+	imageMap  map[internal.Image]*px.Sprite
 	imageName internal.Image
 }
 
@@ -123,13 +137,12 @@ func (imageOp ImageOp) Lines() []string {
 	return []string{imageOp.String()}
 }
 
-func (imageOp ImageOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
+func (imageOp ImageOp) Render(mx px.Matrix, win *pixelgl.Window) {
 	sprite := imageOp.imageMap[imageOp.imageName]
-	win.SetMatrix(mx)
-	sprite.Draw(win, pixel.IM)
+	sprite.Draw(win, px.IM)
 }
 
-func Image(imageMap map[internal.Image]*pixel.Sprite, imageName internal.Image) WinOp {
+func Image(imageMap map[internal.Image]*px.Sprite, imageName internal.Image) WinOp {
 	return ImageOp{
 		imageMap:  imageMap,
 		imageName: imageName,
@@ -145,16 +158,16 @@ func (colorOp ColorOp) String() string {
 	return strings.Join(colorOp.Lines(), "\n")
 }
 
-func (color ColorOp) Lines() []string {
-	head := fmt.Sprintf("Color %v:", color.color)
-	body := color.winOp.Lines()
+func (colorOp ColorOp) Lines() []string {
+	head := fmt.Sprintf("Color %v:", colorOp.color)
+	body := colorOp.winOp.Lines()
 	return headerWithIndentedBody(head, body)
 }
 
-func (colorOp ColorOp) Render(mx pixel.Matrix, win *pixelgl.Window) {
+func (colorOp ColorOp) Render(mx px.Matrix, win *pixelgl.Window) {
 	win.SetColorMask(colorOp.color)
 	colorOp.winOp.Render(mx, win)
-	// @remind: if I nest colors, assuming white 'restore' color will not work anymore!
+	// TODO: Color should be part of 'context' so that restore becomes saner
 	win.SetColorMask(colornames.White)
 }
 
@@ -171,7 +184,7 @@ type WinOpSequence struct {
 
 func (sequence WinOpSequence) String() string {
 	head := "WinOp Sequence:"
-	body := []string{}
+	body := make([]string, 0)
 	for _, op := range sequence.winOps {
 		for _, line := range op.Lines() {
 			body = append(body, line)
@@ -184,7 +197,7 @@ func (sequence WinOpSequence) Lines() []string {
 	return strings.Split(sequence.String(), "\n")
 }
 
-func (sequence WinOpSequence) Render(mx pixel.Matrix, win *pixelgl.Window) {
+func (sequence WinOpSequence) Render(mx px.Matrix, win *pixelgl.Window) {
 	for _, op := range sequence.winOps {
 		op.Render(mx, win)
 	}
@@ -213,9 +226,16 @@ func (mirrored OpMirrored) Lines() []string {
 	return headerWithIndentedBody(head, body)
 }
 
-func (mirrored OpMirrored) Render(mx pixel.Matrix, win *pixelgl.Window) {
-	mirroredMatrix := pixel.IM.ScaledXY(pixel.V(0, 1), pixel.V(-1, 1)).Chained(mx)
+func (mirrored OpMirrored) Render(mx px.Matrix, win *pixelgl.Window) {
+	// Pixel isn't following linear algebra convention of matrix multiplication;
+	//     m.Moved(..).Scaled(..) really means:
+	// Scaled(..)*Moved(..)*m
+	// .. which means that if we want to mirror an image around the Y-axis,
+	// this has to be written with the scale to the left! :)
+	mirroredMatrix := px.IM.ScaledXY(px.V(0, 1), px.V(-1, 1)).Chained(mx)
+	win.SetMatrix(mirroredMatrix)
 	mirrored.op.Render(mirroredMatrix, win)
+	win.SetMatrix(mx)
 }
 
 func Mirrored(winOp WinOp) WinOp {
