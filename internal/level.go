@@ -8,15 +8,21 @@ import (
 )
 
 type Level struct {
-	Width, Height int
-	ClearColor    color.RGBA
-	SignPosts     []SignPost
-	TilepixMap    *tilepix.Map
+	Width, Height     int
+	ClearColor        color.RGBA
+	SignPosts         []SignPost
+	TilepixMap        *tilepix.Map
+	EntitySpawnPoints []EntitySpawnPoint
 }
 
 type SignPost struct {
 	Pos  pixel.Vec
 	Text string // Text on signpost
+}
+
+type EntitySpawnPoint struct {
+	spawnAt    pixel.Vec
+	entityType string
 }
 
 type MapSign struct {

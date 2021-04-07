@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="2021.01.13" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="4" height="3" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#0a3264" nextlayerid="6" nextobjectid="3">
+<map version="1.4" tiledversion="2021.01.13" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="4" height="3" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#0a3264" nextlayerid="7" nextobjectid="3">
  <tileset firstgid="1" source="../examples/tiled_test/TileSet.tsx"/>
  <layer id="1" name="Background" width="4" height="3">
   <data encoding="csv">
-0,0,0,251,
-251,251,251,251,
-251,251,251,251
+0,0,0,277,
+277,277,277,277,
+277,277,277,277
 </data>
  </layer>
  <layer id="2" name="Platforms" width="4" height="3">
   <data encoding="csv">
 0,0,0,0,
 0,0,0,0,
-348,348,348,348
+386,386,386,386
 </data>
  </layer>
  <layer id="3" name="Walls" width="4" height="3">
   <data encoding="csv">
-0,0,0,350,
-0,0,0,350,
+0,0,0,388,
+0,0,0,388,
 0,0,0,0
 </data>
  </layer>
@@ -37,4 +37,5 @@
    <text wrap="1">Hembyn</text>
   </object>
  </objectgroup>
+ <objectgroup id="6" name="Entities"/>
 </map>

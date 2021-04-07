@@ -4,6 +4,7 @@ import (
 	"fmt"
 	approvals "github.com/approvals/go-approval-tests"
 	"github.com/bcvery1/tilepix"
+	"objarni/rescue-on-fractal-bun/tests"
 	"strings"
 	"testing"
 )
@@ -13,18 +14,16 @@ func templateThis(format string, args ...string) string {
 	return r.Replace(format)
 }
 
-func printLevel(level Level) {
-	levelString := levelToString(level)
-	fmt.Println(levelString)
-}
-
 func levelToString(level Level) string {
 	mapPoints := mapPointsToString(level.SignPosts)
+	entities := entitySpawnPointsToString(level.EntitySpawnPoints)
 	levelString := templateThis(
 		"GetWidth: {Width}   GetHeight: {Height}  (tiles)\n"+
 			"Background color: RGB={red},{green},{blue}\n"+
 			"There are {countMapPoints} SignPost(s):\n"+
 			"{mapPoints}\n"+
+			"Entities:\n"+
+			"{entities}\n"+
 			"Walls:\n"+
 			"...#\n"+
 			"...#\n"+
@@ -37,11 +36,16 @@ func levelToString(level Level) string {
 		"{Height}", toString(level.Height),
 		"{countMapPoints}", toString(len(level.SignPosts)),
 		"{mapPoints}", mapPoints,
+		"{entities}", entities,
 		"{red}", toString(level.ClearColor.R),
 		"{green}", toString(level.ClearColor.G),
 		"{blue}", toString(level.ClearColor.B),
 	)
 	return levelString
+}
+
+func entitySpawnPointsToString(_ []EntitySpawnPoint) string {
+	return ""
 }
 
 func mapPointsToString(points []SignPost) string {
@@ -58,13 +62,13 @@ func toString(v interface{}) string {
 
 func Test_loadingSimpleButCompleteLevel(t *testing.T) {
 	level := LoadLevel("../testdata/MiniLevel.tmx")
-	approvals.VerifyString(t, levelToString(level))
+	approvals.VerifyString(t, levelToString(level)+"\n")
 }
 
-func ExampleLoadingBrokenLevel() {
+func Example_loadingBrokenLevel() {
 	brokenLevelPath := "../testdata/BrokenLevel.tmx"
 	brokenLevel, _ := tilepix.ReadFile(brokenLevelPath)
-	ValidateLevel(brokenLevelPath, brokenLevel)
+	_ = ValidateLevel(brokenLevelPath, brokenLevel)
 	// Output:
 	// ../testdata/BrokenLevel.tmx contains the following errors:
 	// There is no Background layer
@@ -73,6 +77,12 @@ func ExampleLoadingBrokenLevel() {
 	// There is no Foreground layer
 	// There should be an object layer named "SignPosts", instead I found:
 	// "Object Layer 1"
+	// There should be an object layer named "Entities", instead I found:
+	// "Object Layer 1"
 	// The BackgroundColor should be on web-color format #RRGGBB, instead I found:
 	// ""
+}
+
+func init() {
+	approvals.UseReporter(tests.ReportWithMeld())
 }

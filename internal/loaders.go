@@ -117,12 +117,21 @@ func ValidateLevel(path string, level *tilepix.Map) error {
 		}
 	}
 
-	if level.GetObjectLayerByName("SignPosts") == nil {
-		errors = append(errors, "There should be an object layer named \"SignPosts\", instead I found:")
-		for _, objectLayer := range level.ObjectGroups {
-			errors = append(errors, `"`+objectLayer.Name+`"`)
+	for _, objectLayerName := range []string{"SignPosts", "Entities"} {
+		if level.GetObjectLayerByName(objectLayerName) == nil {
+			errors = append(errors, "There should be an object layer named \""+objectLayerName+"\", instead I found:")
+			for _, objectLayer := range level.ObjectGroups {
+				errors = append(errors, `"`+objectLayer.Name+`"`)
+			}
 		}
 	}
+
+	//if level.GetObjectLayerByName("Entities") == nil {
+	//	errors = append(errors, "There should be an object layer named \"Entities\", instead I found:")
+	//	for _, objectLayer := range level.ObjectGroups {
+	//		errors = append(errors, `"`+objectLayer.Name+`"`)
+	//	}
+	//}
 
 	if level.BackgroundColor == "" {
 		errors = append(errors, "The BackgroundColor should be on web-color format #RRGGBB, instead I found:")

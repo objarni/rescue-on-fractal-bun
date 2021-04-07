@@ -4,10 +4,15 @@ import (
 	"fmt"
 	approvals "github.com/approvals/go-approval-tests"
 	"github.com/faiface/pixel"
+	"objarni/rescue-on-fractal-bun/tests"
 	"sort"
 	"strings"
 	"testing"
 )
+
+func init() {
+	approvals.UseReporter(tests.ReportWithMeld())
+}
 
 func TestMapSignBuilder(t *testing.T) {
 	var levels = map[string]Level{

@@ -4,6 +4,8 @@ There are 2 SignPost(s):
 'Korsningen' at 12, 62
 'Hembyn' at 10, 41
 
+Entities:
+
 Walls:
 ...#
 ...#
