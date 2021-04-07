@@ -1,0 +1,14 @@
+GetWidth: 4   GetHeight: 3  (tiles)
+Background color: RGB=10,50,100
+There are 2 SignPost(s):
+'Korsningen' at 12, 62
+'Hembyn' at 10, 41
+
+Walls:
+...#
+...#
+....
+Platforms:
+....
+....
+####

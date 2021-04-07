@@ -2,8 +2,10 @@ package internal
 
 import (
 	"fmt"
+	approvals "github.com/approvals/go-approval-tests"
 	"github.com/bcvery1/tilepix"
 	"strings"
+	"testing"
 )
 
 func templateThis(format string, args ...string) string {
@@ -12,8 +14,13 @@ func templateThis(format string, args ...string) string {
 }
 
 func printLevel(level Level) {
-	mapPoints := printMapPoints(level.SignPosts)
-	fmt.Println(templateThis(
+	levelString := levelToString(level)
+	fmt.Println(levelString)
+}
+
+func levelToString(level Level) string {
+	mapPoints := mapPointsToString(level.SignPosts)
+	levelString := templateThis(
 		"GetWidth: {Width}   GetHeight: {Height}  (tiles)\n"+
 			"Background color: RGB={red},{green},{blue}\n"+
 			"There are {countMapPoints} SignPost(s):\n"+
@@ -33,10 +40,11 @@ func printLevel(level Level) {
 		"{red}", toString(level.ClearColor.R),
 		"{green}", toString(level.ClearColor.G),
 		"{blue}", toString(level.ClearColor.B),
-	))
+	)
+	return levelString
 }
 
-func printMapPoints(points []SignPost) string {
+func mapPointsToString(points []SignPost) string {
 	s := ""
 	for _, mp := range points {
 		s += fmt.Sprintf("'%v' at %1.0f, %1.0f\n", mp.Text, mp.Pos.X, mp.Pos.Y)
@@ -48,24 +56,9 @@ func toString(v interface{}) string {
 	return fmt.Sprint(v)
 }
 
-func ExampleLoadingMiniLevel() {
+func Test_loadingSimpleButCompleteLevel(t *testing.T) {
 	level := LoadLevel("../testdata/MiniLevel.tmx")
-	printLevel(level)
-	// Output:
-	// GetWidth: 4   GetHeight: 3  (tiles)
-	// Background color: RGB=10,50,100
-	// There are 2 SignPost(s):
-	// 'Korsningen' at 12, 62
-	// 'Hembyn' at 10, 41
-	//
-	// Walls:
-	// ...#
-	// ...#
-	// ....
-	// Platforms:
-	// ....
-	// ....
-	// ####
+	approvals.VerifyString(t, levelToString(level))
 }
 
 func ExampleLoadingBrokenLevel() {
