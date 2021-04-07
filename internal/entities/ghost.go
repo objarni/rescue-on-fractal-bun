@@ -3,6 +3,7 @@ package entities
 import (
 	"github.com/faiface/pixel"
 	"math"
+	"math/rand"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/draw"
 )
@@ -43,7 +44,7 @@ func (ghost Ghost) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 }
 
 func MakeGhost(position pixel.Vec) Entity {
-	return Ghost{pos: position, baseLine: position.Y, gameTimeMs: 0}
+	return Ghost{pos: position, baseLine: position.Y, gameTimeMs: rand.Float64() * 10000}
 }
 
 /* notes ghost/elise behaviour
