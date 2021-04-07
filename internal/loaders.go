@@ -151,8 +151,8 @@ func ValidateLevel(path string, level *tilepix.Map) error {
 }
 
 func ParseLevel(level *tilepix.Map) Level {
-	points := []SignPost{}
-	for _, object := range level.ObjectGroups[0].Objects {
+	points := make([]SignPost, 0)
+	for _, object := range level.GetObjectLayerByName("SignPosts").Objects {
 		x := object.X
 		y := object.Y
 		var mp = SignPost{
@@ -161,13 +161,24 @@ func ParseLevel(level *tilepix.Map) Level {
 		}
 		points = append(points, mp)
 	}
+	esps := make([]EntitySpawnPoint, 0)
+	for _, object := range level.GetObjectLayerByName("Entities").Objects {
+		x := object.X
+		y := object.Y
+		var esp = EntitySpawnPoint{
+			spawnAt:    pixel.Vec{X: x, Y: y},
+			entityType: object.Type,
+		}
+		esps = append(esps, esp)
+	}
 	color, err2 := hexcolor.Parse(level.BackgroundColor)
 	PanicIfError(err2)
 	return Level{
-		Width:      level.Width,
-		Height:     level.Height,
-		SignPosts:  points,
-		TilepixMap: level,
-		ClearColor: color,
+		Width:             level.Width,
+		Height:            level.Height,
+		SignPosts:         points,
+		TilepixMap:        level,
+		ClearColor:        color,
+		EntitySpawnPoints: esps,
 	}
 }

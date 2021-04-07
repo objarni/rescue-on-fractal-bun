@@ -44,8 +44,12 @@ func levelToString(level Level) string {
 	return levelString
 }
 
-func entitySpawnPointsToString(_ []EntitySpawnPoint) string {
-	return ""
+func entitySpawnPointsToString(spawnPoints []EntitySpawnPoint) string {
+	result := ""
+	for _, esp := range spawnPoints {
+		result += fmt.Sprintf("'%v' at %v\n", esp.entityType, esp.spawnAt)
+	}
+	return result
 }
 
 func mapPointsToString(points []SignPost) string {
