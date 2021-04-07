@@ -1,7 +1,7 @@
 package entities
 
 import (
-	"github.com/faiface/pixel"
+	px "github.com/faiface/pixel"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/draw"
 )
@@ -10,24 +10,25 @@ const eliseWidth = 20.0
 const eliseHeight = 100.0
 
 type Elise struct {
-	Pos                       pixel.Vec
+	Pos                       px.Vec
 	leftPressed, rightPressed bool
 	gameTimeMs                int
 	flip                      bool
+	actionDown                bool
 }
 
-func (elise Elise) HitBox() pixel.Rect {
-	min := elise.Pos.Add(pixel.V(-eliseWidth/2, 0))
-	max := elise.Pos.Add(pixel.V(eliseWidth/2, eliseHeight))
-	rect := pixel.Rect{Min: min, Max: max}
+func (elise Elise) HitBox() px.Rect {
+	min := elise.Pos.Add(px.V(-eliseWidth/2, 0))
+	max := elise.Pos.Add(px.V(eliseWidth/2, eliseHeight))
+	rect := px.Rect{Min: min, Max: max}
 	return rect
 }
 
-func MakeElise(position pixel.Vec) Entity {
+func MakeElise(position px.Vec) Entity {
 	return Elise{Pos: position}
 }
 
-func (elise Elise) Tick(_ EventBoxReceiver) Entity {
+func (elise Elise) Tick(eb EventBoxReceiver) Entity {
 	elise.gameTimeMs += 5
 	eliseMoveSpeed := 1.2
 	if elise.leftPressed && !elise.rightPressed {
@@ -38,6 +39,14 @@ func (elise Elise) Tick(_ EventBoxReceiver) Entity {
 		elise.flip = false
 		elise.Pos = elise.Pos.Add(internal.V(eliseMoveSpeed, 0))
 	}
+	if elise.actionDown {
+		elise.actionDown = false
+		hitBox := elise.HitBox()
+		eb.AddEventBox(EventBox{
+			Event: "ACTION",
+			Box:   hitBox.Resized(hitBox.Center(), px.V(40, 40)),
+		})
+	}
 	return elise
 }
 
@@ -47,12 +56,12 @@ func (elise Elise) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 	if elise.flip {
 		imgOp = draw.Mirrored(imgOp)
 	}
-	return draw.Moved(elise.Pos.Add(pixel.V(0, eliseHeight/2)), imgOp)
+	return draw.Moved(elise.Pos.Add(px.V(0, eliseHeight/2)), imgOp)
 }
 
 func (elise Elise) Handle(eb EventBox) Entity {
 	if eb.Event == "DAMAGE" {
-		elise.Pos = elise.Pos.Add(pixel.V(5, 0))
+		elise.Pos = elise.Pos.Add(px.V(5, 0))
 	}
 	if eb.Event == "LEFT_DOWN" {
 		elise.leftPressed = true
@@ -65,6 +74,9 @@ func (elise Elise) Handle(eb EventBox) Entity {
 	}
 	if eb.Event == "RIGHT_UP" {
 		elise.rightPressed = false
+	}
+	if eb.Event == "ACTION_DOWN" {
+		elise.actionDown = true
 	}
 	return elise
 }

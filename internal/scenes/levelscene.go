@@ -42,6 +42,9 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Right {
 		event = "RIGHT_DOWN"
 	}
+	if key == internal.Action {
+		event = "ACTION_DOWN"
+	}
 	if event != "" {
 		scene.entities[0] = scene.entities[0].Handle(entities.EventBox{
 			Event: event,
@@ -102,12 +105,19 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 }
 
 func (scene *LevelScene) debugGfx() d.WinOp {
-	rectangles := make([]d.ImdOp, 0)
+	hitBoxes := make([]d.ImdOp, 0)
 	for _, entity := range scene.entities {
-		rectangles = append(rectangles, rectDrawOp(entity.HitBox()))
+		hitBoxes = append(hitBoxes, rectDrawOp(entity.HitBox()))
 	}
-	color := d.Colored(colornames.White, d.ImdOpSequence(rectangles...))
-	return d.OpSequence(d.ToWinOp(color))
+	hitBoxesOp := d.Colored(colornames.White, d.ImdOpSequence(hitBoxes...))
+
+	eventBoxes := make([]d.ImdOp, 0)
+	for _, eventbox := range scene.entityCanvas.EventBoxes {
+		eventBoxes = append(eventBoxes, rectDrawOp(eventbox.Box))
+	}
+	eventBoxesOp := d.Colored(colornames.RedA700, d.ImdOpSequence(eventBoxes...))
+
+	return d.OpSequence(d.ToWinOp(hitBoxesOp), d.ToWinOp(eventBoxesOp))
 }
 
 func rectDrawOp(r px.Rect) d.ImdOp {
