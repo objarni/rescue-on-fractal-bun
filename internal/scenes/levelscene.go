@@ -23,15 +23,23 @@ type LevelScene struct {
 func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *LevelScene {
 	level := res.Levels[levelName]
 	pos := level.SignPosts[0].Pos.Add(px.V(0, -50))
-	elise := entities.MakeElise(pos)
 	return &LevelScene{
 		cfg:          cfg,
 		res:          res,
 		level:        level,
 		timeMs:       0,
-		entities:     []entities.Entity{elise, entities.MakeGhost(internal.V(2000, 150))},
+		entities:     SpawnEntities(pos, level),
 		entityCanvas: entities.MakeEntityCanvas(),
 	}
+}
+
+func SpawnEntities(pos px.Vec, level internal.Level) []entities.Entity {
+	elise := entities.MakeElise(pos)
+	es := []entities.Entity{elise}
+	for _, esp := range level.EntitySpawnPoints {
+		es = append(es, entities.MakeGhost(esp.SpawnAt))
+	}
+	return es
 }
 
 func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
