@@ -17,3 +17,4 @@ require (
 )
 
 replace github.com/bcvery1/tilepix => /home/olof/repos/github/oss/tilepix
+replace github.com/faiface/pixel => /home/olof/repos/github/pixel
