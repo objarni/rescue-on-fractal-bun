@@ -27,7 +27,7 @@ func run() {
 		if err != nil {
 			panic(err)
 		}
-		pprof.StartCPUProfile(f)
+		_ = pprof.StartCPUProfile(f)
 		defer pprof.StopCPUProfile()
 	}
 
@@ -180,6 +180,7 @@ func loadResources() internal.Resources {
 		internal.IEliseWalk5:           internal.LoadSpriteForSure("assets/TEliseWalk5.png"),
 		internal.IEliseWalk6:           internal.LoadSpriteForSure("assets/TEliseWalk6.png"),
 		internal.IEliseCrouch:          internal.LoadSpriteForSure("assets/TEliseCrouch.png"),
+		internal.IButton:               internal.LoadSpriteForSure("assets/TButton.png"),
 	}
 	if len(res.ImageMap) < int(internal.AfterLastImage) {
 		panic("Expect one image loaded per map item")

@@ -33,6 +33,7 @@ const (
 	IEliseWalk5
 	IEliseWalk6
 	IEliseCrouch
+	IButton
 	AfterLastImage
 )
 
@@ -50,6 +51,7 @@ func (image Image) String() string {
 		"IEliseWalk5",
 		"IEliseWalk6",
 		"IEliseCrouch",
+		"IButton",
 		"AfterLastImage",
 	}[image]
 }

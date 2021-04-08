@@ -107,7 +107,6 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 				d.Color(colornames.Black, d.TileLayer(scene.level.TilepixMap, "Platforms")),
 				d.Color(colornames.Black, d.TileLayer(scene.level.TilepixMap, "Walls")),
 				d.Color(colornames.Black, scene.signPostsOp()),
-				d.TileLayer(scene.level.TilepixMap, "Objects"),
 				scene.entityOp(),
 				d.Color(colornames.Black, d.TileLayer(scene.level.TilepixMap, "Foreground")),
 				scene.debugGfx(),

@@ -30,7 +30,7 @@ func (button Button) Tick(_ EventBoxReceiver) Entity {
 
 func (button Button) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 	return draw.Moved(button.pos.Add(pixel.V(0, buttonHeight/2)),
-		draw.Image(*imageMap, internal.ISignPost))
+		draw.Image(*imageMap, internal.IButton))
 }
 
 func MakeButton(position pixel.Vec) Entity {
