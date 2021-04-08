@@ -37,7 +37,15 @@ func SpawnEntities(pos px.Vec, level internal.Level) []entities.Entity {
 	elise := entities.MakeElise(pos)
 	es := []entities.Entity{elise}
 	for _, esp := range level.EntitySpawnPoints {
-		es = append(es, entities.MakeGhost(esp.SpawnAt))
+		if esp.EntityType == "Ghost" {
+			es = append(es, entities.MakeGhost(esp.SpawnAt))
+		} else if esp.EntityType == "Button" {
+			es = append(es, entities.MakeButton(esp.SpawnAt))
+		} else if esp.EntityType == "Lamp" {
+			fmt.Println("Lamp not implemented yet")
+		} else {
+			panic("Unknown entity type: " + esp.EntityType)
+		}
 	}
 	return es
 }
@@ -209,7 +217,6 @@ func (scene *LevelScene) Tick() bool {
 	// Handle event boxes from previous tick first of all
 	scene.entityCanvas.Consequences(func(eb entities.EventBox, box entities.EntityHitBox) {
 		id := box.Entity
-		fmt.Printf("%v will handle %v\n", id, eb.Event)
 		scene.entities[id] = scene.entities[id].Handle(eb)
 	})
 	// Reset the canvas

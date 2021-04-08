@@ -97,20 +97,6 @@
 643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642
 </data>
  </layer>
- <objectgroup id="8" name="Objects">
-  <object id="21" name="Button1" type="LampButton" gid="841" x="2560" y="832" width="32" height="32">
-   <properties>
-    <property name="Controls" type="object" value="22"/>
-   </properties>
-  </object>
-  <object id="22" name="Lamp1" type="Lamp" gid="651" x="2592" y="736" width="32" height="32"/>
-  <object id="23" name="Button2" type="LampButton" gid="841" x="2048" y="832" width="32" height="32">
-   <properties>
-    <property name="Controls" type="object" value="24"/>
-   </properties>
-  </object>
-  <object id="24" name="Lamp2" type="LampButton" gid="651" x="1856" y="736" width="32" height="32"/>
- </objectgroup>
  <objectgroup id="5" name="SignPosts" offsetx="6.66666" offsety="30">
   <object id="2" name="Hembyn" type="MapPoint" x="2432" y="832" width="10" height="10">
    <text wrap="1" color="#3465a4">MapPoint</text>
@@ -124,6 +110,18 @@
   <object id="26" name="Ghost" type="Ghost" gid="588" x="1519" y="727" width="32" height="32"/>
   <object id="27" name="Ghost" type="Ghost" gid="588" x="1778" y="694" width="32" height="32"/>
   <object id="28" name="Ghost" type="Ghost" gid="588" x="1995" y="713" width="32" height="32"/>
+  <object id="21" name="Button" type="Button" gid="841" x="2560" y="832" width="32" height="32">
+   <properties>
+    <property name="Controls" type="object" value="22"/>
+   </properties>
+  </object>
+  <object id="22" name="Lamp" type="Lamp" gid="651" x="2592" y="736" width="32" height="32"/>
+  <object id="23" name="Button" type="Button" gid="841" x="2048" y="832" width="32" height="32">
+   <properties>
+    <property name="Controls" type="object" value="24"/>
+   </properties>
+  </object>
+  <object id="24" name="Lamp" type="Lamp" gid="651" x="1856" y="736" width="32" height="32"/>
  </objectgroup>
  <layer id="9" name="Objects" width="135" height="28">
   <data encoding="csv">
