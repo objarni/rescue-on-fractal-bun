@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="2021.01.13" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="135" height="28" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#204a87" nextlayerid="11" nextobjectid="29">
+<map version="1.4" tiledversion="2021.01.13" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="135" height="28" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#204a87" nextlayerid="11" nextobjectid="40">
  <tileset firstgid="1" source="TTileSet1.tsx"/>
  <layer id="1" name="Background" width="135" height="28">
   <data encoding="csv">
@@ -106,22 +106,31 @@
   </object>
  </objectgroup>
  <objectgroup id="10" name="Entities">
-  <object id="25" name="Ghost" type="Ghost" gid="588" x="880" y="608" width="32" height="32"/>
-  <object id="26" name="Ghost" type="Ghost" gid="588" x="1519" y="727" width="32" height="32"/>
-  <object id="27" name="Ghost" type="Ghost" gid="588" x="1778" y="694" width="32" height="32"/>
-  <object id="28" name="Ghost" type="Ghost" gid="588" x="1995" y="713" width="32" height="32"/>
-  <object id="21" name="Button" type="Button" gid="841" x="2560" y="832" width="32" height="32">
+  <object id="29" name="Ghost" x="728" y="566" width="422" height="110"/>
+  <object id="30" name="Ghost" x="1036" y="532" width="232" height="240"/>
+  <object id="31" name="Ghost" x="1358" y="630" width="332" height="168"/>
+  <object id="32" name="Button" x="2042" y="791" width="39" height="75">
    <properties>
-    <property name="Controls" type="object" value="22"/>
+    <property name="Association" type="object" value="39"/>
    </properties>
   </object>
-  <object id="22" name="Lamp" type="Lamp" gid="651" x="2592" y="736" width="32" height="32"/>
-  <object id="23" name="Button" type="Button" gid="841" x="2048" y="832" width="32" height="32">
+  <object id="33" name="Ghost" x="1697" y="540" width="332" height="168"/>
+  <object id="35" name="Ghost" x="1917" y="699" width="332" height="168"/>
+  <object id="37" name="Button" x="2562" y="790" width="39" height="75">
    <properties>
-    <property name="Controls" type="object" value="24"/>
+    <property name="Association" type="object" value="38"/>
    </properties>
   </object>
-  <object id="24" name="Lamp" type="Lamp" gid="651" x="1856" y="736" width="32" height="32"/>
+  <object id="38" name="Lamp" x="2562" y="673" width="102" height="192">
+   <properties>
+    <property name="Association" type="object" value="0"/>
+   </properties>
+  </object>
+  <object id="39" name="Lamp" x="1910" y="674" width="102" height="192">
+   <properties>
+    <property name="Association" type="object" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="4" name="Foreground" width="135" height="28">
   <data encoding="csv">
