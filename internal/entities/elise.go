@@ -51,12 +51,20 @@ func (elise Elise) Tick(gameTimeMs float64, eb EventBoxReceiver) Entity {
 }
 
 func (elise Elise) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
-	image := EliseWalkFrame(elise.gameTimeMs/1000.0, 10)
-	imgOp := draw.Image(*imageMap, image)
-	if elise.flip {
-		imgOp = draw.Mirrored(imgOp)
+	if elise.rightPressed || elise.leftPressed {
+		image := EliseWalkFrame(elise.gameTimeMs/1000.0, 10)
+		imgOp := draw.Image(*imageMap, image)
+		if elise.flip {
+			imgOp = draw.Mirrored(imgOp)
+		}
+		return draw.Moved(elise.Pos.Add(px.V(0, eliseHeight/2)), imgOp)
+	} else {
+		imgOp := draw.Image(*imageMap, internal.IEliseWalk2)
+		if elise.flip {
+			imgOp = draw.Mirrored(imgOp)
+		}
+		return draw.Moved(elise.Pos.Add(px.V(0, eliseHeight/2)), imgOp)
 	}
-	return draw.Moved(elise.Pos.Add(px.V(0, eliseHeight/2)), imgOp)
 }
 
 func (elise Elise) Handle(eb EventBox) Entity {
