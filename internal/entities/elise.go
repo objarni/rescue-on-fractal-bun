@@ -3,7 +3,7 @@ package entities
 import (
 	px "github.com/faiface/pixel"
 	"objarni/rescue-on-fractal-bun/internal"
-	"objarni/rescue-on-fractal-bun/internal/draw"
+	d "objarni/rescue-on-fractal-bun/internal/draw"
 )
 
 const eliseWidth = 20.0
@@ -50,21 +50,16 @@ func (elise Elise) Tick(gameTimeMs float64, eb EventBoxReceiver) Entity {
 	return elise
 }
 
-func (elise Elise) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
+func (elise Elise) GfxOp(imageMap *internal.ImageMap) d.WinOp {
+	image := internal.IEliseWalk2
 	if elise.rightPressed || elise.leftPressed {
-		image := EliseWalkFrame(elise.gameTimeMs/1000.0, 10)
-		imgOp := draw.Image(*imageMap, image)
-		if elise.flip {
-			imgOp = draw.Mirrored(imgOp)
-		}
-		return draw.Moved(elise.Pos.Add(px.V(0, eliseHeight/2)), imgOp)
-	} else {
-		imgOp := draw.Image(*imageMap, internal.IEliseWalk2)
-		if elise.flip {
-			imgOp = draw.Mirrored(imgOp)
-		}
-		return draw.Moved(elise.Pos.Add(px.V(0, eliseHeight/2)), imgOp)
+		image = EliseWalkFrame(elise.gameTimeMs/1000.0, 10)
 	}
+	imgOp := d.Image(*imageMap, image)
+	if elise.flip {
+		imgOp = d.Mirrored(imgOp)
+	}
+	return d.Moved(elise.Pos.Add(px.V(0, eliseHeight/2)), imgOp)
 }
 
 func (elise Elise) Handle(eb EventBox) Entity {
