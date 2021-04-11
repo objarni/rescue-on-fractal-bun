@@ -107,15 +107,15 @@
  </objectgroup>
  <objectgroup id="10" name="Entities">
   <object id="29" name="Ghost" x="728" y="566" width="422" height="110"/>
-  <object id="30" name="Ghost" x="1036" y="532" width="232" height="240"/>
-  <object id="31" name="Ghost" x="1358" y="630" width="332" height="168"/>
+  <object id="30" name="Ghost" x="1036" y="564" width="232" height="288"/>
+  <object id="31" name="Ghost" x="1282" y="630" width="408" height="168"/>
   <object id="32" name="Button" x="2042" y="791" width="39" height="75">
    <properties>
     <property name="Association" type="object" value="39"/>
    </properties>
   </object>
-  <object id="33" name="Ghost" x="1697" y="540" width="332" height="168"/>
-  <object id="35" name="Ghost" x="1917" y="699" width="332" height="168"/>
+  <object id="33" name="Ghost" x="1711" y="496" width="318" height="212"/>
+  <object id="35" name="Ghost" x="1861" y="701" width="332" height="168"/>
   <object id="37" name="Button" x="2562" y="790" width="39" height="75">
    <properties>
     <property name="Association" type="object" value="38"/>
