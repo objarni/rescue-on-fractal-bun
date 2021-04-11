@@ -163,10 +163,9 @@ func ParseLevel(level *tilepix.Map) Level {
 	}
 	esps := make([]EntitySpawnPoint, 0)
 	for _, object := range level.GetObjectLayerByName("Entities").Objects {
-		x := object.X
-		y := object.Y
+		rect, _ := object.GetRect()
 		var esp = EntitySpawnPoint{
-			SpawnAt:    pixel.Vec{X: x, Y: y},
+			SpawnAt:    rect,
 			EntityType: object.Name,
 		}
 		esps = append(esps, esp)

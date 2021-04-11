@@ -33,8 +33,10 @@ func (button Button) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 		draw.Image(*imageMap, internal.IButton))
 }
 
-func MakeButton(position pixel.Vec) Entity {
-	return Button{pos: position}
+func MakeButton(area pixel.Rect) Entity {
+	x := area.Center().X
+	y := area.Min.Y
+	return Button{pos: pixel.V(x, y)}
 }
 
 /* notes button/elise behaviour

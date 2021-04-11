@@ -21,7 +21,7 @@ type SignPost struct {
 }
 
 type EntitySpawnPoint struct {
-	SpawnAt    pixel.Vec
+	SpawnAt    pixel.Rect
 	EntityType string
 }
 

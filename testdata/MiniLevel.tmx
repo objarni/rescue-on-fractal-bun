@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="2021.01.13" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="4" height="3" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#0a3264" nextlayerid="7" nextobjectid="6">
+<map version="1.4" tiledversion="2021.01.13" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="4" height="3" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#0a3264" nextlayerid="7" nextobjectid="8">
  <tileset firstgid="1" source="../examples/tiled_test/TileSet.tsx"/>
  <tileset firstgid="201" source="../assets/levels/TTileSet1.tsx"/>
  <layer id="1" name="Background" width="4" height="3">
@@ -39,7 +39,7 @@
   </object>
  </objectgroup>
  <objectgroup id="6" name="Entities">
-  <object id="3" name="Ghost" gid="600" x="8" y="30" width="32" height="32"/>
-  <object id="5" name="Ghost" gid="600" x="74" y="47" width="32" height="32"/>
+  <object id="6" name="Ghost" x="101" y="21" width="47" height="45"/>
+  <object id="7" name="Ghost" x="10" y="10" width="83" height="31"/>
  </objectgroup>
 </map>

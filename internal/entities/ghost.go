@@ -43,8 +43,9 @@ func (ghost Ghost) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 		draw.Image(*imageMap, internal.IGhost))
 }
 
-func MakeGhost(position pixel.Vec) Entity {
-	return Ghost{pos: position, baseLine: position.Y, gameTimeMs: rand.Float64() * 10000}
+func MakeGhost(area pixel.Rect) Entity {
+	startPos := area.Center()
+	return Ghost{pos: startPos, baseLine: startPos.Y, gameTimeMs: rand.Float64() * 10000}
 }
 
 /* notes ghost/elise behaviour

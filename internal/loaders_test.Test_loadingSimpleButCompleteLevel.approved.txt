@@ -5,8 +5,8 @@ There are 2 SignPost(s):
 'Hembyn' at 10, 41
 
 Entities:
-'Ghost' at Vec(8, 34)
-'Ghost' at Vec(74, 17)
+'Ghost' at Rect(101, 30, 148, 75)
+'Ghost' at Rect(10, 55, 93, 86)
 
 Walls:
 ...#
