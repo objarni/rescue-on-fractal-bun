@@ -78,7 +78,7 @@ func GetWhiteOuterArea(img image.Image) image.Image {
 	// - Skip already color=green in resultMask
 	width := img.Bounds().Max.X
 	height := img.Bounds().Max.Y
-	visitedColor := color.RGBA{
+	visitedColor := color.RGBA{ // TODO: want color.Green expr.
 		R: 0,
 		G: 255,
 		B: 0,
@@ -91,7 +91,7 @@ func GetWhiteOuterArea(img image.Image) image.Image {
 		points = points[1:]
 		resultMask.Set(p.x, p.y, visitedColor)
 
-		for _, dp := range []Point{
+		for _, dp := range []Point{ // TODO: use slice literal syntax?
 			{-1, 0},
 			{1, 0},
 			{0, -1},
@@ -99,6 +99,7 @@ func GetWhiteOuterArea(img image.Image) image.Image {
 		} {
 			x := p.x + dp.x
 			y := p.y + dp.y
+			// TODO: use Rect.In method instead?
 			inside := x >= 0 && y >= 0 && x < width && y < height
 			if inside {
 				notVisited := resultMask.At(x, y) != visitedColor
