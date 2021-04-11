@@ -25,7 +25,7 @@ func main() {
 	//img.
 }
 
-func LoadImageForSure(path string) image.Image {
+func LoadImage(path string) image.Image {
 	file, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -67,7 +67,7 @@ type Point struct {
 	x, y uint8
 }
 
-func GetCompleteMask(img image.Image) image.Image {
+func GetWhiteOuterArea(img image.Image) image.Image {
 	blackMask := GetBlackMask(img)
 
 	points := make([]Point, 0)

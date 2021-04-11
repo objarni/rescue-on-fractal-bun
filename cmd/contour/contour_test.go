@@ -8,8 +8,19 @@ import (
 	. "objarni/contour"
 )
 
-func Example_loadImage() {
-	img := LoadImageForSure("test1.png")
+func Example_emptyImage() {
+	img := image.NewRGBA(image.Rect(0, 0, 5, 4))
+	printImage(img)
+	// Output:
+	// Image is 5x4
+	// 0: .....
+	// 1: .....
+	// 2: .....
+	// 3: .....
+}
+
+func ExampleLoadImage() {
+	img := LoadImage("test1.png")
 	printImage(img)
 	// Output:
 	// Image is 10x10
@@ -25,8 +36,8 @@ func Example_loadImage() {
 	// 9: ##########
 }
 
-func Example_getBlackMask() {
-	img := LoadImageForSure("test1.png")
+func ExampleGetBlackMask() {
+	img := LoadImage("test1.png")
 	alpha := GetBlackMask(img)
 	printImage(alpha)
 	// Output:
@@ -43,39 +54,23 @@ func Example_getBlackMask() {
 	// 9: ..........
 }
 
-// func Example_readAlphaValues2() {
-// 	img := LoadImageForSure("test1.png")
-// 	mask := GetCompleteMask(img)
-// 	printImage(mask)
-// 	// Output:
-// 	// Image is 10x10
-// 	// 0: ##########
-// 	// 1: ##########
-// 	// 2: ##########
-// 	// 3: ###....###
-// 	// 4: ##.....###
-// 	// 5: ##.....###
-// 	// 6: ##.....###
-// 	// 7: ###....###
-// 	// 8: ##########
-// 	// 9: ##########
-// }
-
-func Example_createEmptyImage() {
-	img := image.NewRGBA(image.Rect(0, 0, 10, 10))
-	printImage(img)
-	// Output:
+func ExampleGetWhiteOuterArea() {
+	return
+	img := LoadImage("test1.png")
+	mask := GetWhiteOuterArea(img)
+	printImage(mask)
+	// Ignore Output:
 	// Image is 10x10
-	// 0: ..........
-	// 1: ..........
-	// 2: ..........
-	// 3: ..........
-	// 4: ..........
-	// 5: ..........
-	// 6: ..........
-	// 7: ..........
-	// 8: ..........
-	// 9: ..........
+	// 0: ##########
+	// 1: ##########
+	// 2: ##########
+	// 3: ###....###
+	// 4: ##.....###
+	// 5: ##.....###
+	// 6: ##.....###
+	// 7: ###....###
+	// 8: ##########
+	// 9: ##########
 }
 
 func printImage(img image.Image) {
