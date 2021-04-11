@@ -42,7 +42,7 @@ func TestMapSignBuilder(t *testing.T) {
 }
 
 func mapSignsToString(signs []MapSign) string {
-	descriptions := []string{}
+	descriptions := make([]string, 0)
 	printVec := func(vec pixel.Vec) string {
 		return fmt.Sprintf("<%v, %v>", vec.X, vec.Y)
 	}
@@ -53,6 +53,9 @@ func mapSignsToString(signs []MapSign) string {
 		mapSignDescription += fmt.Sprintf(" Links to %v %v\n", sign.LevelName, printVec(sign.LevelPos))
 		descriptions = append(descriptions, mapSignDescription)
 	}
-	sort.Strings(descriptions)
-	return strings.Join(descriptions, "\n")
+	fmt.Print(descriptions)
+	var sorted []string = descriptions
+	sort.Strings(sorted)
+	fmt.Print(sorted)
+	return strings.Join(sorted, "\n")
 }

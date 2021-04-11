@@ -15,7 +15,7 @@ type LevelScene struct {
 	cfg          *Config
 	res          *internal.Resources
 	level        internal.Level
-	timeMs       float64
+	gameTimeMs   float64
 	entities     []entities.Entity
 	entityCanvas entities.EntityCanvas
 }
@@ -27,7 +27,7 @@ func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *Lev
 		cfg:          cfg,
 		res:          res,
 		level:        level,
-		timeMs:       0,
+		gameTimeMs:   0,
 		entities:     SpawnEntities(pos, level),
 		entityCanvas: entities.MakeEntityCanvas(),
 	}
@@ -220,9 +220,9 @@ func (scene *LevelScene) Tick() bool {
 	})
 	// Reset the canvas
 	scene.entityCanvas = entities.MakeEntityCanvas()
-	scene.timeMs += internal.TickTimeMs
+	scene.gameTimeMs += internal.TickTimeMs
 	for i := range scene.entities {
-		scene.entities[i] = scene.entities[i].Tick(&scene.entityCanvas)
+		scene.entities[i] = scene.entities[i].Tick(scene.gameTimeMs, &scene.entityCanvas)
 		scene.entityCanvas.AddEntityHitBox(entities.EntityHitBox{
 			Entity: i,
 			HitBox: scene.entities[i].HitBox(),

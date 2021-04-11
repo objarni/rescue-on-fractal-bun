@@ -12,7 +12,7 @@ const eliseHeight = 100.0
 type Elise struct {
 	Pos                       px.Vec
 	leftPressed, rightPressed bool
-	gameTimeMs                int
+	gameTimeMs                float64
 	flip                      bool
 	actionDown                bool
 }
@@ -28,8 +28,8 @@ func MakeElise(position px.Vec) Entity {
 	return Elise{Pos: position}
 }
 
-func (elise Elise) Tick(eb EventBoxReceiver) Entity {
-	elise.gameTimeMs += 5
+func (elise Elise) Tick(gameTimeMs float64, eb EventBoxReceiver) Entity {
+	elise.gameTimeMs = gameTimeMs
 	eliseMoveSpeed := 1.2
 	if elise.leftPressed && !elise.rightPressed {
 		elise.flip = true
@@ -51,7 +51,7 @@ func (elise Elise) Tick(eb EventBoxReceiver) Entity {
 }
 
 func (elise Elise) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
-	image := EliseWalkFrame(float64(elise.gameTimeMs)/1000.0, 10)
+	image := EliseWalkFrame(elise.gameTimeMs/1000.0, 10)
 	imgOp := draw.Image(*imageMap, image)
 	if elise.flip {
 		imgOp = draw.Mirrored(imgOp)

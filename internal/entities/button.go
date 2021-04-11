@@ -24,7 +24,7 @@ func (button Button) HitBox() pixel.Rect {
 	return rect
 }
 
-func (button Button) Tick(_ EventBoxReceiver) Entity {
+func (button Button) Tick(_ float64, _ EventBoxReceiver) Entity {
 	return button
 }
 
