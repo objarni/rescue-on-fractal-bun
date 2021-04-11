@@ -64,7 +64,7 @@ func GetBlackMask(img image.Image) image.Image {
 }
 
 type Point struct {
-	x, y uint8
+	x, y int
 }
 
 func GetWhiteOuterArea(img image.Image) image.Image {
@@ -73,30 +73,47 @@ func GetWhiteOuterArea(img image.Image) image.Image {
 	points := make([]Point, 0)
 	points = append(points, Point{0, 0})
 
-	completeMask := blackMask
-	// while len(points) > 0 {
-	// }
+	// - Stay within boundaries of source image
+	// - Skip alpha==255 in blackMask pixels
+	// - Skip already color=green in resultMask
+	width := img.Bounds().Max.X
+	height := img.Bounds().Max.Y
+	visitedColor := color.RGBA{
+		R: 0,
+		G: 255,
+		B: 0,
+		A: 255,
+	}
+	resultMask := image.NewRGBA(image.Rect(0, 0, width, height))
+	for len(points) > 0 {
+		// Pop first pixel, and paint it visited
+		p := points[0]
+		points = points[1:]
+		resultMask.Set(p.x, p.y, visitedColor)
 
-	return completeMask
+		for _, dp := range []Point{
+			{-1, 0},
+			{1, 0},
+			{0, -1},
+			{0, 1},
+		} {
+			x := p.x + dp.x
+			y := p.y + dp.y
+			inside := x >= 0 && y >= 0 && x < width && y < height
+			if inside {
+				notVisited := resultMask.At(x, y) != visitedColor
+				var notBlack = IsOpaque(blackMask.At(x, y))
+				if notVisited && notBlack {
+					points = append(points, Point{x, y})
+				}
+			}
+		}
+	}
 
+	return resultMask
 }
 
-// func BitFieldFromImage(image draw.Image, keep func(pos imaging.Pos) bool) imaging.BitField {
-// 	bits := map[imaging.Pos]bool{}
-// 	dimensions := image.Bounds().Max
-// 	width := dimensions.X
-// 	height := dimensions.Y
-// 	for x := 0; x < width; x++ {
-// 		for y := 0; y < height; y++ {
-// 			p := imaging.Pos{x, y}
-// 			if keep(p) {
-// 				bits[p] = true
-// 			}
-// 		}
-// 	}
-// 	return imaging.BitField{
-// 		Field:  bits,
-// 		Width:  width,
-// 		Height: height,
-// 	}
-// }
+func IsOpaque(color color.Color) bool {
+	_, _, _, a := color.RGBA()
+	return a != 65535
+}

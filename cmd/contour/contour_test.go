@@ -55,11 +55,10 @@ func ExampleGetBlackMask() {
 }
 
 func ExampleGetWhiteOuterArea() {
-	return
 	img := LoadImage("test1.png")
 	mask := GetWhiteOuterArea(img)
 	printImage(mask)
-	// Ignore Output:
+	// Output:
 	// Image is 10x10
 	// 0: ##########
 	// 1: ##########
