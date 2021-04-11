@@ -39,7 +39,7 @@ func LoadImageForSure(path string) image.Image {
 	return img
 }
 
-func DoTheStuff(img image.Image) image.Image {
+func GetBlackMask(img image.Image) image.Image {
 
 	width := img.Bounds().Max.X
 	height := img.Bounds().Max.Y
@@ -49,14 +49,10 @@ func DoTheStuff(img image.Image) image.Image {
 		for y := 0; y < height; y++ {
 			srcColor := img.At(x, y)
 			src, _ := colorful.MakeColor(srcColor)
-			black := colorful.Color{
-				R: 0,
-				G: 0,
-				B: 0,
-			}
+			black, _ := colorful.MakeColor(color.Black)
+
 			var alpha uint8 = 0
 			dist := src.DistanceCIE76(black)
-			// fmt.Printf("%v\n", dist)
 			if dist < 0.5 {
 				alpha = 255
 			}
@@ -64,8 +60,25 @@ func DoTheStuff(img image.Image) image.Image {
 			resultImage.Set(x, y, color.RGBA{r, g, b, alpha})
 		}
 	}
-
 	return resultImage
+}
+
+type Point struct {
+	x, y uint8
+}
+
+func GetCompleteMask(img image.Image) image.Image {
+	blackMask := GetBlackMask(img)
+
+	points := make([]Point, 0)
+	points = append(points, Point{0, 0})
+
+	completeMask := blackMask
+	// while len(points) > 0 {
+	// }
+
+	return completeMask
+
 }
 
 // func BitFieldFromImage(image draw.Image, keep func(pos imaging.Pos) bool) imaging.BitField {

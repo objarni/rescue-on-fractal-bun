@@ -1,9 +1,11 @@
-package contour
+package contour_test
 
 import (
 	"fmt"
 	"image"
 	"image/color"
+
+	. "objarni/contour"
 )
 
 func Example_loadImage() {
@@ -23,9 +25,9 @@ func Example_loadImage() {
 	// 9: ##########
 }
 
-func Example_readAlphaValues() {
+func Example_getBlackMask() {
 	img := LoadImageForSure("test1.png")
-	alpha := DoTheStuff(img)
+	alpha := GetBlackMask(img)
 	printImage(alpha)
 	// Output:
 	// Image is 10x10
@@ -37,6 +39,41 @@ func Example_readAlphaValues() {
 	// 5: ..##..#...
 	// 6: ..##..#...
 	// 7: ...####...
+	// 8: ..........
+	// 9: ..........
+}
+
+// func Example_readAlphaValues2() {
+// 	img := LoadImageForSure("test1.png")
+// 	mask := GetCompleteMask(img)
+// 	printImage(mask)
+// 	// Output:
+// 	// Image is 10x10
+// 	// 0: ##########
+// 	// 1: ##########
+// 	// 2: ##########
+// 	// 3: ###....###
+// 	// 4: ##.....###
+// 	// 5: ##.....###
+// 	// 6: ##.....###
+// 	// 7: ###....###
+// 	// 8: ##########
+// 	// 9: ##########
+// }
+
+func Example_createEmptyImage() {
+	img := image.NewRGBA(image.Rect(0, 0, 10, 10))
+	printImage(img)
+	// Output:
+	// Image is 10x10
+	// 0: ..........
+	// 1: ..........
+	// 2: ..........
+	// 3: ..........
+	// 4: ..........
+	// 5: ..........
+	// 6: ..........
+	// 7: ..........
 	// 8: ..........
 	// 9: ..........
 }
