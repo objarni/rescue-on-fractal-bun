@@ -1,45 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="2021.01.13" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="4" height="3" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#0a3264" nextlayerid="7" nextobjectid="8">
+<map version="1.4" tiledversion="2021.01.13" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="5" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#0a3264" nextlayerid="7" nextobjectid="8">
  <tileset firstgid="1" source="../examples/tiled_test/TileSet.tsx"/>
  <tileset firstgid="201" source="../assets/levels/TTileSet1.tsx"/>
- <layer id="1" name="Background" width="4" height="3">
+ <layer id="1" name="Background" width="10" height="5">
   <data encoding="csv">
-0,0,0,307,
-307,307,307,307,
-307,307,307,307
+0,0,0,307,0,0,0,0,0,0,
+307,307,307,307,0,0,0,0,0,0,
+523,524,523,524,523,524,523,524,523,524,
+587,588,587,588,587,588,587,588,587,588,
+0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="Platforms" width="4" height="3">
+ <layer id="2" name="Platforms" width="10" height="5">
   <data encoding="csv">
-0,0,0,0,
-0,0,0,0,
-428,428,428,428
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+428,428,428,428,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+843,843,843,843,843,843,843,843,843,843
 </data>
  </layer>
- <layer id="3" name="Walls" width="4" height="3">
+ <layer id="3" name="Walls" width="10" height="5">
   <data encoding="csv">
-0,0,0,430,
-0,0,0,430,
-0,0,0,0
+0,0,0,430,0,0,0,0,0,469,
+0,0,0,430,0,0,0,0,0,469,
+0,0,0,0,0,0,0,0,0,469,
+0,0,0,0,0,0,0,0,0,469,
+0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="4" name="Foreground" width="4" height="3">
+ <layer id="4" name="Foreground" width="10" height="5">
   <data encoding="csv">
-0,0,0,0,
-2,3,4,0,
-0,0,0,0
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,478,479,480,481,0,
+0,0,0,0,0,542,543,544,545,0,
+0,0,0,0,0,606,607,608,609,0,
+0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="5" name="SignPosts">
-  <object id="1" name="Korsningen" type="MapPoint" x="11.858" y="15.2273" width="92.375" height="19">
+  <object id="1" name="Korsningen" type="MapPoint" x="19" y="109" width="92.375" height="19">
    <text wrap="1">Korsningen</text>
   </object>
-  <object id="2" name="Hembyn" type="MapPoint" x="10.1761" y="35.5909" width="92.375" height="19">
+  <object id="2" name="Hembyn" type="MapPoint" x="195" y="109" width="92.375" height="19">
    <text wrap="1">Hembyn</text>
   </object>
  </objectgroup>
  <objectgroup id="6" name="Entities">
-  <object id="6" name="Ghost" x="101" y="21" width="47" height="45"/>
-  <object id="7" name="Ghost" x="10" y="10" width="83" height="31"/>
+  <object id="6" name="Ghost" x="119" y="25" width="47" height="45"/>
+  <object id="7" name="Ghost" x="187" y="12" width="83" height="31"/>
  </objectgroup>
 </map>

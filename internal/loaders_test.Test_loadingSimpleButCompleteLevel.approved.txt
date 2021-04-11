@@ -1,12 +1,12 @@
-GetWidth: 4   GetHeight: 3  (tiles)
+GetWidth: 10   GetHeight: 5  (tiles)
 Background color: RGB=10,50,100
 There are 2 SignPost(s):
-'Korsningen' at 12, 62
-'Hembyn' at 10, 41
+'Korsningen' at 19, 32
+'Hembyn' at 195, 32
 
 Entities:
-'Ghost' at Rect(101, 30, 148, 75)
-'Ghost' at Rect(10, 55, 93, 86)
+'Ghost' at Rect(119, 90, 166, 135)
+'Ghost' at Rect(187, 117, 270, 148)
 
 Walls:
 ...#
