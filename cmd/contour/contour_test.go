@@ -7,7 +7,7 @@ import (
 )
 
 func Example_loadImage() {
-	img := LoadImageForSure(".\\test1.png")
+	img := LoadImageForSure("test1.png")
 	printImage(img)
 	// Output:
 	// Image is 10x10
@@ -24,7 +24,7 @@ func Example_loadImage() {
 }
 
 func Example_readAlphaValues() {
-	img := LoadImageForSure(".\\test1.png")
+	img := LoadImageForSure("test1.png")
 	alpha := DoTheStuff(img)
 	printImage(alpha)
 	// Output:
