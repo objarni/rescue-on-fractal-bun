@@ -11,8 +11,10 @@ const ghostWidth = 50
 const ghostHeight = 125
 
 type Ghost struct {
-	pos      pixel.Vec
-	baseLine float64
+	pos        pixel.Vec
+	baseLine   float64
+	dirX       float64
+	minX, maxX float64
 }
 
 func (ghost Ghost) Handle(_ EventBox) Entity {
@@ -30,6 +32,13 @@ func (ghost Ghost) Tick(gameTimeMs float64, receiver EventBoxReceiver) Entity {
 		Event: "DAMAGE",
 		Box:   ghost.HitBox(),
 	})
+	ghost.pos.X += ghost.dirX
+	if ghost.pos.X > ghost.maxX {
+		ghost.dirX = -1
+	}
+	if ghost.pos.X < ghost.minX {
+		ghost.dirX = 1
+	}
 	ghost.pos = internal.V(ghost.pos.X, ghost.baseLine+math.Sin(gameTimeMs/300.0)*50)
 	return ghost
 }
@@ -41,7 +50,13 @@ func (ghost Ghost) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
 
 func MakeGhost(area pixel.Rect) Entity {
 	startPos := area.Center()
-	return Ghost{pos: startPos, baseLine: startPos.Y}
+	return Ghost{
+		pos:      startPos,
+		baseLine: startPos.Y,
+		dirX:     1,
+		minX:     area.Min.X,
+		maxX:     area.Max.X,
+	}
 }
 
 /* notes ghost/elise behaviour

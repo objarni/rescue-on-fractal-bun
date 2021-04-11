@@ -19,11 +19,11 @@ func TestMapSignBuilder(t *testing.T) {
 		"Hembyn": {
 			SignPosts: []SignPost{
 				{
-					Pos:  pixel.Vec{100, 10},
+					Pos:  pixel.Vec{X: 100, Y: 10},
 					Text: "Hembyn",
 				},
 				{
-					Pos:  pixel.Vec{1000, 10},
+					Pos:  pixel.Vec{X: 1000, Y: 10},
 					Text: "Skogen",
 				},
 			},
@@ -31,7 +31,7 @@ func TestMapSignBuilder(t *testing.T) {
 		"Korsningen": {
 			SignPosts: []SignPost{
 				{
-					Pos:  pixel.Vec{100, 10},
+					Pos:  pixel.Vec{X: 100, Y: 10},
 					Text: "Hembyn",
 				},
 			},
@@ -54,7 +54,7 @@ func mapSignsToString(signs []MapSign) string {
 		descriptions = append(descriptions, mapSignDescription)
 	}
 	fmt.Print(descriptions)
-	var sorted []string = descriptions
+	var sorted = descriptions
 	sort.Strings(sorted)
 	fmt.Print(sorted)
 	return strings.Join(sorted, "\n")
