@@ -2,8 +2,9 @@ package entities
 
 import (
 	"github.com/faiface/pixel"
+	"golang.org/x/image/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
-	"objarni/rescue-on-fractal-bun/internal/draw"
+	d "objarni/rescue-on-fractal-bun/internal/draw"
 )
 
 const lampWidth = 95
@@ -11,9 +12,13 @@ const lampHeight = 300
 
 type Lamp struct {
 	pos pixel.Vec
+	on  bool
 }
 
-func (lamp Lamp) Handle(EventBox) Entity {
+func (lamp Lamp) Handle(eb EventBox) Entity {
+	if eb.Event == "BUTTON_PRESSED" {
+		lamp.on = !lamp.on
+	}
 	return lamp
 }
 
@@ -28,9 +33,13 @@ func (lamp Lamp) Tick(_ float64, _ EventBoxReceiver) Entity {
 	return lamp
 }
 
-func (lamp Lamp) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
-	return draw.Moved(lamp.pos.Add(pixel.V(0, lampHeight/2)),
-		draw.Image(*imageMap, internal.IStreetLight))
+func (lamp Lamp) GfxOp(imageMap *internal.ImageMap) d.WinOp {
+	image := d.Image(*imageMap, internal.IStreetLight)
+	if !lamp.on {
+		image = d.Color(colornames.Black, image)
+	}
+	return d.Moved(lamp.pos.Add(pixel.V(0, lampHeight/2)),
+		image)
 }
 
 func MakeLamp(area pixel.Rect) Entity {
