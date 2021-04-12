@@ -42,7 +42,7 @@ func SpawnEntities(pos px.Vec, level internal.Level) []entities.Entity {
 		} else if esp.EntityType == "Button" {
 			es = append(es, entities.MakeButton(esp.SpawnAt))
 		} else if esp.EntityType == "Lamp" {
-			fmt.Println("Lamp not implemented yet")
+			es = append(es, entities.MakeLamp(esp.SpawnAt))
 		} else {
 			panic("Unknown entity type: " + esp.EntityType)
 		}
