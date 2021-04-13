@@ -113,7 +113,6 @@ func GetWhiteOuterArea(img image.Image) image.Image {
 		// Pop first pixel, and paint it visited
 		p := points[0]
 		points = points[1:]
-		resultMask.Set(p.X, p.Y, visitedColor)
 
 		for _, dp := range offsets {
 			v := p.Add(dp)
@@ -124,6 +123,7 @@ func GetWhiteOuterArea(img image.Image) image.Image {
 				notVisited := resultMask.At(v.X, v.Y) != visitedColor
 				var notBlack = IsOpaque(blackMask.At(v.X, v.Y))
 				if notVisited && notBlack {
+					resultMask.Set(v.X, v.Y, visitedColor)
 					points = append(points, image.Point{v.X, v.Y})
 				}
 			}
