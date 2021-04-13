@@ -39,7 +39,7 @@ func ExampleLoadImage() {
 func ExampleGetBlackMask() {
 	img := LoadImage("test1.png")
 	mask := GetBlackMask(img)
-	SaveImage("test1-blackMask.png", mask)
+	SaveImage("test1-black.png", mask)
 
 	printImage(mask)
 	// Output:
@@ -59,7 +59,7 @@ func ExampleGetBlackMask() {
 func ExampleGetWhiteOuterArea() {
 	img := LoadImage("test1.png")
 	mask := GetWhiteOuterArea(img)
-	SaveImage("test1-whiteOuterArea.png", mask)
+	SaveImage("test1-white.png", mask)
 
 	printImage(mask)
 	// Output:
@@ -74,6 +74,27 @@ func ExampleGetWhiteOuterArea() {
 	// 7: ###....###
 	// 8: ##########
 	// 9: ##########
+}
+
+func ExampleGetCutoutImage() {
+	img := LoadImage("test1.png")
+	mask := GetWhiteOuterArea(img)
+	cutout := GetCutoutImage(img, mask)
+	SaveImage("test1-cutout.png", cutout)
+
+	printImage(cutout)
+	// Output:
+	// Image is 10x10
+	// 0: ..........
+	// 1: ..........
+	// 2: ..........
+	// 3: ...####...
+	// 4: ..#####...
+	// 5: ..#####...
+	// 6: ..#####...
+	// 7: ...####...
+	// 8: ..........
+	// 9: ..........
 }
 
 func printImage(img image.Image) {

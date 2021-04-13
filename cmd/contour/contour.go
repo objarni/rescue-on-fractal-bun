@@ -1,11 +1,9 @@
 package contour
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 	"image/png"
-	_ "image/png"
 	"os"
 
 	"github.com/lucasb-eyer/go-colorful"
@@ -16,14 +14,10 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello Contour")
-	//img := LoadImageForSure("assets/TEliseWalk2.png")
-	//bitfield := BitFieldFromImage(img, )
-	//contourImage := image.NewRGBA(img.Bounds().Add(image.Point{
-	//	X: 2,
-	//	Y: 2,
-	//}))
-	//img.
+	img := LoadImage("test2.png")
+	mask := GetWhiteOuterArea(img)
+	cutout := GetCutoutImage(img, mask)
+	SaveImage("test2-cutout.png", cutout)
 }
 
 func LoadImage(path string) image.Image {
@@ -56,7 +50,20 @@ func SaveImage(path string, img image.Image) {
 }
 
 func GetCutoutImage(source, mask image.Image) image.Image {
-	return source
+	width := source.Bounds().Max.X
+	height := source.Bounds().Max.Y
+	resultImage := image.NewRGBA(image.Rect(0, 0, width, height))
+
+	for x := 0; x < width; x++ {
+		for y := 0; y < height; y++ {
+			maskColor := mask.At(x, y)
+			if maskColor != green {
+				resultImage.Set(x, y, source.At(x, y))
+			}
+		}
+	}
+
+	return resultImage
 }
 
 func GetBlackMask(img image.Image) image.Image {
@@ -90,6 +97,13 @@ var offsets = [...]image.Point{
 	{0, 1},
 }
 
+var green = color.RGBA{
+	R: 0,
+	G: 255,
+	B: 0,
+	A: 255,
+}
+
 func GetWhiteOuterArea(img image.Image) image.Image {
 	blackMask := GetBlackMask(img)
 
@@ -101,12 +115,8 @@ func GetWhiteOuterArea(img image.Image) image.Image {
 	// - Skip already color=green in resultMask
 	width := img.Bounds().Max.X
 	height := img.Bounds().Max.Y
-	visitedColor := color.RGBA{
-		R: 0,
-		G: 255,
-		B: 0,
-		A: 255,
-	}
+	visitedColor := green
+
 	resultMask := image.NewRGBA(image.Rect(0, 0, width, height))
 	r := image.Rect(0, 0, width, height)
 
