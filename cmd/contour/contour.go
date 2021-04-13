@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"image/png"
 	_ "image/png"
 	"os"
 
@@ -30,16 +31,28 @@ func LoadImage(path string) image.Image {
 	if err != nil {
 		panic(err)
 	}
-	// internal.PanicIfError(err)
+	defer file.Close()
+
 	img, _, err := image.Decode(file)
 	if err != nil {
 		panic(err)
 	}
-	// internal.PanicIfError(err)
 	return img
 }
 
-func SaveImage(path string) {
+func SaveImage(path string, img image.Image) {
+	file, err := os.Create(path)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	// Encode to `PNG` with `DefaultCompression` level
+	// then save to file
+	err = png.Encode(file, img)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func GetCutoutImage(source, mask image.Image) image.Image {
