@@ -39,6 +39,13 @@ func LoadImage(path string) image.Image {
 	return img
 }
 
+func SaveImage(path string) {
+}
+
+func GetCutoutImage(source, mask image.Image) image.Image {
+	return source
+}
+
 func GetBlackMask(img image.Image) image.Image {
 
 	width := img.Bounds().Max.X
@@ -63,49 +70,49 @@ func GetBlackMask(img image.Image) image.Image {
 	return resultImage
 }
 
-type Point struct {
-	x, y int
+var offsets = [...]image.Point{
+	{-1, 0},
+	{1, 0},
+	{0, -1},
+	{0, 1},
 }
 
 func GetWhiteOuterArea(img image.Image) image.Image {
 	blackMask := GetBlackMask(img)
 
-	points := make([]Point, 0)
-	points = append(points, Point{0, 0})
+	points := make([]image.Point, 0)
+	points = append(points, image.Point{0, 0})
 
 	// - Stay within boundaries of source image
 	// - Skip alpha==255 in blackMask pixels
 	// - Skip already color=green in resultMask
 	width := img.Bounds().Max.X
 	height := img.Bounds().Max.Y
-	visitedColor := color.RGBA{ // TODO: want color.Green expr.
+	visitedColor := color.RGBA{
 		R: 0,
 		G: 255,
 		B: 0,
 		A: 255,
 	}
 	resultMask := image.NewRGBA(image.Rect(0, 0, width, height))
+	r := image.Rect(0, 0, width, height)
+
 	for len(points) > 0 {
 		// Pop first pixel, and paint it visited
 		p := points[0]
 		points = points[1:]
-		resultMask.Set(p.x, p.y, visitedColor)
+		resultMask.Set(p.X, p.Y, visitedColor)
 
-		for _, dp := range []Point{ // TODO: use slice literal syntax?
-			{-1, 0},
-			{1, 0},
-			{0, -1},
-			{0, 1},
-		} {
-			x := p.x + dp.x
-			y := p.y + dp.y
-			// TODO: use Rect.In method instead?
-			inside := x >= 0 && y >= 0 && x < width && y < height
+		for _, dp := range offsets {
+			v := p.Add(dp)
+
+			inside := image.Point{v.X, v.Y}.In(r)
+
 			if inside {
-				notVisited := resultMask.At(x, y) != visitedColor
-				var notBlack = IsOpaque(blackMask.At(x, y))
+				notVisited := resultMask.At(v.X, v.Y) != visitedColor
+				var notBlack = IsOpaque(blackMask.At(v.X, v.Y))
 				if notVisited && notBlack {
-					points = append(points, Point{x, y})
+					points = append(points, image.Point{v.X, v.Y})
 				}
 			}
 		}
@@ -116,5 +123,5 @@ func GetWhiteOuterArea(img image.Image) image.Image {
 
 func IsOpaque(color color.Color) bool {
 	_, _, _, a := color.RGBA()
-	return a != 65535
+	return a != 0xffff
 }
