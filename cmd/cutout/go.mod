@@ -1,4 +1,4 @@
-module objarni/contour
+module objarni/cutout
 
 go 1.16
 

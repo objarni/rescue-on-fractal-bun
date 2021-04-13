@@ -1,11 +1,11 @@
-package contour_test
+package cutout_test
 
 import (
 	"fmt"
 	"image"
 	"image/color"
 
-	. "objarni/contour"
+	. "objarni/cutout/cutout"
 )
 
 func Example_emptyImage() {
@@ -20,7 +20,7 @@ func Example_emptyImage() {
 }
 
 func ExampleLoadImage() {
-	img := LoadImage("test1.png")
+	img := LoadImage("test2.png")
 	printImage(img)
 	// Output:
 	// Image is 10x10
@@ -37,9 +37,9 @@ func ExampleLoadImage() {
 }
 
 func ExampleGetBlackMask() {
-	img := LoadImage("test1.png")
+	img := LoadImage("test2.png")
 	mask := GetBlackMask(img)
-	SaveImage("test1-black.png", mask)
+	SaveImage("test2-black.png", mask)
 
 	printImage(mask)
 	// Output:
@@ -57,9 +57,9 @@ func ExampleGetBlackMask() {
 }
 
 func ExampleGetWhiteOuterArea() {
-	img := LoadImage("test1.png")
+	img := LoadImage("test2.png")
 	mask := GetWhiteOuterArea(img)
-	SaveImage("test1-white.png", mask)
+	SaveImage("test2-white.png", mask)
 
 	printImage(mask)
 	// Output:
@@ -77,10 +77,10 @@ func ExampleGetWhiteOuterArea() {
 }
 
 func ExampleGetCutoutImage() {
-	img := LoadImage("test1.png")
+	img := LoadImage("test2.png")
 	mask := GetWhiteOuterArea(img)
 	cutout := GetCutoutImage(img, mask)
-	SaveImage("test1-cutout.png", cutout)
+	SaveImage("test2-cutout.png", cutout)
 
 	printImage(cutout)
 	// Output:

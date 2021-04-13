@@ -1,4 +1,4 @@
-package contour
+package cutout
 
 import (
 	"image"
@@ -7,18 +7,7 @@ import (
 	"os"
 
 	"github.com/lucasb-eyer/go-colorful"
-	// "image/draw"
-	// "objarni/rescue-on-fractal-bun/internal"
-	// "objarni/rescue-on-fractal-bun/internal/imaging"
-	// "os"
 )
-
-func main() {
-	img := LoadImage("test2.png")
-	mask := GetWhiteOuterArea(img)
-	cutout := GetCutoutImage(img, mask)
-	SaveImage("test2-cutout.png", cutout)
-}
 
 func LoadImage(path string) image.Image {
 	file, err := os.Open(path)
