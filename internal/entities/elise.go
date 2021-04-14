@@ -64,22 +64,22 @@ func (elise Elise) GfxOp(imageMap *internal.ImageMap) d.WinOp {
 }
 
 func (elise Elise) Handle(eb EventBox) Entity {
-	if eb.Event == events.DAMAGE {
+	if eb.Event == events.Damage {
 		elise.Pos = elise.Pos.Add(px.V(5, 0))
 	}
-	if eb.Event == events.LEFT_DOWN {
+	if eb.Event == events.KeyLeftDown {
 		elise.leftPressed = true
 	}
-	if eb.Event == events.RIGHT_DOWN {
+	if eb.Event == events.KeyRightDown {
 		elise.rightPressed = true
 	}
-	if eb.Event == events.LEFT_UP {
+	if eb.Event == events.KeyLeftUp {
 		elise.leftPressed = false
 	}
-	if eb.Event == events.RIGHT_UP {
+	if eb.Event == events.KeyRightUp {
 		elise.rightPressed = false
 	}
-	if eb.Event == events.ACTION_DOWN {
+	if eb.Event == events.KeyActionDown {
 		elise.actionDown = true
 	}
 	return elise

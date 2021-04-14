@@ -1,5 +1,5 @@
-MapSign 1: Position on map <246, 109> Links to Hembyn <100, 10>
+MapSign 1: Position on map <246, 109> Links to Korsningen <100, 10>
 
-MapSign 2: Position on map <299, 375> Links to Hembyn <1000, 10>
+MapSign 2: Position on map <246, 109> Links to Hembyn <100, 10>
 
-MapSign 3: Position on map <246, 109> Links to Korsningen <100, 10>
+MapSign 3: Position on map <299, 375> Links to Hembyn <1000, 10>

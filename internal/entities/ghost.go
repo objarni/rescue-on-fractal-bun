@@ -31,7 +31,7 @@ func (ghost Ghost) HitBox() px.Rect {
 
 func (ghost Ghost) Tick(gameTimeMs float64, receiver EventBoxReceiver) Entity {
 	receiver.AddEventBox(EventBox{
-		Event: events.DAMAGE,
+		Event: events.Damage,
 		Box:   ghost.HitBox(),
 	})
 	ghost.pos.X += ghost.dirX
