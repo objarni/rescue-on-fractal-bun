@@ -1,9 +1,12 @@
 package main
 
-import "objarni/cutout/cutout"
+import (
+	"objarni/cutout/cutout"
+	"os"
+)
 
 func main() {
-	input := "test2.png"
+	input := os.Args[1]
 	output := cutout.GetFileNameVariant(input, "final")
 
 	img := cutout.LoadImage(input)
