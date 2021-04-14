@@ -8,7 +8,7 @@ import (
 	. "objarni/cutout/cutout"
 )
 
-const fileName = "test2.mod.png"
+const fileName = "test1.png"
 
 func Example_emptyImage() {
 	img := image.NewRGBA(image.Rect(0, 0, 5, 4))
