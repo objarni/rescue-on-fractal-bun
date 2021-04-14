@@ -4,6 +4,7 @@ import (
 	px "github.com/faiface/pixel"
 	"objarni/rescue-on-fractal-bun/internal"
 	d "objarni/rescue-on-fractal-bun/internal/draw"
+	"objarni/rescue-on-fractal-bun/internal/events"
 )
 
 const eliseWidth = 20.0
@@ -43,7 +44,7 @@ func (elise Elise) Tick(gameTimeMs float64, eb EventBoxReceiver) Entity {
 		elise.actionDown = false
 		hitBox := elise.HitBox()
 		eb.AddEventBox(EventBox{
-			Event: "ACTION",
+			Event: events.Action,
 			Box:   hitBox.Resized(hitBox.Center(), px.V(40, 40)),
 		})
 	}
@@ -63,22 +64,22 @@ func (elise Elise) GfxOp(imageMap *internal.ImageMap) d.WinOp {
 }
 
 func (elise Elise) Handle(eb EventBox) Entity {
-	if eb.Event == "DAMAGE" {
+	if eb.Event == events.DAMAGE {
 		elise.Pos = elise.Pos.Add(px.V(5, 0))
 	}
-	if eb.Event == "LEFT_DOWN" {
+	if eb.Event == events.LEFT_DOWN {
 		elise.leftPressed = true
 	}
-	if eb.Event == "RIGHT_DOWN" {
+	if eb.Event == events.RIGHT_DOWN {
 		elise.rightPressed = true
 	}
-	if eb.Event == "LEFT_UP" {
+	if eb.Event == events.LEFT_UP {
 		elise.leftPressed = false
 	}
-	if eb.Event == "RIGHT_UP" {
+	if eb.Event == events.RIGHT_UP {
 		elise.rightPressed = false
 	}
-	if eb.Event == "ACTION_DOWN" {
+	if eb.Event == events.ACTION_DOWN {
 		elise.actionDown = true
 	}
 	return elise

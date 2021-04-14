@@ -4,6 +4,7 @@ import (
 	px "github.com/faiface/pixel"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/draw"
+	"objarni/rescue-on-fractal-bun/internal/events"
 )
 
 const buttonWidth = 20
@@ -15,7 +16,7 @@ type Button struct {
 }
 
 func (button Button) Handle(eb EventBox) Entity {
-	if eb.Event == "ACTION" {
+	if eb.Event == events.Action {
 		button.pressed = true
 	}
 	return button
@@ -32,7 +33,7 @@ func (button Button) Tick(_ float64, ebr EventBoxReceiver) Entity {
 	if button.pressed {
 		button.pressed = false
 		ebr.AddEventBox(EventBox{
-			Event: "BUTTON_PRESSED",
+			Event: events.ButtonPressed,
 			Box:   button.HitBox().Resized(button.HitBox().Center(), px.V(500, 500)),
 		})
 	}

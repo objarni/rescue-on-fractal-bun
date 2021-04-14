@@ -1,5 +1,5 @@
 Entity 1 is at Rect(0, 0, 10, 10)
 Entity 2 is at Rect(20, 20, 30, 30)
-BOOM happened at Rect(25, 25, 26, 26)
+Action happened at Rect(25, 25, 26, 26)
 Consequences:
-- Entity 2 needs to handle BOOM
+- Entity 2 needs to handle Action

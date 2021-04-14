@@ -3,6 +3,7 @@ package entities
 import (
 	"fmt"
 	"github.com/faiface/pixel"
+	"objarni/rescue-on-fractal-bun/internal/events"
 )
 
 type EntityHitBox struct {
@@ -56,7 +57,7 @@ func (canvas *EntityCanvas) String() string {
 }
 
 type EventBox struct {
-	Event string
+	Event events.Event
 	Box   pixel.Rect
 }
 

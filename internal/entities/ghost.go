@@ -5,6 +5,7 @@ import (
 	"math"
 	"objarni/rescue-on-fractal-bun/internal"
 	d "objarni/rescue-on-fractal-bun/internal/draw"
+	"objarni/rescue-on-fractal-bun/internal/events"
 )
 
 const ghostWidth = 50
@@ -30,7 +31,7 @@ func (ghost Ghost) HitBox() px.Rect {
 
 func (ghost Ghost) Tick(gameTimeMs float64, receiver EventBoxReceiver) Entity {
 	receiver.AddEventBox(EventBox{
-		Event: "DAMAGE",
+		Event: events.DAMAGE,
 		Box:   ghost.HitBox(),
 	})
 	ghost.pos.X += ghost.dirX

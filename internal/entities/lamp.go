@@ -5,6 +5,7 @@ import (
 	"golang.org/x/image/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
 	d "objarni/rescue-on-fractal-bun/internal/draw"
+	"objarni/rescue-on-fractal-bun/internal/events"
 )
 
 const lampWidth = 95
@@ -16,7 +17,7 @@ type Lamp struct {
 }
 
 func (lamp Lamp) Handle(eb EventBox) Entity {
-	if eb.Event == "BUTTON_PRESSED" {
+	if eb.Event == events.ButtonPressed {
 		lamp.on = !lamp.on
 	}
 	return lamp

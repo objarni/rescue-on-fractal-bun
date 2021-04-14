@@ -9,6 +9,7 @@ import (
 	"objarni/rescue-on-fractal-bun/internal"
 	d "objarni/rescue-on-fractal-bun/internal/draw"
 	"objarni/rescue-on-fractal-bun/internal/entities"
+	"objarni/rescue-on-fractal-bun/internal/events"
 )
 
 type LevelScene struct {
@@ -51,17 +52,17 @@ func SpawnEntities(pos px.Vec, level internal.Level) []entities.Entity {
 }
 
 func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
-	event := ""
+	event := events.NoEvent
 	if key == internal.Left {
-		event = "LEFT_DOWN"
+		event = events.LEFT_DOWN
 	}
 	if key == internal.Right {
-		event = "RIGHT_DOWN"
+		event = events.RIGHT_DOWN
 	}
 	if key == internal.Action {
-		event = "ACTION_DOWN"
+		event = events.ACTION_DOWN
 	}
-	if event != "" {
+	if event != events.NoEvent {
 		scene.entities[0] = scene.entities[0].Handle(entities.EventBox{
 			Event: event,
 			Box:   px.Rect{},
@@ -77,14 +78,14 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 }
 
 func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
-	event := ""
+	event := events.NoEvent
 	if key == internal.Left {
-		event = "LEFT_UP"
+		event = events.LEFT_UP
 	}
 	if key == internal.Right {
-		event = "RIGHT_UP"
+		event = events.RIGHT_UP
 	}
-	if event != "" {
+	if event != events.NoEvent {
 		scene.entities[0] = scene.entities[0].Handle(entities.EventBox{
 			Event: event,
 			Box:   px.Rect{},
