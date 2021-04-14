@@ -3,8 +3,11 @@ package main
 import "objarni/cutout/cutout"
 
 func main() {
-	img := cutout.LoadImage("test2.png")
+	input := "test2.png"
+	output := cutout.GetFileNameVariant(input, "final")
+
+	img := cutout.LoadImage(input)
 	mask := cutout.GetWhiteOuterArea(img)
 	final := cutout.GetCutoutImage(img, mask)
-	cutout.SaveImage("test2-cutout.png", final)
+	cutout.SaveImage(output, final)
 }

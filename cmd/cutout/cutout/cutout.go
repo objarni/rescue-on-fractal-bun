@@ -5,6 +5,8 @@ import (
 	"image/color"
 	"image/png"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/lucasb-eyer/go-colorful"
 )
@@ -36,6 +38,16 @@ func SaveImage(path string, img image.Image) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func GetFileNameVariant(fileName, variant string) string {
+	ext := filepath.Ext(fileName)
+	file := fileNameWithoutExtension(fileName)
+	return file + "-" + variant + ext
+}
+
+func fileNameWithoutExtension(fileName string) string {
+	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
 }
 
 func GetCutoutImage(source, mask image.Image) image.Image {

@@ -8,6 +8,8 @@ import (
 	. "objarni/cutout/cutout"
 )
 
+const fileName = "test2.mod.png"
+
 func Example_emptyImage() {
 	img := image.NewRGBA(image.Rect(0, 0, 5, 4))
 	printImage(img)
@@ -20,7 +22,7 @@ func Example_emptyImage() {
 }
 
 func ExampleLoadImage() {
-	img := LoadImage("test1.png")
+	img := LoadImage(fileName)
 	printImage(img)
 	// Output:
 	// Image is 10x10
@@ -37,9 +39,9 @@ func ExampleLoadImage() {
 }
 
 func ExampleGetBlackMask() {
-	img := LoadImage("test1.png")
+	img := LoadImage(fileName)
 	mask := GetBlackMask(img)
-	SaveImage("test1-black.png", mask)
+	SaveImage(GetFileNameVariant(fileName, "black"), mask)
 
 	printImage(mask)
 	// Output:
@@ -57,9 +59,9 @@ func ExampleGetBlackMask() {
 }
 
 func ExampleGetWhiteOuterArea() {
-	img := LoadImage("test1.png")
+	img := LoadImage(fileName)
 	mask := GetWhiteOuterArea(img)
-	SaveImage("test1-white.png", mask)
+	SaveImage(GetFileNameVariant(fileName, "white"), mask)
 
 	printImage(mask)
 	// Output:
@@ -77,10 +79,10 @@ func ExampleGetWhiteOuterArea() {
 }
 
 func ExampleGetCutoutImage() {
-	img := LoadImage("test1.png")
+	img := LoadImage(fileName)
 	mask := GetWhiteOuterArea(img)
 	cutout := GetCutoutImage(img, mask)
-	SaveImage("test1-cutout.png", cutout)
+	SaveImage(GetFileNameVariant(fileName, "cutout"), cutout)
 
 	printImage(cutout)
 	// Output:
@@ -95,6 +97,14 @@ func ExampleGetCutoutImage() {
 	// 7: ...####...
 	// 8: ..........
 	// 9: ..........
+}
+
+func Example_getFileName() {
+	input := "testaDettaDå.nil"
+	actual := GetFileNameVariant(input, "variant")
+	fmt.Println(actual)
+	// Output:
+	// testaDettaDå-variant.nil
 }
 
 func printImage(img image.Image) {
