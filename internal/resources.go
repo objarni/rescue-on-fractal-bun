@@ -35,6 +35,7 @@ const (
 	IEliseCrouch
 	IButton
 	IStreetLight
+	ISpider
 	AfterLastImage
 )
 
@@ -54,6 +55,7 @@ func (image Image) String() string {
 		"IEliseCrouch",
 		"IButton",
 		"IStreetLight",
+		"ISpider",
 		"AfterLastImage",
 	}[image]
 }

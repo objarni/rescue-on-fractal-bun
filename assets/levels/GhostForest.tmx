@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="2021.01.13" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="135" height="28" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#204a87" nextlayerid="11" nextobjectid="40">
+<map version="1.4" tiledversion="2021.01.13" orientation="orthogonal" renderorder="left-up" compressionlevel="0" width="135" height="28" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#204a87" nextlayerid="11" nextobjectid="42">
  <tileset firstgid="1" source="TTileSet1.tsx"/>
  <layer id="1" name="Background" width="135" height="28">
   <data encoding="csv">
@@ -131,6 +131,8 @@
     <property name="Association" type="object" value="0"/>
    </properties>
   </object>
+  <object id="40" name="Spider" x="2341" y="770" width="6" height="59"/>
+  <object id="41" name="Spider" x="1697" y="756" width="4" height="95"/>
  </objectgroup>
  <layer id="4" name="Foreground" width="135" height="28">
   <data encoding="csv">
