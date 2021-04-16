@@ -1,4 +1,5 @@
 {
+  "ShowEntityCanvas": false,
   "MapSceneBlinkSpeed": 60,
   "MapSceneCrosshairSpeed": 3,
   "MapSceneLocationTextX": 6,

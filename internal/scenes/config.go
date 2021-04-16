@@ -7,6 +7,7 @@ import (
 )
 
 type Config struct {
+	ShowEntityCanvas               bool
 	MapSceneBlinkSpeed             int
 	MapSceneCrosshairSpeed         float64
 	MapSceneLocationTextX          int

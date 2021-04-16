@@ -127,6 +127,9 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 }
 
 func (scene *LevelScene) debugGfx() d.WinOp {
+	if !scene.cfg.ShowEntityCanvas {
+		return d.ToWinOp(d.Nothing())
+	}
 	hitBoxes := make([]d.ImdOp, 0)
 	for _, entity := range scene.entities {
 		hitBoxes = append(hitBoxes, rectDrawOp(entity.HitBox()))
