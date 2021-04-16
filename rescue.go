@@ -161,11 +161,12 @@ func loadResources() internal.Resources {
 	mapSigns := internal.BuildMapSignArray(levels)
 
 	res := internal.Resources{
-		Atlas:    text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII),
-		Blip:     internal.LoadWavForSure("assets/Bounce.wav"),
-		FPS:      0,
-		MapSigns: mapSigns,
-		Levels:   levels,
+		Atlas:       text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII),
+		Blip:        internal.LoadWavForSure("assets/Bounce.wav"),
+		ButtonClick: internal.LoadWavForSure("assets/SButtonClick.wav"),
+		FPS:         0,
+		MapSigns:    mapSigns,
+		Levels:      levels,
 	}
 	res.ImageMap = map[internal.Image]*pixel.Sprite{
 		internal.IMap:                  internal.LoadSpriteForSure("assets/TMap.png"),

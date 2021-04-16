@@ -2,6 +2,8 @@ package scenes
 
 import (
 	"fmt"
+	"github.com/faiface/beep"
+	"github.com/faiface/beep/speaker"
 	px "github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
@@ -19,6 +21,7 @@ type LevelScene struct {
 	gameTimeMs   float64
 	entities     []entities.Entity
 	entityCanvas entities.EntityCanvas
+	buttonClick  *beep.Buffer
 }
 
 func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *LevelScene {
@@ -31,6 +34,7 @@ func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *Lev
 		gameTimeMs:   0,
 		entities:     SpawnEntities(pos, level),
 		entityCanvas: entities.MakeEntityCanvas(),
+		buttonClick:  res.ButtonClick,
 	}
 }
 
@@ -221,6 +225,15 @@ func (scene *LevelScene) Tick() bool {
 		id := box.Entity
 		scene.entities[id] = scene.entities[id].Handle(eb)
 	})
+
+	// Play relevant sound effects (based on events)
+	for _, eb := range scene.entityCanvas.EventBoxes {
+		if eb.Event == events.ButtonPressed {
+			streamer := scene.buttonClick.Streamer(0, scene.buttonClick.Len())
+			speaker.Play(streamer)
+		}
+	}
+
 	// Reset the canvas
 	scene.entityCanvas = entities.MakeEntityCanvas()
 	scene.gameTimeMs += internal.TickTimeMs
@@ -231,6 +244,7 @@ func (scene *LevelScene) Tick() bool {
 			HitBox: scene.entities[i].HitBox(),
 		})
 	}
+
 	return true
 }
 
