@@ -33,6 +33,13 @@ const (
 	IEliseWalk5
 	IEliseWalk6
 	IEliseCrouch
+	IEliseJump1
+	IEliseJump2
+	IEliseJump3
+	IEliseJump4
+	IEliseJump5
+	IEliseJump6
+	IEliseJump7
 	IButton
 	IStreetLight
 	ISpider
@@ -53,6 +60,13 @@ func (image Image) String() string {
 		"IEliseWalk5",
 		"IEliseWalk6",
 		"IEliseCrouch",
+		"IEliseJump1",
+		"IEliseJump2",
+		"IEliseJump3",
+		"IEliseJump4",
+		"IEliseJump5",
+		"IEliseJump6",
+		"IEliseJump7",
 		"IButton",
 		"IStreetLight",
 		"ISpider",
