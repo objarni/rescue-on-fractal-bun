@@ -1,3 +1,3 @@
 Elise standing
-HitBox Rect(0, 20, 20, 120)
+HitBox [0,20->20,120]
 Facing right

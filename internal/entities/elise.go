@@ -86,6 +86,15 @@ func (elise Elise) Handle(eb EventBox) Entity {
 }
 
 var frames = [...]internal.Image{
+	internal.IEliseJump7,
+	internal.IEliseJump6,
+	internal.IEliseJump5,
+	internal.IEliseJump4,
+	internal.IEliseJump3,
+	internal.IEliseJump2,
+	internal.IEliseJump1,
+}
+var walkFrames = [...]internal.Image{
 	internal.IEliseWalk6,
 	internal.IEliseWalk5,
 	internal.IEliseWalk4,
@@ -96,10 +105,10 @@ var frames = [...]internal.Image{
 
 func EliseWalkFrame(gameTimeS float64, targetFPS int) internal.Image {
 	var eliseAnimation = internal.Animation{
-		Frames:    6,
+		Frames:    len(walkFrames),
 		TargetFPS: targetFPS,
 	}
 	frame := eliseAnimation.FrameAtTime(gameTimeS)
-	image := frames[frame]
+	image := walkFrames[frame]
 	return image
 }
