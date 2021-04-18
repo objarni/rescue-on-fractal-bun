@@ -29,7 +29,7 @@ func MakeElise(position px.Vec) Entity {
 	return Elise{Pos: position}
 }
 
-func (elise Elise) Tick(gameTimeMs float64, eb EventBoxReceiver) Entity {
+func (elise Elise) Tick(gameTimeMs float64, eventBoxReceiver EventBoxReceiver) Entity {
 	elise.gameTimeMs = gameTimeMs
 	eliseMoveSpeed := 1.2
 	if elise.leftPressed && !elise.rightPressed {
@@ -43,7 +43,7 @@ func (elise Elise) Tick(gameTimeMs float64, eb EventBoxReceiver) Entity {
 	if elise.actionDown {
 		elise.actionDown = false
 		hitBox := elise.HitBox()
-		eb.AddEventBox(EventBox{
+		eventBoxReceiver.AddEventBox(EventBox{
 			Event: events.Action,
 			Box:   hitBox.Resized(hitBox.Center(), px.V(40, 40)),
 		})
