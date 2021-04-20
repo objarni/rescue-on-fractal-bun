@@ -41,7 +41,7 @@ func Test_pressingLeft(t *testing.T) {
 func printElise(elise Entity) string {
 	state := fmt.Sprintf("Elise %v", "standing")
 	hb := fmt.Sprintf("HitBox %v", printRect(elise.HitBox()))
-	facing := fmt.Sprintf("Facing right")
+	facing := "right"
 	all := []string{state, hb, facing}
 	return strings.Join(all, "\n") + "\n"
 }

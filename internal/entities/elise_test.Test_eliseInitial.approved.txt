@@ -1,3 +1,3 @@
 Elise standing
 HitBox [0,20->20,120]
-Facing right
+right

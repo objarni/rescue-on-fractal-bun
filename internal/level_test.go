@@ -14,7 +14,7 @@ func init() {
 	approvals.UseReporter(tests.ReportWithMeld())
 }
 
-func TestMapSignBuilder(t *testing.T) {
+func _(t *testing.T) {
 	var levels = map[string]Level{
 		"Hembyn": {
 			SignPosts: []SignPost{
@@ -53,9 +53,7 @@ func mapSignsToString(signs []MapSign) string {
 		mapSignDescription += fmt.Sprintf(" Links to %v %v\n", sign.LevelName, printVec(sign.LevelPos))
 		descriptions = append(descriptions, mapSignDescription)
 	}
-	fmt.Print(descriptions)
 	var sorted = descriptions
 	sort.Strings(sorted)
-	fmt.Print(sorted)
 	return strings.Join(sorted, "\n")
 }
