@@ -16,6 +16,10 @@ type Lamp struct {
 	on  bool
 }
 
+func (lamp Lamp) String() string {
+	panic("implement me")
+}
+
 func (lamp Lamp) Handle(eb EventBox) Entity {
 	if eb.Event == events.ButtonPressed {
 		lamp.on = !lamp.on

@@ -19,6 +19,10 @@ type Ghost struct {
 	curveHeight float64
 }
 
+func (ghost Ghost) String() string {
+	panic("implement me")
+}
+
 func (ghost Ghost) Handle(_ EventBox) Entity {
 	return ghost
 }

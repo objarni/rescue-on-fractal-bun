@@ -1,12 +1,10 @@
 package entities
 
 import (
-	"fmt"
 	approvals "github.com/approvals/go-approval-tests"
 	px "github.com/faiface/pixel"
 	"objarni/rescue-on-fractal-bun/internal/events"
 	"objarni/rescue-on-fractal-bun/tests"
-	"strings"
 	"testing"
 )
 
@@ -23,8 +21,7 @@ import (
 
 func Test_eliseInitial(t *testing.T) {
 	elise := MakeElise(px.V(10, 20))
-	var state = printElise(elise)
-	approvals.VerifyString(t, state)
+	approvals.VerifyString(t, elise.String())
 }
 
 func Test_pressingLeft(t *testing.T) {
@@ -34,21 +31,7 @@ func Test_pressingLeft(t *testing.T) {
 		Box:   px.Rect{},
 	})
 	elise = elise.Tick(0, nil)
-	var state = printElise(elise)
-	approvals.VerifyString(t, state)
-}
-
-func printElise(elise Entity) string {
-	state := fmt.Sprintf("Elise %v", "standing")
-	hb := fmt.Sprintf("HitBox %v", printRect(elise.HitBox()))
-	facing := "right"
-	all := []string{state, hb, facing}
-	return strings.Join(all, "\n") + "\n"
-}
-
-func printRect(box px.Rect) interface{} {
-	return fmt.Sprintf("[%1.0f,%1.0f->%1.0f,%1.0f]",
-		box.Min.X, box.Min.Y, box.Max.X, box.Max.Y)
+	approvals.VerifyString(t, elise.String())
 }
 
 func init() {

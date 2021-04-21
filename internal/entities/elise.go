@@ -1,10 +1,12 @@
 package entities
 
 import (
+	"fmt"
 	px "github.com/faiface/pixel"
 	"objarni/rescue-on-fractal-bun/internal"
 	d "objarni/rescue-on-fractal-bun/internal/draw"
 	"objarni/rescue-on-fractal-bun/internal/events"
+	"strings"
 )
 
 const eliseWidth = 20.0
@@ -16,6 +18,19 @@ type Elise struct {
 	gameTimeMs                float64
 	flip                      bool
 	actionDown                bool
+}
+
+func (elise Elise) String() string {
+	state := fmt.Sprintf("Elise %v", "standing")
+	hb := fmt.Sprintf("HitBox %v", printRect(elise.HitBox()))
+	facing := "right"
+	all := []string{state, hb, facing}
+	return strings.Join(all, "\n") + "\n"
+}
+
+func printRect(box px.Rect) interface{} {
+	return fmt.Sprintf("[%1.0f,%1.0f->%1.0f,%1.0f]",
+		box.Min.X, box.Min.Y, box.Max.X, box.Max.Y)
 }
 
 func (elise Elise) HitBox() px.Rect {
@@ -94,6 +109,7 @@ var frames = [...]internal.Image{
 	internal.IEliseJump2,
 	internal.IEliseJump1,
 }
+
 var walkFrames = [...]internal.Image{
 	internal.IEliseWalk6,
 	internal.IEliseWalk5,

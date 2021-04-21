@@ -15,6 +15,10 @@ type Button struct {
 	pressed bool
 }
 
+func (button Button) String() string {
+	panic("implement me")
+}
+
 func (button Button) Handle(eb EventBox) Entity {
 	if eb.Event == events.Action {
 		button.pressed = true

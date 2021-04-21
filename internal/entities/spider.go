@@ -25,6 +25,10 @@ type Spider struct {
 	timeout  float64
 }
 
+func (spider Spider) String() string {
+	panic("implement me")
+}
+
 func (spider Spider) Handle(_ EventBox) Entity {
 	return spider
 }
