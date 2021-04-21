@@ -45,7 +45,14 @@ func run() {
 		levelName := startLevel
 		fmt.Println("Loading level:", *levelName)
 		// TODO: find player pos of sign 0 in level!
-		scene = scenes.MakeLevelScene(&cfg, &res, *levelName, pixel.V(0, 0))
+		var pos pixel.Vec
+		for _, mapSign := range res.MapSigns {
+			if mapSign.LevelName == *startLevel {
+				pos = mapSign.LevelPos
+				break
+			}
+		}
+		scene = scenes.MakeLevelScene(&cfg, &res, *levelName, pos)
 	} else {
 		scene = scenes.MakeMenuScene(&cfg, &res)
 	}
