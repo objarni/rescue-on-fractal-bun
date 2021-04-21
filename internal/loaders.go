@@ -5,7 +5,7 @@ import (
 	"github.com/bcvery1/tilepix"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/wav"
-	"github.com/faiface/pixel"
+	px "github.com/faiface/pixel"
 	"github.com/g4s8/hexcolor"
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
@@ -17,7 +17,7 @@ import (
 	"strings"
 )
 
-func LoadSprite(path string) (*pixel.Sprite, error) {
+func LoadSprite(path string) (*px.Sprite, error) {
 	fmt.Println("Loading image: " + path)
 	file, err := os.Open(path)
 	if err != nil {
@@ -31,14 +31,14 @@ func LoadSprite(path string) (*pixel.Sprite, error) {
 	if err != nil {
 		return nil, err
 	}
-	pic := pixel.PictureDataFromImage(img)
+	pic := px.PictureDataFromImage(img)
 	dim := img.Bounds().Max
-	frame := pixel.R(0, 0, float64(dim.X), float64(dim.Y))
-	sprite := pixel.NewSprite(pic, frame)
+	frame := px.R(0, 0, float64(dim.X), float64(dim.Y))
+	sprite := px.NewSprite(pic, frame)
 	return sprite, nil
 }
 
-func LoadSpriteForSure(path string) *pixel.Sprite {
+func LoadSpriteForSure(path string) *px.Sprite {
 	sprite, err := LoadSprite(path)
 	PanicIfError(err)
 	return sprite
@@ -144,7 +144,7 @@ func ValidateLevel(path string, level *tilepix.Map) error {
 			errorString += err + "\n"
 		}
 		fmt.Printf(errorString)
-		return fmt.Errorf("Error(s) in level %v", path)
+		return fmt.Errorf("error(s) in level %v", path)
 	}
 
 	return nil
@@ -156,19 +156,19 @@ func ParseLevel(level *tilepix.Map) Level {
 		x := object.X
 		y := object.Y
 		var mp = SignPost{
-			Pos:  pixel.Vec{X: x, Y: y},
+			Pos:  px.Vec{X: x, Y: y},
 			Text: object.Name,
 		}
 		points = append(points, mp)
 	}
-	esps := make([]EntitySpawnPoint, 0)
+	entitySpawnPoints := make([]EntitySpawnPoint, 0)
 	for _, object := range level.GetObjectLayerByName("Entities").Objects {
 		rect, _ := object.GetRect()
 		var esp = EntitySpawnPoint{
 			SpawnAt:    rect,
 			EntityType: object.Name,
 		}
-		esps = append(esps, esp)
+		entitySpawnPoints = append(entitySpawnPoints, esp)
 	}
 	color, err2 := hexcolor.Parse(level.BackgroundColor)
 	PanicIfError(err2)
@@ -178,6 +178,6 @@ func ParseLevel(level *tilepix.Map) Level {
 		SignPosts:         points,
 		TilepixMap:        level,
 		ClearColor:        color,
-		EntitySpawnPoints: esps,
+		EntitySpawnPoints: entitySpawnPoints,
 	}
 }
