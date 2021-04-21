@@ -97,11 +97,11 @@
 643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,643,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642,642
 </data>
  </layer>
- <objectgroup id="5" name="SignPosts" offsetx="6.66666" offsety="30">
-  <object id="2" name="Hembyn" type="MapPoint" x="2432" y="832" width="10" height="10">
+ <objectgroup id="5" name="SignPosts">
+  <object id="2" name="Hembyn" type="MapPoint" x="2433" y="854" width="10" height="10">
    <text wrap="1" color="#3465a4">MapPoint</text>
   </object>
-  <object id="3" name="Korsningen" type="MapPoint" x="128" y="832" width="10" height="10">
+  <object id="3" name="Korsningen" type="MapPoint" x="127" y="853" width="10" height="10">
    <text wrap="1" color="#204a87" halign="center" valign="bottom">MapPoint</text>
   </object>
  </objectgroup>
