@@ -53,9 +53,11 @@ func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Jump {
 		mapSignIx := scene.FindClosestMapSign()
 		if mapSignIx != -1 {
-			levelName := scene.res.MapSigns[mapSignIx].LevelName
+			mapSign := scene.res.MapSigns[mapSignIx]
+			levelName := mapSign.LevelName
+			playerPos := mapSign.LevelPos
 			// TODO: spawn at right mapsign of level, not just 'mapsign 0'
-			return MakeLevelScene(scene.cfg, scene.res, levelName)
+			return MakeLevelScene(scene.cfg, scene.res, levelName, playerPos)
 		}
 	}
 	if key == internal.Left {

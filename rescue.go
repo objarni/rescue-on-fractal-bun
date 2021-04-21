@@ -44,7 +44,8 @@ func run() {
 	if *startlevel != "" {
 		levelName := startlevel
 		fmt.Println("Loading level:", *levelName)
-		scene = scenes.MakeLevelScene(&cfg, &res, *levelName)
+		// TODO: find player pos of sign 0 in level!
+		scene = scenes.MakeLevelScene(&cfg, &res, *levelName, pixel.V(0, 0))
 	} else {
 		scene = scenes.MakeMenuScene(&cfg, &res)
 	}

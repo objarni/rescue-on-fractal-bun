@@ -24,9 +24,10 @@ type LevelScene struct {
 	buttonClick  *beep.Buffer
 }
 
-func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string) *LevelScene {
+func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string,
+	playerPos px.Vec) *LevelScene {
 	level := res.Levels[levelName]
-	pos := level.SignPosts[0].Pos.Add(px.V(0, -50))
+	pos := playerPos
 	return &LevelScene{
 		cfg:          cfg,
 		res:          res,
