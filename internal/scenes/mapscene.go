@@ -37,16 +37,27 @@ type MapScene struct {
 	hairCrossPos   pixel.Vec
 	hairCrossVel   pixel.Vec
 	highlightTimer int
+	atMapSign      int
 }
 
 func MakeMapScene(cfg *Config, res *internal.Resources, mapSignName string) *MapScene {
-	mapSignIx := mapSignWithText(mapSignName)
+	mapSignIx := lookupMapSignWithText(mapSignName, res.MapSigns)
 	return &MapScene{
 		cfg:          cfg,
 		res:          res,
 		hairCrossPos: res.MapSigns[mapSignIx].MapPos,
 		hairCrossVel: pixel.ZV,
+		atMapSign:    mapSignIx,
 	}
+}
+
+func lookupMapSignWithText(mapSignText string, mapSigns []internal.MapSign) int {
+	for ix, mapSign := range mapSigns {
+		if mapSign.Text == mapSignText {
+			return ix
+		}
+	}
+	panic("error: could not find MapSign with Text=" + mapSignText)
 }
 
 func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
@@ -139,19 +150,6 @@ func mapSignNameFromIx(mapSignIx int) string {
 	return "-"
 }
 
-func mapSignWithText(mapSignText string) int {
-	if mapSignText == "Hembyn" {
-		return 0
-	}
-	if mapSignText == "Korsningen" {
-		return 1
-	}
-	if mapSignText == "Skogen" {
-		return 2
-	}
-	panic(fmt.Sprintf("Unknown map sign text: %v", mapSignText))
-}
-
 func (scene *MapScene) mapSignsGfx() d.ImdOp {
 	return scene.levelEntrances().
 		Then(scene.currentMapSignOp()).
@@ -181,8 +179,7 @@ func (scene *MapScene) FindClosestMapSign() int {
 func (scene *MapScene) currentMapSignOp() d.ImdOp {
 	blink := scene.cfg.MapSceneBlinkSpeed
 	if scene.highlightTimer/blink%2 == 0 {
-		// TODO: remove playerCurrIx in favor of 'currentMapSign' or something
-		pos := scene.res.MapSigns[0].MapPos
+		pos := scene.res.MapSigns[scene.atMapSign].MapPos
 		circle := d.Circle(scene.currentLocCircleRadius(), C(pos), scene.circleThickness())
 		return d.Colored(colornames.Green, circle)
 	}
