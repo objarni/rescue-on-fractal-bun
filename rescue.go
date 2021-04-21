@@ -16,14 +16,14 @@ import (
 	"unicode"
 )
 
-var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
-var startlevel = flag.String("level", "", "start at specified game level")
+var cpuProfile = flag.String("cpuProfile", "", "write cpu profile to file")
+var startLevel = flag.String("level", "", "start at specified game level")
 
 func run() {
 
 	flag.Parse()
-	if *cpuprofile != "" {
-		f, err := os.Create(*cpuprofile)
+	if *cpuProfile != "" {
+		f, err := os.Create(*cpuProfile)
 		if err != nil {
 			panic(err)
 		}
@@ -41,8 +41,8 @@ func run() {
 
 	// Initial scene - depends on --level cmd line arg!
 	var scene internal.Thing
-	if *startlevel != "" {
-		levelName := startlevel
+	if *startLevel != "" {
+		levelName := startLevel
 		fmt.Println("Loading level:", *levelName)
 		// TODO: find player pos of sign 0 in level!
 		scene = scenes.MakeLevelScene(&cfg, &res, *levelName, pixel.V(0, 0))
