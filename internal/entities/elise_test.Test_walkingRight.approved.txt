@@ -1,0 +1,8 @@
+Before:
+Elise standing
+HitBox [0,20->20,120]
+Facing right
+After:
+Elise standing
+HitBox [5,20->25,120]
+Facing right

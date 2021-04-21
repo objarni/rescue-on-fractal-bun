@@ -1,0 +1,13 @@
+** Before **
+Elise standing
+HitBox [0,20->20,120]
+Facing right
+
+** After **
+Elise standing
+HitBox [0,20->20,120]
+Facing right
+
+** Canvas **
+Action happened at Rect(-10, 50, 30, 90)
+No hits detected
