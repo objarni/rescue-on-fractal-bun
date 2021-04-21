@@ -21,6 +21,7 @@ func Test_initialRender(t *testing.T) {
 			MapPos:    pixel.Vec{},
 			LevelName: "",
 			LevelPos:  pixel.Vec{},
+			Text:      "Hembyn",
 		}},
 	}
 	mapScene := scenes.MakeMapScene(&cfg, &res, "Hembyn")
