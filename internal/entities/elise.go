@@ -24,6 +24,10 @@ func (elise Elise) String() string {
 	state := fmt.Sprintf("Elise %v", "standing")
 	hb := fmt.Sprintf("HitBox %v", printRect(elise.HitBox()))
 	facing := "right"
+	if elise.flip {
+		facing = "left"
+	}
+	facing = "Facing " + facing
 	all := []string{state, hb, facing}
 	return strings.Join(all, "\n") + "\n"
 }
