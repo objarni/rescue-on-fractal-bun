@@ -72,7 +72,7 @@ func (spider Spider) Tick(gameTimeMs float64, _ EventBoxReceiver) Entity {
 
 func (spider Spider) GfxOp(imageMap *internal.ImageMap) d.WinOp {
 	image := d.Image(*imageMap, internal.ISpider)
-	image = d.Color(colornames.Black, image)
+	image = d.Color(colornames.White, image)
 	return d.Moved(spider.pos, image)
 }
 
