@@ -10,11 +10,12 @@ type ImageMap map[Image]*pixel.Sprite
 
 type Resources struct {
 	Atlas             *text.Atlas
-	Blip, ButtonClick *beep.Buffer
 	FPS               float64
 	MapSigns          []MapSign
 	Levels            map[string]Level
 	ImageMap          ImageMap
+	Blip, ButtonClick *beep.Buffer
+	RobotMove         *beep.Buffer
 }
 
 // This is so repetitive. Can we have a Python script to generate the enum+String func?

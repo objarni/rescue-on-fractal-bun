@@ -5,6 +5,7 @@ import (
 	"golang.org/x/image/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
 	d "objarni/rescue-on-fractal-bun/internal/draw"
+	"objarni/rescue-on-fractal-bun/internal/events"
 )
 
 const robotWidth = 30
@@ -33,7 +34,7 @@ func (robot Robot) HitBox() pixel.Rect {
 	return rect
 }
 
-func (robot Robot) Tick(gameTimeMs float64, _ EventBoxReceiver) Entity {
+func (robot Robot) Tick(gameTimeMs float64, ebr EventBoxReceiver) Entity {
 	movement := pixel.V(0, 0.1)
 	pauseMs := 3000.0
 
@@ -47,6 +48,10 @@ func (robot Robot) Tick(gameTimeMs float64, _ EventBoxReceiver) Entity {
 	case AtTop:
 		if gameTimeMs >= robot.timeout {
 			robot.state = GoingDown
+			ebr.AddEventBox(EventBox{
+				Event: events.RobotMove,
+				Box:   pixel.Rect{},
+			})
 		}
 	case GoingDown:
 		robot.pos = robot.pos.Sub(movement)
@@ -57,6 +62,10 @@ func (robot Robot) Tick(gameTimeMs float64, _ EventBoxReceiver) Entity {
 	case AtBottom:
 		if gameTimeMs >= robot.timeout {
 			robot.state = GoingUp
+			ebr.AddEventBox(EventBox{
+				Event: events.RobotMove,
+				Box:   pixel.Rect{},
+			})
 		}
 	}
 	return robot

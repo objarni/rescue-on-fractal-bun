@@ -22,6 +22,7 @@ type LevelScene struct {
 	entities     []entities.Entity
 	entityCanvas entities.EntityCanvas
 	buttonClick  *beep.Buffer
+	robotMoveSfx *beep.Buffer
 }
 
 func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string,
@@ -36,6 +37,7 @@ func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string,
 		entities:     SpawnEntities(pos, level),
 		entityCanvas: entities.MakeEntityCanvas(),
 		buttonClick:  res.ButtonClick,
+		robotMoveSfx: res.RobotMove,
 	}
 }
 
@@ -236,6 +238,10 @@ func (scene *LevelScene) Tick() bool {
 	for _, eb := range scene.entityCanvas.EventBoxes {
 		if eb.Event == events.ButtonPressed {
 			streamer := scene.buttonClick.Streamer(0, scene.buttonClick.Len())
+			speaker.Play(streamer)
+		}
+		if eb.Event == events.RobotMove {
+			streamer := scene.robotMoveSfx.Streamer(0, scene.robotMoveSfx.Len())
 			speaker.Play(streamer)
 		}
 	}

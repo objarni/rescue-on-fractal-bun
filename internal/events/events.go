@@ -4,6 +4,7 @@ type Event int
 
 const (
 	ButtonPressed Event = iota
+	RobotMove
 	Action
 	Damage
 	KeyLeftDown
@@ -15,5 +16,16 @@ const (
 )
 
 func (event Event) String() string {
-	return [...]string{"ButtonPressed", "Action"}[event]
+	return [...]string{
+		"ButtonPressed",
+		"RobotMove",
+		"Action",
+		"Damage",
+		"KeyLeftDown",
+		"KeyRightDown",
+		"KeyLeftUp",
+		"KeyRightUp",
+		"KeyActionDown",
+		"NoEvent",
+	}[event]
 }

@@ -171,6 +171,7 @@ func loadResources() internal.Resources {
 		Atlas:       text.NewAtlas(face, text.RangeTable(unicode.Latin), text.ASCII),
 		Blip:        internal.LoadWavForSure("assets/Bounce.wav"),
 		ButtonClick: internal.LoadWavForSure("assets/SButtonClick.wav"),
+		RobotMove:   internal.LoadWavForSure("assets/SRobotMove.wav"),
 		FPS:         0,
 		MapSigns:    mapSigns,
 		Levels:      levels,
