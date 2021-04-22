@@ -198,6 +198,7 @@ func loadResources() internal.Resources {
 		internal.IButton:               internal.LoadSpriteForSure("assets/TButton.png"),
 		internal.IStreetLight:          internal.LoadSpriteForSure("assets/TStreetLight.png"),
 		internal.ISpider:               internal.LoadSpriteForSure("assets/TSpider.png"),
+		internal.IRobot1:               internal.LoadSpriteForSure("assets/TRobot1.png"),
 	}
 	if len(res.ImageMap) < int(internal.AfterLastImage) {
 		panic("Expect one image loaded per map item")

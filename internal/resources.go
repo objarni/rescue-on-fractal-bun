@@ -43,6 +43,7 @@ const (
 	IButton
 	IStreetLight
 	ISpider
+	IRobot1
 	AfterLastImage
 )
 
@@ -70,6 +71,7 @@ func (image Image) String() string {
 		"IButton",
 		"IStreetLight",
 		"ISpider",
+		"IRobot1",
 		"AfterLastImage",
 	}[image]
 }

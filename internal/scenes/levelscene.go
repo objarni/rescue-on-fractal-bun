@@ -51,6 +51,8 @@ func SpawnEntities(pos px.Vec, level internal.Level) []entities.Entity {
 			es = append(es, entities.MakeLamp(esp.SpawnAt))
 		} else if esp.EntityType == "Spider" {
 			es = append(es, entities.MakeSpider(esp.SpawnAt))
+		} else if esp.EntityType == "Robot" {
+			es = append(es, entities.MakeRobot(esp.SpawnAt))
 		} else {
 			panic("Unknown entity type: " + esp.EntityType)
 		}
