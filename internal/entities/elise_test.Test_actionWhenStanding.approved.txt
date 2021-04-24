@@ -1,13 +1,13 @@
-** Before **
+
+** Scenario **
+EventBox: {KeyActionDown Rect(0, 0, 0, 0)}
+Ticks: 1
+
+** Elise end state **
 Elise standing
-HitBox [0,20->20,120]
+HitBox [-10,0->10,100]
 Facing right
 
-** After **
-Elise standing
-HitBox [0,20->20,120]
-Facing right
-
-** Canvas **
-Action happened at Rect(-10, 50, 30, 90)
+** Canvas state **
+Action happened at Rect(-20, 30, 20, 70)
 No hits detected

@@ -1,3 +1,12 @@
+
+** Scenario **
+EventBox: {KeyLeftDown Rect(0, 0, 0, 0)}
+Ticks: 1
+
+** Elise end state **
 Elise standing
-HitBox [-1,20->19,120]
+HitBox [-11,0->9,100]
 Facing left
+
+** Canvas state **
+No hits detected

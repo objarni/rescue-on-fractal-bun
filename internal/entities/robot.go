@@ -11,10 +11,19 @@ import (
 const robotWidth = 30
 const robotHeight = 40
 
+type RobotState int
+
+const (
+	RobotAtLeft = iota
+	RobotGoingLeft
+	RobotAtRight
+	RobotGoingRight
+)
+
 type Robot struct {
 	pos      pixel.Vec
 	min, max float64
-	state    SpiderState
+	state    RobotState
 	timeout  float64
 }
 
@@ -35,33 +44,33 @@ func (robot Robot) HitBox() pixel.Rect {
 }
 
 func (robot Robot) Tick(gameTimeMs float64, ebr EventBoxReceiver) Entity {
-	movement := pixel.V(0, 0.1)
-	pauseMs := 3000.0
+	movement := pixel.V(0.3, 0)
+	pauseMs := 1000.0
 
 	switch robot.state {
-	case GoingUp:
+	case RobotGoingRight:
 		robot.pos = robot.pos.Add(movement)
-		if robot.pos.Y >= robot.max {
+		if robot.pos.X >= robot.max {
 			robot.timeout = gameTimeMs + pauseMs
-			robot.state = AtTop
+			robot.state = RobotAtRight
 		}
-	case AtTop:
+	case RobotAtRight:
 		if gameTimeMs >= robot.timeout {
-			robot.state = GoingDown
+			robot.state = RobotGoingLeft
 			ebr.AddEventBox(EventBox{
 				Event: events.RobotMove,
 				Box:   pixel.Rect{},
 			})
 		}
-	case GoingDown:
+	case RobotGoingLeft:
 		robot.pos = robot.pos.Sub(movement)
-		if robot.pos.Y <= robot.min {
+		if robot.pos.X <= robot.min {
 			robot.timeout = gameTimeMs + pauseMs
-			robot.state = AtBottom
+			robot.state = RobotAtLeft
 		}
-	case AtBottom:
+	case RobotAtLeft:
 		if gameTimeMs >= robot.timeout {
-			robot.state = GoingUp
+			robot.state = RobotGoingRight
 			ebr.AddEventBox(EventBox{
 				Event: events.RobotMove,
 				Box:   pixel.Rect{},
@@ -74,14 +83,17 @@ func (robot Robot) Tick(gameTimeMs float64, ebr EventBoxReceiver) Entity {
 func (robot Robot) GfxOp(imageMap *internal.ImageMap) d.WinOp {
 	image := d.Image(*imageMap, internal.IRobot1)
 	image = d.Color(colornames.White, image)
+	if robot.state == RobotGoingLeft || robot.state == RobotAtLeft {
+		image = d.Mirrored(image)
+	}
 	return d.Moved(robot.pos, image)
 }
 
 func MakeRobot(area pixel.Rect) Entity {
 	return Robot{
 		pos:   area.Center(),
-		min:   area.Min.Y,
-		max:   area.Max.Y,
-		state: GoingUp,
+		min:   area.Min.X,
+		max:   area.Max.X,
+		state: RobotGoingRight,
 	}
 }

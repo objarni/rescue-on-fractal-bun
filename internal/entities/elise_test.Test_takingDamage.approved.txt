@@ -1,11 +1,11 @@
 
 ** Scenario **
-EventBox: {KeyRightDown Rect(0, 0, 0, 0)}
+EventBox: {Damage Rect(-10, -10, 10, 10)}
 Ticks: 1
 
 ** Elise end state **
 Elise standing
-HitBox [-9,0->11,100]
+HitBox [-5,0->15,100]
 Facing right
 
 ** Canvas state **

@@ -1,6 +1,7 @@
 package entities
 
 import (
+	"fmt"
 	approvals "github.com/approvals/go-approval-tests"
 	px "github.com/faiface/pixel"
 	"objarni/rescue-on-fractal-bun/internal/events"
@@ -9,10 +10,10 @@ import (
 )
 
 /*
-   - #initial state
-   - #walking right
-   - #pressing left
-   - clicking action when standing still
+   + initial state
+   + walking right
+   + pressing left
+   + clicking action when standing still
    - taking damage
    - jumping when standing still
    - jumping when pressing right
@@ -25,45 +26,71 @@ func Test_eliseInitial(t *testing.T) {
 }
 
 func Test_pressingLeft(t *testing.T) {
-	elise := MakeElise(px.V(10, 20))
-	elise = elise.Handle(EventBox{
+	box := EventBox{
 		Event: events.KeyLeftDown,
+		Box:   px.R(1, 1, 2, 2),
+	}
+	approvals.VerifyString(t, simulate(box, 1))
+}
+
+func Test_actionWhenStanding(t *testing.T) {
+	result := simulate(EventBox{
+		Event: events.KeyActionDown,
 		Box:   px.Rect{},
-	})
-	elise = elise.Tick(0, nil)
-	approvals.VerifyString(t, elise.String())
+	}, 1)
+	approvals.VerifyString(t, result)
 }
 
 func Test_walkingRight(t *testing.T) {
-	elise := MakeElise(px.V(10, 20))
-	before := "Before:\n" + elise.String()
-	elise = elise.Handle(EventBox{
+	ticks := 4
+	box := EventBox{
 		Event: events.KeyRightDown,
 		Box:   px.Rect{},
-	})
-	elise = passTime(4, elise)
-	after := "After:\n" + elise.String()
-	approvals.VerifyString(t, before+after)
-}
-func Test_actionWhenStanding(t *testing.T) {
-	elise := MakeElise(px.V(10, 20))
-	before := "** Before **\n" + elise.String()
-	elise = elise.Handle(EventBox{
-		Event: events.KeyActionDown,
-		Box:   px.Rect{},
-	})
-	receiver := MakeEntityCanvas()
-	elise = elise.Tick(0, &receiver)
-	after := "\n** After **\n" + elise.String()
-	canvas := "\n** Canvas **\n" + receiver.String()
-	approvals.VerifyString(t, before+after+canvas)
+	}
+	approvals.VerifyString(t, simulate(box, ticks))
 }
 
-func passTime(ticks int, elise Entity) Entity {
-	for i := 0; i < ticks; i++ {
-		elise = elise.Tick(0, nil)
+func Test_takingDamage(t *testing.T) {
+	result := simulate(EventBox{
+		Event: events.Damage,
+		Box: px.Rect{
+			Min: px.V(-10, -10),
+			Max: px.V(10, 10),
+		},
+	}, 1)
+	approvals.VerifyString(t, result)
+}
+
+func simulate(box EventBox, ticks int) string {
+	elise := MakeElise(px.V(0, 0))
+	canvasSequence := ""
+	var entityCanvas EntityCanvas
+	for ix, _ := range make([]int, ticks) {
+		entityCanvas = MakeEntityCanvas()
+		entityCanvas.AddEntityHitBox(EntityHitBox{
+			Entity: 0,
+			HitBox: elise.HitBox(),
+		})
+		entityCanvas.AddEventBox(box)
+		entityCanvas.Consequences(func(eb EventBox, ehb EntityHitBox) {
+			elise = elise.Handle(eb)
+		})
+		elise = elise.Tick(0, &entityCanvas)
+		canvasSequence += printCanvasTick(ix, entityCanvas)
 	}
-	return elise
+	canvasSequence += printCanvasTick(ticks, entityCanvas) + "\n"
+	scenario := fmt.Sprintf(
+		"\n** Scenario **\nEventBox: %v\nTicks: %v\n",
+		box,
+		ticks,
+	)
+	endState := "\n** Elise end state **\n" + elise.String()
+	canvas := "\n** Canvas states **\n" + canvasSequence
+	return scenario + endState + canvas
+}
+
+func printCanvasTick(ticks int, entityCanvas EntityCanvas) string {
+	return fmt.Sprintf(" * Tick %v *\n", ticks) + entityCanvas.String()
 }
 
 func init() {

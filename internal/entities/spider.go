@@ -10,10 +10,10 @@ import (
 type SpiderState int
 
 const (
-	AtBottom = iota
-	GoingUp
-	AtTop
-	GoingDown
+	SpiderAtBottom = iota
+	SpiderGoingUp
+	SpiderAtTop
+	SpiderGoingDown
 )
 const spiderWidth = 30
 const spiderHeight = 40
@@ -46,25 +46,25 @@ func (spider Spider) Tick(gameTimeMs float64, _ EventBoxReceiver) Entity {
 	pauseMs := 3000.0
 
 	switch spider.state {
-	case GoingUp:
+	case SpiderGoingUp:
 		spider.pos = spider.pos.Add(movement)
 		if spider.pos.Y >= spider.max {
 			spider.timeout = gameTimeMs + pauseMs
-			spider.state = AtTop
+			spider.state = SpiderAtTop
 		}
-	case AtTop:
+	case SpiderAtTop:
 		if gameTimeMs >= spider.timeout {
-			spider.state = GoingDown
+			spider.state = SpiderGoingDown
 		}
-	case GoingDown:
+	case SpiderGoingDown:
 		spider.pos = spider.pos.Sub(movement)
 		if spider.pos.Y <= spider.min {
 			spider.timeout = gameTimeMs + pauseMs
-			spider.state = AtBottom
+			spider.state = SpiderAtBottom
 		}
-	case AtBottom:
+	case SpiderAtBottom:
 		if gameTimeMs >= spider.timeout {
-			spider.state = GoingUp
+			spider.state = SpiderGoingUp
 		}
 	}
 	return spider
@@ -81,6 +81,6 @@ func MakeSpider(area pixel.Rect) Entity {
 		pos:   area.Center(),
 		min:   area.Min.Y,
 		max:   area.Max.Y,
-		state: GoingUp,
+		state: SpiderGoingUp,
 	}
 }
