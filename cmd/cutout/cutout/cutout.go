@@ -1,6 +1,7 @@
 package cutout
 
 import (
+	"github.com/nfnt/resize"
 	"image"
 	"image/color"
 	"image/png"
@@ -148,4 +149,8 @@ func GetWhiteOuterArea(img image.Image) image.Image {
 func IsOpaque(color color.Color) bool {
 	_, _, _, a := color.RGBA()
 	return a != 0xffff
+}
+
+func Resize(image image.Image, newHeight uint) image.Image {
+	return resize.Resize(0, newHeight, image, resize.Lanczos3)
 }

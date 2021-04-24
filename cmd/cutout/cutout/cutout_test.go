@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-
 	. "objarni/cutout/cutout"
 )
 
@@ -130,6 +129,18 @@ func printImage(img image.Image) {
 		}
 		fmt.Println()
 	}
+}
+func ExampleResize() {
+	img := LoadImage(fileName)
+	smaller := Resize(img, 5)
+	printImage(smaller)
+	// Output:
+	// Image is 5x5
+	// 0: #####
+	// 1: #####
+	// 2: #####
+	// 3: #####
+	// 4: #####
 }
 
 func makeRange(max int) []int {
