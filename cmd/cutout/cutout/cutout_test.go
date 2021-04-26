@@ -166,7 +166,7 @@ func ExampleGetCropExtents() {
 	yMin, yMax, xMin, xMax := GetCropExtents(cutout)
 	fmt.Printf("%v, %v, %v, %v", yMin, yMax, xMin, xMax)
 	// Output:
-	// 3, 0, 0, 0
+	// 3, 7, 2, 6
 }
 
 func makeRange(max int) []int {

@@ -158,18 +158,25 @@ func GetCropExtents(img image.Image) (int, int, int, int) {
 	width := img.Bounds().Max.X
 	height := img.Bounds().Max.Y
 
-	yMin := height + 1
+	yMin := height
+	yMax := 0
+
+	xMin := width
+	xMax := 0
 
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
 			c := img.At(x, y)
 			if !IsTransparent(c) {
 				yMin = int(math.Min(float64(y), float64(yMin)))
+				yMax = int(math.Max(float64(y), float64(yMax)))
+				xMin = int(math.Min(float64(x), float64(xMin)))
+				xMax = int(math.Max(float64(x), float64(xMax)))
 			}
 		}
 	}
 
-	return yMin, 0, 0, 0
+	return yMin, yMax, xMin, xMax
 }
 
 func IsOpaque(color color.Color) bool {
