@@ -149,7 +149,20 @@ func GetWhiteOuterArea(img image.Image) image.Image {
 }
 
 func Crop(img image.Image) image.Image {
-	return img
+	yMin, yMax, xMin, xMax := GetCropExtents(img)
+
+	newWidth := xMax - xMin
+	newHeight := yMax - yMin
+
+	newImg := image.NewRGBA(image.Rect(0, 0, newWidth, newHeight))
+
+	for y := 0; y < newHeight; y++ {
+		for x := 0; x < newWidth; x++ {
+			newImg.Set(x, y, img.At(x+xMin, y+yMin))
+		}
+	}
+
+	return newImg
 }
 
 func GetCropExtents(img image.Image) (int, int, int, int) {

@@ -143,19 +143,18 @@ func ExampleResize() {
 	// 4: #####
 }
 
-func ExampleAutoCrop() {
+func ExampleCrop() {
 	img := LoadImage(fileName)
 	mask := GetWhiteOuterArea(img)
 	cutout := GetCutoutImage(img, mask)
 	cropped := Crop(cutout)
 	printImage(cropped)
 	// Output:
-	// Image is 5x5
-	// 0: #####
-	// 1: #####
-	// 2: #####
-	// 3: #####
-	// 4: #####
+	// Image is 4x4
+	// 0: .###
+	// 1: ####
+	// 2: ####
+	// 3: ####
 }
 
 func ExampleGetCropExtents() {
