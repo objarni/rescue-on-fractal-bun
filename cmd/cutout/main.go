@@ -23,6 +23,11 @@ func main() {
 	mask := cutout.GetWhiteOuterArea(img)
 	cutoutImage := cutout.GetCutoutImage(img, mask)
 	shrunk := cutout.Resize(cutoutImage, uint(newHeight))
-	output := cutout.GetFileNameVariant(inputFileName, "cutoutImage")
-	cutout.SaveImage(output, shrunk)
+	cropped := cutout.Crop(shrunk)
+
+	filename := cutout.GetFileNameVariant(inputFileName, "shrunk")
+	cutout.SaveImage(filename, shrunk)
+
+	filename = cutout.GetFileNameVariant(inputFileName, "cropped")
+	cutout.SaveImage(filename, cropped)
 }
