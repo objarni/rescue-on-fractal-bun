@@ -1,13 +1,15 @@
 package cutout
 
 import (
-	"github.com/nfnt/resize"
 	"image"
 	"image/color"
 	"image/png"
+	"math"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/nfnt/resize"
 
 	"github.com/lucasb-eyer/go-colorful"
 )
@@ -146,9 +148,38 @@ func GetWhiteOuterArea(img image.Image) image.Image {
 	return resultMask
 }
 
+func Crop(img image.Image) image.Image {
+	return img
+}
+
+func GetCropExtents(img image.Image) (int, int, int, int) {
+
+	// Find crop size
+	width := img.Bounds().Max.X
+	height := img.Bounds().Max.Y
+
+	yMin := height + 1
+
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			c := img.At(x, y)
+			if !IsTransparent(c) {
+				yMin = int(math.Min(float64(y), float64(yMin)))
+			}
+		}
+	}
+
+	return yMin, 0, 0, 0
+}
+
 func IsOpaque(color color.Color) bool {
 	_, _, _, a := color.RGBA()
 	return a != 0xffff
+}
+
+func IsTransparent(color color.Color) bool {
+	_, _, _, a := color.RGBA()
+	return a == 0
 }
 
 func Resize(image image.Image, newHeight uint) image.Image {

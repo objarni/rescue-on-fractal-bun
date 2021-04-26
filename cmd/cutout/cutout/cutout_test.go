@@ -143,6 +143,32 @@ func ExampleResize() {
 	// 4: #####
 }
 
+func ExampleAutoCrop() {
+	img := LoadImage(fileName)
+	mask := GetWhiteOuterArea(img)
+	cutout := GetCutoutImage(img, mask)
+	cropped := Crop(cutout)
+	printImage(cropped)
+	// Output:
+	// Image is 5x5
+	// 0: #####
+	// 1: #####
+	// 2: #####
+	// 3: #####
+	// 4: #####
+}
+
+func ExampleGetCropExtents() {
+	img := LoadImage(fileName)
+	mask := GetWhiteOuterArea(img)
+	cutout := GetCutoutImage(img, mask)
+
+	yMin, yMax, xMin, xMax := GetCropExtents(cutout)
+	fmt.Printf("%v, %v, %v, %v", yMin, yMax, xMin, xMax)
+	// Output:
+	// 3, 0, 0, 0
+}
+
 func makeRange(max int) []int {
 	a := make([]int, max)
 	for i := range a {
