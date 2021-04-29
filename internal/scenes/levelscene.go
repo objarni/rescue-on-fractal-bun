@@ -128,7 +128,18 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	)
 	gfx.Render(px.IM, win)
 
-	//scene.drawFPS(win)
+	// Spike
+	//win.Clear(colornames.Blue200)
+	//win.SetComposeMethod(px.ComposeOver)
+	//imd := imdraw.New(nil)
+	//imd.Color = colornames.Yellow600
+	//imd.Push(px.V(0, 0))
+	//imd.Push(px.V(100, 500))
+	//imd.Rectangle(float64(0))
+	//imd.Draw(win)
+	//win.SetComposeMethod(px.ComposeXor)
+	//gfx.Render(px.IM, win)
+	//win.SetComposeMethod(px.ComposeOver)
 }
 
 func (scene *LevelScene) debugGfx() d.WinOp {
