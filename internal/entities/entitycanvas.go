@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/faiface/pixel"
 	"objarni/rescue-on-fractal-bun/internal/events"
+	internal "objarni/rescue-on-fractal-bun/internal/printers"
 )
 
 type EntityHitBox struct {
@@ -38,12 +39,16 @@ func (canvas *EntityCanvas) String() string {
 	entityText := ""
 	for ix := range canvas.EntityHitBoxes {
 		ehb := canvas.EntityHitBoxes[ix]
-		entityText += fmt.Sprintf("Entity %d is at %v\n", ehb.Entity, ehb.HitBox)
+		entityText += fmt.Sprintf(
+			"Entity %d is at %v\n",
+			ehb.Entity,
+			internal.PrintRect(ehb.HitBox),
+		)
 	}
 	eventBoxText := ""
 	for ix := range canvas.EventBoxes {
 		eb := canvas.EventBoxes[ix]
-		eventBoxText += fmt.Sprintf("%v happened at %v\n", eb.Event, eb.Box)
+		eventBoxText += fmt.Sprintf("Event: %v\n", eb)
 	}
 	consequences := ""
 	canvas.Consequences(func(eb EventBox, ehb EntityHitBox) {
@@ -59,6 +64,10 @@ func (canvas *EntityCanvas) String() string {
 type EventBox struct {
 	Event events.Event
 	Box   pixel.Rect
+}
+
+func (eb EventBox) String() string {
+	return fmt.Sprintf("%v %v", eb.Event, internal.PrintRect(eb.Box))
 }
 
 func MakeEntityCanvas() EntityCanvas {

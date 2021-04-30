@@ -1,13 +1,23 @@
-
 ** Scenario **
-EventBox: {KeyActionDown Rect(0, 0, 0, 0)}
-Ticks: 1
-
-** Elise end state **
+Event: KeyActionDown [-100000,-100000->100000,100000]
+Tick count: 1
+Elise start state:
 Elise standing
 HitBox [-10,0->10,100]
 Facing right
 
-** Canvas state **
-Action happened at Rect(-20, 30, 20, 70)
-No hits detected
+Elise end state:
+Elise standing
+HitBox [-10,0->10,100]
+Facing right
+
+** Simulation **
+
+ * Tick 1 *
+Entity 0 is at [-10,0->10,100]
+Event: KeyActionDown [-100000,-100000->100000,100000]
+Event: Action [-20,30->20,70]
+Consequences:
+- Entity 0 needs to handle KeyActionDown
+- Entity 0 needs to handle Action
+

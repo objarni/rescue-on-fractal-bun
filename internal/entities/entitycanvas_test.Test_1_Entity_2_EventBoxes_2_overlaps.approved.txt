@@ -1,6 +1,6 @@
-Entity 1 is at Rect(20, 20, 30, 30)
-Action happened at Rect(21, 21, 22, 22)
-ButtonPressed happened at Rect(29, 29, 30, 30)
+Entity 1 is at [20,20->30,30]
+Event: Action [21,21->22,22]
+Event: ButtonPressed [29,29->30,30]
 Consequences:
 - Entity 1 needs to handle Action
 - Entity 1 needs to handle ButtonPressed

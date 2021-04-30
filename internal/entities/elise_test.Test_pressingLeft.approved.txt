@@ -1,12 +1,21 @@
-
 ** Scenario **
-EventBox: {KeyLeftDown Rect(0, 0, 0, 0)}
-Ticks: 1
+Event: KeyLeftDown [-100000,-100000->100000,100000]
+Tick count: 1
+Elise start state:
+Elise standing
+HitBox [-10,0->10,100]
+Facing right
 
-** Elise end state **
+Elise end state:
 Elise standing
 HitBox [-11,0->9,100]
 Facing left
 
-** Canvas state **
-No hits detected
+** Simulation **
+
+ * Tick 1 *
+Entity 0 is at [-10,0->10,100]
+Event: KeyLeftDown [-100000,-100000->100000,100000]
+Consequences:
+- Entity 0 needs to handle KeyLeftDown
+

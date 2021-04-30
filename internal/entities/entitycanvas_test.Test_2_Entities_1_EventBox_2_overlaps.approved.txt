@@ -1,6 +1,6 @@
-Entity 1 is at Rect(20, 20, 30, 30)
-Entity 2 is at Rect(30, 20, 40, 30)
-Action happened at Rect(0, 0, 100, 100)
+Entity 1 is at [20,20->30,30]
+Entity 2 is at [30,20->40,30]
+Event: Action [0,0->100,100]
 Consequences:
 - Entity 1 needs to handle Action
 - Entity 2 needs to handle Action

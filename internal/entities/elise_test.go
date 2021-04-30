@@ -10,6 +10,7 @@ import (
 )
 
 /*
+   + nothing beneath = falling
    + initial state
    + walking right
    + pressing left
@@ -25,18 +26,28 @@ func Test_eliseInitial(t *testing.T) {
 	approvals.VerifyString(t, elise.String())
 }
 
+var rectOverlappingElise = px.R(-100000, -100000, 100000, 100000)
+
 func Test_pressingLeft(t *testing.T) {
 	box := EventBox{
 		Event: events.KeyLeftDown,
-		Box:   px.R(1, 1, 2, 2),
+		Box:   rectOverlappingElise,
 	}
 	approvals.VerifyString(t, simulate(box, 1))
 }
 
+//func Test_falling(t *testing.T) {
+//	box := EventBox{
+//		Event: events.NoEvent,
+//		Box:   rectOverlappingElise,
+//	}
+//	approvals.VerifyString(t, simulate(box, 10))
+//}
+
 func Test_actionWhenStanding(t *testing.T) {
 	result := simulate(EventBox{
 		Event: events.KeyActionDown,
-		Box:   px.Rect{},
+		Box:   rectOverlappingElise,
 	}, 1)
 	approvals.VerifyString(t, result)
 }
@@ -45,7 +56,7 @@ func Test_walkingRight(t *testing.T) {
 	ticks := 4
 	box := EventBox{
 		Event: events.KeyRightDown,
-		Box:   px.Rect{},
+		Box:   rectOverlappingElise,
 	}
 	approvals.VerifyString(t, simulate(box, ticks))
 }
@@ -63,34 +74,42 @@ func Test_takingDamage(t *testing.T) {
 
 func simulate(box EventBox, ticks int) string {
 	elise := MakeElise(px.V(0, 0))
-	canvasSequence := ""
+	scenario := fmt.Sprintf(
+		"** Scenario **\n"+
+			"Event: %v\n"+
+			"Tick count: %v\n"+
+			"Elise start state:\n%v\n",
+		box.String(),
+		ticks,
+		elise.String(),
+	)
+	simulationLog := ""
 	var entityCanvas EntityCanvas
-	for ix, _ := range make([]int, ticks) {
-		entityCanvas = MakeEntityCanvas()
-		entityCanvas.AddEntityHitBox(EntityHitBox{
-			Entity: 0,
-			HitBox: elise.HitBox(),
-		})
-		entityCanvas.AddEventBox(box)
+	for ix := range make([]int, ticks) {
+		entityCanvas = FillCanvas(box, entityCanvas, elise)
 		entityCanvas.Consequences(func(eb EventBox, ehb EntityHitBox) {
 			elise = elise.Handle(eb)
 		})
 		elise = elise.Tick(0, &entityCanvas)
-		canvasSequence += printCanvasTick(ix, entityCanvas)
+		simulationLog += printCanvasTick(ix+1, entityCanvas)
 	}
-	canvasSequence += printCanvasTick(ticks, entityCanvas) + "\n"
-	scenario := fmt.Sprintf(
-		"\n** Scenario **\nEventBox: %v\nTicks: %v\n",
-		box,
-		ticks,
-	)
-	endState := "\n** Elise end state **\n" + elise.String()
-	canvas := "\n** Canvas states **\n" + canvasSequence
+	endState := "Elise end state:\n" + elise.String()
+	canvas := "\n** Simulation **\n\n" + simulationLog
 	return scenario + endState + canvas
 }
 
+func FillCanvas(box EventBox, entityCanvas EntityCanvas, elise Entity) EntityCanvas {
+	entityCanvas = MakeEntityCanvas()
+	entityCanvas.AddEntityHitBox(EntityHitBox{
+		Entity: 0,
+		HitBox: elise.HitBox(),
+	})
+	entityCanvas.AddEventBox(box)
+	return entityCanvas
+}
+
 func printCanvasTick(ticks int, entityCanvas EntityCanvas) string {
-	return fmt.Sprintf(" * Tick %v *\n", ticks) + entityCanvas.String()
+	return fmt.Sprintf(" * Tick %v *\n%v\n", ticks, entityCanvas.String())
 }
 
 func init() {

@@ -6,6 +6,7 @@ import (
 	"objarni/rescue-on-fractal-bun/internal"
 	d "objarni/rescue-on-fractal-bun/internal/draw"
 	"objarni/rescue-on-fractal-bun/internal/events"
+	internal2 "objarni/rescue-on-fractal-bun/internal/printers"
 	"strings"
 )
 
@@ -22,7 +23,7 @@ type Elise struct {
 
 func (elise Elise) String() string {
 	state := fmt.Sprintf("Elise %v", "standing")
-	hb := fmt.Sprintf("HitBox %v", printRect(elise.HitBox()))
+	hb := fmt.Sprintf("HitBox %v", internal2.PrintRect(elise.HitBox()))
 	facing := "right"
 	if elise.flip {
 		facing = "left"
@@ -30,11 +31,6 @@ func (elise Elise) String() string {
 	facing = "Facing " + facing
 	all := []string{state, hb, facing}
 	return strings.Join(all, "\n") + "\n"
-}
-
-func printRect(box px.Rect) interface{} {
-	return fmt.Sprintf("[%1.0f,%1.0f->%1.0f,%1.0f]",
-		box.Min.X, box.Min.Y, box.Max.X, box.Max.Y)
 }
 
 func (elise Elise) HitBox() px.Rect {
