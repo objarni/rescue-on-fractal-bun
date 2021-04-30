@@ -268,6 +268,29 @@ func (scene *LevelScene) Tick() bool {
 		})
 	}
 
+	// Add all platforms
+	platforms := scene.level.TilepixMap.GetTileLayerByName("Walls")
+	tiles := platforms.DecodedTiles
+	for y := 0; y < scene.level.TilepixMap.Width; y++ {
+		for x := 0; x < scene.level.TilepixMap.Height; x++ {
+			ix := y*scene.level.Width + x
+			tile := tiles[ix]
+			if tile.IsNil() {
+				continue
+			}
+			pos := tile.Position(ix, platforms.Tileset)
+			scene.entityCanvas.AddEventBox(entities.EventBox{
+				Event: events.Platform,
+				Box: px.R(
+					pos.X-16,
+					pos.Y-16,
+					pos.X+16,
+					pos.Y+16,
+				),
+			})
+		}
+	}
+
 	return true
 }
 
