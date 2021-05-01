@@ -1,0 +1,3 @@
+MapSign 1: Link between GhostForest 'Hembyn' <100, 10> and map pos <246, 109>
+MapSign 2: Link between GhostForest 'Skogen' <1000, 10> and map pos <299, 375>
+MapSign 3: Link between ForestOpening 'Hembyn' <100, 10> and map pos <246, 109>

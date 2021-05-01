@@ -14,9 +14,9 @@ func init() {
 	approvals.UseReporter(tests.ReportWithMeld())
 }
 
-func _(t *testing.T) {
+func TestBuildMapSignArray(t *testing.T) {
 	var levels = map[string]Level{
-		"Hembyn": {
+		"GhostForest": {
 			SignPosts: []SignPost{
 				{
 					Pos:  pixel.Vec{X: 100, Y: 10},
@@ -28,7 +28,7 @@ func _(t *testing.T) {
 				},
 			},
 		},
-		"Korsningen": {
+		"ForestOpening": {
 			SignPosts: []SignPost{
 				{
 					Pos:  pixel.Vec{X: 100, Y: 10},
@@ -49,11 +49,11 @@ func mapSignsToString(signs []MapSign) string {
 	for ix, sign := range signs {
 		mapSignDescription := ""
 		mapSignDescription += fmt.Sprintf("MapSign %v:", ix+1)
-		mapSignDescription += fmt.Sprintf(" Position on map %v", printVec(sign.MapPos))
-		mapSignDescription += fmt.Sprintf(" Links to %v %v\n", sign.LevelName, printVec(sign.LevelPos))
+		mapSignDescription += fmt.Sprintf(" Link between %v '%v' %v", sign.LevelName, sign.Text, printVec(sign.LevelPos))
+		mapSignDescription += fmt.Sprintf(" and map pos %v", printVec(sign.MapPos))
 		descriptions = append(descriptions, mapSignDescription)
 	}
 	var sorted = descriptions
 	sort.Strings(sorted)
-	return strings.Join(sorted, "\n")
+	return strings.Join(sorted, "\n") + "\n"
 }
