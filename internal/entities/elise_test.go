@@ -33,22 +33,22 @@ func Test_pressingLeft(t *testing.T) {
 		Event: events.KeyLeftDown,
 		Box:   rectOverlappingElise,
 	}
-	approvals.VerifyString(t, simulate(box, 1))
+	approvals.VerifyString(t, simulate(box, 1, 0))
 }
 
-//func Test_falling(t *testing.T) {
-//	box := EventBox{
-//		Event: events.NoEvent,
-//		Box:   rectOverlappingElise,
-//	}
-//	approvals.VerifyString(t, simulate(box, 10))
-//}
+func Test_falling(t *testing.T) {
+	box := EventBox{
+		Event: events.NoEvent,
+		Box:   rectOverlappingElise,
+	}
+	approvals.VerifyString(t, simulate(box, 10, -100))
+}
 
 func Test_actionWhenStanding(t *testing.T) {
 	result := simulate(EventBox{
 		Event: events.KeyActionDown,
 		Box:   rectOverlappingElise,
-	}, 1)
+	}, 1, 0)
 	approvals.VerifyString(t, result)
 }
 
@@ -58,7 +58,7 @@ func Test_walkingRight(t *testing.T) {
 		Event: events.KeyRightDown,
 		Box:   rectOverlappingElise,
 	}
-	approvals.VerifyString(t, simulate(box, ticks))
+	approvals.VerifyString(t, simulate(box, ticks, 0))
 }
 
 func Test_takingDamage(t *testing.T) {
@@ -68,41 +68,52 @@ func Test_takingDamage(t *testing.T) {
 			Min: px.V(-10, -10),
 			Max: px.V(10, 10),
 		},
-	}, 1)
+	}, 1, 0)
 	approvals.VerifyString(t, result)
 }
 
-func simulate(box EventBox, ticks int) string {
+func simulate(box EventBox, ticks int, groundHeight int) string {
 	elise := MakeElise(px.V(0, 0))
 	scenario := fmt.Sprintf(
-		"** Scenario **\n"+
+		"*** Scenario ***\n"+
 			"Event: %v\n"+
+			"Ground height: %v\n"+
 			"Tick count: %v\n"+
-			"Elise start state:\n%v\n",
+			"\n* Elise start state:\n%v\n",
 		box.String(),
+		groundHeight,
 		ticks,
 		elise.String(),
 	)
 	simulationLog := ""
 	var entityCanvas EntityCanvas
 	for ix := range make([]int, ticks) {
-		entityCanvas = FillCanvas(box, entityCanvas, elise)
+		entityCanvas = FillCanvas(box, entityCanvas, elise, groundHeight)
 		entityCanvas.Consequences(func(eb EventBox, ehb EntityHitBox) {
 			elise = elise.Handle(eb)
 		})
 		elise = elise.Tick(0, &entityCanvas)
 		simulationLog += printCanvasTick(ix+1, entityCanvas)
 	}
-	endState := "Elise end state:\n" + elise.String()
-	canvas := "\n** Simulation **\n\n" + simulationLog
+	endState := "* Elise end state:\n" + elise.String()
+	canvas := "\n\n*** Simulation ***\n\n" + simulationLog
 	return scenario + endState + canvas
 }
 
-func FillCanvas(box EventBox, entityCanvas EntityCanvas, elise Entity) EntityCanvas {
+func FillCanvas(box EventBox, entityCanvas EntityCanvas, elise Entity, groundHeight int) EntityCanvas {
 	entityCanvas = MakeEntityCanvas()
 	entityCanvas.AddEntityHitBox(EntityHitBox{
 		Entity: 0,
 		HitBox: elise.HitBox(),
+	})
+	entityCanvas.AddEventBox(EventBox{
+		Event: events.Wall,
+		Box: px.R(
+			-1000,
+			float64(groundHeight-1000),
+			1000,
+			float64(groundHeight),
+		),
 	})
 	entityCanvas.AddEventBox(box)
 	return entityCanvas

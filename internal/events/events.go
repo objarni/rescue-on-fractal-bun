@@ -13,6 +13,7 @@ const (
 	KeyRightUp
 	KeyActionDown
 	Platform
+	Wall
 	NoEvent
 )
 
@@ -28,6 +29,7 @@ func (event Event) String() string {
 		"KeyRightUp",
 		"KeyActionDown",
 		"Platform",
+		"Wall",
 		"NoEvent",
 	}[event]
 }

@@ -1,0 +1,92 @@
+*** Scenario ***
+Event: NoEvent [-100000,-100000->100000,100000]
+Ground height: -100
+Tick count: 10
+
+* Elise start state:
+Elise standing
+HitBox [-10,0->10,100]
+Pos: <0.0,0.0>
+Vel: <0.0,0.0>
+Facing right
+
+* Elise end state:
+Elise standing
+HitBox [-10,-6->10,94]
+Pos: <0.0,-5.5>
+Vel: <0.0,-1.0>
+Facing right
+
+
+*** Simulation ***
+
+ * Tick 1 *
+Entity 0 is at [-10,0->10,100]
+Event: Wall [-1000,-1100->1000,-100]
+Event: NoEvent [-100000,-100000->100000,100000]
+Consequences:
+- Entity 0 needs to handle NoEvent
+
+ * Tick 2 *
+Entity 0 is at [-10,-0->10,100]
+Event: Wall [-1000,-1100->1000,-100]
+Event: NoEvent [-100000,-100000->100000,100000]
+Consequences:
+- Entity 0 needs to handle NoEvent
+
+ * Tick 3 *
+Entity 0 is at [-10,-0->10,100]
+Event: Wall [-1000,-1100->1000,-100]
+Event: NoEvent [-100000,-100000->100000,100000]
+Consequences:
+- Entity 0 needs to handle NoEvent
+
+ * Tick 4 *
+Entity 0 is at [-10,-1->10,99]
+Event: Wall [-1000,-1100->1000,-100]
+Event: NoEvent [-100000,-100000->100000,100000]
+Consequences:
+- Entity 0 needs to handle NoEvent
+
+ * Tick 5 *
+Entity 0 is at [-10,-1->10,99]
+Event: Wall [-1000,-1100->1000,-100]
+Event: NoEvent [-100000,-100000->100000,100000]
+Consequences:
+- Entity 0 needs to handle NoEvent
+
+ * Tick 6 *
+Entity 0 is at [-10,-2->10,98]
+Event: Wall [-1000,-1100->1000,-100]
+Event: NoEvent [-100000,-100000->100000,100000]
+Consequences:
+- Entity 0 needs to handle NoEvent
+
+ * Tick 7 *
+Entity 0 is at [-10,-2->10,98]
+Event: Wall [-1000,-1100->1000,-100]
+Event: NoEvent [-100000,-100000->100000,100000]
+Consequences:
+- Entity 0 needs to handle NoEvent
+
+ * Tick 8 *
+Entity 0 is at [-10,-3->10,97]
+Event: Wall [-1000,-1100->1000,-100]
+Event: NoEvent [-100000,-100000->100000,100000]
+Consequences:
+- Entity 0 needs to handle NoEvent
+
+ * Tick 9 *
+Entity 0 is at [-10,-4->10,96]
+Event: Wall [-1000,-1100->1000,-100]
+Event: NoEvent [-100000,-100000->100000,100000]
+Consequences:
+- Entity 0 needs to handle NoEvent
+
+ * Tick 10 *
+Entity 0 is at [-10,-4->10,96]
+Event: Wall [-1000,-1100->1000,-100]
+Event: NoEvent [-100000,-100000->100000,100000]
+Consequences:
+- Entity 0 needs to handle NoEvent
+

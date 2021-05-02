@@ -280,7 +280,7 @@ func (scene *LevelScene) Tick() bool {
 			}
 			pos := tile.Position(ix, platforms.Tileset)
 			scene.entityCanvas.AddEventBox(entities.EventBox{
-				Event: events.Platform,
+				Event: events.Wall,
 				Box: px.R(
 					pos.X-16,
 					pos.Y-16,

@@ -6,7 +6,7 @@ import (
 	"objarni/rescue-on-fractal-bun/internal"
 	d "objarni/rescue-on-fractal-bun/internal/draw"
 	"objarni/rescue-on-fractal-bun/internal/events"
-	internal2 "objarni/rescue-on-fractal-bun/internal/printers"
+	pr "objarni/rescue-on-fractal-bun/internal/printers"
 	"strings"
 )
 
@@ -14,7 +14,7 @@ const eliseWidth = 20.0
 const eliseHeight = 100.0
 
 type Elise struct {
-	Pos                       px.Vec
+	Pos, Vel                  px.Vec
 	leftPressed, rightPressed bool
 	gameTimeMs                float64
 	flip                      bool
@@ -23,13 +23,15 @@ type Elise struct {
 
 func (elise Elise) String() string {
 	state := fmt.Sprintf("Elise %v", "standing")
-	hb := fmt.Sprintf("HitBox %v", internal2.PrintRect(elise.HitBox()))
+	hb := fmt.Sprintf("HitBox %v", pr.PrintRect(elise.HitBox()))
+	pos := fmt.Sprintf("Pos: %v", pr.PrintVec(elise.Pos))
+	vel := fmt.Sprintf("Vel: %v", pr.PrintVec(elise.Vel))
 	facing := "right"
 	if elise.flip {
 		facing = "left"
 	}
 	facing = "Facing " + facing
-	all := []string{state, hb, facing}
+	all := []string{state, hb, pos, vel, facing}
 	return strings.Join(all, "\n") + "\n"
 }
 
@@ -47,6 +49,7 @@ func MakeElise(position px.Vec) Entity {
 func (elise Elise) Tick(gameTimeMs float64, eventBoxReceiver EventBoxReceiver) Entity {
 	elise.gameTimeMs = gameTimeMs
 	eliseMoveSpeed := 1.2
+	eliseGravity := -0.1
 	if elise.leftPressed && !elise.rightPressed {
 		elise.flip = true
 		elise.Pos = elise.Pos.Add(internal.V(-eliseMoveSpeed, 0))
@@ -55,6 +58,8 @@ func (elise Elise) Tick(gameTimeMs float64, eventBoxReceiver EventBoxReceiver) E
 		elise.flip = false
 		elise.Pos = elise.Pos.Add(internal.V(eliseMoveSpeed, 0))
 	}
+	elise.Vel = elise.Vel.Add(px.V(0, eliseGravity))
+	elise.Pos = elise.Pos.Add(elise.Vel)
 	if elise.actionDown {
 		elise.actionDown = false
 		hitBox := elise.HitBox()
@@ -96,6 +101,11 @@ func (elise Elise) Handle(eb EventBox) Entity {
 	}
 	if eb.Event == events.KeyActionDown {
 		elise.actionDown = true
+	}
+	if eb.Event == events.Wall {
+		overlap := eb.Box.Intersect(elise.HitBox())
+		elise.Pos = elise.Pos.Add(px.V(0, overlap.H()))
+		elise.Vel = px.ZV
 	}
 	return elise
 }
