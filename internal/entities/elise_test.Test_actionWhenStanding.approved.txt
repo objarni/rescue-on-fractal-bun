@@ -1,5 +1,7 @@
 *** Scenario ***
-Event: KeyActionDown [-100000,-100000->100000,100000]
+* Events:
+KeyActionDown [-100000,-100000->100000,100000]
+
 Ground height: 0
 Tick count: 1
 

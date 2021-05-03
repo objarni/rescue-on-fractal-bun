@@ -1,5 +1,7 @@
 *** Scenario ***
-Event: Damage [-10,-10->10,10]
+* Events:
+Damage [-10,-10->10,10]
+
 Ground height: 0
 Tick count: 1
 

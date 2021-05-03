@@ -104,13 +104,24 @@ func (elise Elise) Handle(eb EventBox) Entity {
 	}
 	if eb.Event == events.Wall {
 		overlap := eb.Box.Intersect(elise.HitBox())
-		elise.Pos = elise.Pos.Add(px.V(0, overlap.H()))
+		h := overlap.H()
+		w := overlap.W()
+		if h > w {
+			left := elise.flip
+			if left {
+				elise.Pos = elise.Pos.Add(px.V(w, 0))
+			} else {
+				elise.Pos = elise.Pos.Sub(px.V(w, 0))
+			}
+		} else {
+			elise.Pos = elise.Pos.Add(px.V(0, h))
+		}
 		elise.Vel = px.ZV
 	}
 	return elise
 }
 
-var frames = [...]internal.Image{
+var _ = [...]internal.Image{
 	internal.IEliseJump7,
 	internal.IEliseJump6,
 	internal.IEliseJump5,

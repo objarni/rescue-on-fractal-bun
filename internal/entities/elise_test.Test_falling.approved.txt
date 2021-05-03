@@ -1,5 +1,7 @@
 *** Scenario ***
-Event: NoEvent [-100000,-100000->100000,100000]
+* Events:
+NoEvent [-100000,-100000->100000,100000]
+
 Ground height: -100
 Tick count: 10
 

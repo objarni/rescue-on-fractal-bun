@@ -6,6 +6,7 @@ import (
 	px "github.com/faiface/pixel"
 	"objarni/rescue-on-fractal-bun/internal/events"
 	"objarni/rescue-on-fractal-bun/tests"
+	"strings"
 	"testing"
 )
 
@@ -33,7 +34,7 @@ func Test_pressingLeft(t *testing.T) {
 		Event: events.KeyLeftDown,
 		Box:   rectOverlappingElise,
 	}
-	approvals.VerifyString(t, simulate(box, 1, 0))
+	approvals.VerifyString(t, simulate([]EventBox{box}, 1, 0))
 }
 
 func Test_falling(t *testing.T) {
@@ -41,14 +42,15 @@ func Test_falling(t *testing.T) {
 		Event: events.NoEvent,
 		Box:   rectOverlappingElise,
 	}
-	approvals.VerifyString(t, simulate(box, 10, -100))
+	approvals.VerifyString(t, simulate([]EventBox{box}, 10, -100))
 }
 
 func Test_actionWhenStanding(t *testing.T) {
-	result := simulate(EventBox{
+	box := EventBox{
 		Event: events.KeyActionDown,
 		Box:   rectOverlappingElise,
-	}, 1, 0)
+	}
+	result := simulate([]EventBox{box}, 1, 0)
 	approvals.VerifyString(t, result)
 }
 
@@ -58,29 +60,48 @@ func Test_walkingRight(t *testing.T) {
 		Event: events.KeyRightDown,
 		Box:   rectOverlappingElise,
 	}
-	approvals.VerifyString(t, simulate(box, ticks, 0))
+	approvals.VerifyString(t, simulate([]EventBox{box}, ticks, 0))
+}
+
+func Test_walkingRightIntoWall(t *testing.T) {
+	ticks := 4
+	box := EventBox{
+		Event: events.KeyRightDown,
+		Box:   rectOverlappingElise,
+	}
+	wallBox := EventBox{
+		Event: events.Wall,
+		Box:   px.R(11, 0, 21, 10),
+	}
+	approvals.VerifyString(t, simulate([]EventBox{box, wallBox}, ticks, 0))
 }
 
 func Test_takingDamage(t *testing.T) {
-	result := simulate(EventBox{
+	box := EventBox{
 		Event: events.Damage,
 		Box: px.Rect{
 			Min: px.V(-10, -10),
 			Max: px.V(10, 10),
 		},
-	}, 1, 0)
-	approvals.VerifyString(t, result)
+	}
+	approvals.VerifyString(t, simulate([]EventBox{box}, 1, 0))
 }
 
-func simulate(box EventBox, ticks int, groundHeight int) string {
+func simulate(boxes []EventBox, ticks int, groundHeight int) string {
 	elise := MakeElise(px.V(0, 0))
+
+	es := make([]string, 0)
+	for _, box := range boxes {
+		es = append(es, box.String())
+	}
+
 	scenario := fmt.Sprintf(
 		"*** Scenario ***\n"+
-			"Event: %v\n"+
+			"* Events:\n%v\n\n"+
 			"Ground height: %v\n"+
 			"Tick count: %v\n"+
 			"\n* Elise start state:\n%v\n",
-		box.String(),
+		strings.Join(es, "\n"),
 		groundHeight,
 		ticks,
 		elise.String(),
@@ -88,7 +109,7 @@ func simulate(box EventBox, ticks int, groundHeight int) string {
 	simulationLog := ""
 	var entityCanvas EntityCanvas
 	for ix := range make([]int, ticks) {
-		entityCanvas = FillCanvas(box, entityCanvas, elise, groundHeight)
+		entityCanvas = FillCanvas(boxes, entityCanvas, elise, groundHeight)
 		entityCanvas.Consequences(func(eb EventBox, ehb EntityHitBox) {
 			elise = elise.Handle(eb)
 		})
@@ -100,12 +121,13 @@ func simulate(box EventBox, ticks int, groundHeight int) string {
 	return scenario + endState + canvas
 }
 
-func FillCanvas(box EventBox, entityCanvas EntityCanvas, elise Entity, groundHeight int) EntityCanvas {
+func FillCanvas(boxes []EventBox, entityCanvas EntityCanvas, elise Entity, groundHeight int) EntityCanvas {
 	entityCanvas = MakeEntityCanvas()
 	entityCanvas.AddEntityHitBox(EntityHitBox{
 		Entity: 0,
 		HitBox: elise.HitBox(),
 	})
+
 	entityCanvas.AddEventBox(EventBox{
 		Event: events.Wall,
 		Box: px.R(
@@ -115,7 +137,11 @@ func FillCanvas(box EventBox, entityCanvas EntityCanvas, elise Entity, groundHei
 			float64(groundHeight),
 		),
 	})
-	entityCanvas.AddEventBox(box)
+
+	for _, box := range boxes {
+		entityCanvas.AddEventBox(box)
+	}
+
 	return entityCanvas
 }
 
