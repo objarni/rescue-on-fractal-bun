@@ -269,7 +269,7 @@ func (scene *LevelScene) Tick() bool {
 	}
 
 	// Add all walls
-	// TODO: Refactor this to data structure popuplated
+	// TODO: Refactor this to data structure populated
 	// when loading level (and cover with approval test!)
 	walls := scene.level.TilepixMap.GetTileLayerByName("Walls")
 	tiles := walls.DecodedTiles
