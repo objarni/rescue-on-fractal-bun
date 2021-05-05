@@ -224,7 +224,10 @@ type WinOpSequence struct {
 }
 
 func (sequence WinOpSequence) DrawTo(canvas *pixelgl.Canvas, context Context) {
-	sequence.Render(context.Transform, canvas)
+	mx := context.Transform
+	for _, op := range sequence.winOps {
+		op.Render(mx, canvas)
+	}
 }
 
 func (sequence WinOpSequence) String() string {
