@@ -178,6 +178,7 @@ func (imageOp ImageOp) Render(_ px.Matrix, canvas *pixelgl.Canvas) {
 	sprite.Draw(canvas, px.IM)
 }
 
+// TODO: Move the imageMap to context; need to refactor tests though!
 func Image(imageMap map[internal.Image]*px.Sprite, imageName internal.Image) WinOp {
 	return ImageOp{
 		imageMap:  imageMap,

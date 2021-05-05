@@ -105,17 +105,16 @@ func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 func (scene *MapScene) Render(win *pixelgl.Window) {
 	sceneGfxOp := scene.MapSceneWinOp()
 	context := d.Context{Transform: px.IM}
-	sceneGfxOp.Render(context.Transform, win.Canvas())
 	sceneGfxOp.DrawTo(win.Canvas(), context)
 	drawMapSignTexts(win, scene)
 }
 
 func (scene *MapScene) MapSceneWinOp() d.WinOp {
-	lineOps := d.ToWinOp(d.ImdOpSequence(scene.mapSignsGfx(), scene.crossHairGfx()))
-	mapOp := d.Moved(px.Rect{Min: internal.V(0, 0), Max: internal.V(internal.ScreenWidth, internal.ScreenHeight)}.Center(),
-		d.Image(scene.res.ImageMap, internal.IMap))
-	sceneGfxOp := d.OpSequence(mapOp, lineOps)
-	return sceneGfxOp
+	return d.OpSequence(
+		d.Moved(px.R(0, 0, internal.ScreenWidth, internal.ScreenHeight).Center(),
+			d.Image(scene.res.ImageMap, internal.IMap)),
+		d.ToWinOp(d.ImdOpSequence(scene.mapSignsGfx(), scene.crossHairGfx())),
+	)
 }
 
 func drawMapSignTexts(win *pixelgl.Window, scene *MapScene) {
