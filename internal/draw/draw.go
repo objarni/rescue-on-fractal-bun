@@ -23,5 +23,7 @@ func headerWithIndentedBody(head string, body []string) []string {
 type WinOp interface {
 	String() string
 	Lines() []string
+	// Render TODO: Render should take Canvas as argument, instead of window
+	// TODO: Render should take a Context with matrix and color
 	Render(mx pixel.Matrix, win *pixelgl.Window)
 }

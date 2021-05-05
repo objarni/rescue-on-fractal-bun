@@ -14,16 +14,36 @@ import (
 
 /*
 Some general conventions on the Render(..) functions.
+
 The parameters that are passed to Render are called
-'context'. An operation that is composite modifies
-this context, and restores is when it's child element
-has rendered. A leaf operation does not modify the context,
-but instead renders 'in the context it is'.
+'context' and 'canvas'. Canvas represents the target
+window/bitmap that will be rendered to. Context keeps
+track of all resizes, mirrors, color changes and so
+on that happens while traversing the WinOp tree.
+
+An operation that is composite modifies
+the canvas, and updates the context with this change,
+renders it's child operation, and then restores the
+canvas and context to the state they were in before.
+
+A leaf operation does not modify the context,
+but instead renders 'in the context it is', which
+means no modification of either canvas nor context.
 
 For example, an image will just render in the context
-it is in; the window (part of context) has already been
-setup for the rendering, with all translations/scales/rotations,
-and color masks and so on.
+it is in; the canvas has already been setup for the
+rendering, with all translations/scales/rotations,
+color masks and so on, while a ColorOp will
+ 1) set it's color as color mask in the canvas
+ 2) render it's child element
+ 3) restore canvas color mask from context
+
+Context can thus be seen as an 'undo state'.
+
+The reason we have a context at all is that the
+matrix/color/etc state of the Canvas isn't public
+in Pixel library, so we need to keep track of it
+ourselves.
 */
 
 type WinMoved struct {
