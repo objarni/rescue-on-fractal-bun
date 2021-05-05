@@ -51,6 +51,10 @@ type WinMoved struct {
 	winOp       WinOp
 }
 
+func (winMoved WinMoved) DrawTo(canvas *pixelgl.Canvas, context Context) {
+	winMoved.Render(context.Transform, canvas)
+}
+
 func (winMoved WinMoved) String() string {
 	return strings.Join(winMoved.Lines(), "\n")
 }
@@ -100,6 +104,10 @@ type WinImdOp struct {
 	imdOp ImdOp
 }
 
+func (winImdOp WinImdOp) DrawTo(canvas *pixelgl.Canvas, context Context) {
+	winImdOp.Render(context.Transform, canvas)
+}
+
 func (winImdOp WinImdOp) String() string {
 	return strings.Join(winImdOp.Lines(), "\n")
 }
@@ -123,6 +131,10 @@ func ToWinOp(imdOp ImdOp) WinOp {
 type TileLayerOp struct {
 	layerName string
 	tileMap   *tilepix.Map
+}
+
+func (tileLayerOp TileLayerOp) DrawTo(canvas *pixelgl.Canvas, context Context) {
+	tileLayerOp.Render(context.Transform, canvas)
 }
 
 func (tileLayerOp TileLayerOp) String() string {
@@ -149,6 +161,10 @@ type ImageOp struct {
 	imageName internal.Image
 }
 
+func (imageOp ImageOp) DrawTo(canvas *pixelgl.Canvas, context Context) {
+	imageOp.Render(context.Transform, canvas)
+}
+
 func (imageOp ImageOp) String() string {
 	return fmt.Sprintf("Image \"%v\"", imageOp.imageName)
 }
@@ -172,6 +188,10 @@ func Image(imageMap map[internal.Image]*px.Sprite, imageName internal.Image) Win
 type ColorOp struct {
 	color color.Color
 	winOp WinOp
+}
+
+func (colorOp ColorOp) DrawTo(canvas *pixelgl.Canvas, context Context) {
+	colorOp.Render(context.Transform, canvas)
 }
 
 func (colorOp ColorOp) String() string {
@@ -200,6 +220,10 @@ func Color(color color.RGBA, winOp WinOp) WinOp {
 
 type WinOpSequence struct {
 	winOps []WinOp
+}
+
+func (sequence WinOpSequence) DrawTo(canvas *pixelgl.Canvas, context Context) {
+	sequence.Render(context.Transform, canvas)
 }
 
 func (sequence WinOpSequence) String() string {
@@ -233,6 +257,10 @@ type OpMirrored struct {
 	op WinOp
 }
 
+func (mirrored OpMirrored) DrawTo(canvas *pixelgl.Canvas, context Context) {
+	mirrored.Render(context.Transform, canvas)
+}
+
 func (mirrored OpMirrored) String() string {
 	return strings.Join(mirrored.Lines(), "\n")
 }
@@ -260,4 +288,8 @@ func (mirrored OpMirrored) Render(mx px.Matrix, canvas *pixelgl.Canvas) {
 
 func Mirrored(winOp WinOp) WinOp {
 	return OpMirrored{op: winOp}
+}
+
+type Context struct {
+	Transform px.Matrix
 }

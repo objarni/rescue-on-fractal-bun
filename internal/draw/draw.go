@@ -25,4 +25,5 @@ type WinOp interface {
 	Lines() []string
 	// Render TODO: should take a Context with matrix and color
 	Render(mx pixel.Matrix, canvas *pixelgl.Canvas)
+	DrawTo(canvas *pixelgl.Canvas, context Context)
 }

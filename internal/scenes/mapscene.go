@@ -2,7 +2,7 @@ package scenes
 
 import (
 	"fmt"
-	"github.com/faiface/pixel"
+	px "github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
@@ -34,8 +34,8 @@ ovan, för att sedan bygga upp SignPosts datastrukturen.
 type MapScene struct {
 	cfg            *Config
 	res            *internal.Resources
-	hairCrossPos   pixel.Vec
-	hairCrossVel   pixel.Vec
+	hairCrossPos   px.Vec
+	hairCrossVel   px.Vec
 	highlightTimer int
 	atMapSign      int
 }
@@ -46,7 +46,7 @@ func MakeMapScene(cfg *Config, res *internal.Resources, mapSignName string) *Map
 		cfg:          cfg,
 		res:          res,
 		hairCrossPos: res.MapSigns[mapSignIx].MapPos,
-		hairCrossVel: pixel.ZV,
+		hairCrossVel: px.ZV,
 		atMapSign:    mapSignIx,
 	}
 }
@@ -104,13 +104,15 @@ func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 
 func (scene *MapScene) Render(win *pixelgl.Window) {
 	sceneGfxOp := scene.MapSceneWinOp()
-	sceneGfxOp.Render(pixel.IM, win.Canvas())
+	context := d.Context{Transform: px.IM}
+	sceneGfxOp.Render(context.Transform, win.Canvas())
+	sceneGfxOp.DrawTo(win.Canvas(), context)
 	drawMapSignTexts(win, scene)
 }
 
 func (scene *MapScene) MapSceneWinOp() d.WinOp {
 	lineOps := d.ToWinOp(d.ImdOpSequence(scene.mapSignsGfx(), scene.crossHairGfx()))
-	mapOp := d.Moved(pixel.Rect{Min: internal.V(0, 0), Max: internal.V(internal.ScreenWidth, internal.ScreenHeight)}.Center(),
+	mapOp := d.Moved(px.Rect{Min: internal.V(0, 0), Max: internal.V(internal.ScreenWidth, internal.ScreenHeight)}.Center(),
 		d.Image(scene.res.ImageMap, internal.IMap))
 	sceneGfxOp := d.OpSequence(mapOp, lineOps)
 	return sceneGfxOp
@@ -119,12 +121,12 @@ func (scene *MapScene) MapSceneWinOp() d.WinOp {
 func drawMapSignTexts(win *pixelgl.Window, scene *MapScene) {
 	mapSignIx := FindNearMapSign(scene.hairCrossPos, scene.res.MapSigns, scene.cfg.MapSceneTargetLocMaxDistance)
 	mapSignName := mapSignNameFromIx(mapSignIx)
-	tb := text.New(pixel.ZV, scene.res.Atlas)
+	tb := text.New(px.ZV, scene.res.Atlas)
 	d.Text(
 		fmt.Sprintf("Här är du: %s\n", "Hembyn"),
 		fmt.Sprintf("Gå till? %s", mapSignName),
 	).Render(tb)
-	textPosition := pixel.V(
+	textPosition := px.V(
 		float64(scene.cfg.MapSceneLocationTextX),
 		float64(scene.cfg.MapSceneLocationTextY))
 	// Observation: tb ankras i första radens nedre vänstra hörn.
@@ -133,8 +135,8 @@ func drawMapSignTexts(win *pixelgl.Window, scene *MapScene) {
 	// 1) Resultatparagrafens totala bredd
 	// 2) En textrads höjd
 	// Finns det något sätt som inte inbegriper "beräkna textdim i förväg"?
-	//win.SetComposeMethod(pixel.ComposeRin)
-	tb.DrawColorMask(win, pixel.IM.Moved(textPosition), colornames.Black)
+	//win.SetComposeMethod(px.ComposeRin)
+	tb.DrawColorMask(win, px.IM.Moved(textPosition), colornames.Black)
 }
 
 func mapSignNameFromIx(mapSignIx int) string {
@@ -168,7 +170,7 @@ func (scene *MapScene) crossHairsOp() d.ImdOp {
 	return d.Nothing()
 }
 
-func C(v pixel.Vec) pixel.Vec {
+func C(v px.Vec) px.Vec {
 	return d.C(v.X, v.Y)
 }
 
@@ -245,9 +247,9 @@ func (scene *MapScene) Tick() bool {
 	return true
 }
 
-func FindNearMapSign(vec pixel.Vec, mapSigns []internal.MapSign, maxDist int) int {
-	points := []pixel.Vec{}
-	getPoint := func(mp internal.MapSign) pixel.Vec { return mp.MapPos }
+func FindNearMapSign(vec px.Vec, mapSigns []internal.MapSign, maxDist int) int {
+	points := make([]px.Vec, 0)
+	getPoint := func(mp internal.MapSign) px.Vec { return mp.MapPos }
 	// Potential: ClosestPoint could take an array of objects implementing
 	// 'WithPoint' interface, and we only define anon func here
 	for _, val := range mapSigns {
