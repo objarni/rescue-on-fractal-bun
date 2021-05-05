@@ -104,7 +104,7 @@ func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
 
 func (scene *MapScene) Render(win *pixelgl.Window) {
 	sceneGfxOp := scene.MapSceneWinOp()
-	sceneGfxOp.Render(pixel.IM, win)
+	sceneGfxOp.Render(pixel.IM, win.Canvas())
 	drawMapSignTexts(win, scene)
 }
 

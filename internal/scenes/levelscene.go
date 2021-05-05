@@ -126,7 +126,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 		),
 		scene.mapSymbolOp(),
 	)
-	gfx.Render(px.IM, win)
+	gfx.Render(px.IM, win.Canvas())
 
 	// Spike
 	//win.Clear(colornames.Blue200)

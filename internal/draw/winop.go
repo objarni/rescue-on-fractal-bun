@@ -82,11 +82,11 @@ func winMovedHeader(winMoved WinMoved) string {
 	return head
 }
 
-func (winMoved WinMoved) Render(mx px.Matrix, win *pixelgl.Window) {
+func (winMoved WinMoved) Render(mx px.Matrix, canvas *pixelgl.Canvas) {
 	newMatrix := mx.Moved(winMoved.translation)
-	win.SetMatrix(newMatrix)
-	winMoved.winOp.Render(newMatrix, win)
-	win.SetMatrix(mx)
+	canvas.SetMatrix(newMatrix)
+	winMoved.winOp.Render(newMatrix, canvas)
+	canvas.SetMatrix(mx)
 }
 
 func Moved(translation px.Vec, winOp WinOp) WinOp {
@@ -110,10 +110,10 @@ func (winImdOp WinImdOp) Lines() []string {
 	return headerWithIndentedBody(head, body)
 }
 
-func (winImdOp WinImdOp) Render(_ px.Matrix, win *pixelgl.Window) {
+func (winImdOp WinImdOp) Render(_ px.Matrix, canvas *pixelgl.Canvas) {
 	imd := imdraw.New(nil)
 	winImdOp.imdOp.Render(imd)
-	imd.Draw(win)
+	imd.Draw(canvas)
 }
 
 func ToWinOp(imdOp ImdOp) WinOp {
@@ -133,8 +133,8 @@ func (tileLayerOp TileLayerOp) Lines() []string {
 	return []string{tileLayerOp.String()}
 }
 
-func (tileLayerOp TileLayerOp) Render(_ px.Matrix, win *pixelgl.Window) {
-	_ = tileLayerOp.tileMap.GetTileLayerByName(tileLayerOp.layerName).Draw(win)
+func (tileLayerOp TileLayerOp) Render(_ px.Matrix, canvas *pixelgl.Canvas) {
+	_ = tileLayerOp.tileMap.GetTileLayerByName(tileLayerOp.layerName).Draw(canvas)
 }
 
 func TileLayer(tileMap *tilepix.Map, layerName string) WinOp {
@@ -157,9 +157,9 @@ func (imageOp ImageOp) Lines() []string {
 	return []string{imageOp.String()}
 }
 
-func (imageOp ImageOp) Render(_ px.Matrix, win *pixelgl.Window) {
+func (imageOp ImageOp) Render(_ px.Matrix, canvas *pixelgl.Canvas) {
 	sprite := imageOp.imageMap[imageOp.imageName]
-	sprite.Draw(win, px.IM)
+	sprite.Draw(canvas, px.IM)
 }
 
 func Image(imageMap map[internal.Image]*px.Sprite, imageName internal.Image) WinOp {
@@ -184,11 +184,11 @@ func (colorOp ColorOp) Lines() []string {
 	return headerWithIndentedBody(head, body)
 }
 
-func (colorOp ColorOp) Render(mx px.Matrix, win *pixelgl.Window) {
-	win.SetColorMask(colorOp.color)
-	colorOp.winOp.Render(mx, win)
+func (colorOp ColorOp) Render(mx px.Matrix, canvas *pixelgl.Canvas) {
+	canvas.SetColorMask(colorOp.color)
+	colorOp.winOp.Render(mx, canvas)
 	// TODO: Color should be part of 'context' so that restore becomes saner
-	win.SetColorMask(colornames.White)
+	canvas.SetColorMask(colornames.White)
 }
 
 func Color(color color.RGBA, winOp WinOp) WinOp {
@@ -217,9 +217,9 @@ func (sequence WinOpSequence) Lines() []string {
 	return strings.Split(sequence.String(), "\n")
 }
 
-func (sequence WinOpSequence) Render(mx px.Matrix, win *pixelgl.Window) {
+func (sequence WinOpSequence) Render(mx px.Matrix, canvas *pixelgl.Canvas) {
 	for _, op := range sequence.winOps {
-		op.Render(mx, win)
+		op.Render(mx, canvas)
 	}
 }
 
@@ -246,16 +246,16 @@ func (mirrored OpMirrored) Lines() []string {
 	return headerWithIndentedBody(head, body)
 }
 
-func (mirrored OpMirrored) Render(mx px.Matrix, win *pixelgl.Window) {
+func (mirrored OpMirrored) Render(mx px.Matrix, canvas *pixelgl.Canvas) {
 	// Pixel isn't following linear algebra convention of matrix multiplication;
 	//     m.Moved(..).Scaled(..) really means:
 	// Scaled(..)*Moved(..)*m
 	// .. which means that if we want to mirror an image around the Y-axis,
 	// this has to be written with the scale to the left! :)
 	mirroredMatrix := px.IM.ScaledXY(px.V(0, 1), px.V(-1, 1)).Chained(mx)
-	win.SetMatrix(mirroredMatrix)
-	mirrored.op.Render(mirroredMatrix, win)
-	win.SetMatrix(mx)
+	canvas.SetMatrix(mirroredMatrix)
+	mirrored.op.Render(mirroredMatrix, canvas)
+	canvas.SetMatrix(mx)
 }
 
 func Mirrored(winOp WinOp) WinOp {
