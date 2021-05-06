@@ -161,10 +161,6 @@ type ImageOp struct {
 	imageName internal.Image
 }
 
-func (imageOp ImageOp) DrawTo(canvas *pixelgl.Canvas, context Context) {
-	imageOp.Render(context.Transform, canvas)
-}
-
 func (imageOp ImageOp) String() string {
 	return fmt.Sprintf("Image \"%v\"", imageOp.imageName)
 }
@@ -174,6 +170,10 @@ func (imageOp ImageOp) Lines() []string {
 }
 
 func (imageOp ImageOp) Render(_ px.Matrix, canvas *pixelgl.Canvas) {
+	imageOp.DrawTo(canvas, Context{Transform: px.IM})
+}
+
+func (imageOp ImageOp) DrawTo(canvas *pixelgl.Canvas, _ Context) {
 	sprite := imageOp.imageMap[imageOp.imageName]
 	sprite.Draw(canvas, px.IM)
 }
@@ -223,13 +223,6 @@ type WinOpSequence struct {
 	winOps []WinOp
 }
 
-func (sequence WinOpSequence) DrawTo(canvas *pixelgl.Canvas, context Context) {
-	mx := context.Transform
-	for _, op := range sequence.winOps {
-		op.Render(mx, canvas)
-	}
-}
-
 func (sequence WinOpSequence) String() string {
 	head := "WinOp Sequence:"
 	body := make([]string, 0)
@@ -249,6 +242,13 @@ func (sequence WinOpSequence) Render(mx px.Matrix, canvas *pixelgl.Canvas) {
 	sequence.DrawTo(canvas, Context{Transform: mx})
 }
 
+func (sequence WinOpSequence) DrawTo(canvas *pixelgl.Canvas, context Context) {
+	mx := context.Transform
+	for _, op := range sequence.winOps {
+		op.Render(mx, canvas)
+	}
+}
+
 func OpSequence(ops ...WinOp) WinOp {
 	return WinOpSequence{
 		winOps: ops,
@@ -257,19 +257,6 @@ func OpSequence(ops ...WinOp) WinOp {
 
 type OpMirrored struct {
 	op WinOp
-}
-
-func (mirrored OpMirrored) DrawTo(canvas *pixelgl.Canvas, context Context) {
-	// Pixel isn't following linear algebra convention of matrix multiplication;
-	//     m.Moved(..).Scaled(..) really means:
-	// Scaled(..)*Moved(..)*m
-	// .. which means that if we want to mirror an image around the Y-axis,
-	// this has to be written with the scale to the left! :)
-	oldTransform := context.Transform
-	context.Transform = px.IM.ScaledXY(px.V(0, 1), px.V(-1, 1)).Chained(oldTransform)
-	canvas.SetMatrix(context.Transform)
-	mirrored.op.DrawTo(canvas, context)
-	canvas.SetMatrix(oldTransform)
 }
 
 func (mirrored OpMirrored) String() string {
@@ -287,6 +274,19 @@ func (mirrored OpMirrored) Lines() []string {
 
 func (mirrored OpMirrored) Render(mx px.Matrix, canvas *pixelgl.Canvas) {
 	mirrored.DrawTo(canvas, Context{Transform: mx})
+}
+
+func (mirrored OpMirrored) DrawTo(canvas *pixelgl.Canvas, context Context) {
+	// Pixel isn't following linear algebra convention of matrix multiplication;
+	//     m.Moved(..).Scaled(..) really means:
+	// Scaled(..)*Moved(..)*m
+	// .. which means that if we want to mirror an image around the Y-axis,
+	// this has to be written with the scale to the left! :)
+	oldTransform := context.Transform
+	context.Transform = px.IM.ScaledXY(px.V(0, 1), px.V(-1, 1)).Chained(oldTransform)
+	canvas.SetMatrix(context.Transform)
+	mirrored.op.DrawTo(canvas, context)
+	canvas.SetMatrix(oldTransform)
 }
 
 func Mirrored(winOp WinOp) WinOp {
