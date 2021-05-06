@@ -104,10 +104,6 @@ type WinImdOp struct {
 	imdOp ImdOp
 }
 
-func (winImdOp WinImdOp) DrawTo(canvas *pixelgl.Canvas, context Context) {
-	winImdOp.Render(context.Transform, canvas)
-}
-
 func (winImdOp WinImdOp) String() string {
 	return strings.Join(winImdOp.Lines(), "\n")
 }
@@ -119,9 +115,14 @@ func (winImdOp WinImdOp) Lines() []string {
 }
 
 func (winImdOp WinImdOp) Render(_ px.Matrix, canvas *pixelgl.Canvas) {
+	winImdOp.DrawTo(canvas, Context{px.IM})
+}
+
+func (winImdOp WinImdOp) DrawTo(canvas *pixelgl.Canvas, _ Context) {
 	imd := imdraw.New(nil)
 	winImdOp.imdOp.Render(imd)
 	imd.Draw(canvas)
+
 }
 
 func ToWinOp(imdOp ImdOp) WinOp {
