@@ -133,10 +133,6 @@ type TileLayerOp struct {
 	tileMap   *tilepix.Map
 }
 
-func (tileLayerOp TileLayerOp) DrawTo(canvas *pixelgl.Canvas, context Context) {
-	tileLayerOp.Render(context.Transform, canvas)
-}
-
 func (tileLayerOp TileLayerOp) String() string {
 	return fmt.Sprintf("TileLayer \"Foreground\"")
 }
@@ -146,6 +142,10 @@ func (tileLayerOp TileLayerOp) Lines() []string {
 }
 
 func (tileLayerOp TileLayerOp) Render(_ px.Matrix, canvas *pixelgl.Canvas) {
+	tileLayerOp.DrawTo(canvas, Context{Transform: px.IM})
+}
+
+func (tileLayerOp TileLayerOp) DrawTo(canvas *pixelgl.Canvas, _ Context) {
 	_ = tileLayerOp.tileMap.GetTileLayerByName(tileLayerOp.layerName).Draw(canvas)
 }
 
