@@ -246,9 +246,7 @@ func (sequence WinOpSequence) Lines() []string {
 }
 
 func (sequence WinOpSequence) Render(mx px.Matrix, canvas *pixelgl.Canvas) {
-	for _, op := range sequence.winOps {
-		op.Render(mx, canvas)
-	}
+	sequence.DrawTo(canvas, Context{Transform: mx})
 }
 
 func OpSequence(ops ...WinOp) WinOp {
