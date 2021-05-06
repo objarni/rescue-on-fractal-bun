@@ -265,11 +265,11 @@ func (mirrored OpMirrored) DrawTo(canvas *pixelgl.Canvas, context Context) {
 	// Scaled(..)*Moved(..)*m
 	// .. which means that if we want to mirror an image around the Y-axis,
 	// this has to be written with the scale to the left! :)
-	mx := context.Transform
-	mirroredMatrix := px.IM.ScaledXY(px.V(0, 1), px.V(-1, 1)).Chained(mx)
-	canvas.SetMatrix(mirroredMatrix)
-	mirrored.op.Render(mirroredMatrix, canvas)
-	canvas.SetMatrix(mx)
+	oldTransform := context.Transform
+	context.Transform = px.IM.ScaledXY(px.V(0, 1), px.V(-1, 1)).Chained(oldTransform)
+	canvas.SetMatrix(context.Transform)
+	mirrored.op.DrawTo(canvas, context)
+	canvas.SetMatrix(oldTransform)
 }
 
 func (mirrored OpMirrored) String() string {
