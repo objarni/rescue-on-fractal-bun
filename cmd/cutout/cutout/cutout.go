@@ -180,7 +180,7 @@ func GetCropExtents(img image.Image) (int, int, int, int) {
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
 			c := img.At(x, y)
-			if !IsTransparent(c) {
+			if !IsAlmostTransparent(c) {
 				yMin = int(math.Min(float64(y), float64(yMin)))
 				yMax = int(math.Max(float64(y), float64(yMax)))
 				xMin = int(math.Min(float64(x), float64(xMin)))
@@ -197,9 +197,12 @@ func IsOpaque(color color.Color) bool {
 	return a != 0xffff
 }
 
-func IsTransparent(color color.Color) bool {
+// When shrinking image, some transparency is mixed up with color,
+// causing too big crop areas. Reduce problem by filtering away
+// such pixels!
+func IsAlmostTransparent(color color.Color) bool {
 	_, _, _, a := color.RGBA()
-	return a == 0
+	return a < 6500 // 10% of 256^2 is approximately 6500
 }
 
 func Resize(image image.Image, newHeight uint) image.Image {
