@@ -73,6 +73,9 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	if key == internal.Action {
 		event = events.KeyActionDown
 	}
+	if key == internal.Jump {
+		event = events.KeyJumpDown
+	}
 	if event != events.NoEvent {
 		scene.entities[0] = scene.entities[0].Handle(entities.EventBox{
 			Event: event,

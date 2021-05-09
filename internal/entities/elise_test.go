@@ -16,7 +16,7 @@ import (
    + walking right
    + pressing left
    + clicking action when standing still
-   - taking damage
+   + taking damage
    - jumping when standing still
    - jumping when pressing right
    - clicking action when mid-air
@@ -85,6 +85,22 @@ func Test_takingDamage(t *testing.T) {
 		},
 	}
 	approvals.VerifyString(t, simulate([]EventBox{box}, 1, 0))
+}
+
+func Test_startOfJumpWhenStandingStill(t *testing.T) {
+	box := EventBox{
+		Event: events.KeyJumpDown,
+		Box:   rectOverlappingElise,
+	}
+	approvals.VerifyString(t, simulate([]EventBox{box}, 1, 0))
+}
+
+func Test_fullJumpStandingStill(t *testing.T) {
+	box := EventBox{
+		Event: events.KeyJumpDown,
+		Box:   rectOverlappingElise,
+	}
+	approvals.VerifyString(t, simulate([]EventBox{box}, 20, 0))
 }
 
 func simulate(boxes []EventBox, ticks int, groundHeight int) string {

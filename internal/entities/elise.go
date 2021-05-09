@@ -17,17 +17,26 @@ type Elise struct {
 	Pos, Vel                  px.Vec
 	leftPressed, rightPressed bool
 	gameTimeMs                float64
-	flip                      bool
+	facingLeft                bool
 	actionDown                bool
+	jumping                   bool
+}
+
+func MakeElise(position px.Vec) Entity {
+	return Elise{Pos: position}
 }
 
 func (elise Elise) String() string {
-	state := fmt.Sprintf("Elise %v", "standing")
+	generalState := "standing"
+	if elise.jumping {
+		generalState = "jumping"
+	}
+	state := fmt.Sprintf("Elise %v", generalState)
 	hb := fmt.Sprintf("HitBox %v", pr.PrintRect(elise.HitBox()))
 	pos := fmt.Sprintf("Pos: %v", pr.PrintVec(elise.Pos))
 	vel := fmt.Sprintf("Vel: %v", pr.PrintVec(elise.Vel))
 	facing := "right"
-	if elise.flip {
+	if elise.facingLeft {
 		facing = "left"
 	}
 	facing = "Facing " + facing
@@ -42,20 +51,16 @@ func (elise Elise) HitBox() px.Rect {
 	return rect
 }
 
-func MakeElise(position px.Vec) Entity {
-	return Elise{Pos: position}
-}
-
 func (elise Elise) Tick(gameTimeMs float64, eventBoxReceiver EventBoxReceiver) Entity {
 	elise.gameTimeMs = gameTimeMs
 	eliseMoveSpeed := 1.2
 	eliseGravity := -0.1
 	if elise.leftPressed && !elise.rightPressed {
-		elise.flip = true
+		elise.facingLeft = true
 		elise.Pos = elise.Pos.Add(internal.V(-eliseMoveSpeed, 0))
 	}
 	if !elise.leftPressed && elise.rightPressed {
-		elise.flip = false
+		elise.facingLeft = false
 		elise.Pos = elise.Pos.Add(internal.V(eliseMoveSpeed, 0))
 	}
 	elise.Vel = elise.Vel.Add(px.V(0, eliseGravity))
@@ -77,7 +82,7 @@ func (elise Elise) GfxOp(imageMap *internal.ImageMap) d.WinOp {
 		image = EliseWalkFrame(elise.gameTimeMs/1000.0, 10)
 	}
 	imgOp := d.Image(*imageMap, image)
-	if elise.flip {
+	if elise.facingLeft {
 		imgOp = d.Mirrored(imgOp)
 	}
 	return d.Moved(elise.Pos.Add(px.V(0, eliseHeight/2)), imgOp)
@@ -102,12 +107,18 @@ func (elise Elise) Handle(eb EventBox) Entity {
 	if eb.Event == events.KeyActionDown {
 		elise.actionDown = true
 	}
+	if eb.Event == events.KeyJumpDown && !elise.jumping {
+		elise.jumping = true
+		elise.Vel = px.V(0, 100)
+		elise.Pos = elise.Pos.Add(px.V(0, 30)) // Get out of any ground tile!
+	}
 	if eb.Event == events.Wall {
 		overlap := eb.Box.Intersect(elise.HitBox())
+		elise.jumping = false
 		h := overlap.H()
 		w := overlap.W()
 		if h > w {
-			left := elise.flip
+			left := elise.facingLeft
 			if left {
 				elise.Pos = elise.Pos.Add(px.V(w, 0))
 			} else {
