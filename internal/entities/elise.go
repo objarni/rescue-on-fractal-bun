@@ -57,27 +57,40 @@ func (elise Elise) Tick(gameTimeMs float64, eventBoxReceiver EventBoxReceiver) E
 
 	// Movement constants
 	eliseWalkAcceleration := 0.1
-	maxHorisontalSpeed := 1.2
+	eliseWalkDeceleration := 0.04 // When gliding, but not pressing a direction
+	maxHorisontalSpeed := 1.4
 	eliseGravity := -0.1
 
 	// Horisontal acceleration
-	directionSign := 0.0
+	horisontalSpeed := math.Abs(elise.Vel.X)
+	direction := 0.0
+	if elise.Vel.X > 0 {
+		direction = 1.0
+	}
+	if elise.Vel.X < 0 {
+		direction = -1.0
+	}
+	intention := 0.0
 	if elise.leftPressed && !elise.rightPressed {
 		elise.facingLeft = true
-		directionSign = -1.0
-		//if math.Abs(elise.Vel.X) < maxHorisontalSpeed {
-		//	elise.Vel = elise.Vel.Add(px.V(eliseWalkAcceleration, 0))
-		//}
+		intention = -1.0
 	}
 	if !elise.leftPressed && elise.rightPressed {
 		elise.facingLeft = false
-		directionSign = 1.0
-		//if math.Abs(elise.Vel.X) < maxHorisontalSpeed {
-		//	elise.Vel = elise.Vel.Add(px.V(-eliseWalkAcceleration, 0))
-		//}
+		intention = 1.0
+	}
+	if intention == 0 {
+		// Slow down Elise until halt when no movement intention
+
+		// Slow enough to halt?
+		if horisontalSpeed < 0.1 {
+			elise.Vel = px.V(0, elise.Vel.Y)
+		} else {
+			elise.Vel = elise.Vel.Add(px.V(-direction*eliseWalkDeceleration, 0))
+		}
 	}
 	if math.Abs(elise.Vel.X) < maxHorisontalSpeed {
-		elise.Vel = elise.Vel.Add(px.V(eliseWalkAcceleration*directionSign, 0))
+		elise.Vel = elise.Vel.Add(px.V(eliseWalkAcceleration*intention, 0))
 	}
 
 	// Vertical acceleration
@@ -129,11 +142,11 @@ func (elise Elise) Handle(eb EventBox) Entity {
 		w := overlap.W()
 		if h > w {
 			overlapCenterX := overlap.Center().X
+			sign := 1.0
 			if overlapCenterX > elise.Pos.X {
-				elise.Pos = elise.Pos.Sub(px.V(w, 0))
-			} else {
-				elise.Pos = elise.Pos.Add(px.V(w, 0))
+				sign = -1.0
 			}
+			elise.Pos = elise.Pos.Add(px.V(sign*w, 0))
 			elise.Vel = px.V(0, elise.Vel.Y)
 		} else {
 			elise.Pos = elise.Pos.Add(px.V(0, h))
