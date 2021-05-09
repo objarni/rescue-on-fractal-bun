@@ -3,6 +3,7 @@ package entities
 import (
 	"fmt"
 	px "github.com/faiface/pixel"
+	"math"
 	"objarni/rescue-on-fractal-bun/internal"
 	d "objarni/rescue-on-fractal-bun/internal/draw"
 	"objarni/rescue-on-fractal-bun/internal/events"
@@ -53,18 +54,38 @@ func (elise Elise) HitBox() px.Rect {
 
 func (elise Elise) Tick(gameTimeMs float64, eventBoxReceiver EventBoxReceiver) Entity {
 	elise.gameTimeMs = gameTimeMs
-	eliseMoveSpeed := 1.2
+
+	// Movement constants
+	eliseWalkAcceleration := 0.1
+	maxHorisontalSpeed := 1.2
 	eliseGravity := -0.1
+
+	// Horisontal acceleration
+	directionSign := 0.0
 	if elise.leftPressed && !elise.rightPressed {
 		elise.facingLeft = true
-		elise.Pos = elise.Pos.Add(internal.V(-eliseMoveSpeed, 0))
+		directionSign = -1.0
+		//if math.Abs(elise.Vel.X) < maxHorisontalSpeed {
+		//	elise.Vel = elise.Vel.Add(px.V(eliseWalkAcceleration, 0))
+		//}
 	}
 	if !elise.leftPressed && elise.rightPressed {
 		elise.facingLeft = false
-		elise.Pos = elise.Pos.Add(internal.V(eliseMoveSpeed, 0))
+		directionSign = 1.0
+		//if math.Abs(elise.Vel.X) < maxHorisontalSpeed {
+		//	elise.Vel = elise.Vel.Add(px.V(-eliseWalkAcceleration, 0))
+		//}
 	}
+	if math.Abs(elise.Vel.X) < maxHorisontalSpeed {
+		elise.Vel = elise.Vel.Add(px.V(eliseWalkAcceleration*directionSign, 0))
+	}
+
+	// Vertical acceleration
 	elise.Vel = elise.Vel.Add(px.V(0, eliseGravity))
+
+	// Update position from velocity
 	elise.Pos = elise.Pos.Add(elise.Vel)
+
 	if elise.actionDown {
 		elise.actionDown = false
 		hitBox := elise.HitBox()
@@ -73,19 +94,8 @@ func (elise Elise) Tick(gameTimeMs float64, eventBoxReceiver EventBoxReceiver) E
 			Box:   hitBox.Resized(hitBox.Center(), px.V(40, 40)),
 		})
 	}
-	return elise
-}
 
-func (elise Elise) GfxOp(imageMap *internal.ImageMap) d.WinOp {
-	image := internal.IEliseWalk2
-	if elise.rightPressed || elise.leftPressed {
-		image = EliseWalkFrame(elise.gameTimeMs/1000.0, 10)
-	}
-	imgOp := d.Image(*imageMap, image)
-	if elise.facingLeft {
-		imgOp = d.Mirrored(imgOp)
-	}
-	return d.Moved(elise.Pos.Add(px.V(0, eliseHeight/2)), imgOp)
+	return elise
 }
 
 func (elise Elise) Handle(eb EventBox) Entity {
@@ -118,18 +128,31 @@ func (elise Elise) Handle(eb EventBox) Entity {
 		h := overlap.H()
 		w := overlap.W()
 		if h > w {
-			left := elise.facingLeft
-			if left {
-				elise.Pos = elise.Pos.Add(px.V(w, 0))
-			} else {
+			overlapCenterX := overlap.Center().X
+			if overlapCenterX > elise.Pos.X {
 				elise.Pos = elise.Pos.Sub(px.V(w, 0))
+			} else {
+				elise.Pos = elise.Pos.Add(px.V(w, 0))
 			}
+			elise.Vel = px.V(0, elise.Vel.Y)
 		} else {
 			elise.Pos = elise.Pos.Add(px.V(0, h))
+			elise.Vel = px.V(elise.Vel.X, 0)
 		}
-		elise.Vel = px.ZV
 	}
 	return elise
+}
+
+func (elise Elise) GfxOp(imageMap *internal.ImageMap) d.WinOp {
+	image := internal.IEliseWalk2
+	if elise.rightPressed || elise.leftPressed {
+		image = EliseWalkFrame(elise.gameTimeMs/1000.0, 10)
+	}
+	imgOp := d.Image(*imageMap, image)
+	if elise.facingLeft {
+		imgOp = d.Mirrored(imgOp)
+	}
+	return d.Moved(elise.Pos.Add(px.V(0, eliseHeight/2)), imgOp)
 }
 
 var _ = [...]internal.Image{
