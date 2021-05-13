@@ -14,9 +14,9 @@ Facing right
 
 * Elise end state:
 Elise standing
-HitBox [-11,-0->9,100]
-Pos: <-1.2,-0.1>
-Vel: <0.0,-0.1>
+HitBox [-10,-0->10,100]
+Pos: <-0.1,-0.1>
+Vel: <-0.1,-0.1>
 Facing left
 
 

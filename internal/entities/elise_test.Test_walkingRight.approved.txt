@@ -14,9 +14,9 @@ Facing right
 
 * Elise end state:
 Elise standing
-HitBox [-5,-0->15,100]
-Pos: <4.8,-0.1>
-Vel: <0.0,-0.1>
+HitBox [-9,-0->11,100]
+Pos: <1.0,-0.1>
+Vel: <0.4,-0.1>
 Facing right
 
 
@@ -30,7 +30,7 @@ Consequences:
 - Entity 0 needs to handle KeyRightDown
 
  * Tick 2 *
-Entity 0 is at [-9,-0->11,100]
+Entity 0 is at [-10,-0->10,100]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyRightDown [-100000,-100000->100000,100000]
 Consequences:
@@ -38,7 +38,7 @@ Consequences:
 - Entity 0 needs to handle KeyRightDown
 
  * Tick 3 *
-Entity 0 is at [-8,-0->12,100]
+Entity 0 is at [-10,-0->10,100]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyRightDown [-100000,-100000->100000,100000]
 Consequences:
@@ -46,7 +46,7 @@ Consequences:
 - Entity 0 needs to handle KeyRightDown
 
  * Tick 4 *
-Entity 0 is at [-6,-0->14,100]
+Entity 0 is at [-9,-0->11,100]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyRightDown [-100000,-100000->100000,100000]
 Consequences:
