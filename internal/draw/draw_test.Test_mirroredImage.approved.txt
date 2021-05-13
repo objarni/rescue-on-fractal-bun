@@ -1,5 +1,0 @@
-Mirrored around Y axis:
-  WinOp Sequence:
-    Image "IMap"
-    Color {255 255 0 255}:
-      Image "IGhost"

@@ -7,9 +7,9 @@ import (
 	px "github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
+	d "github.com/objarni/pixelop"
 	"golang.org/x/exp/shiny/materialdesign/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
-	d "objarni/rescue-on-fractal-bun/internal/draw"
 	"objarni/rescue-on-fractal-bun/internal/entities"
 	"objarni/rescue-on-fractal-bun/internal/events"
 )
@@ -147,7 +147,7 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 
 func (scene *LevelScene) debugGfx() d.WinOp {
 	if !scene.cfg.ShowEntityCanvas {
-		return d.ToWinOp(d.Nothing())
+		return d.OpSequence()
 	}
 	hitBoxes := make([]d.ImdOp, 0)
 	for _, entity := range scene.entities {
@@ -165,7 +165,7 @@ func (scene *LevelScene) debugGfx() d.WinOp {
 }
 
 func rectDrawOp(r px.Rect) d.ImdOp {
-	return d.Rectangle(C(r.Min), C(r.Max), 2)
+	return d.Rectangle(r.Min, r.Max, 2)
 }
 
 func (scene *LevelScene) entityOp() d.WinOp {
@@ -178,7 +178,7 @@ func (scene *LevelScene) entityOp() d.WinOp {
 
 func (scene *LevelScene) mapSymbolOp() d.WinOp {
 	mapSymbolCenter := scene.res.ImageMap[internal.IMapSymbol].Frame().Center()
-	op := d.Moved(mapSymbolCenter, d.Image(scene.res.ImageMap, internal.IMapSymbol))
+	op := d.Moved(mapSymbolCenter, d.Image(scene.res.ImageMap[internal.IMapSymbol], "map"))
 	if scene.isMapSignClose() {
 		op = d.Color(colornames.GreenA400, op)
 	}
@@ -188,7 +188,7 @@ func (scene *LevelScene) mapSymbolOp() d.WinOp {
 func (scene *LevelScene) backdropOp() d.ImdOp {
 	widthPixels := scene.level.Width * 32
 	heightPixels := scene.level.Height * 32
-	rectangle := d.Rectangle(d.C(0, 0), d.C(float64(widthPixels), float64(heightPixels)), 0)
+	rectangle := d.Rectangle(px.V(0, 0), px.V(float64(widthPixels), float64(heightPixels)), 0)
 	return d.Colored(scene.level.ClearColor, rectangle)
 }
 
@@ -197,7 +197,7 @@ func (scene *LevelScene) signPostsOp() d.WinOp {
 	for _, mapPoint := range scene.level.SignPosts {
 		alignVec := internal.V(0, scene.res.ImageMap[internal.ISignPost].Frame().Center().Y)
 		signPostOp := d.Moved(mapPoint.Pos, d.Moved(alignVec,
-			d.Image(scene.res.ImageMap, internal.ISignPost)))
+			d.Image(scene.res.ImageMap[internal.ISignPost], internal.ISignPost.String())))
 		ops = append(ops, signPostOp)
 	}
 	return d.OpSequence(ops...)

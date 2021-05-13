@@ -2,9 +2,9 @@ package entities
 
 import (
 	"github.com/faiface/pixel"
+	d "github.com/objarni/pixelop"
 	"golang.org/x/image/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
-	d "objarni/rescue-on-fractal-bun/internal/draw"
 )
 
 type SpiderState int
@@ -71,7 +71,7 @@ func (spider Spider) Tick(gameTimeMs float64, _ EventBoxReceiver) Entity {
 }
 
 func (spider Spider) GfxOp(imageMap *internal.ImageMap) d.WinOp {
-	image := d.Image(*imageMap, internal.ISpider)
+	image := d.Image((*imageMap)[internal.ISpider], internal.ISpider.String())
 	image = d.Color(colornames.White, image)
 	return d.Moved(spider.pos, image)
 }

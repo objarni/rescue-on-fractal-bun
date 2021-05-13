@@ -2,9 +2,9 @@ package entities
 
 import (
 	px "github.com/faiface/pixel"
+	d "github.com/objarni/pixelop"
 	"math"
 	"objarni/rescue-on-fractal-bun/internal"
-	d "objarni/rescue-on-fractal-bun/internal/draw"
 	"objarni/rescue-on-fractal-bun/internal/events"
 )
 
@@ -51,7 +51,7 @@ func (ghost Ghost) Tick(gameTimeMs float64, receiver EventBoxReceiver) Entity {
 }
 
 func (ghost Ghost) GfxOp(imageMap *internal.ImageMap) d.WinOp {
-	image := d.Image(*imageMap, internal.IGhost)
+	image := d.Image((*imageMap)[internal.IGhost], internal.IGhost.String())
 	if ghost.dirX < 0 {
 		image = d.Mirrored(image)
 	}

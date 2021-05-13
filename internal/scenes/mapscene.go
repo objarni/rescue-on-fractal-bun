@@ -5,10 +5,10 @@ import (
 	px "github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
+	d "github.com/objarni/pixelop"
 	"golang.org/x/image/colornames"
 	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
-	d "objarni/rescue-on-fractal-bun/internal/draw"
 )
 
 /*
@@ -112,7 +112,7 @@ func (scene *MapScene) Render(win *pixelgl.Window) {
 func (scene *MapScene) MapSceneWinOp() d.WinOp {
 	return d.OpSequence(
 		d.Moved(px.R(0, 0, internal.ScreenWidth, internal.ScreenHeight).Center(),
-			d.Image(scene.res.ImageMap, internal.IMap)),
+			d.Image(scene.res.ImageMap[internal.IMap], internal.IMap.String())),
 		d.ToWinOp(d.ImdOpSequence(scene.mapSignsGfx(), scene.crossHairGfx())),
 	)
 }
@@ -162,15 +162,11 @@ func (scene *MapScene) crossHairsOp() d.ImdOp {
 	if closestMapSignIx > -1 {
 		pos := scene.res.MapSigns[closestMapSignIx].MapPos
 		radius := scene.targetLocCircleRadius()
-		circle := d.Circle(radius, C(pos), scene.circleThickness())
+		circle := d.Circle(radius, pos, scene.circleThickness())
 		operation := d.Colored(colornames.Red, circle)
 		return operation
 	}
-	return d.Nothing()
-}
-
-func C(v px.Vec) px.Vec {
-	return d.C(v.X, v.Y)
+	return d.ImdOpSequence()
 }
 
 func (scene *MapScene) FindClosestMapSign() int {
@@ -181,10 +177,10 @@ func (scene *MapScene) currentMapSignOp() d.ImdOp {
 	blink := scene.cfg.MapSceneBlinkSpeed
 	if scene.highlightTimer/blink%2 == 0 {
 		pos := scene.res.MapSigns[scene.atMapSign].MapPos
-		circle := d.Circle(scene.currentLocCircleRadius(), C(pos), scene.circleThickness())
+		circle := d.Circle(scene.currentLocCircleRadius(), pos, scene.circleThickness())
 		return d.Colored(colornames.Green, circle)
 	}
-	return d.Nothing()
+	return d.ImdOpSequence()
 }
 
 func (scene *MapScene) levelEntrances() d.ImdSequence {
@@ -193,7 +189,7 @@ func (scene *MapScene) levelEntrances() d.ImdSequence {
 		pos := mapSign.MapPos
 		operation := d.Colored(
 			colornames.Darkslateblue,
-			d.Circle(scene.locCircleRadius(), C(pos), scene.circleThickness()))
+			d.Circle(scene.locCircleRadius(), pos, scene.circleThickness()))
 		sequence = sequence.Then(operation)
 	}
 	return sequence
@@ -222,8 +218,8 @@ func (scene *MapScene) locCircleRadius() int {
 func (scene *MapScene) crossHairGfx() d.ImdOp {
 	h := scene.hairCrossPos
 	thickness := 2
-	vertical := d.Line(d.C(h.X, 0), d.C(h.X, 600), thickness)
-	horisontal := d.Line(d.C(0, h.Y), d.C(800, h.Y), thickness)
+	vertical := d.Line(px.V(h.X, 0), px.V(h.X, 600), thickness)
+	horisontal := d.Line(px.V(0, h.Y), px.V(800, h.Y), thickness)
 	transparentPink := color.RGBA{R: 255, A: 32}
 	return d.Colored(transparentPink, d.ImdOpSequence(vertical, horisontal))
 }

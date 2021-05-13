@@ -3,9 +3,9 @@ package entities
 import (
 	"fmt"
 	px "github.com/faiface/pixel"
+	d "github.com/objarni/pixelop"
 	"math"
 	"objarni/rescue-on-fractal-bun/internal"
-	d "objarni/rescue-on-fractal-bun/internal/draw"
 	"objarni/rescue-on-fractal-bun/internal/events"
 	pr "objarni/rescue-on-fractal-bun/internal/printers"
 	"strings"
@@ -161,7 +161,7 @@ func (elise Elise) GfxOp(imageMap *internal.ImageMap) d.WinOp {
 	if elise.rightPressed || elise.leftPressed {
 		image = EliseWalkFrame(elise.gameTimeMs/1000.0, 10)
 	}
-	imgOp := d.Image(*imageMap, image)
+	imgOp := d.Image((*imageMap)[image], image.String())
 	if elise.facingLeft {
 		imgOp = d.Mirrored(imgOp)
 	}

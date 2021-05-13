@@ -2,8 +2,8 @@ package entities
 
 import (
 	"github.com/faiface/pixel"
+	d "github.com/objarni/pixelop"
 	"objarni/rescue-on-fractal-bun/internal"
-	"objarni/rescue-on-fractal-bun/internal/draw"
 )
 
 type EventBoxReceiver interface {
@@ -11,7 +11,7 @@ type EventBoxReceiver interface {
 }
 
 type Entity interface {
-	GfxOp(imageMap *internal.ImageMap) draw.WinOp
+	GfxOp(imageMap *internal.ImageMap) d.WinOp
 	Tick(gameTimeMs float64, ebReceiver EventBoxReceiver) Entity
 	HitBox() pixel.Rect
 	Handle(eb EventBox) Entity

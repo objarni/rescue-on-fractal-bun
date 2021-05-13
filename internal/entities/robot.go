@@ -2,9 +2,9 @@ package entities
 
 import (
 	"github.com/faiface/pixel"
+	d "github.com/objarni/pixelop"
 	"golang.org/x/image/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
-	d "objarni/rescue-on-fractal-bun/internal/draw"
 	"objarni/rescue-on-fractal-bun/internal/events"
 )
 
@@ -81,7 +81,8 @@ func (robot Robot) Tick(gameTimeMs float64, ebr EventBoxReceiver) Entity {
 }
 
 func (robot Robot) GfxOp(imageMap *internal.ImageMap) d.WinOp {
-	image := d.Image(*imageMap, internal.IRobot1)
+	// TODO: switch imageMap type to Image -> d.ImageOp
+	image := d.Image((*imageMap)[internal.IRobot1], internal.IRobot1.String())
 	image = d.Color(colornames.White, image)
 	if robot.state == RobotGoingLeft || robot.state == RobotAtLeft {
 		image = d.Mirrored(image)

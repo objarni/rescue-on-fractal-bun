@@ -2,8 +2,8 @@ package entities
 
 import (
 	px "github.com/faiface/pixel"
+	d "github.com/objarni/pixelop"
 	"objarni/rescue-on-fractal-bun/internal"
-	"objarni/rescue-on-fractal-bun/internal/draw"
 	"objarni/rescue-on-fractal-bun/internal/events"
 )
 
@@ -44,9 +44,9 @@ func (button Button) Tick(_ float64, ebr EventBoxReceiver) Entity {
 	return button
 }
 
-func (button Button) GfxOp(imageMap *internal.ImageMap) draw.WinOp {
-	return draw.Moved(button.pos.Add(px.V(0, buttonHeight/2)),
-		draw.Image(*imageMap, internal.IButton))
+func (button Button) GfxOp(imageMap *internal.ImageMap) d.WinOp {
+	return d.Moved(button.pos.Add(px.V(0, buttonHeight/2)),
+		d.Image((*imageMap)[internal.IButton], internal.IButton.String()))
 }
 
 func MakeButton(area px.Rect) Entity {

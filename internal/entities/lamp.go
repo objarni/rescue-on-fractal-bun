@@ -2,9 +2,9 @@ package entities
 
 import (
 	"github.com/faiface/pixel"
+	d "github.com/objarni/pixelop"
 	"golang.org/x/image/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
-	d "objarni/rescue-on-fractal-bun/internal/draw"
 	"objarni/rescue-on-fractal-bun/internal/events"
 )
 
@@ -39,7 +39,7 @@ func (lamp Lamp) Tick(_ float64, _ EventBoxReceiver) Entity {
 }
 
 func (lamp Lamp) GfxOp(imageMap *internal.ImageMap) d.WinOp {
-	image := d.Image(*imageMap, internal.IStreetLight)
+	image := d.Image((*imageMap)[internal.IStreetLight], internal.IStreetLight.String())
 	if !lamp.on {
 		image = d.Color(colornames.Black, image)
 	}

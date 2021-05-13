@@ -13,7 +13,7 @@ type Resources struct {
 	FPS               float64
 	MapSigns          []MapSign
 	Levels            map[string]Level
-	ImageMap          ImageMap
+	ImageMap          ImageMap // TODO: should be pointer type
 	Blip, ButtonClick *beep.Buffer
 	RobotMove         *beep.Buffer
 }
