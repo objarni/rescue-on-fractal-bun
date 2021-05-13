@@ -105,26 +105,22 @@ func run() {
 
 		// Keyboard control
 		for key, control := range keyMap {
-			// Hmm. Just Pressed/Released APIs is 'key repeat' at least on win - problem?
+			// TODO: Hmm. Just Pressed/Released APIs is 'key repeat' at least on win - problem?
 			if win.JustPressed(key) {
-				//fmt.Println("pressed: ", key)
 				scene = scene.HandleKeyDown(control)
 			}
 			if win.JustReleased(key) {
-				//fmt.Println("released: ", key)
 				scene = scene.HandleKeyUp(control)
 			}
 		}
 
 		// Gamepad control
 		for pad, control := range padMap {
-			// @remember: do we want to check all joysticks not just 1?
+			// TODO: do we want to check all joysticks not just 1?
 			if win.JoystickJustPressed(pixelgl.Joystick1, pad) {
-				//fmt.Println("pressed: ", pad)
 				scene = scene.HandleKeyDown(control)
 			}
 			if win.JoystickJustReleased(pixelgl.Joystick1, pad) {
-				//fmt.Println("released: ", pad)
 				scene = scene.HandleKeyUp(control)
 			}
 		}

@@ -18,7 +18,7 @@ type Resources struct {
 	RobotMove         *beep.Buffer
 }
 
-// This is so repetitive. Can we have a Python script to generate the enum+String func?
+// Image TODO: This is so repetitive. Can we have a Python script to generate the enum+String func?
 type Image int
 
 const (
