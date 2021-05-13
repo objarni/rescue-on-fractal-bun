@@ -169,6 +169,29 @@ func ExampleGetCropExtents() {
 	// 3, 7, 2, 6
 }
 
+func ExampleAutoCrop() {
+	heights := make([]int, 0)
+	for ix := range makeRange(7) {
+		imgName := fmt.Sprintf("data/elise-jump%v.png", ix+1)
+		cropped := AutoCrop(LoadImage(imgName), 100)
+		heights = append(heights, cropped.Bounds().Max.Y)
+		//tmpName := fmt.Sprintf("data/tmp/elise-jump%v-test.png", ix + 1)
+		//SaveImage(tmpName, cropped)
+	}
+
+	for _, height := range heights {
+		fmt.Printf("Height is: %v\n", height)
+	}
+	// Output:
+	// Height is: 100
+	// Height is: 100
+	// Height is: 100
+	// Height is: 100
+	// Height is: 100
+	// Height is: 100
+	// Height is: 100
+}
+
 func makeRange(max int) []int {
 	a := make([]int, max)
 	for i := range a {

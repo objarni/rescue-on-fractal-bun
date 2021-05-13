@@ -202,7 +202,7 @@ func IsOpaque(color color.Color) bool {
 // such pixels!
 func IsAlmostTransparent(color color.Color) bool {
 	_, _, _, a := color.RGBA()
-	return a < 6500 // 10% of 256^2 is approximately 6500
+	return a < 50000
 }
 
 func Resize(image image.Image, newHeight uint) image.Image {
@@ -212,7 +212,8 @@ func Resize(image image.Image, newHeight uint) image.Image {
 func AutoCrop(img image.Image, newHeight int) image.Image {
 	mask := GetWhiteOuterArea(img)
 	cutoutImage := GetCutoutImage(img, mask)
-	shrunk := Resize(cutoutImage, uint(newHeight))
-	cropped := Crop(shrunk)
-	return cropped
+	shrunkTooBig := Resize(cutoutImage, uint(newHeight*3))
+	cropped := Crop(shrunkTooBig)
+	final := Resize(cropped, uint(newHeight))
+	return final
 }
