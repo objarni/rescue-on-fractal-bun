@@ -20,14 +20,11 @@ func main() {
 	}
 
 	img := cutout.LoadImage(inputFileName)
-	mask := cutout.GetWhiteOuterArea(img)
-	cutoutImage := cutout.GetCutoutImage(img, mask)
-	shrunk := cutout.Resize(cutoutImage, uint(newHeight))
-	cropped := cutout.Crop(shrunk)
-
-	filename := cutout.GetFileNameVariant(inputFileName, "shrunk")
-	cutout.SaveImage(filename, shrunk)
-
-	filename = cutout.GetFileNameVariant(inputFileName, "cropped")
+	cropped := cutout.AutoCrop(img, newHeight)
+	filename := cutout.GetFileNameVariant(inputFileName, "cropped")
 	cutout.SaveImage(filename, cropped)
 }
+
+// Vill: skriva ett integrationstest/property test som
+// verifierar att verklig data (elise jump anim) med
+// 100 height skapar resultat som är ungefär 100, typ 98-102.

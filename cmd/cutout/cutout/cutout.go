@@ -208,3 +208,11 @@ func IsAlmostTransparent(color color.Color) bool {
 func Resize(image image.Image, newHeight uint) image.Image {
 	return resize.Resize(0, newHeight, image, resize.Lanczos3)
 }
+
+func AutoCrop(img image.Image, newHeight int) image.Image {
+	mask := GetWhiteOuterArea(img)
+	cutoutImage := GetCutoutImage(img, mask)
+	shrunk := Resize(cutoutImage, uint(newHeight))
+	cropped := Crop(shrunk)
+	return cropped
+}

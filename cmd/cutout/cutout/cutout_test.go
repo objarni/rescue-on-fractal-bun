@@ -130,6 +130,7 @@ func printImage(img image.Image) {
 		fmt.Println()
 	}
 }
+
 func ExampleResize() {
 	img := LoadImage(fileName)
 	smaller := Resize(img, 5)
