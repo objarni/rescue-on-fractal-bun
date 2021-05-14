@@ -96,11 +96,17 @@ func run() {
 
 		// Tweak system
 		info, err := os.Stat(internal.ConfigFile)
-		internal.PanicIfError(err)
-		if cfgTime != info.ModTime() {
-			cfgTime = info.ModTime()
-			fmt.Println("Reading ", internal.ConfigFile, " at ", time.Now().Format(time.Stamp))
-			cfg = scenes.TryReadCfgFrom(internal.ConfigFile, cfg)
+
+		if err != nil {
+			fmt.Printf("could not stat config file skipping config %v\n", internal.ConfigFile)
+		} else {
+			//	internal.PanicIfError(err)
+
+			if cfgTime != info.ModTime() {
+				cfgTime = info.ModTime()
+				fmt.Println("Reading ", internal.ConfigFile, " at ", time.Now().Format(time.Stamp))
+				cfg = scenes.TryReadCfgFrom(internal.ConfigFile, cfg)
+			}
 		}
 
 		// Keyboard control
