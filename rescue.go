@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
-	"github.com/faiface/pixel"
+	px "github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"objarni/rescue-on-fractal-bun/internal"
@@ -44,7 +44,7 @@ func run() {
 	startLevelName := *startLevel
 	if startLevelName != "" {
 		fmt.Println("Loading level:", startLevelName)
-		var pos pixel.Vec
+		var pos px.Vec
 		for _, mapSign := range res.MapSigns {
 			if mapSign.LevelName == startLevelName {
 				pos = mapSign.LevelPos
@@ -58,7 +58,7 @@ func run() {
 
 	win, err := pixelgl.NewWindow(pixelgl.WindowConfig{
 		Title:  "Rescue",
-		Bounds: pixel.R(0, 0, internal.ScreenWidth, internal.ScreenHeight),
+		Bounds: px.R(0, 0, internal.ScreenWidth, internal.ScreenHeight),
 	})
 	if err != nil {
 		panic(err)
@@ -172,7 +172,7 @@ func loadResources() internal.Resources {
 		MapSigns:    mapSigns,
 		Levels:      levels,
 	}
-	res.ImageMap = map[internal.Image]*pixel.Sprite{
+	res.ImageMap = map[internal.Image]*px.Sprite{
 		internal.IMap:                  internal.LoadSpriteForSure("assets/TMap.png"),
 		internal.IGhost:                internal.LoadSpriteForSure("assets/TGhost.png"),
 		internal.IMapSymbol:            internal.LoadSpriteForSure("assets/THeadsup.png"),
