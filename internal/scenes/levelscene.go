@@ -12,10 +12,11 @@ import (
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/entities"
 	"objarni/rescue-on-fractal-bun/internal/events"
+	"objarni/rescue-on-fractal-bun/internal/tweaking"
 )
 
 type LevelScene struct {
-	cfg          *Config
+	cfg          *tweaking.Config
 	res          *internal.Resources
 	level        internal.Level
 	gameTimeMs   float64
@@ -25,7 +26,7 @@ type LevelScene struct {
 	robotMoveSfx *beep.Buffer
 }
 
-func MakeLevelScene(cfg *Config, res *internal.Resources, levelName string,
+func MakeLevelScene(cfg *tweaking.Config, res *internal.Resources, levelName string,
 	playerPos px.Vec) *LevelScene {
 	level := res.Levels[levelName]
 	pos := playerPos

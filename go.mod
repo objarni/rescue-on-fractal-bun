@@ -11,7 +11,7 @@ require (
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 // indirect
 	github.com/gopherjs/gopherwasm v1.0.0 // indirect
-	github.com/objarni/pixelop v0.0.0-20210509210354-b606ddeb730f // indirect
+	github.com/objarni/pixelop v0.0.0-20210509210354-b606ddeb730f
 	github.com/stretchr/testify v1.6.1 // indirect
 	golang.org/x/exp v0.0.0-20190306152737-a1d7652674e8
 	golang.org/x/image v0.0.0-20210504121937-7319ad40d33e

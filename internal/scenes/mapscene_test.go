@@ -5,6 +5,7 @@ import (
 	"github.com/faiface/pixel"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/scenes"
+	"objarni/rescue-on-fractal-bun/internal/tweaking"
 	"objarni/rescue-on-fractal-bun/tests"
 	"testing"
 )
@@ -14,7 +15,7 @@ func init() {
 }
 
 func Test_initialRender(t *testing.T) {
-	cfg := scenes.TryReadCfgFrom("../../"+internal.ConfigFile, scenes.Config{})
+	cfg := tweaking.TryReadCfgFrom("../../"+internal.ConfigFile, tweaking.Config{})
 	res := internal.Resources{
 		ImageMap: map[internal.Image]*pixel.Sprite{},
 		MapSigns: []internal.MapSign{{
