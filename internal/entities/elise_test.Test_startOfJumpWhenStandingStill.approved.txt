@@ -14,9 +14,9 @@ Facing right
 
 * Elise end state:
 Elise jumping
-HitBox [-10,130->10,230]
-Pos: <0.0,129.9>
-Vel: <0.0,99.9>
+HitBox [-10,3->10,103]
+Pos: <0.0,2.9>
+Vel: <0.0,1.9>
 Facing right
 
 

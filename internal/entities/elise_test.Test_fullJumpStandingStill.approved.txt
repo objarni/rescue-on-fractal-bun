@@ -13,10 +13,10 @@ Vel: <0.0,0.0>
 Facing right
 
 * Elise end state:
-Elise jumping
-HitBox [-10,2009->10,2109]
-Pos: <0.0,2009.0>
-Vel: <0.0,98.0>
+Elise standing
+HitBox [-10,419->10,519]
+Pos: <0.0,419.0>
+Vel: <0.0,38.0>
 Facing right
 
 
@@ -30,133 +30,133 @@ Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 2 *
-Entity 0 is at [-10,130->10,230]
+Entity 0 is at [-10,3->10,103]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 3 *
-Entity 0 is at [-10,230->10,330]
+Entity 0 is at [-10,8->10,108]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 4 *
-Entity 0 is at [-10,329->10,429]
+Entity 0 is at [-10,14->10,114]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 5 *
-Entity 0 is at [-10,429->10,529]
+Entity 0 is at [-10,23->10,123]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 6 *
-Entity 0 is at [-10,529->10,629]
+Entity 0 is at [-10,34->10,134]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 7 *
-Entity 0 is at [-10,628->10,728]
+Entity 0 is at [-10,46->10,146]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 8 *
-Entity 0 is at [-10,727->10,827]
+Entity 0 is at [-10,60->10,160]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 9 *
-Entity 0 is at [-10,826->10,926]
+Entity 0 is at [-10,76->10,176]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 10 *
-Entity 0 is at [-10,926->10,1026]
+Entity 0 is at [-10,94->10,194]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 11 *
-Entity 0 is at [-10,1025->10,1125]
+Entity 0 is at [-10,114->10,214]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 12 *
-Entity 0 is at [-10,1123->10,1223]
+Entity 0 is at [-10,136->10,236]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 13 *
-Entity 0 is at [-10,1222->10,1322]
+Entity 0 is at [-10,160->10,260]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 14 *
-Entity 0 is at [-10,1321->10,1421]
+Entity 0 is at [-10,186->10,286]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 15 *
-Entity 0 is at [-10,1420->10,1520]
+Entity 0 is at [-10,213->10,314]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 16 *
-Entity 0 is at [-10,1518->10,1618]
+Entity 0 is at [-10,243->10,343]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 17 *
-Entity 0 is at [-10,1616->10,1716]
+Entity 0 is at [-10,274->10,374]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 18 *
-Entity 0 is at [-10,1715->10,1815]
+Entity 0 is at [-10,308->10,408]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 19 *
-Entity 0 is at [-10,1813->10,1913]
+Entity 0 is at [-10,343->10,443]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle KeyJumpDown
 
  * Tick 20 *
-Entity 0 is at [-10,1911->10,2011]
+Entity 0 is at [-10,380->10,480]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyJumpDown [-100000,-100000->100000,100000]
 Consequences:

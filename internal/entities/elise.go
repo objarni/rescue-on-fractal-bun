@@ -20,7 +20,7 @@ type Elise struct {
 	gameTimeMs                float64
 	facingLeft                bool
 	actionDown                bool
-	jumping                   bool
+	jumping                   int // impulse must last more than 1 tick
 }
 
 func MakeElise(position px.Vec) Entity {
@@ -29,7 +29,7 @@ func MakeElise(position px.Vec) Entity {
 
 func (elise Elise) String() string {
 	generalState := "standing"
-	if elise.jumping {
+	if elise.jumping > 0 {
 		generalState = "jumping"
 	}
 	state := fmt.Sprintf("Elise %v", generalState)
@@ -95,6 +95,11 @@ func (elise Elise) Tick(gameTimeMs float64, eventBoxReceiver EventBoxReceiver) E
 	}
 
 	// Vertical acceleration
+	if elise.jumping > 0 {
+		elise.jumping -= 1
+		elise.Vel = elise.Vel.Add(px.V(0, 2))
+		elise.Pos = elise.Pos.Add(px.V(0, 1)) // Get out of any ground tile!
+	}
 	elise.Vel = elise.Vel.Add(px.V(0, eliseGravity))
 
 	// Update position from velocity
@@ -131,17 +136,14 @@ func (elise Elise) Handle(eb EventBox) Entity {
 	if eb.Event == events.KeyActionDown {
 		elise.actionDown = true
 	}
-	if eb.Event == events.KeyJumpDown && !elise.jumping {
-		elise.jumping = true
-		elise.Vel = px.V(0, 100)
-		elise.Pos = elise.Pos.Add(px.V(0, 30)) // Get out of any ground tile!
+	if eb.Event == events.KeyJumpDown && elise.jumping == 0 {
+		elise.jumping = 2
 	}
 	if eb.Event == events.Wall {
 		overlap := eb.Box.Intersect(elise.HitBox())
-		elise.jumping = false
 		h := overlap.H()
 		w := overlap.W()
-		if h > w {
+		if h > w { // hit wall horisontally
 			overlapCenterX := overlap.Center().X
 			sign := 1.0
 			if overlapCenterX > elise.Pos.X {
@@ -149,7 +151,7 @@ func (elise Elise) Handle(eb EventBox) Entity {
 			}
 			elise.Pos = elise.Pos.Add(px.V(sign*w, 0))
 			elise.Vel = px.V(0, elise.Vel.Y)
-		} else {
+		} else { // hit wall vertically (ground)
 			elise.Pos = elise.Pos.Add(px.V(0, h))
 			elise.Vel = px.V(elise.Vel.X, 0)
 		}
