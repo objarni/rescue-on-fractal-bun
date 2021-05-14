@@ -9,6 +9,7 @@ import (
 	"github.com/faiface/pixel/text"
 	"golang.org/x/image/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
+	"objarni/rescue-on-fractal-bun/internal/tweaking"
 )
 
 type MenuItem int
@@ -19,7 +20,7 @@ const (
 )
 
 type MenuScene struct {
-	cfg             *Config
+	cfg             *tweaking.Config
 	res             *internal.Resources
 	currentItem     MenuItem
 	textbox         *text.Text
@@ -27,7 +28,7 @@ type MenuScene struct {
 	quit            bool
 }
 
-func MakeMenuScene(config *Config, res *internal.Resources) *MenuScene {
+func MakeMenuScene(config *tweaking.Config, res *internal.Resources) *MenuScene {
 	return &MenuScene{
 		cfg:             config,
 		res:             res,

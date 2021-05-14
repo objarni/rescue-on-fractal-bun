@@ -10,6 +10,7 @@ import (
 	"github.com/faiface/pixel/text"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/scenes"
+	"objarni/rescue-on-fractal-bun/internal/tweaking"
 	"os"
 	"runtime/pprof"
 	"time"
@@ -31,7 +32,7 @@ func run() {
 		defer pprof.StopCPUProfile()
 	}
 
-	cfg := scenes.TryReadCfgFrom(internal.ConfigFile, scenes.Config{})
+	cfg := tweaking.TryReadCfgFrom(internal.ConfigFile, tweaking.Config{})
 	info, err := os.Stat(internal.ConfigFile)
 	internal.PanicIfError(err)
 	cfgTime := info.ModTime()
@@ -105,7 +106,7 @@ func run() {
 			if cfgTime != info.ModTime() {
 				cfgTime = info.ModTime()
 				fmt.Println("Reading ", internal.ConfigFile, " at ", time.Now().Format(time.Stamp))
-				cfg = scenes.TryReadCfgFrom(internal.ConfigFile, cfg)
+				cfg = tweaking.TryReadCfgFrom(internal.ConfigFile, cfg)
 			}
 		}
 

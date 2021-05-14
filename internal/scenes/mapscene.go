@@ -9,6 +9,7 @@ import (
 	"golang.org/x/image/colornames"
 	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
+	"objarni/rescue-on-fractal-bun/internal/tweaking"
 )
 
 /*
@@ -32,7 +33,7 @@ ovan, för att sedan bygga upp SignPosts datastrukturen.
 */
 
 type MapScene struct {
-	cfg            *Config
+	cfg            *tweaking.Config
 	res            *internal.Resources
 	hairCrossPos   px.Vec
 	hairCrossVel   px.Vec
@@ -40,7 +41,7 @@ type MapScene struct {
 	atMapSign      int
 }
 
-func MakeMapScene(cfg *Config, res *internal.Resources, mapSignName string) *MapScene {
+func MakeMapScene(cfg *tweaking.Config, res *internal.Resources, mapSignName string) *MapScene {
 	mapSignIx := lookupMapSignWithText(mapSignName, res.MapSigns)
 	return &MapScene{
 		cfg:          cfg,
