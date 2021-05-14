@@ -60,6 +60,7 @@ func (elise Elise) Tick(gameTimeMs float64, eventBoxReceiver EventBoxReceiver) E
 	eliseWalkDeceleration := 0.04 // When gliding, but not pressing a direction
 	maxHorisontalSpeed := 1.4
 	eliseGravity := -0.1
+	haltSpeed := 0.1
 
 	// Horisontal acceleration
 	horisontalSpeed := math.Abs(elise.Vel.X)
@@ -83,10 +84,10 @@ func (elise Elise) Tick(gameTimeMs float64, eventBoxReceiver EventBoxReceiver) E
 		// Slow down Elise until halt when no movement intention
 
 		// Slow enough to halt?
-		if horisontalSpeed < 0.1 {
-			elise.Vel = px.V(0, elise.Vel.Y)
-		} else {
+		if horisontalSpeed > haltSpeed {
 			elise.Vel = elise.Vel.Add(px.V(-direction*eliseWalkDeceleration, 0))
+		} else {
+			elise.Vel = px.V(0, elise.Vel.Y)
 		}
 	}
 	if math.Abs(elise.Vel.X) < maxHorisontalSpeed {
