@@ -14,8 +14,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
-      steps:
-
+    steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
         with:
