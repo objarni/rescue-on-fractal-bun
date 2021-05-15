@@ -14,6 +14,7 @@ func init() {
 	approvals.UseReporter(tests.ReportWithMeld())
 }
 
+// TODO: investigate why this tests fails sometimes
 func DontTestBuildMapSignArray(t *testing.T) {
 	var levels = map[string]Level{
 		"GhostForest": {
