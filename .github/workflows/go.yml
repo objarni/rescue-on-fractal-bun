@@ -10,49 +10,52 @@ jobs:
 
   build:
     name: Build
-    runs-on: [windows-latest, macos-10.15]
-    steps:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
+      steps:
 
-    - name: Set up Go 1.x
-      uses: actions/setup-go@v2
-      with:
-        go-version: ^1.13
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.13
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
 
-    - name: Get dependencies
-      run: go install
+      - name: Get dependencies
+        run: go install
 
-    - name: Build rescue.exe
-      run: go build -v -o rescue.exe rescue.go
+      - name: Build rescue.exe
+        run: go build -v -o rescue.exe rescue.go
 
-    - name: Build challenge1.exe
-      run: go build -v -o challenge1.exe examples/challenge1/main.go
+      - name: Build challenge1.exe
+        run: go build -v -o challenge1.exe examples/challenge1/main.go
 
-    - name: Build challenge2.exe
-      run: go build -v -o challenge2.exe examples/challenge2/main.go
+      - name: Build challenge2.exe
+        run: go build -v -o challenge2.exe examples/challenge2/main.go
 
-    - name: Build challenge3.exe
-      run: go build -v -o challenge3.exe examples/challenge3/main.go
+      - name: Build challenge3.exe
+        run: go build -v -o challenge3.exe examples/challenge3/main.go
 
-    - name: Build challenge4.exe
-      run: go build -v -o challenge4.exe examples/challenge4/main.go
+      - name: Build challenge4.exe
+        run: go build -v -o challenge4.exe examples/challenge4/main.go
 
-    - name: Build challenge6.exe
-      run: go build -v -o challenge6.exe examples/challenge6/main.go
+      - name: Build challenge6.exe
+        run: go build -v -o challenge6.exe examples/challenge6/main.go
 
-    - name: Build challenge7.exe
-      run: cd examples/challenge7 && go build -v -o ../../challenge7.exe .
+      - name: Build challenge7.exe
+        run: cd examples/challenge7 && go build -v -o ../../challenge7.exe .
 
-    - name: Test
-      run: go test -v ./...
+      - name: Test
+        run: go test -v ./...
 
-    - name: Deploy
-      uses: actions/upload-artifact@v2
-      with:
-        name: RescueBundle
-        path: |
-          *.exe
-          assets/
-          json/
+      - name: Deploy
+        uses: actions/upload-artifact@v2
+        with:
+          name: RescueBundle
+          path: |
+            *.exe
+            assets/
+            json/
