@@ -7,17 +7,20 @@ Tick count: 1
 
 * Elise start state:
 Elise Standing
-HitBox [-10,0->10,100]
-Pos: <0.0,0.0>
 Vel: <0.0,0.0>
 Facing right
+Gfx:
+Moved 0 pixels right 50 pixels up:
+  Image "IEliseWalk2"
 
 * Elise end state:
 Elise Walking
-HitBox [-10,-0->10,100]
-Pos: <-0.1,-0.1>
 Vel: <-0.1,-0.1>
 Facing left
+Gfx:
+Moved 0 pixels left 50 pixels up:
+  Mirrored around Y axis:
+    Image "IEliseWalk6"
 
 
 *** Simulation ***

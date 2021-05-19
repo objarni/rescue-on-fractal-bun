@@ -45,15 +45,14 @@ func MakeElise(position px.Vec) Entity {
 func (elise Elise) String() string {
 	generalState := elise.state.String()
 	state := fmt.Sprintf("Elise %v", generalState)
-	hb := fmt.Sprintf("HitBox %v", pr.PrintRect(elise.HitBox()))
-	pos := fmt.Sprintf("Pos: %v", pr.PrintVec(elise.Pos))
 	vel := fmt.Sprintf("Vel: %v", pr.PrintVec(elise.Vel))
+	gfx := fmt.Sprintf("Gfx:\n%s", elise.GfxOp(nil).String())
 	facing := "right"
 	if elise.facingLeft {
 		facing = "left"
 	}
 	facing = "Facing " + facing
-	all := []string{state, hb, pos, vel, facing}
+	all := []string{state, vel, facing, gfx}
 	return strings.Join(all, "\n") + "\n"
 }
 
@@ -176,10 +175,14 @@ func (elise Elise) Handle(eb EventBox) Entity {
 
 func (elise Elise) GfxOp(imageMap *internal.ImageMap) d.WinOp {
 	image := internal.IEliseWalk2
-	if elise.rightPressed || elise.leftPressed {
+	if elise.state == EliseWalking {
 		image = EliseWalkFrame(elise.gameTimeMs/1000.0, 10)
 	}
-	imgOp := d.Image((*imageMap)[image], image.String())
+	var sprite *px.Sprite = nil
+	if imageMap != nil {
+		sprite = (*imageMap)[image]
+	}
+	imgOp := d.Image(sprite, image.String())
 	if elise.facingLeft {
 		imgOp = d.Mirrored(imgOp)
 	}
