@@ -1,4 +1,4 @@
-Elise standing
+Elise Standing
 HitBox [0,20->20,120]
 Pos: <10.0,20.0>
 Vel: <0.0,0.0>

@@ -103,6 +103,8 @@ func Test_fullJumpStandingStill(t *testing.T) {
 	approvals.VerifyString(t, simulate([]EventBox{box}, 20, 0))
 }
 
+// TODO: introduce StoryBoard go style?
+
 func simulate(boxes []EventBox, ticks int, groundHeight int) string {
 	elise := MakeElise(px.V(0, 0))
 

@@ -14,6 +14,20 @@ import (
 const eliseWidth = 20.0
 const eliseHeight = 100.0
 
+type EliseState int
+
+const (
+	EliseStanding = iota
+	EliseWalking
+)
+
+func (state EliseState) String() string {
+	return []string{
+		"Standing",
+		"Walking",
+	}[state]
+}
+
 type Elise struct {
 	Pos, Vel                  px.Vec
 	leftPressed, rightPressed bool
@@ -21,17 +35,15 @@ type Elise struct {
 	facingLeft                bool
 	actionDown                bool
 	jumping                   int // impulse must last more than 1 tick
+	state                     EliseState
 }
 
 func MakeElise(position px.Vec) Entity {
-	return Elise{Pos: position}
+	return Elise{Pos: position, state: EliseStanding}
 }
 
 func (elise Elise) String() string {
-	generalState := "standing"
-	if elise.jumping > 0 {
-		generalState = "jumping"
-	}
+	generalState := elise.state.String()
 	state := fmt.Sprintf("Elise %v", generalState)
 	hb := fmt.Sprintf("HitBox %v", pr.PrintRect(elise.HitBox()))
 	pos := fmt.Sprintf("Pos: %v", pr.PrintVec(elise.Pos))
@@ -73,12 +85,15 @@ func (elise Elise) Tick(gameTimeMs float64, eventBoxReceiver EventBoxReceiver) E
 	}
 	intention := 0.0
 	if elise.leftPressed && !elise.rightPressed {
+		elise.state = EliseWalking
 		elise.facingLeft = true
 		intention = -1.0
-	}
-	if !elise.leftPressed && elise.rightPressed {
+	} else if !elise.leftPressed && elise.rightPressed {
+		elise.state = EliseWalking
 		elise.facingLeft = false
 		intention = 1.0
+	} else {
+		elise.state = EliseStanding
 	}
 	if intention == 0 {
 		// Slow down Elise until halt when no movement intention

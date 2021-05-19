@@ -6,14 +6,14 @@ Ground height: 0
 Tick count: 20
 
 * Elise start state:
-Elise standing
+Elise Standing
 HitBox [-10,0->10,100]
 Pos: <0.0,0.0>
 Vel: <0.0,0.0>
 Facing right
 
 * Elise end state:
-Elise standing
+Elise Standing
 HitBox [-10,419->10,519]
 Pos: <0.0,419.0>
 Vel: <0.0,38.0>
