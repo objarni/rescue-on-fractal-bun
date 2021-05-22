@@ -12,6 +12,7 @@ type EventBoxReceiver interface {
 
 type Entity interface {
 	GfxOp(imageMap *internal.ImageMap) d.WinOp
+	// TODO: nil from Tick means remove entity from canvas/world
 	Tick(gameTimeMs float64, ebReceiver EventBoxReceiver) Entity
 	HitBox() pixel.Rect
 	Handle(eb EventBox) Entity
