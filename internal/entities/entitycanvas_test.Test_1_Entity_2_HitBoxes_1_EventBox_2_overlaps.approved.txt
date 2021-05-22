@@ -1,0 +1,6 @@
+Entity 1 is at [0,0->10,10]
+Entity 1 is at [20,20->30,30]
+Event: Action [5,5->26,26]
+Consequences:
+- Entity 1 needs to handle Action
+- Entity 1 needs to handle Action

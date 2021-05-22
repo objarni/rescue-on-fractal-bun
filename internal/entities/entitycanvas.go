@@ -26,10 +26,10 @@ func (canvas *EntityCanvas) AddEventBox(eventBox EventBox) {
 }
 
 func (canvas *EntityCanvas) Consequences(handler func(eb EventBox, ehb EntityHitBox)) {
-	for _, eb := range canvas.EventBoxes {
-		for _, ehb := range canvas.EntityHitBoxes {
-			if eb.Box.Intersect(ehb.HitBox).Area() > 0 {
-				handler(eb, ehb)
+	for _, eventBox := range canvas.EventBoxes {
+		for _, entityHitBox := range canvas.EntityHitBoxes {
+			if eventBox.Box.Intersect(entityHitBox.HitBox).Area() > 0 {
+				handler(eventBox, entityHitBox)
 			}
 		}
 	}
