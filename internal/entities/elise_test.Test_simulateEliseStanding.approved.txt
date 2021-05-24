@@ -1,6 +1,6 @@
 *** Scenario ***
 * Events:
-KeyActionDown [-100000,-100000->100000,100000]
+NoEvent [-100000,-100000->100000,100000]
 
 Ground height: 0
 Tick count: 1
@@ -27,9 +27,7 @@ Moved 0 pixels right 50 pixels up:
  * Tick 1 *
 Entity 0 is at [-10,0->10,100]
 Event: Wall [-1000,-1000->1000,0]
-Event: KeyActionDown [-100000,-100000->100000,100000]
-Event: Action [-20,30->20,70]
+Event: NoEvent [-100000,-100000->100000,100000]
 Consequences:
-- Entity 0 needs to handle KeyActionDown
-- Entity 0 needs to handle Action
+- Entity 0 needs to handle NoEvent
 

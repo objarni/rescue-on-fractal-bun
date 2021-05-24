@@ -38,6 +38,10 @@ type Elise struct {
 	state                     EliseState
 }
 
+func (elise Elise) HitBoxes() []px.Rect {
+	panic("implement me")
+}
+
 func MakeElise(position px.Vec) Entity {
 	return Elise{Pos: position, state: EliseStanding}
 }
@@ -114,7 +118,12 @@ func (elise Elise) Tick(gameTimeMs float64, eventBoxReceiver EventBoxReceiver) E
 		elise.Vel = elise.Vel.Add(px.V(0, 2))
 		elise.Pos = elise.Pos.Add(px.V(0, 1)) // Get out of any ground tile!
 	}
-	elise.Vel = elise.Vel.Add(px.V(0, eliseGravity))
+	isGrounded := elise.Pos.Y == 0
+	if isGrounded {
+		elise.Vel = px.V(elise.Vel.X, 0)
+	} else {
+		elise.Vel = elise.Vel.Add(px.V(0, eliseGravity))
+	}
 
 	// Update position from velocity
 	elise.Pos = elise.Pos.Add(elise.Vel)

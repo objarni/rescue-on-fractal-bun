@@ -15,7 +15,7 @@ Moved 0 pixels right 50 pixels up:
 
 * Elise end state:
 Elise Walking
-Vel: <0.4,-0.1>
+Vel: <0.4,0.0>
 Facing right
 Gfx:
 Moved 1 pixels right 50 pixels up:
@@ -32,26 +32,23 @@ Consequences:
 - Entity 0 needs to handle KeyRightDown
 
  * Tick 2 *
-Entity 0 is at [-10,-0->10,100]
+Entity 0 is at [-10,0->10,100]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyRightDown [-100000,-100000->100000,100000]
 Consequences:
-- Entity 0 needs to handle Wall
 - Entity 0 needs to handle KeyRightDown
 
  * Tick 3 *
-Entity 0 is at [-10,-0->10,100]
+Entity 0 is at [-10,0->10,100]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyRightDown [-100000,-100000->100000,100000]
 Consequences:
-- Entity 0 needs to handle Wall
 - Entity 0 needs to handle KeyRightDown
 
  * Tick 4 *
-Entity 0 is at [-9,-0->11,100]
+Entity 0 is at [-9,0->11,100]
 Event: Wall [-1000,-1000->1000,0]
 Event: KeyRightDown [-100000,-100000->100000,100000]
 Consequences:
-- Entity 0 needs to handle Wall
 - Entity 0 needs to handle KeyRightDown
 

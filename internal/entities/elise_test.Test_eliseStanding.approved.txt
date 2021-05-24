@@ -1,0 +1,6 @@
+Elise Standing
+Vel: <0.0,0.0>
+Facing right
+Gfx:
+Moved 10 pixels right 70 pixels up:
+  Image "IEliseWalk2"

@@ -27,6 +27,10 @@ type Robot struct {
 	timeout  float64
 }
 
+func (robot Robot) HitBoxes() []pixel.Rect {
+	panic("implement me")
+}
+
 func (robot Robot) String() string {
 	panic("implement me")
 }

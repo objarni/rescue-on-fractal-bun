@@ -15,6 +15,7 @@ type Entity interface {
 	// TODO: nil from Tick means remove entity from canvas/world
 	Tick(gameTimeMs float64, ebReceiver EventBoxReceiver) Entity
 	HitBox() pixel.Rect
+	HitBoxes() []pixel.Rect
 	Handle(eb EventBox) Entity
 	String() string
 }

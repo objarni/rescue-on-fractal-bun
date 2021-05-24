@@ -22,9 +22,17 @@ import (
    - clicking action when mid-air
 */
 
-func Test_eliseInitial(t *testing.T) {
+func Test_eliseStanding(t *testing.T) {
 	elise := MakeElise(px.V(10, 20))
 	approvals.VerifyString(t, elise.String())
+}
+
+func Test_simulateEliseStanding(t *testing.T) {
+	box := EventBox{
+		Event: events.NoEvent,
+		Box:   rectOverlappingElise,
+	}
+	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 1, 0))
 }
 
 var rectOverlappingElise = px.R(-100000, -100000, 100000, 100000)
@@ -43,6 +51,14 @@ func Test_falling(t *testing.T) {
 		Box:   rectOverlappingElise,
 	}
 	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 10, -100))
+}
+
+func _Test_fallingToGround(t *testing.T) {
+	box := EventBox{
+		Event: events.NoEvent,
+		Box:   rectOverlappingElise,
+	}
+	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 10, -1))
 }
 
 func Test_actionWhenStanding(t *testing.T) {

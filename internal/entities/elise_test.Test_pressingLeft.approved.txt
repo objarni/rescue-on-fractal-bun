@@ -15,7 +15,7 @@ Moved 0 pixels right 50 pixels up:
 
 * Elise end state:
 Elise Walking
-Vel: <-0.1,-0.1>
+Vel: <-0.1,0.0>
 Facing left
 Gfx:
 Moved 0 pixels left 50 pixels up:
