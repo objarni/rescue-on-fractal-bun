@@ -32,7 +32,7 @@ func Test_simulateEliseStanding(t *testing.T) {
 		Event: events.NoEvent,
 		Box:   rectOverlappingElise,
 	}
-	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 1, 0))
+	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 1, MakeElise(px.V(0, 0))))
 }
 
 var rectOverlappingElise = px.R(-100000, -100000, 100000, 100000)
@@ -42,7 +42,7 @@ func Test_pressingLeft(t *testing.T) {
 		Event: events.KeyLeftDown,
 		Box:   rectOverlappingElise,
 	}
-	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 1, 0))
+	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 1, MakeElise(px.V(0, 0))))
 }
 
 func Test_falling(t *testing.T) {
@@ -50,7 +50,7 @@ func Test_falling(t *testing.T) {
 		Event: events.NoEvent,
 		Box:   rectOverlappingElise,
 	}
-	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 10, -100))
+	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 10, MakeElise(px.V(0, 5))))
 }
 
 func _Test_fallingToGround(t *testing.T) {
@@ -58,7 +58,7 @@ func _Test_fallingToGround(t *testing.T) {
 		Event: events.NoEvent,
 		Box:   rectOverlappingElise,
 	}
-	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 10, -1))
+	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 10, MakeElise(px.V(0, 1))))
 }
 
 func Test_actionWhenStanding(t *testing.T) {
@@ -66,7 +66,7 @@ func Test_actionWhenStanding(t *testing.T) {
 		Event: events.KeyActionDown,
 		Box:   rectOverlappingElise,
 	}
-	result := SimulateEliseWorld([]EventBox{box}, 1, 0)
+	result := SimulateEliseWorld([]EventBox{box}, 1, MakeElise(px.V(0, 0)))
 	approvals.VerifyString(t, result)
 }
 
@@ -76,7 +76,7 @@ func Test_walkingRight(t *testing.T) {
 		Event: events.KeyRightDown,
 		Box:   rectOverlappingElise,
 	}
-	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, ticks, 0))
+	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, ticks, MakeElise(px.V(0, 0))))
 }
 
 func Test_walkingRightIntoWall(t *testing.T) {
@@ -89,7 +89,7 @@ func Test_walkingRightIntoWall(t *testing.T) {
 		Event: events.Wall,
 		Box:   px.R(11, 0, 21, 10),
 	}
-	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box, wallBox}, ticks, 0))
+	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box, wallBox}, ticks, MakeElise(px.V(0, 0))))
 }
 
 func Test_takingDamage(t *testing.T) {
@@ -100,7 +100,7 @@ func Test_takingDamage(t *testing.T) {
 			Max: px.V(10, 10),
 		},
 	}
-	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 1, 0))
+	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 1, MakeElise(px.V(0, 0))))
 }
 
 func Test_startOfJumpWhenStandingStill(t *testing.T) {
@@ -108,7 +108,7 @@ func Test_startOfJumpWhenStandingStill(t *testing.T) {
 		Event: events.KeyJumpDown,
 		Box:   rectOverlappingElise,
 	}
-	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 1, 0))
+	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 1, MakeElise(px.V(0, 0))))
 }
 
 func Test_fullJumpStandingStill(t *testing.T) {
@@ -124,16 +124,18 @@ func Test_fullJumpStandingStill(t *testing.T) {
 		Event: events.KeyJumpDown,
 		Box:   rectOverlappingElise,
 	}
-	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 20, 0))
+	approvals.VerifyString(t, SimulateEliseWorld([]EventBox{box}, 20, MakeElise(px.V(0, 0))))
 }
 
-func SimulateEliseWorld(boxes []EventBox, ticks int, groundHeight int) string {
-	elise := MakeElise(px.V(0, 0))
+func SimulateEliseWorld(boxes []EventBox, ticks int, elise Entity) string {
+	//elise := MakeElise(px.V(0, 0))
 
 	es := make([]string, 0)
 	for _, box := range boxes {
 		es = append(es, box.String())
 	}
+
+	groundHeight := 0
 
 	scenario := fmt.Sprintf(
 		"*** Scenario ***\n"+
