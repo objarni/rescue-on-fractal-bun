@@ -44,7 +44,8 @@ func MakeLevelScene(cfg *tweaking.Config, res *internal.Resources, levelName str
 
 func SpawnEntities(pos px.Vec, level internal.Level) []entities.Entity {
 	elise := entities.MakeElise(pos)
-	es := []entities.Entity{elise}
+	levelBoundary := entities.MakeLevelBoundary(px.ZR)
+	es := []entities.Entity{elise, levelBoundary}
 	for _, esp := range level.EntitySpawnPoints {
 		if esp.EntityType == "Ghost" {
 			es = append(es, entities.MakeGhost(esp.SpawnAt))
