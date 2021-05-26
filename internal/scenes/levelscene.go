@@ -1,6 +1,7 @@
 package scenes
 
 import (
+	"errors"
 	"fmt"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
@@ -30,19 +31,26 @@ func MakeLevelScene(cfg *tweaking.Config, res *internal.Resources, levelName str
 	playerPos px.Vec) *LevelScene {
 	level := res.Levels[levelName]
 	pos := playerPos
+	enter, err := SpawnEntities(pos, level)
+	if err != nil {
+		panic(err)
+	}
 	return &LevelScene{
 		cfg:          cfg,
 		res:          res,
 		level:        level,
 		gameTimeMs:   0,
-		entities:     SpawnEntities(pos, level),
+		entities:     enter,
 		entityCanvas: entities.MakeEntityCanvas(),
 		buttonClick:  res.ButtonClick,
 		robotMoveSfx: res.RobotMove,
 	}
 }
 
-func SpawnEntities(pos px.Vec, level internal.Level) []entities.Entity {
+func SpawnEntities(pos px.Vec, level internal.Level) ([]entities.Entity, error) {
+	if level.EntitySpawnPoints == nil {
+		return nil, errors.New("boom")
+	}
 	elise := entities.MakeElise(pos)
 	levelBoundary := entities.MakeLevelBoundary(px.ZR)
 	es := []entities.Entity{elise, levelBoundary}
@@ -61,7 +69,7 @@ func SpawnEntities(pos px.Vec, level internal.Level) []entities.Entity {
 			panic("Unknown entity type: " + esp.EntityType)
 		}
 	}
-	return es
+	return es, nil
 }
 
 func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {

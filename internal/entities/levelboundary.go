@@ -14,7 +14,7 @@ func (levelBoundary LevelBoundary) HitBoxes() []px.Rect {
 }
 
 func (levelBoundary LevelBoundary) String() string {
-	panic("implement me")
+	return "Level Boundary"
 }
 
 func (levelBoundary LevelBoundary) Handle(_ EventBox) Entity {
