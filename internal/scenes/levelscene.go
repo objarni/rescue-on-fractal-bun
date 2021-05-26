@@ -52,7 +52,12 @@ func SpawnEntities(pos px.Vec, level internal.Level) ([]entities.Entity, error) 
 		return nil, errors.New("boom")
 	}
 	elise := entities.MakeElise(pos)
-	levelBoundary := entities.MakeLevelBoundary(px.ZR)
+	levelBoundary := entities.MakeLevelBoundary(px.R(
+		0,
+		0,
+		float64(level.Width*32),
+		float64(level.Height*32),
+	))
 	es := []entities.Entity{elise, levelBoundary}
 	for _, esp := range level.EntitySpawnPoints {
 		if esp.EntityType == "Ghost" {

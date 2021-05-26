@@ -4,9 +4,11 @@ import (
 	px "github.com/faiface/pixel"
 	d "github.com/objarni/pixelop"
 	"objarni/rescue-on-fractal-bun/internal"
+	"objarni/rescue-on-fractal-bun/internal/printers"
 )
 
 type LevelBoundary struct {
+	areaRect px.Rect
 }
 
 func (levelBoundary LevelBoundary) HitBoxes() []px.Rect {
@@ -14,7 +16,7 @@ func (levelBoundary LevelBoundary) HitBoxes() []px.Rect {
 }
 
 func (levelBoundary LevelBoundary) String() string {
-	return "Level Boundary"
+	return "LevelBoundary: " + printers.PrintRect(levelBoundary.areaRect)
 }
 
 func (levelBoundary LevelBoundary) Handle(_ EventBox) Entity {
@@ -33,6 +35,8 @@ func (levelBoundary LevelBoundary) GfxOp(_ *internal.ImageMap) d.WinOp {
 	return d.OpSequence()
 }
 
-func MakeLevelBoundary(_ px.Rect) Entity {
-	return LevelBoundary{}
+func MakeLevelBoundary(areaRect px.Rect) Entity {
+	return LevelBoundary{
+		areaRect: areaRect,
+	}
 }

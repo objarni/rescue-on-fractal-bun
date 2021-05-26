@@ -28,6 +28,8 @@ func Example_emptyLevelHiFi() {
 	pos := px.V(0, 0)
 	level := internal.Level{
 		EntitySpawnPoints: []internal.EntitySpawnPoint{},
+		Width:             30,
+		Height:            20,
 	}
 	res, _ := SpawnEntities(pos, level)
 	for _, esp := range res {
@@ -41,6 +43,5 @@ func Example_emptyLevelHiFi() {
 	// Moved 0 pixels right 50 pixels up:
 	//   Image "IEliseWalk2"
 	//
-	// Level Boundary
-	//
+	// LevelBoundary: [0,0->960,640]
 }
