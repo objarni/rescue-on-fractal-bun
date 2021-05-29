@@ -1,0 +1,4 @@
+WinOp Sequence:
+  WinOp from ImdOp:
+    ImdOp Sequence:
+      Rectangle from Vec(0, 1) to Vec(0, 3) thickness 2

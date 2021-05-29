@@ -166,7 +166,7 @@ func (elise Elise) Handle(eb EventBox) Entity {
 		overlap := eb.Box.Intersect(elise.HitBox())
 		h := overlap.H()
 		w := overlap.W()
-		if h > w { // hit wall horisontally
+		if h > w { // hit wall horizontally
 			overlapCenterX := overlap.Center().X
 			sign := 1.0
 			if overlapCenterX > elise.Pos.X {
