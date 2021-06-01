@@ -75,6 +75,12 @@ func run() {
 	keyMap[pixelgl.KeySpace] = internal.Jump
 	keyMap[pixelgl.KeyRightControl] = internal.Action
 
+	keyMap[pixelgl.KeyW] = internal.Up
+	keyMap[pixelgl.KeyS] = internal.Down
+	keyMap[pixelgl.KeyA] = internal.Left
+	keyMap[pixelgl.KeyD] = internal.Right
+	keyMap[pixelgl.KeyEnter] = internal.Action
+
 	padMap := make(map[pixelgl.GamepadButton]internal.ControlKey)
 	padMap[pixelgl.ButtonDpadUp] = internal.Up
 	padMap[pixelgl.ButtonDpadDown] = internal.Down
