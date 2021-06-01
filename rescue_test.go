@@ -44,18 +44,19 @@ But the number of ticks is!
    1 ticks 0.1 leftover
    0 ticks 4.2 leftover
    1 tick 0.3 leftover
-- stepping through 3 frames with 200 logical fps, and delats 11,5,5
+- stepping through 3 frames with 200 logical fps, and deltas 11,5,5
   should give 2, 1, 1 and 1 left over ms.
-- stepping through 3 frames with 200 logical fps, and delats 11,5,5
+- stepping through 3 frames with 200 logical fps, and deltas 11,5,5
   should give 2, 1, 1 and 1 left over ms.
 */
 
 func Example_scenarioOne() {
+	lengthOfTickInMS := 5.0
 	deltas := []float64{5.1, 4.1, 1.1}
 	accumulator := 0.0
 	ticks := 0
 	for _, delta := range deltas {
-		accumulator, ticks = gameTimeSteps(accumulator, delta)
+		accumulator, ticks = gameTimeSteps(accumulator, delta, lengthOfTickInMS)
 		fmt.Printf("%v ticks %1.1f leftover\n", ticks, accumulator)
 	}
 
@@ -63,4 +64,21 @@ func Example_scenarioOne() {
 	// 1 ticks 0.1 leftover
 	// 0 ticks 4.2 leftover
 	// 1 ticks 0.3 leftover
+}
+
+func Example_scenarioOne_lengthOfTickInMS100() {
+	lengthOfTickInMS := 100.0
+	deltas := []float64{5.1, 4.1, 1.1, 100.0}
+	accumulator := 0.0
+	ticks := 0
+	for _, delta := range deltas {
+		accumulator, ticks = gameTimeSteps(accumulator, delta, lengthOfTickInMS)
+		fmt.Printf("%v ticks %1.1f leftover\n", ticks, accumulator)
+	}
+
+	// Output:
+	// 0 ticks 5.1 leftover
+	// 0 ticks 9.2 leftover
+	// 0 ticks 10.3 leftover
+	// 1 ticks 10.3 leftover
 }

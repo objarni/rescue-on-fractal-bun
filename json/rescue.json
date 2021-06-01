@@ -1,5 +1,5 @@
 {
-  "ShowEntityCanvas": false,
+  "ShowEntityCanvas": true,
   "MapSceneBlinkSpeed": 60,
   "MapSceneCrosshairSpeed": 3,
   "MapSceneLocationTextX": 6,
@@ -9,5 +9,6 @@
   "MapSceneTargetLocCircleRadius": 11,
   "MapSceneTargetLocMaxDistance": 30,
   "LevelSceneMoveSpeed": 1.2,
-  "LevelSceneEliseFPS": 10
+  "LevelSceneEliseFPS": 10,
+  "LengthOfTickInMS": 5
 }

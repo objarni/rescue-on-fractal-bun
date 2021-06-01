@@ -18,6 +18,7 @@ type Config struct {
 	MapSceneTargetLocMaxDistance   int
 	LevelSceneMoveSpeed            float64
 	LevelSceneEliseFPS             int
+	LengthOfTickInMS               float64
 }
 
 func TryReadCfgFrom(filename string, defaultCfg Config) Config {

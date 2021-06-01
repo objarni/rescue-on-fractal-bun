@@ -142,7 +142,7 @@ func run() {
 		deltaMs := 1000.0 * timeNow.Sub(timePrev).Seconds()
 		timePrev = timeNow
 		var steps int
-		accumulatedMs, steps = gameTimeSteps(accumulatedMs, deltaMs)
+		accumulatedMs, steps = gameTimeSteps(accumulatedMs, deltaMs, cfg.LengthOfTickInMS)
 		for i := 0; i < steps; i++ {
 			if !scene.Tick() {
 				win.SetClosed(true)
@@ -220,10 +220,10 @@ func main() {
 	pixelgl.Run(run)
 }
 
-func gameTimeSteps(accumulated float64, deltaMs float64) (float64, int) {
+func gameTimeSteps(accumulated float64, deltaMs float64, lengthOfTickInMS float64) (float64, int) {
 	// How many whole ticks can we step?
 	accumulated += deltaMs
-	steps := int(accumulated / 5) // 200 logical frames per second
-	accumulated -= float64(steps * 5)
+	steps := int(accumulated / lengthOfTickInMS) // 200 logical frames per second
+	accumulated -= float64(steps) * lengthOfTickInMS
 	return accumulated, steps
 }
