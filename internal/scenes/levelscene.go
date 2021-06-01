@@ -185,9 +185,10 @@ func rectDrawOp(r px.Rect) d.ImdOp {
 
 func (scene *LevelScene) entityOp() d.WinOp {
 	ops := make([]d.WinOp, 0)
-	for _, entity := range scene.entities {
+	for _, entity := range scene.entities[1:] {
 		ops = append(ops, entity.GfxOp(&scene.res.ImageMap))
 	}
+	ops = append(ops, scene.entities[0].GfxOp(&scene.res.ImageMap))
 	return d.OpSequence(ops...)
 }
 
