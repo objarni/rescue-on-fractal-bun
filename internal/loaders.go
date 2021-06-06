@@ -32,11 +32,16 @@ func LoadSprite(path string) (*px.Sprite, error) {
 	if err != nil {
 		return nil, err
 	}
+	sprite := SpriteFromImage(img)
+	return sprite, nil
+}
+
+func SpriteFromImage(img image.Image) *px.Sprite {
 	pic := px.PictureDataFromImage(img)
 	dim := img.Bounds().Max
 	frame := px.R(0, 0, float64(dim.X), float64(dim.Y))
 	sprite := px.NewSprite(pic, frame)
-	return sprite, nil
+	return sprite
 }
 
 func LoadSpriteForSure(path string) *px.Sprite {
