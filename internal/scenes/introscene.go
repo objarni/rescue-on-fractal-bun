@@ -1,7 +1,7 @@
 package scenes
 
 import (
-	"github.com/faiface/pixel"
+	px "github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"golang.org/x/image/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
@@ -35,7 +35,10 @@ func (introScene *IntroScene) HandleKeyUp(_ internal.ControlKey) internal.Thing 
 func (introScene *IntroScene) Render(win *pixelgl.Window) {
 	win.Clear(colornames.Black)
 	sprite := introScene.gif.Frames[introScene.frame]
-	sprite.Draw(win, pixel.IM.Moved(sprite.Frame().Center()))
+	sprite.Draw(win,
+		px.IM.Moved(
+			sprite.Frame().Center()).Scaled(
+			px.V(400, 300), 0.1))
 }
 
 // Tick TODO: Why is Tick still mutating?
