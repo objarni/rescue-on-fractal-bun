@@ -8,6 +8,7 @@ import (
 	px "github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
+	"math"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/scenes"
 	"objarni/rescue-on-fractal-bun/internal/tweaking"
@@ -137,6 +138,25 @@ func run() {
 				scene = scene.HandleKeyUp(control)
 			}
 		}
+		// the gamepads analog stick has two axis: left-right and
+		analogXAxis := win.JoystickAxis(pixelgl.Joystick1, pixelgl.AxisLeftX)
+		analogYAxis := win.JoystickAxis(pixelgl.Joystick1, pixelgl.AxisLeftY)
+		analogInUse := false
+		if math.Abs(analogYAxis) > 0.5 || math.Abs(analogXAxis) > 0.5 {
+			analogInUse = true
+		}
+		//analogJoystick.SetXAxis(analogXAxis)
+		//analogJoystick.SetYAxis(analogYAxis)
+		//keyDowns := analogJoystick.()
+		//for keyDown := range keyDowns {
+		//	scene = scene.HandleKeyDown(keyDown)
+		//}
+		//analo
+		//if analogJoystick.shouldTriggerLeft() {
+		//	scene = scene.Handle
+		//}
+		//fmt.Println(analogXAxis)
+		//fmt.Println(analogYAxis)
 
 		timeNow := time.Now()
 		deltaMs := 1000.0 * timeNow.Sub(timePrev).Seconds()
@@ -151,6 +171,12 @@ func run() {
 
 		start := time.Now()
 		scene.Render(win)
+
+		// Inform user Analog Stick not usable!
+		if analogInUse {
+			sprite := res.ImageMap[internal.IUseDPAD]
+			sprite.Draw(win, px.IM.Moved(win.Bounds().Center()))
+		}
 		win.Update()
 		duration := time.Since(start)
 		// Only update FPS every 10th tick
@@ -208,6 +234,7 @@ func loadResources() internal.Resources {
 		internal.IButton:               internal.LoadSpriteForSure("assets/TButton.png"),
 		internal.IStreetLight:          internal.LoadSpriteForSure("assets/TStreetLight.png"),
 		internal.ISpider:               internal.LoadSpriteForSure("assets/TSpider.png"),
+		internal.IUseDPAD:              internal.LoadSpriteForSure("assets/TUseDPAD.png"),
 		internal.IRobot1:               internal.LoadSpriteForSure("assets/TRobot1.png"),
 	}
 	if len(res.ImageMap) < int(internal.AfterLastImage) {

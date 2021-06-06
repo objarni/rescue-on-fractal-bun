@@ -45,6 +45,7 @@ const (
 	IStreetLight
 	ISpider
 	IRobot1
+	IUseDPAD
 	AfterLastImage
 )
 
@@ -73,6 +74,7 @@ func (image Image) String() string {
 		"IStreetLight",
 		"ISpider",
 		"IRobot1",
+		"IUseDPAD",
 		"AfterLastImage",
 	}[image]
 }
