@@ -1,9 +1,11 @@
-package internal
+package internal_test
 
 import (
 	"fmt"
 	approvals "github.com/approvals/go-approval-tests"
 	"github.com/bcvery1/tilepix"
+	"objarni/rescue-on-fractal-bun/internal"
+	"objarni/rescue-on-fractal-bun/internal/printers"
 	"objarni/rescue-on-fractal-bun/tests"
 	"strings"
 	"testing"
@@ -14,7 +16,7 @@ func templateThis(format string, args ...string) string {
 	return r.Replace(format)
 }
 
-func levelToString(level Level) string {
+func levelToString(level internal.Level) string {
 	mapPoints := mapPointsToString(level.SignPosts)
 	entities := entitySpawnPointsToString(level.EntitySpawnPoints)
 	levelString := templateThis(
@@ -44,7 +46,7 @@ func levelToString(level Level) string {
 	return levelString
 }
 
-func entitySpawnPointsToString(spawnPoints []EntitySpawnPoint) string {
+func entitySpawnPointsToString(spawnPoints []internal.EntitySpawnPoint) string {
 	result := ""
 	for _, esp := range spawnPoints {
 		result += fmt.Sprintf("'%v' at %v\n", esp.EntityType, esp.SpawnAt)
@@ -52,7 +54,7 @@ func entitySpawnPointsToString(spawnPoints []EntitySpawnPoint) string {
 	return result
 }
 
-func mapPointsToString(points []SignPost) string {
+func mapPointsToString(points []internal.SignPost) string {
 	s := ""
 	for _, mp := range points {
 		s += fmt.Sprintf("'%v' at %1.0f, %1.0f\n", mp.Text, mp.Pos.X, mp.Pos.Y)
@@ -65,14 +67,14 @@ func toString(v interface{}) string {
 }
 
 func Test_loadingSimpleButCompleteLevel(t *testing.T) {
-	level := LoadLevel("../testdata/MiniLevel.tmx")
+	level := internal.LoadLevel("../testdata/MiniLevel.tmx")
 	approvals.VerifyString(t, levelToString(level)+"\n")
 }
 
 func Example_loadingBrokenLevel() {
 	brokenLevelPath := "../testdata/BrokenLevel.tmx"
 	brokenLevel, _ := tilepix.ReadFile(brokenLevelPath)
-	_ = ValidateLevel(brokenLevelPath, brokenLevel)
+	_ = internal.ValidateLevel(brokenLevelPath, brokenLevel)
 	// Output:
 	// ../testdata/BrokenLevel.tmx contains the following errors:
 	// There is no Background layer
@@ -85,6 +87,14 @@ func Example_loadingBrokenLevel() {
 	// "Object Layer 1"
 	// The BackgroundColor should be on web-color format #RRGGBB, instead I found:
 	// ""
+}
+
+func Example_loadGif() {
+	gifData := internal.LoadGif("../testdata/example.gif")
+	fmt.Println(printers.PrintGifData(gifData))
+	// Output:
+	// There are 18 images.
+	// The images are 3559 x 2000 big.
 }
 
 func init() {

@@ -10,6 +10,7 @@ import (
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
 	"image"
+	"image/gif"
 	_ "image/jpeg"
 	_ "image/png"
 	"io/ioutil"
@@ -179,5 +180,27 @@ func ParseLevel(level *tilepix.Map) Level {
 		TilepixMap:        level,
 		ClearColor:        color,
 		EntitySpawnPoints: entitySpawnPoints,
+	}
+}
+
+type GifData struct {
+	Frames int
+	W, H   int
+}
+
+func LoadGif(path string) GifData {
+	file, err := os.Open(path)
+	PanicIfError(err)
+	if err != nil {
+		panic(err)
+	}
+	g, err := gif.DecodeAll(file)
+	PanicIfError(err)
+
+	extents := g.Image[0].Bounds().Max
+	return GifData{
+		Frames: len(g.Image),
+		W:      extents.X,
+		H:      extents.Y,
 	}
 }
