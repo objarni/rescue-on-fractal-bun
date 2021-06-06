@@ -184,8 +184,9 @@ func ParseLevel(level *tilepix.Map) Level {
 }
 
 type GifData struct {
-	Frames int
-	W, H   int
+	FrameCount int
+	W, H       int
+	Images     []*image.Image
 }
 
 func LoadGif(path string) GifData {
@@ -197,10 +198,20 @@ func LoadGif(path string) GifData {
 	g, err := gif.DecodeAll(file)
 	PanicIfError(err)
 
+	images := make([]*image.Image, 0)
+	for _, paletted := range g.Image {
+		img := paletted.SubImage(paletted.Bounds())
+		images = append(images, &img)
+	}
 	extents := g.Image[0].Bounds().Max
 	return GifData{
-		Frames: len(g.Image),
-		W:      extents.X,
-		H:      extents.Y,
+		FrameCount: len(g.Image),
+		W:          extents.X,
+		H:          extents.Y,
+		Images:     images,
 	}
 }
+
+// TODO: This file has so many dependencies.
+//  I think it should split on types, and the LoadXYZ functions
+//  become a convention of those packages instead
