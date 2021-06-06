@@ -75,11 +75,12 @@ func (lb LevelBoundary) GfxOp(_ *internal.ImageMap) d.WinOp {
 }
 
 func (lb LevelBoundary) borderRectangles() []px.Rect {
+	thickness := 50.0
 	return []px.Rect{
-		{Min: lb.bottomLeft().Add(px.V(-1, 0)), Max: lb.topLeft()},
-		{Min: lb.topLeft().Add(px.V(0, -1)), Max: lb.topRight()},
-		{Max: lb.topRight().Add(px.V(1, 0)), Min: lb.bottomRight()},
-		{Min: lb.bottomLeft().Add(px.V(0, -1)), Max: lb.bottomRight()},
+		{Min: lb.bottomLeft().Add(px.V(-thickness, 0)), Max: lb.topLeft()},
+		{Min: lb.topLeft(), Max: lb.topRight().Add(px.V(0, thickness))},
+		{Max: lb.topRight().Add(px.V(thickness, 0)), Min: lb.bottomRight()},
+		{Min: lb.bottomLeft().Add(px.V(0, -thickness)), Max: lb.bottomRight()},
 	}
 }
 
