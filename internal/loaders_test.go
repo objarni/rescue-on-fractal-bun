@@ -95,7 +95,6 @@ func Example_loadGif() {
 	// Output:
 	// There are 18 images.
 	// The images are 3559 x 2000 big.
-	// The color of 0, 0 in image 0 is {104 69 54 255}
 }
 
 func init() {

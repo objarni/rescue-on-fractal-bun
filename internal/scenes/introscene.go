@@ -34,7 +34,7 @@ func (introScene *IntroScene) HandleKeyUp(_ internal.ControlKey) internal.Thing 
 
 func (introScene *IntroScene) Render(win *pixelgl.Window) {
 	win.Clear(colornames.Black)
-	sprite := internal.SpriteFromImage(*introScene.gif.Images[introScene.frame])
+	sprite := introScene.gif.Frames[introScene.frame]
 	sprite.Draw(win, pixel.IM.Moved(sprite.Frame().Center()))
 }
 

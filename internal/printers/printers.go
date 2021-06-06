@@ -20,14 +20,10 @@ func PrintVec(v pixel.Vec) string {
 }
 
 func PrintGifData(gifData internal.GifData) string {
-	image0 := *gifData.Images[0]
-	pixel00 := image0.At(0, 0)
 	return fmt.Sprintf(
-		"There are %d images.\nThe images are %d x %d big.\n"+
-			"The color of 0, 0 in image 0 is %v",
+		"There are %d images.\nThe images are %d x %d big.\n",
 		gifData.FrameCount,
 		gifData.W,
 		gifData.H,
-		pixel00,
 	)
 }

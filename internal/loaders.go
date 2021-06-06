@@ -190,8 +190,8 @@ func ParseLevel(level *tilepix.Map) Level {
 
 type GifData struct {
 	FrameCount int
+	Frames     []*px.Sprite
 	W, H       int
-	Images     []*image.Image
 }
 
 func LoadGif(path string) GifData {
@@ -203,17 +203,18 @@ func LoadGif(path string) GifData {
 	g, err := gif.DecodeAll(file)
 	PanicIfError(err)
 
-	images := make([]*image.Image, 0)
+	sprites := make([]*px.Sprite, 0)
 	for _, paletted := range g.Image {
 		img := paletted.SubImage(paletted.Bounds())
-		images = append(images, &img)
+		sprite := SpriteFromImage(img)
+		sprites = append(sprites, sprite)
 	}
 	extents := g.Image[0].Bounds().Max
 	return GifData{
 		FrameCount: len(g.Image),
+		Frames:     sprites,
 		W:          extents.X,
 		H:          extents.Y,
-		Images:     images,
 	}
 }
 
