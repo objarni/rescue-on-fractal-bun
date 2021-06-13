@@ -189,9 +189,10 @@ func ParseLevel(level *tilepix.Map) Level {
 }
 
 type GifData struct {
-	FrameCount int
-	Frames     []*px.Sprite
-	W, H       int
+	FrameCount     int
+	Frames         []*px.Sprite
+	W, H           int
+	DisplayFrameMs int
 }
 
 func LoadGif(path string) GifData {
@@ -211,10 +212,11 @@ func LoadGif(path string) GifData {
 	}
 	extents := g.Image[0].Bounds().Max
 	return GifData{
-		FrameCount: len(g.Image),
-		Frames:     sprites,
-		W:          extents.X,
-		H:          extents.Y,
+		FrameCount:     len(g.Image),
+		Frames:         sprites,
+		W:              extents.X,
+		H:              extents.Y,
+		DisplayFrameMs: 10 * g.Delay[0],
 	}
 }
 

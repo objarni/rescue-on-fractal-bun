@@ -21,9 +21,12 @@ func PrintVec(v pixel.Vec) string {
 
 func PrintGifData(gifData internal.GifData) string {
 	return fmt.Sprintf(
-		"There are %d images.\nThe images are %d x %d big.\n",
+		"There are %d images.\n"+
+			"The images are %d x %d big.\n"+
+			"The display time per frame is %d ms.\n",
 		gifData.FrameCount,
 		gifData.W,
 		gifData.H,
+		gifData.DisplayFrameMs,
 	)
 }

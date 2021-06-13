@@ -180,7 +180,7 @@ func run() {
 		}
 		win.Update()
 		duration := time.Since(start)
-		// Only update FPS every 10th tick
+		// Only update DisplayFrameMs every 10th tick
 		fpsCounter++
 		if fpsCounter == 40 {
 			res.FPS = computeFPS(duration)

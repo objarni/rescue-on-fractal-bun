@@ -95,6 +95,7 @@ func Example_loadGif() {
 	// Output:
 	// There are 18 images.
 	// The images are 3559 x 2000 big.
+	// The display time per frame is 100 ms.
 }
 
 func init() {

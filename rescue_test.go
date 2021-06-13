@@ -10,7 +10,7 @@ in milliseconds, but in a frame-based manner.
 We want frame-rate-independent animation, so that
 on a screen resolution with 60 Hz the game plays
 at same speed as on a 75 Hz, or if the graphics
-stutters at some point, and drops to 25-30 FPS,
+stutters at some point, and drops to 25-30 DisplayFrameMs,
 the speed of the game is unaffected (except the
 user experience which will be worse, including
 reaction time, but that is outside of scope).
