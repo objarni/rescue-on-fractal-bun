@@ -7,6 +7,8 @@ import (
 	"objarni/rescue-on-fractal-bun/internal/tweaking"
 )
 
+// TODO: Use animation structure/functions instead
+//  of re-doing it custom made here in intro scene!
 type IntroScene struct {
 	gif              internal.GifData
 	cfg              *tweaking.Config
@@ -33,7 +35,6 @@ func (introScene *IntroScene) HandleKeyUp(_ internal.ControlKey) internal.Thing 
 }
 
 func (introScene *IntroScene) Render(win *pixelgl.Window) {
-	//win.Clear(colornames.Black)
 	sprite := introScene.gif.Frames[introScene.frame]
 	sprite.Draw(win,
 		px.IM.Moved(
