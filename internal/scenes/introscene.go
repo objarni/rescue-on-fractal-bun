@@ -3,16 +3,16 @@ package scenes
 import (
 	px "github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
-	"golang.org/x/image/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/tweaking"
 )
 
 type IntroScene struct {
-	gif   internal.GifData
-	cfg   *tweaking.Config
-	res   *internal.Resources
-	frame int
+	gif              internal.GifData
+	cfg              *tweaking.Config
+	res              *internal.Resources
+	frame            int
+	frameDisplayTime int
 }
 
 func MakeIntroScene(config *tweaking.Config, res *internal.Resources) *IntroScene {
@@ -33,7 +33,7 @@ func (introScene *IntroScene) HandleKeyUp(_ internal.ControlKey) internal.Thing 
 }
 
 func (introScene *IntroScene) Render(win *pixelgl.Window) {
-	win.Clear(colornames.Black)
+	//win.Clear(colornames.Black)
 	sprite := introScene.gif.Frames[introScene.frame]
 	sprite.Draw(win,
 		px.IM.Moved(
@@ -43,9 +43,14 @@ func (introScene *IntroScene) Render(win *pixelgl.Window) {
 
 // Tick TODO: Why is Tick still mutating?
 func (introScene *IntroScene) Tick() bool {
-	introScene.frame = introScene.frame + 1
-	if introScene.frame >= introScene.gif.FrameCount {
-		introScene.frame = 0
+	// Switch frame?
+	introScene.frameDisplayTime += internal.TickTimeMs
+	if introScene.frameDisplayTime > introScene.gif.DisplayFrameMs {
+		introScene.frameDisplayTime -= introScene.gif.DisplayFrameMs
+		introScene.frame = introScene.frame + 1
+		if introScene.frame >= introScene.gif.FrameCount {
+			introScene.frame = 0
+		}
 	}
 	return true
 }
