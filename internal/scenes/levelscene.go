@@ -27,6 +27,10 @@ type LevelScene struct {
 	robotMoveSfx *beep.Buffer
 }
 
+func (scene *LevelScene) WantToExitProgram() bool {
+	return false
+}
+
 func MakeLevelScene(cfg *tweaking.Config, res *internal.Resources, levelName string,
 	playerPos px.Vec) *LevelScene {
 	level := res.Levels[levelName]

@@ -41,6 +41,10 @@ type MapScene struct {
 	atMapSign      int
 }
 
+func (scene *MapScene) WantToExitProgram() bool {
+	return false
+}
+
 func MakeMapScene(cfg *tweaking.Config, res *internal.Resources, mapSignName string) *MapScene {
 	mapSignIx := lookupMapSignWithText(mapSignName, res.MapSigns)
 	return &MapScene{

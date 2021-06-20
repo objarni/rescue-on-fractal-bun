@@ -18,6 +18,10 @@ type IntroScene struct {
 	frameDisplayTime int
 }
 
+func (introScene *IntroScene) WantToExitProgram() bool {
+	return false
+}
+
 func MakeIntroScene(config *tweaking.Config, res *internal.Resources) *IntroScene {
 	return &IntroScene{
 		gif:   internal.LoadGif("testdata/example3.gif"),

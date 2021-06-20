@@ -28,6 +28,10 @@ type MenuScene struct {
 	quit            bool
 }
 
+func (menuScene *MenuScene) WantToExitProgram() bool {
+	return false
+}
+
 func MakeMenuScene(config *tweaking.Config, res *internal.Resources) *MenuScene {
 	return &MenuScene{
 		cfg:             config,

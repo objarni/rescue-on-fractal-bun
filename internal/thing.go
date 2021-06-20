@@ -12,4 +12,5 @@ type Thing interface {
 	HandleKeyUp(key ControlKey) Thing
 	Render(win *pixelgl.Window)
 	Tick() bool
+	WantToExitProgram() bool
 }
