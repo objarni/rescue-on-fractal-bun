@@ -2,7 +2,7 @@
 * Events:
 NoEvent [-100000,-100000->100000,100000]
 
-Ground height: -100
+Ground height: 0
 Tick count: 10
 
 * Elise start state:
@@ -10,7 +10,7 @@ Elise Standing
 Vel: <0.0,0.0>
 Facing right
 Gfx:
-Moved 0 pixels right 50 pixels up:
+Moved 0 pixels right 55 pixels up:
   Image "IEliseWalk2"
 
 * Elise end state:
@@ -18,78 +18,78 @@ Elise Standing
 Vel: <0.0,-1.0>
 Facing right
 Gfx:
-Moved 0 pixels right 44 pixels up:
+Moved 0 pixels right 50 pixels up:
   Image "IEliseWalk2"
 
 
 *** Simulation ***
 
  * Tick 1 *
-Entity 0 is at [-10,0->10,100]
-Event: Wall [-1000,-1100->1000,-100]
+Entity 0 is at [-10,5->10,105]
+Event: Wall [-1000,-1000->1000,0]
 Event: NoEvent [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle NoEvent
 
  * Tick 2 *
-Entity 0 is at [-10,-0->10,100]
-Event: Wall [-1000,-1100->1000,-100]
+Entity 0 is at [-10,5->10,105]
+Event: Wall [-1000,-1000->1000,0]
 Event: NoEvent [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle NoEvent
 
  * Tick 3 *
-Entity 0 is at [-10,-0->10,100]
-Event: Wall [-1000,-1100->1000,-100]
+Entity 0 is at [-10,5->10,105]
+Event: Wall [-1000,-1000->1000,0]
 Event: NoEvent [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle NoEvent
 
  * Tick 4 *
-Entity 0 is at [-10,-1->10,99]
-Event: Wall [-1000,-1100->1000,-100]
+Entity 0 is at [-10,4->10,104]
+Event: Wall [-1000,-1000->1000,0]
 Event: NoEvent [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle NoEvent
 
  * Tick 5 *
-Entity 0 is at [-10,-1->10,99]
-Event: Wall [-1000,-1100->1000,-100]
+Entity 0 is at [-10,4->10,104]
+Event: Wall [-1000,-1000->1000,0]
 Event: NoEvent [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle NoEvent
 
  * Tick 6 *
-Entity 0 is at [-10,-2->10,98]
-Event: Wall [-1000,-1100->1000,-100]
+Entity 0 is at [-10,4->10,104]
+Event: Wall [-1000,-1000->1000,0]
 Event: NoEvent [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle NoEvent
 
  * Tick 7 *
-Entity 0 is at [-10,-2->10,98]
-Event: Wall [-1000,-1100->1000,-100]
+Entity 0 is at [-10,3->10,103]
+Event: Wall [-1000,-1000->1000,0]
 Event: NoEvent [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle NoEvent
 
  * Tick 8 *
-Entity 0 is at [-10,-3->10,97]
-Event: Wall [-1000,-1100->1000,-100]
+Entity 0 is at [-10,2->10,102]
+Event: Wall [-1000,-1000->1000,0]
 Event: NoEvent [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle NoEvent
 
  * Tick 9 *
-Entity 0 is at [-10,-4->10,96]
-Event: Wall [-1000,-1100->1000,-100]
+Entity 0 is at [-10,1->10,101]
+Event: Wall [-1000,-1000->1000,0]
 Event: NoEvent [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle NoEvent
 
  * Tick 10 *
-Entity 0 is at [-10,-4->10,96]
-Event: Wall [-1000,-1100->1000,-100]
+Entity 0 is at [-10,1->10,100]
+Event: Wall [-1000,-1000->1000,0]
 Event: NoEvent [-100000,-100000->100000,100000]
 Consequences:
 - Entity 0 needs to handle NoEvent

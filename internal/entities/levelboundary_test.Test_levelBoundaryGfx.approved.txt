@@ -1,4 +1,8 @@
 WinOp Sequence:
   WinOp from ImdOp:
-    ImdOp Sequence:
-      Rectangle from Vec(0, 1) to Vec(0, 3) thickness 2
+    Color {127 255 212 255}:
+      ImdOp Sequence:
+        Rectangle from Vec(0, 1) to Vec(0, 3) thickness 2
+        Rectangle from Vec(0, 3) to Vec(2, 3) thickness 2
+        Rectangle from Vec(2, 3) to Vec(2, 1) thickness 2
+        Rectangle from Vec(2, 1) to Vec(0, 1) thickness 2
