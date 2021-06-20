@@ -139,26 +139,6 @@ func run() {
 				scene = scene.HandleKeyUp(control)
 			}
 		}
-		// the gamepads analog stick has two axis: left-right and
-		analogXAxis := win.JoystickAxis(pixelgl.Joystick1, pixelgl.AxisLeftX)
-		analogYAxis := win.JoystickAxis(pixelgl.Joystick1, pixelgl.AxisLeftY)
-		analogInUse := false
-		if math.Abs(analogYAxis) > 0.5 || math.Abs(analogXAxis) > 0.5 {
-			analogInUse = true
-		}
-		//analogJoystick.SetXAxis(analogXAxis)
-		//analogJoystick.SetYAxis(analogYAxis)
-		//keyDowns := analogJoystick.()
-		//for keyDown := range keyDowns {
-		//	scene = scene.HandleKeyDown(keyDown)
-		//}
-		//analo
-		//if analogJoystick.shouldTriggerLeft() {
-		//	scene = scene.Handle
-		//}
-		//fmt.Println(analogXAxis)
-		//fmt.Println(analogYAxis)
-
 		timeNow := time.Now()
 		deltaMs := 1000.0 * timeNow.Sub(timePrev).Seconds()
 		timePrev = timeNow
@@ -173,13 +153,14 @@ func run() {
 		start := time.Now()
 		scene.Render(win)
 
-		// Inform user Analog Stick not usable!
-		if analogInUse {
+		if isAnalogJoystickDisplaced(win) {
 			sprite := res.ImageMap[internal.IUseDPAD]
 			sprite.Draw(win, px.IM.Moved(win.Bounds().Center()))
 		}
+
 		win.Update()
 		duration := time.Since(start)
+
 		// Only update DisplayFrameMs every 10th tick
 		fpsCounter++
 		if fpsCounter == 40 {
@@ -189,6 +170,16 @@ func run() {
 
 		time.Sleep(time.Millisecond * 5)
 	}
+}
+
+func isAnalogJoystickDisplaced(win *pixelgl.Window) bool {
+	analogXAxis := win.JoystickAxis(pixelgl.Joystick1, pixelgl.AxisLeftX)
+	analogYAxis := win.JoystickAxis(pixelgl.Joystick1, pixelgl.AxisLeftY)
+	displaced := false
+	if math.Abs(analogYAxis) > 0.5 || math.Abs(analogXAxis) > 0.5 {
+		displaced = true
+	}
+	return displaced
 }
 
 func computeFPS(renderTime time.Duration) float64 {
