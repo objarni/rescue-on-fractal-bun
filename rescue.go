@@ -104,19 +104,7 @@ func run() {
 		}
 
 		// Tweak system
-		info, err := os.Stat(internal.ConfigFile)
-
-		if err != nil {
-			fmt.Printf("could not stat config file skipping config %v\n", internal.ConfigFile)
-		} else {
-			//	internal.PanicIfError(err)
-
-			if cfgTime != info.ModTime() {
-				cfgTime = info.ModTime()
-				fmt.Println("Reading ", internal.ConfigFile, " at ", time.Now().Format(time.Stamp))
-				cfg = tweaking.TryReadCfgFrom(internal.ConfigFile, cfg)
-			}
-		}
+		cfg = maybeReloadConfig(cfgTime, cfg)
 
 		// Keyboard control
 		for key, control := range keyMap {
@@ -170,6 +158,20 @@ func run() {
 
 		time.Sleep(time.Millisecond * 5)
 	}
+}
+
+func maybeReloadConfig(cfgTime time.Time, cfg tweaking.Config) tweaking.Config {
+	info, err := os.Stat(internal.ConfigFile)
+	if err != nil {
+		fmt.Printf("could not stat config file skipping config %v\n", internal.ConfigFile)
+	} else {
+		if cfgTime != info.ModTime() {
+			cfgTime = info.ModTime()
+			fmt.Println("Reading ", internal.ConfigFile, " at ", time.Now().Format(time.Stamp))
+			cfg = tweaking.TryReadCfgFrom(internal.ConfigFile, cfg)
+		}
+	}
+	return cfg
 }
 
 func isAnalogJoystickDisplaced(win *pixelgl.Window) bool {

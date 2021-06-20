@@ -4,7 +4,7 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 )
 
-// How many milliseconds is a tick?
+// TickMs How many milliseconds is a tick?
 const TickMs = 5
 
 type Controllable interface {
