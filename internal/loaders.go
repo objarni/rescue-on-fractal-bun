@@ -206,6 +206,8 @@ func LoadGif(path string) GifData {
 
 	sprites := make([]*px.Sprite, 0)
 	for _, paletted := range g.Image {
+		// TODO: Do not ignore bounds of paletted images!
+		//  Causes incorrect image offsets in playback..
 		img := paletted.SubImage(paletted.Bounds())
 		sprite := SpriteFromImage(img)
 		sprites = append(sprites, sprite)
