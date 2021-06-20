@@ -42,7 +42,7 @@ func MakeMenuScene(config *tweaking.Config, res *internal.Resources) *MenuScene 
 	}
 }
 
-func (menuScene *MenuScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
+func (menuScene *MenuScene) HandleKeyDown(key internal.ControlKey) internal.Scene {
 	if key == internal.Jump {
 		if menuScene.currentItem == Play {
 			return MakeIntroScene(menuScene.cfg, menuScene.res)
@@ -58,7 +58,7 @@ func (menuScene *MenuScene) HandleKeyDown(key internal.ControlKey) internal.Thin
 	return menuScene
 }
 
-func (menuScene *MenuScene) HandleKeyUp(_ internal.ControlKey) internal.Thing {
+func (menuScene *MenuScene) HandleKeyUp(_ internal.ControlKey) internal.Scene {
 	return menuScene
 }
 

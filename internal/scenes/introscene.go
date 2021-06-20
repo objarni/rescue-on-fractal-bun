@@ -31,11 +31,11 @@ func MakeIntroScene(config *tweaking.Config, res *internal.Resources) *IntroScen
 	}
 }
 
-func (introScene *IntroScene) HandleKeyDown(_ internal.ControlKey) internal.Thing {
+func (introScene *IntroScene) HandleKeyDown(_ internal.ControlKey) internal.Scene {
 	return MakeMapScene(introScene.cfg, introScene.res, "Hembyn")
 }
 
-func (introScene *IntroScene) HandleKeyUp(_ internal.ControlKey) internal.Thing {
+func (introScene *IntroScene) HandleKeyUp(_ internal.ControlKey) internal.Scene {
 	return introScene
 }
 

@@ -42,7 +42,7 @@ func run() {
 	res := loadResources()
 
 	// Initial scene - depends on --level cmd line arg!
-	var scene internal.Thing
+	var scene internal.Scene
 	startLevelName := *startLevel
 	if startLevelName != "" {
 		fmt.Println("Loading level:", startLevelName)

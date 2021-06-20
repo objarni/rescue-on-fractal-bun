@@ -81,7 +81,7 @@ func SpawnEntities(pos px.Vec, level internal.Level) ([]entities.Entity, error) 
 	return es, nil
 }
 
-func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
+func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Scene {
 	event := events.NoEvent
 	if key == internal.Left {
 		event = events.KeyLeftDown
@@ -110,7 +110,7 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	return scene
 }
 
-func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
+func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Scene {
 	event := events.NoEvent
 	if key == internal.Left {
 		event = events.KeyLeftUp

@@ -73,7 +73,11 @@ type Gubbe struct {
 	images   map[Image]*pixel.Sprite
 }
 
-func (gubbe *Gubbe) HandleKeyDown(key internal.ControlKey) internal.Thing {
+func (gubbe *Gubbe) WantToExitProgram() bool {
+	panic("implement me")
+}
+
+func (gubbe *Gubbe) HandleKeyDown(key internal.ControlKey) internal.Scene {
 	if key == internal.Left {
 		gubbe.controls.left = true
 	}
@@ -86,7 +90,7 @@ func (gubbe *Gubbe) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	return gubbe
 }
 
-func (gubbe *Gubbe) HandleKeyUp(key internal.ControlKey) internal.Thing {
+func (gubbe *Gubbe) HandleKeyUp(key internal.ControlKey) internal.Scene {
 	if key == internal.Left {
 		gubbe.controls.left = false
 	}

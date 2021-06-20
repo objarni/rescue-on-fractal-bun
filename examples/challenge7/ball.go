@@ -11,6 +11,8 @@ import (
 
 const radius = 50
 
+// TODO: Ball is definitely not a Scene!! :D
+
 type Ball struct {
 	Pos         pixel.Vec
 	Vel         pixel.Vec
@@ -20,9 +22,13 @@ type Ball struct {
 	config      Config
 }
 
-func (ball *Ball) HandleKeyDown(_ internal.ControlKey) internal.Thing { return ball }
+func (ball *Ball) WantToExitProgram() bool {
+	panic("implement me")
+}
 
-func (ball *Ball) HandleKeyUp(_ internal.ControlKey) internal.Thing { return ball }
+func (ball *Ball) HandleKeyDown(_ internal.ControlKey) internal.Scene { return ball }
+
+func (ball *Ball) HandleKeyUp(_ internal.ControlKey) internal.Scene { return ball }
 
 func (ball *Ball) Render(win *pixelgl.Window) {
 	mx := pixel.IM

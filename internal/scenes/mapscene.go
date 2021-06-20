@@ -65,7 +65,7 @@ func lookupMapSignWithText(mapSignText string, mapSigns []internal.MapSign) int 
 	panic("error: could not find MapSign with Text=" + mapSignText)
 }
 
-func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
+func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Scene {
 	if key == internal.Jump {
 		mapSignIx := scene.FindClosestMapSign()
 		if mapSignIx != -1 {
@@ -91,7 +91,7 @@ func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
 	return scene
 }
 
-func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
+func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Scene {
 	if key == internal.Left {
 		scene.hairCrossVel.X += 1
 	}

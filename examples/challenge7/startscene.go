@@ -10,11 +10,11 @@ import (
 	"objarni/rescue-on-fractal-bun/internal"
 )
 
-func (startScene *StartScene) HandleKeyUp(_ internal.ControlKey) internal.Thing {
+func (startScene *StartScene) HandleKeyUp(_ internal.ControlKey) internal.Scene {
 	return startScene
 }
 
-func (startScene *StartScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
+func (startScene *StartScene) HandleKeyDown(key internal.ControlKey) internal.Scene {
 	if key == internal.Jump {
 
 		var gubbeStandingRightSprite = internal.LoadSpriteForSure("assets/TStanding.png")
@@ -28,7 +28,7 @@ func (startScene *StartScene) HandleKeyDown(key internal.ControlKey) internal.Th
 			KickRight:     gubbeKickingRightSprite,
 		}
 		var gubbe = MakeGubbe(pixel.Vec{X: 100, Y: 150}, gubbeImage2Sprite, startScene.cfg)
-		var scene internal.Thing = &GameScene{
+		var scene internal.Scene = &GameScene{
 			ball:  MakeBall(startScene.cfg),
 			gubbe: gubbe,
 		}
@@ -70,4 +70,8 @@ func MakeStartScene(cfg *Config) *StartScene {
 
 type StartScene struct {
 	cfg *Config
+}
+
+func (startScene *StartScene) WantToExitProgram() bool {
+	panic("implement me")
 }

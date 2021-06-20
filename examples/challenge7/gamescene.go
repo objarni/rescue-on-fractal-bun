@@ -8,12 +8,12 @@ import (
 	"objarni/rescue-on-fractal-bun/internal"
 )
 
-func (gameScene *GameScene) HandleKeyUp(key internal.ControlKey) internal.Thing {
+func (gameScene *GameScene) HandleKeyUp(key internal.ControlKey) internal.Scene {
 	gameScene.gubbe.HandleKeyUp(key)
 	return gameScene
 }
 
-func (gameScene *GameScene) HandleKeyDown(key internal.ControlKey) internal.Thing {
+func (gameScene *GameScene) HandleKeyDown(key internal.ControlKey) internal.Scene {
 	gameScene.gubbe.HandleKeyDown(key)
 	return gameScene
 }
@@ -55,4 +55,8 @@ func drawGround(win *pixelgl.Window) {
 type GameScene struct {
 	ball  Ball
 	gubbe Gubbe
+}
+
+func (gameScene *GameScene) WantToExitProgram() bool {
+	panic("implement me")
 }

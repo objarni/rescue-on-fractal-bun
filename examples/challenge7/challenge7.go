@@ -39,7 +39,7 @@ func run() {
 	}
 	cfg := TryReadCfgFrom("json/challenge7.json", Config{})
 
-	var scene internal.Thing = MakeStartScene(&cfg)
+	var scene internal.Scene = MakeStartScene(&cfg)
 
 	for !win.Closed() {
 		// Janitor
