@@ -132,7 +132,8 @@ func run() {
 		var steps int
 		accumulatedMs, steps = gameTimeSteps(accumulatedMs, deltaMs, cfg.LengthOfTickInMS)
 		for i := 0; i < steps; i++ {
-			if !scene.Tick() {
+			scene.Tick()
+			if scene.WantToExitProgram() {
 				win.SetClosed(true)
 			}
 		}

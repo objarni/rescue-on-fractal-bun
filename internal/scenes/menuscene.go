@@ -29,7 +29,7 @@ type MenuScene struct {
 }
 
 func (menuScene *MenuScene) WantToExitProgram() bool {
-	return false
+	return menuScene.quit
 }
 
 func MakeMenuScene(config *tweaking.Config, res *internal.Resources) *MenuScene {
