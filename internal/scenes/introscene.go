@@ -3,6 +3,7 @@ package scenes
 import (
 	px "github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
+	"golang.org/x/image/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/tweaking"
 )
@@ -19,7 +20,7 @@ type IntroScene struct {
 
 func MakeIntroScene(config *tweaking.Config, res *internal.Resources) *IntroScene {
 	return &IntroScene{
-		gif:   internal.LoadGif("testdata/example.gif"),
+		gif:   internal.LoadGif("testdata/example3.gif"),
 		cfg:   config,
 		res:   res,
 		frame: 0,
@@ -35,6 +36,7 @@ func (introScene *IntroScene) HandleKeyUp(_ internal.ControlKey) internal.Thing 
 }
 
 func (introScene *IntroScene) Render(win *pixelgl.Window) {
+	win.Clear(colornames.White)
 	sprite := introScene.gif.Frames[introScene.frame]
 	sprite.Draw(win,
 		px.IM.Moved(
