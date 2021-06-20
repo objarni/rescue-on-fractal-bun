@@ -32,7 +32,7 @@ func MakeIntroScene(config *tweaking.Config, res *internal.Resources) *IntroScen
 }
 
 func (introScene *IntroScene) HandleKeyDown(_ internal.ControlKey) internal.Thing {
-	return MakeMenuScene(introScene.cfg, introScene.res)
+	return MakeMapScene(introScene.cfg, introScene.res, "Hembyn")
 }
 
 func (introScene *IntroScene) HandleKeyUp(_ internal.ControlKey) internal.Thing {

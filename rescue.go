@@ -55,8 +55,7 @@ func run() {
 		}
 		scene = scenes.MakeLevelScene(&cfg, &res, startLevelName, pos)
 	} else {
-		//scene = scenes.MakeMenuScene(&cfg, &res)
-		scene = scenes.MakeIntroScene(&cfg, &res)
+		scene = scenes.MakeMenuScene(&cfg, &res)
 	}
 
 	win, err := pixelgl.NewWindow(pixelgl.WindowConfig{
