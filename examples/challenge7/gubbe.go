@@ -4,6 +4,7 @@ import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"objarni/rescue-on-fractal-bun/internal"
+	"objarni/rescue-on-fractal-bun/internal/scenes"
 )
 
 const DECCELERATION = 0.95
@@ -77,7 +78,7 @@ func (gubbe *Gubbe) WantToExitProgram() bool {
 	panic("implement me")
 }
 
-func (gubbe *Gubbe) HandleKeyDown(key internal.ControlKey) internal.Scene {
+func (gubbe *Gubbe) HandleKeyDown(key internal.ControlKey) scenes.Scene {
 	if key == internal.Left {
 		gubbe.controls.left = true
 	}
@@ -90,7 +91,7 @@ func (gubbe *Gubbe) HandleKeyDown(key internal.ControlKey) internal.Scene {
 	return gubbe
 }
 
-func (gubbe *Gubbe) HandleKeyUp(key internal.ControlKey) internal.Scene {
+func (gubbe *Gubbe) HandleKeyUp(key internal.ControlKey) scenes.Scene {
 	if key == internal.Left {
 		gubbe.controls.left = false
 	}
@@ -116,7 +117,7 @@ func (gubbe *Gubbe) Render(win *pixelgl.Window) {
 	gubbeSprite.Draw(win, mx)
 }
 
-func (gubbe *Gubbe) Tick() bool {
+func (gubbe *Gubbe) Tick() scenes.Scene {
 	// STATE DEPENDENT BEHAVIOR
 	switch gubbe.state {
 	case Standing:
@@ -171,7 +172,7 @@ func (gubbe *Gubbe) Tick() bool {
 	}
 	gubbe.pos = gubbe.pos.Add(gubbe.vel)
 
-	return true
+	return gubbe
 }
 
 func initStanding(g *Gubbe) {

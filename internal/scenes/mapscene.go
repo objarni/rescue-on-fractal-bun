@@ -65,7 +65,7 @@ func lookupMapSignWithText(mapSignText string, mapSigns []internal.MapSign) int 
 	panic("error: could not find MapSign with Text=" + mapSignText)
 }
 
-func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Scene {
+func (scene *MapScene) HandleKeyDown(key internal.ControlKey) Scene {
 	if key == internal.Jump {
 		mapSignIx := scene.FindClosestMapSign()
 		if mapSignIx != -1 {
@@ -91,7 +91,7 @@ func (scene *MapScene) HandleKeyDown(key internal.ControlKey) internal.Scene {
 	return scene
 }
 
-func (scene *MapScene) HandleKeyUp(key internal.ControlKey) internal.Scene {
+func (scene *MapScene) HandleKeyUp(key internal.ControlKey) Scene {
 	if key == internal.Left {
 		scene.hairCrossVel.X += 1
 	}
@@ -229,7 +229,7 @@ func (scene *MapScene) crossHairGfx() d.ImdOp {
 	return d.Colored(transparentPink, d.ImdOpSequence(vertical, horisontal))
 }
 
-func (scene *MapScene) Tick() bool {
+func (scene *MapScene) Tick() Scene {
 	scene.hairCrossPos = scene.hairCrossPos.Add(scene.hairCrossVel.Scaled(scene.cfg.MapSceneCrosshairSpeed))
 	if scene.hairCrossPos.X < 0 {
 		scene.hairCrossPos.X = 0
@@ -244,7 +244,7 @@ func (scene *MapScene) Tick() bool {
 		scene.hairCrossPos.Y = 599
 	}
 	scene.highlightTimer += 1
-	return true
+	return scene
 }
 
 func FindNearMapSign(vec px.Vec, mapSigns []internal.MapSign, maxDist int) int {

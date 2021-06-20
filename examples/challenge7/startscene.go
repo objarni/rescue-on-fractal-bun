@@ -8,13 +8,14 @@ import (
 	"golang.org/x/image/colornames"
 	"golang.org/x/image/font/basicfont"
 	"objarni/rescue-on-fractal-bun/internal"
+	"objarni/rescue-on-fractal-bun/internal/scenes"
 )
 
-func (startScene *StartScene) HandleKeyUp(_ internal.ControlKey) internal.Scene {
+func (startScene *StartScene) HandleKeyUp(_ internal.ControlKey) scenes.Scene {
 	return startScene
 }
 
-func (startScene *StartScene) HandleKeyDown(key internal.ControlKey) internal.Scene {
+func (startScene *StartScene) HandleKeyDown(key internal.ControlKey) scenes.Scene {
 	if key == internal.Jump {
 
 		var gubbeStandingRightSprite = internal.LoadSpriteForSure("assets/TStanding.png")
@@ -28,7 +29,7 @@ func (startScene *StartScene) HandleKeyDown(key internal.ControlKey) internal.Sc
 			KickRight:     gubbeKickingRightSprite,
 		}
 		var gubbe = MakeGubbe(pixel.Vec{X: 100, Y: 150}, gubbeImage2Sprite, startScene.cfg)
-		var scene internal.Scene = &GameScene{
+		var scene scenes.Scene = &GameScene{
 			ball:  MakeBall(startScene.cfg),
 			gubbe: gubbe,
 		}
@@ -38,8 +39,8 @@ func (startScene *StartScene) HandleKeyDown(key internal.ControlKey) internal.Sc
 	return startScene
 }
 
-func (startScene *StartScene) Tick() bool {
-	return true
+func (startScene *StartScene) Tick() scenes.Scene {
+	return startScene
 }
 
 func (startScene *StartScene) Render(win *pixelgl.Window) {

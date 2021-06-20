@@ -81,7 +81,7 @@ func SpawnEntities(pos px.Vec, level internal.Level) ([]entities.Entity, error) 
 	return es, nil
 }
 
-func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Scene {
+func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) Scene {
 	event := events.NoEvent
 	if key == internal.Left {
 		event = events.KeyLeftDown
@@ -110,7 +110,7 @@ func (scene *LevelScene) HandleKeyDown(key internal.ControlKey) internal.Scene {
 	return scene
 }
 
-func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) internal.Scene {
+func (scene *LevelScene) HandleKeyUp(key internal.ControlKey) Scene {
 	event := events.NoEvent
 	if key == internal.Left {
 		event = events.KeyLeftUp
@@ -261,7 +261,7 @@ func (scene *LevelScene) cameraVector() px.Vec {
 	return reversed
 }
 
-func (scene *LevelScene) Tick() bool {
+func (scene *LevelScene) Tick() Scene {
 	// Handle event boxes from previous tick first of all
 	scene.entityCanvas.Consequences(func(eb entities.EventBox, box entities.EntityHitBox) {
 		id := box.Entity
@@ -316,7 +316,7 @@ func (scene *LevelScene) Tick() bool {
 		}
 	}
 
-	return true
+	return scene
 }
 
 /*

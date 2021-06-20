@@ -42,7 +42,7 @@ func MakeMenuScene(config *tweaking.Config, res *internal.Resources) *MenuScene 
 	}
 }
 
-func (menuScene *MenuScene) HandleKeyDown(key internal.ControlKey) internal.Scene {
+func (menuScene *MenuScene) HandleKeyDown(key internal.ControlKey) Scene {
 	if key == internal.Jump {
 		if menuScene.currentItem == Play {
 			return MakeIntroScene(menuScene.cfg, menuScene.res)
@@ -58,7 +58,7 @@ func (menuScene *MenuScene) HandleKeyDown(key internal.ControlKey) internal.Scen
 	return menuScene
 }
 
-func (menuScene *MenuScene) HandleKeyUp(_ internal.ControlKey) internal.Scene {
+func (menuScene *MenuScene) HandleKeyUp(_ internal.ControlKey) Scene {
 	return menuScene
 }
 
@@ -81,6 +81,6 @@ func (menuScene *MenuScene) Render(win *pixelgl.Window) {
 	tb.DrawColorMask(win, pixel.IM.Scaled(pixel.ZV, 2).Moved(translation), colornames.Black)
 }
 
-func (menuScene *MenuScene) Tick() bool {
-	return !menuScene.quit
+func (menuScene *MenuScene) Tick() Scene {
+	return menuScene
 }

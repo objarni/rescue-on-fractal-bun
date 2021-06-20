@@ -31,11 +31,11 @@ func MakeIntroScene(config *tweaking.Config, res *internal.Resources) *IntroScen
 	}
 }
 
-func (introScene *IntroScene) HandleKeyDown(_ internal.ControlKey) internal.Scene {
+func (introScene *IntroScene) HandleKeyDown(_ internal.ControlKey) Scene {
 	return MakeMapScene(introScene.cfg, introScene.res, "Hembyn")
 }
 
-func (introScene *IntroScene) HandleKeyUp(_ internal.ControlKey) internal.Scene {
+func (introScene *IntroScene) HandleKeyUp(_ internal.ControlKey) Scene {
 	return introScene
 }
 
@@ -49,7 +49,7 @@ func (introScene *IntroScene) Render(win *pixelgl.Window) {
 }
 
 // Tick TODO: Why is Tick still mutating?
-func (introScene *IntroScene) Tick() bool {
+func (introScene *IntroScene) Tick() Scene {
 	// Switch frame?
 	introScene.frameDisplayTime += internal.TickTimeMs
 	if introScene.frameDisplayTime > introScene.gif.DisplayFrameMs {
@@ -59,5 +59,5 @@ func (introScene *IntroScene) Tick() bool {
 			introScene.frame = 0
 		}
 	}
-	return true
+	return introScene
 }

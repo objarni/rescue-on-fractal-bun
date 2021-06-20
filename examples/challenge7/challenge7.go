@@ -9,6 +9,7 @@ import (
 	_ "image/png"
 	"math"
 	"objarni/rescue-on-fractal-bun/internal"
+	"objarni/rescue-on-fractal-bun/internal/scenes"
 	"time"
 )
 
@@ -39,7 +40,7 @@ func run() {
 	}
 	cfg := TryReadCfgFrom("json/challenge7.json", Config{})
 
-	var scene internal.Scene = MakeStartScene(&cfg)
+	var scene scenes.Scene = MakeStartScene(&cfg)
 
 	for !win.Closed() {
 		// Janitor

@@ -6,26 +6,27 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 	"golang.org/x/image/colornames"
 	"objarni/rescue-on-fractal-bun/internal"
+	"objarni/rescue-on-fractal-bun/internal/scenes"
 )
 
-func (gameScene *GameScene) HandleKeyUp(key internal.ControlKey) internal.Scene {
+func (gameScene *GameScene) HandleKeyUp(key internal.ControlKey) scenes.Scene {
 	gameScene.gubbe.HandleKeyUp(key)
 	return gameScene
 }
 
-func (gameScene *GameScene) HandleKeyDown(key internal.ControlKey) internal.Scene {
+func (gameScene *GameScene) HandleKeyDown(key internal.ControlKey) scenes.Scene {
 	gameScene.gubbe.HandleKeyDown(key)
 	return gameScene
 }
 
-func (gameScene *GameScene) Tick() bool {
+func (gameScene *GameScene) Tick() scenes.Scene {
 	gameScene.gubbe.Tick()
 	//kickImpulse := gameScene.gubbe.KickImpulse != nil
 	//if kickImpulse && kickImpulse.Origin.Inside(gameScene.ball.Disc){
 	//	gameScene.ball = kickBall(gameScene.ball, kickImpulse)
 	//}
 	gameScene.ball.Tick()
-	return true
+	return gameScene
 }
 
 //func kickBall(ball Ball, impulse KickImpulse) Ball {
