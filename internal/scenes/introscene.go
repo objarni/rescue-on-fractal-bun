@@ -48,7 +48,6 @@ func (introScene *IntroScene) Render(win *pixelgl.Window) {
 			px.V(400, 300), 0.1))
 }
 
-// Tick TODO: Why is Tick still mutating?
 func (introScene *IntroScene) Tick() Scene {
 	// Switch frame?
 	introScene.frameDisplayTime += internal.TickTimeMs
