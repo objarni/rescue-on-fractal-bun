@@ -8,7 +8,7 @@ import (
 	"objarni/rescue-on-fractal-bun/internal/tweaking"
 )
 
-// TODO: Use animation structure/functions instead
+// IntroScene TODO: Use animation structure/functions instead
 //  of re-doing it custom made here in intro scene!
 type IntroScene struct {
 	gif              internal.GifData
