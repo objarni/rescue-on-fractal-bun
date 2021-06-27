@@ -14,7 +14,7 @@ Så här är interaktionen beskriven på svenska:
   hamnar i senaste mapsign om kraften når 0)
 - det kan dyka upp "träffpartiklar" mot
   spöket också, typ lite damm eller annat
-  symboliskt a la serietidningar. Inte strikt 
+  symboliskt a la serietidningar. Inte strikt
   nödvändigt i just denna bana, men absolut
   nödvändigt i spelet (det ska alltså gå att
   lägga till / ta bort entiteter)
@@ -67,7 +67,7 @@ LevelScene upptäcker att R1 och R2 överlappar, och ger
 Elise och Ghost följande meddelanden:
   elise.HitBy("Ghost", R1)
   ghost.HitBy("Elise", R2)
-  
+
 Konsekvenser:
   Varje entiteter har möjlighet att reagera när det behövs (ingen
   kollissionskod i entiteter), och välja hur de reagerar per annan
@@ -77,7 +77,7 @@ Konsekvenser:
 
 Exempel elise<->button
   elise.HitBy("Button", R3)
-  
+
 Försök 2
 ========
 "Event rectangles". Entiteter kan skicka ut, från Tick,
