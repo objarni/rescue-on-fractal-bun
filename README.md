@@ -14,7 +14,12 @@ A 2D platform adventure about rescuing your friends
 
 ## Build instructions Ubuntu
 
-Needs some native libraries (pixelgl and beep libraries bring in these reqs):
+For Pixelgl:
 
-See https://pkg.go.dev/github.com/faiface/pixel#section-readme
+    sudo apt install xorg-dev
 
+Details, see https://pkg.go.dev/github.com/faiface/pixel#section-readme
+
+For Beep:
+
+    sudo apt install libasound2-dev
