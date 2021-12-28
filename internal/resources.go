@@ -13,12 +13,11 @@ type Resources struct {
 	FPS               float64
 	MapSigns          []MapSign
 	Levels            map[string]Level
-	ImageMap          ImageMap // TODO: should be pointer type
+	ImageMap          ImageMap
 	Blip, ButtonClick *beep.Buffer
 	RobotMove         *beep.Buffer
 }
 
-// Image TODO: This is so repetitive. Can we have a Python script to generate the enum+String func?
 type Image int
 
 const (
