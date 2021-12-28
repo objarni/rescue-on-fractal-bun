@@ -21,6 +21,27 @@ import (
 var cpuProfile = flag.String("cpuProfile", "", "write cpu profile to file")
 var startLevel = flag.String("level", "", "start at specified game level")
 
+// TODO: Use these two somewhere to enable collaborative building of this game
+//var _ = "https://discord.gg/MWN3PtnP" // invite link to #discuss-elise-game on objarni's discord
+//func openbrowser(url string) {
+//	var err error
+//
+//	switch runtime.GOOS {
+//	case "linux":
+//		err = exec.Command("xdg-open", url).Start()
+//	case "windows":
+//		err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+//	case "darwin":
+//		err = exec.Command("open", url).Start()
+//	default:
+//		err = fmt.Errorf("unsupported platform")
+//	}
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//}
+
 func run() {
 
 	flag.Parse()
@@ -32,6 +53,8 @@ func run() {
 		_ = pprof.StartCPUProfile(f)
 		defer pprof.StopCPUProfile()
 	}
+
+	//openbrowser(discordEliseChannelInviteLink)
 
 	cfg := tweaking.TryReadCfgFrom(internal.ConfigFile, tweaking.Config{})
 	info, err := os.Stat(internal.ConfigFile)
