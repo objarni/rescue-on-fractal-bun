@@ -294,11 +294,12 @@ func (scene *LevelScene) Tick() Scene {
 	// Add all walls
 	// TODO: Refactor this to data structure populated
 	// when loading level (and cover with approval test!)
-	walls := scene.level.TilepixMap.GetTileLayerByName("Walls")
+	level := scene.level
+	walls := level.TilepixMap.GetTileLayerByName("Walls")
 	tiles := walls.DecodedTiles
-	for y := 0; y < scene.level.TilepixMap.Height; y++ {
-		for x := 0; x < scene.level.TilepixMap.Width; x++ {
-			ix := y*scene.level.Width + x
+	for y := 0; y < level.TilepixMap.Height; y++ {
+		for x := 0; x < level.TilepixMap.Width; x++ {
+			ix := y*level.Width + x
 			tile := tiles[ix]
 			if tile.IsNil() {
 				continue
