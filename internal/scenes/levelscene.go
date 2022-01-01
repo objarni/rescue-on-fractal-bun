@@ -23,6 +23,7 @@ type LevelScene struct {
 	gameTimeMs   float64
 	entities     []entities.Entity
 	entityCanvas entities.EntityCanvas
+	walls        []entities.EventBox
 	buttonClick  *beep.Buffer
 	robotMoveSfx *beep.Buffer
 }
@@ -48,6 +49,7 @@ func MakeLevelScene(cfg *tweaking.Config, res *internal.Resources, levelName str
 		entityCanvas: entities.MakeEntityCanvas(),
 		buttonClick:  res.ButtonClick,
 		robotMoveSfx: res.RobotMove,
+		walls:        computeWallEventBoxes(level),
 	}
 }
 
@@ -291,10 +293,15 @@ func (scene *LevelScene) Tick() Scene {
 		})
 	}
 
-	// Add all walls
-	// TODO: Refactor this to data structure populated
-	// when loading level (and cover with approval test!)
-	level := scene.level
+	// Walls are just events! :)
+	for _, box := range scene.walls {
+		scene.entityCanvas.AddEventBox(box)
+	}
+
+	return scene
+}
+
+func computeWallEventBoxes(level internal.Level) []entities.EventBox {
 	walls := level.TilepixMap.GetTileLayerByName("Walls")
 	tiles := walls.DecodedTiles
 	boxes := make([]entities.EventBox, 0)
@@ -318,11 +325,7 @@ func (scene *LevelScene) Tick() Scene {
 			boxes = append(boxes, box)
 		}
 	}
-	for _, box := range boxes {
-		scene.entityCanvas.AddEventBox(box)
-	}
-
-	return scene
+	return boxes
 }
 
 /*
