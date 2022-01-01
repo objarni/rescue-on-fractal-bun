@@ -297,6 +297,7 @@ func (scene *LevelScene) Tick() Scene {
 	level := scene.level
 	walls := level.TilepixMap.GetTileLayerByName("Walls")
 	tiles := walls.DecodedTiles
+	boxes := make([]entities.EventBox, 0)
 	for y := 0; y < level.TilepixMap.Height; y++ {
 		for x := 0; x < level.TilepixMap.Width; x++ {
 			ix := y*level.Width + x
@@ -305,7 +306,7 @@ func (scene *LevelScene) Tick() Scene {
 				continue
 			}
 			pos := tile.Position(ix, walls.Tileset)
-			scene.entityCanvas.AddEventBox(entities.EventBox{
+			box := entities.EventBox{
 				Event: events.Wall,
 				Box: px.R(
 					pos.X-16,
@@ -313,8 +314,12 @@ func (scene *LevelScene) Tick() Scene {
 					pos.X+16,
 					pos.Y+16,
 				),
-			})
+			}
+			boxes = append(boxes, box)
 		}
+	}
+	for _, box := range boxes {
+		scene.entityCanvas.AddEventBox(box)
 	}
 
 	return scene
