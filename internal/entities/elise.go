@@ -231,3 +231,5 @@ func EliseWalkFrame(gameTimeS float64, targetFPS int) internal.Image {
 	image := walkFrames[frame]
 	return image
 }
+
+// TODO: refactor to something inspired by this https://dev.to/ajinkyax/state-machine-in-go-for-a-2d-game-198l
