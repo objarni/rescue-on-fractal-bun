@@ -103,6 +103,7 @@ func run() {
 	keyMap[pixelgl.KeyS] = internal.Down
 	keyMap[pixelgl.KeyA] = internal.Left
 	keyMap[pixelgl.KeyD] = internal.Right
+	keyMap[pixelgl.KeyF] = internal.Action
 	keyMap[pixelgl.KeyEnter] = internal.Action
 
 	padMap := make(map[pixelgl.GamepadButton]internal.ControlKey)

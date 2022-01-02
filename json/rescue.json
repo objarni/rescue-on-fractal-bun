@@ -1,7 +1,7 @@
 {
   "ShowEntityCanvas": true,
   "MapSceneBlinkSpeed": 60,
-  "MapSceneCrosshairSpeed": 3,
+  "MapSceneCrosshairSpeed": 1,
   "MapSceneLocationTextX": 6,
   "MapSceneLocationTextY": 48,
   "MapSceneLocCircleRadius": 5,
