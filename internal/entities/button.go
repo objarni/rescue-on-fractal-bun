@@ -15,10 +15,6 @@ type Button struct {
 	pressed bool
 }
 
-func (button Button) HitBoxes() []px.Rect {
-	panic("implement me")
-}
-
 func (button Button) String() string {
 	panic("implement me")
 }

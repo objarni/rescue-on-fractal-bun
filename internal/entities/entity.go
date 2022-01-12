@@ -15,7 +15,6 @@ type Entity interface {
 	// Tick TODO: how can entities communicate 'remove me' to scene?
 	Tick(gameTimeMs float64, ebReceiver EventBoxReceiver) Entity
 	HitBox() pixel.Rect
-	HitBoxes() []pixel.Rect
 	Handle(eb EventBox) Entity
 	String() string
 }

@@ -14,10 +14,6 @@ type LevelBoundary struct {
 	areaRect px.Rect
 }
 
-func (lb LevelBoundary) HitBoxes() []px.Rect {
-	panic("implement me")
-}
-
 func (lb LevelBoundary) String() string {
 	return "LevelBoundary: " + printers.PrintRect(lb.areaRect)
 }

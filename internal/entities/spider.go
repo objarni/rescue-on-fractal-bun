@@ -25,10 +25,6 @@ type Spider struct {
 	timeout  float64
 }
 
-func (spider Spider) HitBoxes() []pixel.Rect {
-	panic("implement me")
-}
-
 func (spider Spider) String() string {
 	panic("implement me")
 }

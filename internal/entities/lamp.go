@@ -16,10 +16,6 @@ type Lamp struct {
 	on  bool
 }
 
-func (lamp Lamp) HitBoxes() []pixel.Rect {
-	panic("implement me")
-}
-
 func (lamp Lamp) String() string {
 	panic("implement me")
 }

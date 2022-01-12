@@ -19,10 +19,6 @@ type Ghost struct {
 	curveHeight float64
 }
 
-func (ghost Ghost) HitBoxes() []px.Rect {
-	panic("implement me")
-}
-
 func (ghost Ghost) String() string {
 	panic("implement me")
 }

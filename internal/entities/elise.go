@@ -38,10 +38,6 @@ type Elise struct {
 	state                     EliseState
 }
 
-func (elise Elise) HitBoxes() []px.Rect {
-	panic("implement me")
-}
-
 func MakeElise(position px.Vec) Entity {
 	return Elise{Pos: position, state: EliseStanding}
 }
