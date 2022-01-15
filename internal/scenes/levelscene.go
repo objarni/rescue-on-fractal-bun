@@ -6,10 +6,12 @@ import (
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
 	px "github.com/faiface/pixel"
+	"github.com/faiface/pixel/imdraw"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	d "github.com/objarni/pixelop"
 	"golang.org/x/exp/shiny/materialdesign/colornames"
+	"image/color"
 	"objarni/rescue-on-fractal-bun/internal"
 	"objarni/rescue-on-fractal-bun/internal/entities"
 	"objarni/rescue-on-fractal-bun/internal/events"
@@ -134,11 +136,15 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 	// this clear is not needed (camera like WonderBoy)
 	win.Clear(colornames.Yellow50)
 
-	gfx := d.OpSequence(
+	// TODO: Make order of opSequence list less hard-coded, more configurable
+	// This would enable two things:
+	// 1) getting rid of the "Elise drawn last of all entities"
+	// 2) enabling Darkness to be rendered on top of foreground
+	allGraphicsOperations := d.OpSequence(
 		d.Moved(
 			scene.cameraVector(),
 			d.OpSequence(
-				d.ToWinOp(scene.backdropOp()),
+				//d.ToWinOp(scene.backdropOp()),
 				d.Color(colornames.White, d.TileLayer(scene.level.TilepixMap, "Background")),
 				d.Color(colornames.White, d.TileLayer(scene.level.TilepixMap, "Platforms")),
 				d.Color(colornames.White, d.TileLayer(scene.level.TilepixMap, "Walls")),
@@ -150,20 +156,46 @@ func (scene *LevelScene) Render(win *pixelgl.Window) {
 		),
 		scene.mapSymbolOp(),
 	)
-	gfx.Render(px.IM, win.Canvas())
+	//allGraphicsOperations.Render(px.IM, win.Canvas())
+	scene.spikeGraphics(win, allGraphicsOperations)
+}
 
-	// Spike
-	//win.Clear(colornames.Blue200)
-	//win.SetComposeMethod(px.ComposeOver)
-	//imd := imdraw.New(nil)
-	//imd.Color = colornames.Yellow600
-	//imd.Push(px.V(0, 0))
-	//imd.Push(px.V(100, 500))
-	//imd.Rectangle(float64(0))
-	//imd.Draw(win)
-	//win.SetComposeMethod(px.ComposeXor)
-	//gfx.Render(px.IM, win)
-	//win.SetComposeMethod(px.ComposeOver)
+func (scene *LevelScene) spikeGraphics(win *pixelgl.Window, levelGfx d.WinOp) {
+	// The darkness
+	darkness := imdraw.New(nil)
+	darkness.Color = zeroAlpha(colornames.BlueGrey100)
+	//darkness.Color = colornames.Black
+	darkness.Push(px.V(0, 50))
+	darkness.Push(px.V(100, 550))
+	darkness.Rectangle(float64(0))
+	darkness.Push(px.V(700, 50))
+	darkness.Push(px.V(750, 550))
+	darkness.Rectangle(float64(0))
+
+	method1 := px.ComposeOver
+	method2 := px.ComposeOut
+
+	win.Clear(color.RGBA{
+		R: 0,
+		G: 0,
+		B: 80,
+		A: 0,
+	})
+
+	win.SetComposeMethod(method1)
+	levelGfx.Render(px.IM, win.Canvas())
+
+	win.SetComposeMethod(method2)
+	darkness.Draw(win)
+}
+
+func zeroAlpha(col color.RGBA) color.Color {
+	return color.RGBA{
+		R: col.R,
+		G: col.G,
+		B: col.B,
+		A: 0,
+	}
 }
 
 func (scene *LevelScene) debugGfx() d.WinOp {
